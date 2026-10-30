@@ -11,11 +11,11 @@
     "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
     "scripts/diagnostics/render_runner.gd": "95d42ce0fbe672f7c6e4bf7230a99f3cea7947d0d20aa48f23353c16c12cd88b",
     "scripts/hud.gd": "8efb27dc1048474d7f4532c93b15706c02ae66274db877cf42713f4a41ffd5cc",
-    "scripts/main.gd": "c76539491c436e1b6a38aa0cead266ba17b3632eaad0a49bb2b39edaa3e65db7",
+    "scripts/main.gd": "a28b08b678c062e83492a6936be94fa63bf1d19e06a8409978664cbb1c87ee86",
     "scripts/terrain_cache.gd": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
     "scripts/world_view.gd": "ab668298166ba229db48f4f3f1e5a793148cfa65fb8ac37bf75d9340522f6687"
   },
-  "physical_script_lines": 7670,
+  "physical_script_lines": 7675,
   "independent_missions": {
     "canyon": {
       "seconds": 1590,
@@ -40,7 +40,7 @@
     "ridge_full_route": 116,
     "guide_full_canyon": 102,
     "mission_guide": 137,
-    "campaign_selection": 106,
+    "campaign_selection": 114,
     "rendered_ui": 124,
     "preferences_recovery": 286,
     "cross_process": 90,

@@ -7,6 +7,9 @@ const Hud = preload("res://scripts/hud.gd")
 const Guide = preload("res://scripts/campaign_guide.gd")
 const SaveStore = preload("res://scripts/campaign_save_store.gd")
 const TILE: float = 48.0
+const MIN_CAMERA_ZOOM: float = 0.35
+const MAX_CAMERA_ZOOM: float = 1.6
+const CAMERA_FLOAT_EPSILON: float = 0.000001
 const SAVE_PATH: String = "user://campaign-save.json"
 const AUTOSAVE_PATH: String = "user://campaign-autosave.json"
 const CONFIG_PATH: String = "user://settings.cfg"
@@ -350,7 +353,7 @@ func _issue_context(target: Vector2) -> void:
 
 func _zoom(factor: float) -> void:
 	var before: Vector2 = get_global_mouse_position()
-	var value: float = clampf(camera.zoom.x * factor, 0.35, 1.6)
+	var value: float = clampf(camera.zoom.x * factor, MIN_CAMERA_ZOOM, MAX_CAMERA_ZOOM)
 	camera.zoom = Vector2.ONE * value
 	camera.force_update_scroll()
 	var after: Vector2 = get_global_mouse_position()
@@ -599,7 +602,9 @@ func _validate_save_payload(data: Dictionary) -> bool:
 	var ui: Dictionary = ui_value
 	for key: String in ["camera_x", "camera_y", "zoom", "selected_camp", "speed"]:
 		if ui.has(key) and not _valid_number(ui[key]): return false
-	if ui.has("zoom") and (float(ui.zoom) < 0.35 or float(ui.zoom) > 1.6): return false
+	# Camera2D stores Vector2 components as float32: both legal endpoints can
+	# round just outside their double-precision bounds during a real save.
+	if ui.has("zoom") and (float(ui.zoom) < MIN_CAMERA_ZOOM - CAMERA_FLOAT_EPSILON or float(ui.zoom) > MAX_CAMERA_ZOOM + CAMERA_FLOAT_EPSILON): return false
 	if ui.has("speed") and (float(ui.speed) < 1 or float(ui.speed) > 3): return false
 	for key: String in ["logistics", "ranges"]:
 		if ui.has(key) and not ui[key] is bool: return false
@@ -675,7 +680,7 @@ func load_campaign(slot: String = "manual") -> bool:
 		group_bindings[int(key)] = group_ids
 	var home_camera: Vector2 = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
 	camera.position = Vector2(float(ui.get("camera_x", home_camera.x)), float(ui.get("camera_y", home_camera.y)))
-	camera.zoom = Vector2.ONE * float(ui.get("zoom", 1.05))
+	camera.zoom = Vector2.ONE * clampf(float(ui.get("zoom", 1.05)), MIN_CAMERA_ZOOM, MAX_CAMERA_ZOOM)
 	selected_camp = int(ui.get("selected_camp", 0))
 	if sim.get_camp(selected_camp).is_empty(): selected_camp = int(sim.camps[0].id)
 	guide.update(sim, selected_ids, selected_camp)

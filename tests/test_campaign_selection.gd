@@ -123,6 +123,7 @@ func _run() -> void:
 	await _click("new")
 	app.sim.paused = true
 	_check_mission("canyon")
+	await _test_zoom_boundary_saves()
 	app.queue_free()
 	await _frames(4)
 	root.content_scale_factor = 1.0
@@ -238,6 +239,21 @@ func _fits() -> bool:
 
 func _bytes(path: String) -> PackedByteArray:
 	return FileAccess.get_file_as_bytes(path)
+
+func _test_zoom_boundary_saves() -> void:
+	app.start_campaign("canyon")
+	app.sim.paused = true
+	for factor: float in [0.001, 100.0]:
+		app._zoom(factor)
+		var actual_zoom: float = app.camera.zoom.x
+		_check(app.save_campaign(), "real float32 camera endpoint can save")
+		app.camera.zoom = Vector2.ONE
+		_check(app.load_campaign(), "saved camera endpoint can reload")
+		_check(is_equal_approx(app.camera.zoom.x, actual_zoom), "endpoint camera scale survives a disk roundtrip")
+		var invalid: Dictionary = app._save_payload()
+		invalid.ui.zoom = 0.3499 if factor < 1.0 else 1.6001
+		_check(not app._validate_save_payload(invalid), "genuinely out-of-range zoom still fails validation")
+	await _frames()
 
 
 func _state(simulation: Variant) -> String:

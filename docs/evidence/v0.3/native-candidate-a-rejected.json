@@ -1,0 +1,77 @@
+{
+  "native_export_proof": true,
+  "performance_evidence": false,
+  "valid_workload": false,
+  "errors": [
+    "actual app save failed at measured frame 300"
+  ],
+  "binaries_before": {
+    "adjacent_pck": {
+      "available": true,
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.pck",
+      "sha256": "4d13f4f550122c7dc2383db43a7cc5f77e96d5a4d759b00b1bde7d0fd42f53a3"
+    },
+    "executable": {
+      "available": true,
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+      "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+    }
+  },
+  "binaries_after": {
+    "adjacent_pck": {
+      "available": true,
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.pck",
+      "sha256": "4d13f4f550122c7dc2383db43a7cc5f77e96d5a4d759b00b1bde7d0fd42f53a3"
+    },
+    "executable": {
+      "available": true,
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+      "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+    }
+  },
+  "scope": "First native 0.3 candidate, rejected due real strategic-zoom autosave failure. Retained as failed evidence, never acceptance.",
+  "zooms": [
+    {
+      "name": "normal",
+      "measured_frames": 600,
+      "warmup_frames": 120,
+      "valid_workload": true,
+      "frame_time_ms": null,
+      "save_measurements": [
+        {
+          "after_measured_frame": 300,
+          "bytes": 408977,
+          "exists": true,
+          "included_in_wall_frame_interval": 301,
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v03-candidate-a/data/godot/app_userdata/\u9010\u8425\u7a81\u56f4 \u00b7 Outpost Exodus/campaign-autosave.json",
+          "read_semantic_verification_usec": 17234,
+          "save_call_ms": 31.794,
+          "save_call_usec": 31794,
+          "save_returned_success": true,
+          "write_and_read_valid": true
+        }
+      ]
+    },
+    {
+      "name": "strategic",
+      "measured_frames": 600,
+      "warmup_frames": 120,
+      "valid_workload": false,
+      "frame_time_ms": null,
+      "save_measurements": [
+        {
+          "after_measured_frame": 300,
+          "bytes": 408977,
+          "exists": true,
+          "included_in_wall_frame_interval": 301,
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v03-candidate-a/data/godot/app_userdata/\u9010\u8425\u7a81\u56f4 \u00b7 Outpost Exodus/campaign-autosave.json",
+          "read_semantic_verification_usec": 17642,
+          "save_call_ms": 2.891,
+          "save_call_usec": 2891,
+          "save_returned_success": false,
+          "write_and_read_valid": false
+        }
+      ]
+    }
+  ]
+}

@@ -6,6 +6,8 @@ if [[ -n "$(git -C "$PROJECT_DIR" status --porcelain)" ]]; then
   printf '%s\n' "Commit the candidate first: native release exports require a clean source tree." >&2
   exit 1
 fi
+SOURCE_COMMIT="$(git -C "$PROJECT_DIR" rev-parse HEAD)"
+SOURCE_TREE="$(git -C "$PROJECT_DIR" rev-parse 'HEAD^{tree}')"
 TEMPLATES_DIR="${GODOT_TEMPLATES_DIR:-$PROJECT_DIR/../../work/runtime/export-templates}"
 BUILD_PYTHON="${BUILD_PYTHON:-$PROJECT_DIR/work/pe-resources-venv/bin/python}"
 if [[ ! -x "$BUILD_PYTHON" ]]; then
@@ -50,15 +52,18 @@ for platform in linux-release windows-release; do
     cp "$PROJECT_DIR/licenses/$notice" "$PROJECT_DIR/builds/$platform/$notice"
   done
 done
-python3 - "$PROJECT_DIR" <<'PY'
+python3 - "$PROJECT_DIR" "$SOURCE_COMMIT" "$SOURCE_TREE" <<'PY'
 from pathlib import Path
 import hashlib, json, subprocess, sys
 project = Path(sys.argv[1])
+source_commit, source_tree = sys.argv[2:]
 def git(*args):
     return subprocess.check_output(['git', '-C', str(project), *args], text=True).strip()
+if git('status', '--porcelain') or git('rev-parse', 'HEAD') != source_commit or git('rev-parse', 'HEAD^{tree}') != source_tree:
+    raise SystemExit('Source changed during export; discard these artifacts and export a clean candidate again.')
 for platform, executable in [('linux', 'outpost-exodus.x86_64'), ('windows', 'outpost-exodus.exe')]:
     directory = project / 'builds' / (platform + '-release')
-    data = {'source_commit': git('rev-parse', 'HEAD'), 'source_tree': git('rev-parse', 'HEAD^{tree}'),
+    data = {'source_commit': source_commit, 'source_tree': source_tree,
             'sha256': {name: hashlib.sha256((directory / name).read_bytes()).hexdigest()
                        for name in [executable, 'outpost-exodus.pck']}}
     (directory / 'export-source.json').write_text(json.dumps(data, indent=2) + '\n')

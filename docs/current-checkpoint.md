@@ -18,7 +18,7 @@ Project: 逐营突围 / Outpost Exodus, **0.3.0-dev**. The objective remains a h
 
 ## Evidence
 
-See docs/evidence/v0.3 and docs/benchmarks/v0.3, plus validation-plan.md. Passing counts include campaign170, navigation125, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection106, UI124, preferences286, separate-process90, GPU cache23 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
+See docs/evidence/v0.3 and docs/benchmarks/v0.3, plus validation-plan.md. Passing counts include campaign170, navigation125, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
 
 ## Still required
 
