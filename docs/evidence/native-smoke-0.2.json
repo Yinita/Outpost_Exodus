@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "success": true,
+  "started_utc": "2026-10-30T21:28:38.239903+00:00",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+  "python": "3.10.12",
+  "display": ":0",
+  "payload_sha256": {
+    "outpost-exodus.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "outpost-exodus.pck": "e14e4f515c92a753d7f88e29e726f05684552f3c9d238063f9481f0c3540ce3d"
+  },
+  "runs": [
+    {
+      "name": "headless",
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+        "--headless",
+        "--fixed-fps",
+        "60",
+        "--",
+        "--smoke"
+      ],
+      "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release",
+      "timeout_seconds": 60.0,
+      "isolated_environment": {
+        "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless-data",
+        "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless-config",
+        "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless-cache"
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.4012,
+      "log_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless.log",
+      "runtime_output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSMOKE_OK ticks=80 units=30\n",
+      "error_or_leak_output": false,
+      "expected_marker": true,
+      "simulation_ticks": 80,
+      "unit_count": 30,
+      "minimum_simulation_ticks": 70,
+      "success": true
+    },
+    {
+      "name": "rendered",
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+        "--",
+        "--capture=/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/preview.png"
+      ],
+      "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release",
+      "timeout_seconds": 60.0,
+      "isolated_environment": {
+        "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered-data",
+        "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered-config",
+        "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered-cache"
+      },
+      "returncode": 0,
+      "timed_out": false,
+      "elapsed_seconds": 2.0844,
+      "log_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered.log",
+      "runtime_output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060\n\nCAPTURE_RESULT 0 /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/preview.png\n",
+      "error_or_leak_output": false,
+      "expected_marker": true,
+      "success": true
+    }
+  ],
+  "scope": [
+    "Linux native release export headless startup/simulation smoke",
+    "Linux native release export rendered campaign capture and clean shutdown"
+  ],
+  "not_verified": [
+    "fresh-player usability",
+    "full native campaign playthrough",
+    "minimum hardware or frame pacing",
+    "clean-machine installation",
+    "Windows execution",
+    "Steam integration/review",
+    "manual screenshot inspection"
+  ],
+  "export_provenance": {
+    "source_commit": "029cff1c451ad7b68d21489788d6dcf7c58e402a",
+    "source_tree": "90f52a8bfe50caeb21c15d85abeb51a80f8163c9",
+    "sha256": {
+      "outpost-exodus.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+      "outpost-exodus.pck": "e14e4f515c92a753d7f88e29e726f05684552f3c9d238063f9481f0c3540ce3d"
+    }
+  },
+  "capture": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/preview.png",
+    "width": 1440,
+    "height": 810,
+    "bytes": 308581,
+    "sha256": "d2b129decb09d8a6ff88e18f74687152b8af1e84b36d7afe5fd3a767cc799659"
+  },
+  "finished_utc": "2026-10-30T21:28:41.823878+00:00",
+  "visual_inspection": {
+    "reviewer": "Codex root",
+    "image_sha256": "d2b129decb09d8a6ff88e18f74687152b8af1e84b36d7afe5fd3a767cc799659",
+    "result": "Actual 1440x810 native capture inspected: readable Chinese HUD/guide, visible terrain/actors/buildings/minimap; no obvious panel collision. This is not final art/accessibility acceptance."
+  }
+}
