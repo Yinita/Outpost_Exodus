@@ -1,0 +1,42 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+CLEAR (25.0, 20.0) time=40.0000000000003 people=7 outcome=playing
+BUILD road (26, 21) accepted=true time=40.0000000000003 materials=236.000000000005
+BUILD camp (26, 23) accepted=true time=79.9999999999997 materials=199.000000000008
+WAIT home convoy and everyone cross west gate reached=true time=200.499999999993
+BUILD road (29, 24) accepted=true time=200.499999999993 materials=197.000000000008
+BUILD generator (28, 22) accepted=true time=230.499999999991 materials=167.000000000008
+BUILD workshop (30, 24) accepted=true time=260.499999999991 materials=127.000000000008
+BUILD tower (25, 20) accepted=true time=295.499999999999 materials=92.0000000000076
+CLEAR (35.0, 10.0) time=375.500000000017 people=7 outcome=playing
+BUILD road (35, 10) accepted=true time=375.500000000017 materials=58.0000000000076
+CLEAR (35.0, 31.0) time=495.500000000044 people=7 outcome=playing
+BUILD road (35, 31) accepted=true time=495.500000000044 materials=82.9600000000066
+MIDDLE STOCK { "id": 46, "name": "前进营地 1", "pos": (26.0, 23.0), "state": "active", "materials": 218.96000000002, "supplies": 150.390000000005, "fuel": 102.581600000012, "salvage": 233.039999999986, "crude": 0.0, "power": 5.0, "power_capacity": 12.0, "power_used": 7.0, "energy": 100.0, "priority": "production", "recipe": "materials", "evac_target_id": 0, "pack_progress": 0.0, "evac_truck_id": 0, "last_shortage": -100.0, "recruit_queue": [], "recruit_status": "idle" } time=665.500000000083
+CLEAR (53.0, 21.0) time=725.500000000096 people=7 outcome=playing
+BUILD road (53, 22) accepted=true time=725.500000000096 materials=228.960000000023
+BUILD camp (54, 23) accepted=true time=815.500000000117 materials=250.960000000019
+WAIT three or more delivered loads and viable forward stocks reached=true time=1011.60000000016
+RECEIVED BEFORE ABANDON { "id": 176, "name": "前进营地 2", "pos": (54.0, 23.0), "state": "active", "materials": 392.960000000006, "supplies": 40.0, "fuel": 50.0, "salvage": 41.0399999999718, "crude": 196.000000000022, "power": 0.0, "power_capacity": 0.0, "power_used": 0.0, "energy": 20.8869999999998, "priority": "production", "recipe": "supplies", "evac_target_id": 0, "pack_progress": 0.0, "evac_truck_id": 0, "last_shortage": -100.0, "recruit_queue": [], "recruit_status": "idle" } trips=4 time=1011.60000000016
+WAIT last loaded truck arrives at forward camp reached=true time=1011.80000000016
+ABANDONED INVENTORY { "materials": 0.0, "supplies": 83.7300000000042, "fuel": 43.9291000000198, "salvage": 0.0, "crude": 83.9999999999779 } time=1046.80000000014
+FRONT { "id": 176, "name": "前进营地 2", "pos": (54.0, 23.0), "state": "active", "materials": 392.960000000006, "supplies": 49.06, "fuel": 75.0, "salvage": 41.0399999999718, "crude": 196.000000000022, "power": 0.0, "power_capacity": 0.0, "power_used": 0.0, "energy": 19.8309999999998, "priority": "production", "recipe": "supplies", "evac_target_id": 0, "pack_progress": 0.0, "evac_truck_id": 0, "last_shortage": -100.0, "recruit_queue": [], "recruit_status": "idle" }
+BUILD road (57, 23) accepted=true time=1046.80000000014 materials=382.960000000006
+BUILD generator (56, 21) accepted=true time=1071.80000000012 materials=352.960000000006
+BUILD workshop (57, 25) accepted=true time=1101.80000000009 materials=312.960000000006
+WAIT refine transported crude to fuel margin reached=true time=1169.80000000003
+WAIT produce rations before exit construction reached=true time=1231.59999999998
+CLEAR (68.0, 20.0) time=1296.59999999992 people=7 outcome=playing
+BUILD road (68, 22) accepted=true time=1296.59999999992 materials=286.960000000006
+BUILD generator (68, 22) accepted=true time=1386.59999999983 materials=256.960000000006
+EXIT PREPARATION STOCK { "id": 176, "name": "前进营地 2", "pos": (54.0, 23.0), "state": "active", "materials": 256.960000000006, "supplies": 63.2500000000021, "fuel": 70.3626000000043, "salvage": 41.0399999999718, "crude": 177.800000000023, "power": 20.0, "power_capacity": 24.0, "power_used": 4.0, "energy": 100.0, "priority": "production", "recipe": "idle", "evac_target_id": 0, "pack_progress": 0.0, "evac_truck_id": 0, "last_shortage": -100.0, "recruit_queue": [], "recruit_status": "idle" } time=1431.59999999979
+CLEAR (72.0, 19.0) time=1466.59999999976 people=7 outcome=playing
+BUILD road (72, 19) accepted=true time=1466.59999999976 materials=244.960000000006
+WAIT actual funded powered exit finishes reached=true time=1576.39999999966
+WAIT command truck and survivors arrive reached=true time=1589.99999999965
+COMPLETE SUMMARY { "materials": 104.960000000006, "supplies": 19.8100000000021, "fuel": 17.4426000000044, "power": 14.0, "power_capacity": 24.0, "salvage": 41.0399999999718, "crude": 177.800000000023, "people": 7, "zombies": 100, "phase": "evacuation", "outcome": "victory", "exit_progress": 1.0, "evacuated": 6, "pursuit_eta": 527.214285714315, "time": 1589.99999999965 }
+CAMPS [{ "id": 1, "name": "后方营地", "pos": (9.0, 22.0), "state": "abandoned", "materials": 0.0, "supplies": 0.0, "fuel": 0.0, "salvage": 0.0, "crude": 0.0, "power": 0.0, "power_capacity": 0.0, "power_used": 0.0, "energy": 100.0, "priority": "evacuation", "recipe": "materials", "evac_target_id": 46, "pack_progress": 0.0, "evac_truck_id": 13, "last_shortage": -100.0, "recruit_queue": [], "recruit_status": "idle", "evac_gather_version": 1 }, { "id": 46, "name": "前进营地 1", "pos": (26.0, 23.0), "state": "abandoned", "materials": 0.0, "supplies": 83.7300000000042, "fuel": 43.9291000000198, "salvage": 0.0, "crude": 83.9999999999779, "power": 0.0, "power_capacity": 0.0, "power_used": 0.0, "energy": 100.0, "priority": "evacuation", "recipe": "materials", "evac_target_id": 176, "pack_progress": 0.0, "evac_truck_id": 13, "last_shortage": -100.0, "recruit_queue": [], "recruit_status": "idle", "evac_gather_version": 1 }, { "id": 176, "name": "前进营地 2", "pos": (54.0, 23.0), "state": "active", "materials": 104.960000000006, "supplies": 19.8100000000021, "fuel": 17.4426000000044, "salvage": 41.0399999999718, "crude": 177.800000000023, "power": 14.0, "power_capacity": 24.0, "power_used": 10.0, "energy": 100.0, "priority": "production", "recipe": "idle", "evac_target_id": 0, "pack_progress": 0.0, "evac_truck_id": 0, "last_shortage": -100.0, "recruit_queue": [], "recruit_status": "idle" }]
+DELIVERED TRIPS { 1: 3, 46: 5 }
+ABANDONED INVENTORY { "materials": 0.0, "supplies": 83.7300000000042, "fuel": 43.9291000000198, "salvage": 0.0, "crude": 83.9999999999779 }
+PENDING BUILDINGS []
+MESSAGES ["前进营地 2生产调整为：口粮（消耗燃料）。", "前进营地 2生产调整为：暂停。", "已规划 13 格道路，工人和工程师将逐段施工。", "已设立工地：发电机。工程师会领取材料并前往施工。", "发电机施工完成。", "主尸潮前沿推进至西侧 3 区。检查后方工人和运输车。", "已清理 东部撤离站。铺路连通后，工人可取回储备。", "已规划 6 格道路，工人和工程师将逐段施工。", "撤离站已立项：工程师施工需要附近发电机提供 6 电力。完成后将指挥车和幸存者送达。", "进入撤离阶段：将物资和能源向东转移，封关为车队争取时间。", "撤离站施工完成。", "突围成功：指挥车与 6 名幸存者抵达撤离站。"]

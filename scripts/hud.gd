@@ -13,6 +13,7 @@ var font: Font
 var hotspots: Array[Dictionary] = []
 var map_rect: Rect2 = Rect2()
 var tooltip: String = ""
+var overlay_rects: Array[Rect2] = []
 
 func _ready() -> void:
 	font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
@@ -21,11 +22,13 @@ func _ready() -> void:
 func _draw() -> void:
 	if main == null or main.sim == null or font == null: return
 	hotspots.clear()
+	overlay_rects.clear()
 	tooltip = ""
 	var screen: Vector2 = get_viewport_rect().size
 	var summary: Dictionary = main.sim.get_summary()
 	_draw_top(screen, summary)
 	_draw_objectives(screen, summary)
+	if main.started: _draw_guide(screen)
 	_draw_camp_cards(screen)
 	_draw_dock(screen)
 	_draw_minimap(screen)
@@ -57,7 +60,7 @@ func _draw_top(screen: Vector2, summary: Dictionary) -> void:
 	var seconds: int = int(main.sim.time) % 60
 	_text(Vector2(screen.x - 357, 39), "%02d:%02d" % [minutes, seconds], 22, MUTED)
 	_button(Rect2(screen.x - 263, 13, 72, 36), "暂停" if not main.sim.paused else "继续", "pause", main.binding_label("pause_game") + "：战术暂停，可继续下达指令")
-	_button(Rect2(screen.x - 181, 13, 68, 36), "×%d" % int(main.speed), "speed", "切换游戏速度；也可使用 + / -")
+	_button(Rect2(screen.x - 181, 13, 68, 36), "×%d" % int(main.speed), "speed", "切换游戏速度；%s / %s" % [main.binding_label("speed_up"), main.binding_label("speed_down")])
 	_button(Rect2(screen.x - 103, 13, 82, 36), "菜单", "menu", "设置、帮助和战役存档")
 
 func _draw_objectives(_screen: Vector2, summary: Dictionary) -> void:
@@ -74,12 +77,12 @@ func _draw_objectives(_screen: Vector2, summary: Dictionary) -> void:
 	var eta: float = float(summary.get("pursuit_eta", main.sim.pursuit_eta))
 	_text(Vector2(34, 263), "后方压力", 15, MUTED)
 	_text(Vector2(139, 264), "整备中" if main.sim.phase == "preparation" else ("约 %d 秒" % int(maxf(eta, 0))), 18, GOLD)
-	_text(Vector2(34, 286), "H 帮助 · %s 保存 / %s 读取" % [main.binding_label("quick_save"), main.binding_label("quick_load")], 13, MUTED)
+	_text(Vector2(34, 286), "%s 帮助 · %s 保存 / %s 读取" % [main.binding_label("help_menu"), main.binding_label("quick_save"), main.binding_label("quick_load")], 13, MUTED)
 	var selection_text: String = "未选择单位 · 左键或拖框选择"
 	if not main.selected_ids.is_empty(): selection_text = "已选择 %d 人 / 辆 · 右键下令" % main.selected_ids.size()
 	_panel(Rect2(18, 318, 300, 64), Color(INK, 0.92), Color("456065"))
 	_text(Vector2(33, 346), selection_text, 15, PAPER)
-	_text(Vector2(33, 369), "%s 攻击 · %s 切队 · Ctrl+数字编队" % [main.binding_label("attack_move"), main.binding_label("next_squad")], 12, MUTED)
+	_text(Vector2(33, 369), "%s 攻击 · %s 切队 · Ctrl+编队键保存" % [main.binding_label("attack_move"), main.binding_label("next_squad")], 12, MUTED)
 	if not main.build_kind.is_empty():
 		_panel(Rect2(18, 397, 300, 75), PANEL, GOLD)
 		var names: Dictionary = {"road":"道路", "camp":"前哨营地", "generator":"发电机", "workshop":"工坊", "tower":"岗哨炮塔", "barricade":"路障"}
@@ -162,7 +165,7 @@ func _draw_dock(screen: Vector2) -> void:
 			var entry: Dictionary = queue[0]
 			_bar(Rect2(640, top + 100, 320, 10), float(entry.get("progress", 0.0)), TEAL)
 			_text(Vector2(640, top + 131), "进度 %d%% · %s" % [int(float(entry.get("progress", 0.0))*100), String(camp.get("recruit_status", "training"))], 14, GOLD)
-		_text(Vector2(640, top + 147), "扩军后用 Ctrl+1–4 保存编队。", 14, MUTED)
+		_text(Vector2(640, top + 147), "扩军后用 Ctrl+编队键 保存编队。", 14, MUTED)
 
 func _draw_minimap(screen: Vector2) -> void:
 	map_rect = Rect2(screen.x - 274, screen.y - 176, 256, 148)
@@ -194,8 +197,20 @@ func _draw_minimap(screen: Vector2) -> void:
 func _draw_menu(screen: Vector2) -> void:
 	draw_rect(Rect2(Vector2.ZERO, screen), Color(0.04, 0.08, 0.09, 0.78))
 	hotspots.clear()
+	if main.menu == "restart":
+		var confirm: Rect2 = Rect2(screen*0.5-Vector2(360,215), Vector2(720,430))
+		_panel(confirm, PANEL, GOLD)
+		_text(confirm.position+Vector2(32,58), "重新开始本关？", 32, GOLD)
+		var lines: Array[String] = _wrap_text("确认后会重置本关队伍、建筑和资源。系统会先把当前进度保存到独立的自动存档，手动存档与备份保持不变。需要长期保留这一局时，请先取消并手动保存。", 656, 19)
+		for index: int in range(lines.size()): _text(confirm.position+Vector2(32,112+index*30), lines[index], 19, PAPER)
+		_button(Rect2(confirm.position+Vector2(32,320),Vector2(314,54)),"取消，继续当前战役","resume","")
+		_button(Rect2(confirm.position+Vector2(374,320),Vector2(314,54)),"确认重新开始","restart_confirm","先创建自动存档，成功后才重置",false,true)
+		return
 	if main.menu == "settings":
 		_draw_settings(screen)
+		return
+	if main.menu == "guide":
+		_draw_guide_dialog(screen)
 		return
 	if main.menu == "help":
 		_draw_help(screen)
@@ -209,37 +224,104 @@ func _draw_menu(screen: Vector2) -> void:
 	elif main.menu == "defeat": subtitle = String(main.sim.messages.back()) if not main.sim.messages.is_empty() else "战役失败，可读取存档或重新开始。"
 	elif main.menu == "pause": subtitle = "战役已暂停 · 调整计划后继续推进。"
 	_text(panel.position + Vector2(48, 176), subtitle, 18, MUTED)
+	var primary: Array = ["继续战役", "resume"] if main.menu == "pause" else ["开始峡谷战役" if main.menu == "title" else "重新开始战役", "new"]
+	_button(Rect2(panel.position + Vector2(48, 211), Vector2(554, 46)), primary[0], primary[1], "")
 	var buttons: Array = []
-	if main.menu == "pause": buttons.append(["继续战役", "resume"])
-	buttons.append(["开始峡谷战役" if main.menu == "title" else "重新开始战役", "new"])
-	buttons.append(["读取战役存档", "load"])
-	if main.menu == "pause": buttons.append(["保存当前战役", "save"])
-	buttons.append(["操作与目标", "help"])
-	buttons.append(["设置与快捷键", "settings"])
-	buttons.append(["退出游戏", "quit"])
-	var y: float = panel.position.y + 211
-	for entry: Array in buttons:
-		_button(Rect2(panel.position.x + 48, y, 554, 43), entry[0], entry[1], "")
-		y += 51
+	if main.menu == "pause":
+		buttons.append(["保存当前战役", "save", true])
+		buttons.append(["重新开始", "new", true])
+	buttons.append(["读取手动存档", "load", FileAccess.file_exists(main.SAVE_PATH)])
+	buttons.append(["读取自动存档", "load_auto", FileAccess.file_exists(main.AUTOSAVE_PATH)])
+	buttons.append(["恢复手动备份", "load_backup", FileAccess.file_exists(main.SAVE_PATH + ".bak")])
+	buttons.append(["操作与目标", "help", true])
+	buttons.append(["设置与快捷键", "settings", true])
+	if main.menu == "pause": buttons.append(["返回标题", "title", true])
+	buttons.append(["退出游戏", "quit", true])
+	for index: int in range(buttons.size()):
+		var rect: Rect2 = Rect2(panel.position + Vector2(48 + (index % 2) * 284, 273 + (index / 2) * 51), Vector2(270, 42))
+		_button(rect, buttons[index][0], buttons[index][1], "尚无此类存档" if not buttons[index][2] else "", false, false, buttons[index][2])
 	_text(panel.position + Vector2(48, 579), "开发中版本 · 独立战役 · 2D 卡通生存策略", 13, MUTED)
+
 
 func _draw_settings(screen: Vector2) -> void:
 	var panel: Rect2 = Rect2(screen.x * 0.5 - 410, screen.y * 0.5 - 352, 820, 704)
 	_panel(panel, PANEL, TEAL)
 	_text(panel.position + Vector2(30, 48), "设置与按键", 30, PAPER)
-	_button(Rect2(panel.position + Vector2(30, 70), Vector2(350, 42)), "主音量  %d%%" % int(main.volume * 100), "volume", "点击循环切换音量")
-	_button(Rect2(panel.position + Vector2(400, 70), Vector2(390, 42)), "边缘滚屏：" + ("开" if main.edge_scroll else "关"), "edge_scroll", "靠近屏幕边缘时移动镜头")
-	var i: int = 0
-	for action: String in main.command_names:
-		var column: int = i % 2
-		var row: int = i / 2
-		var events: Array[InputEvent] = InputMap.action_get_events(action)
-		var key_name: String = "未绑定"
-		if not events.is_empty() and events[0] is InputEventKey: key_name = OS.get_keycode_string(events[0].physical_keycode)
-		_button(Rect2(panel.position + Vector2(30 + column * 395, 137 + row * 55), Vector2(365, 44)), main.command_names[action] + "    " + key_name, "bind:" + action, "点击后按新按键，将保存在本机设置中。")
-		i += 1
-	if not main.waiting_binding.is_empty(): _text(panel.position + Vector2(30, 589), "请按一个按键，替换当前绑定……", 19, GOLD)
+	_button(Rect2(panel.position + Vector2(30, 68), Vector2(365, 38)), "快捷键", "settings_tab:controls", "所有主要操作均可重绑", main.settings_tab == "controls")
+	_button(Rect2(panel.position + Vector2(415, 68), Vector2(375, 38)), "显示与声音", "settings_tab:display", "分辨率、缩放、独立音量和静音", main.settings_tab == "display")
+	if main.settings_tab == "controls":
+		_button(Rect2(panel.position + Vector2(30, 122), Vector2(350, 42)), "主音量  %d%%" % int(main.volume * 100), "volume", "点击循环切换主音量")
+		_button(Rect2(panel.position + Vector2(400, 122), Vector2(390, 42)), "边缘滚屏：" + ("开" if main.edge_scroll else "关"), "edge_scroll", "靠近屏幕边缘时移动镜头")
+		var actions: Array = main.command_names.keys()
+		var start: int = main.settings_page * 10
+		for i: int in range(start, mini(actions.size(), start + 10)):
+			var action: String = actions[i]
+			var relative: int = i - start
+			_button(Rect2(panel.position + Vector2(30 + (relative % 2) * 395, 186 + (relative / 2) * 55), Vector2(365, 44)), main.command_names[action] + "    " + main.binding_label(action), "bind:" + action, "点击后按新按键；冲突会提示且保留原绑定。")
+		_button(Rect2(panel.position + Vector2(30, 479), Vector2(180, 38)), "上一页", "bindings_prev", "", false, false, main.settings_page > 0)
+		_text(panel.position + Vector2(228, 505), "%d / %d" % [main.settings_page+1, ceili(actions.size()/10.0)], 17, MUTED)
+		_button(Rect2(panel.position + Vector2(335, 479), Vector2(180, 38)), "下一页", "bindings_next", "", false, false, start + 10 < actions.size())
+		_button(Rect2(panel.position + Vector2(545, 479), Vector2(245, 38)), "恢复默认按键", "bindings_reset", "会替换所有自定义快捷键")
+		var feedback: String = main.settings_feedback
+		if not main.waiting_binding.is_empty() and feedback.is_empty(): feedback = "请按新按键，Esc 取消。"
+		var lines: Array[String] = _wrap_text(feedback, 750, 16)
+		for i: int in range(mini(3, lines.size())): _text(panel.position + Vector2(30, 548+i*23), lines[i], 16, GOLD)
+	else:
+		_button(Rect2(panel.position + Vector2(30, 128), Vector2(365, 48)), "主音量  %d%%" % int(main.volume*100), "volume", "主音量控制所有声音")
+		_button(Rect2(panel.position + Vector2(415, 128), Vector2(375, 48)), "静音：" + ("开" if main.muted else "关"), "mute", "静音不改变各声道的音量设置")
+		_button(Rect2(panel.position + Vector2(30, 192), Vector2(365, 48)), "音乐  %d%%" % int(main.music_volume*100), "music_volume", "独立调整营地与远行背景音乐")
+		_button(Rect2(panel.position + Vector2(415, 192), Vector2(375, 48)), "音效  %d%%" % int(main.effects_volume*100), "effects_volume", "独立调整界面和战斗反馈音")
+		_button(Rect2(panel.position + Vector2(30, 268), Vector2(365, 48)), "显示模式：" + ("全屏" if main.fullscreen else "窗口"), "fullscreen", "切换全屏；窗口分辨率会保留")
+		_button(Rect2(panel.position + Vector2(415, 268), Vector2(375, 48)), "窗口 %d × %d" % [main.window_resolution.x,main.window_resolution.y], "resolution", "循环选择窗口分辨率")
+		_button(Rect2(panel.position + Vector2(30, 332), Vector2(365, 48)), "界面倍率 %d%%" % int(round(main.ui_scale*100)), "ui_scale", "100% / 110% / 120%，地图仍可独立缩放")
+		_button(Rect2(panel.position + Vector2(415, 332), Vector2(375, 48)), "边缘滚屏：" + ("开" if main.edge_scroll else "关"), "edge_scroll", "可用 WASD 或中键拖动替代")
+		_button(Rect2(panel.position + Vector2(30, 414), Vector2(760, 48)), "战役引导：" + ("显示" if bool(main.guide.get_hint().get("visible",false)) else "隐藏"), "guide_toggle", "可随时隐藏或恢复，不限制任务路线")
+		_text(panel.position + Vector2(30, 510), "设置自动保存在本机，不随战役存档覆盖。", 17, MUTED)
+		_text(panel.position + Vector2(30, 542), "音量点击循环调整；独立音乐和音效声道立即生效。", 15, MUTED)
 	_button(Rect2(panel.position + Vector2(30, 627), Vector2(760, 46)), "返回", "back", "")
+
+func _wrap_text(text: String, width: float, size_value: int) -> Array[String]:
+	var result: Array[String] = []
+	var line: String = ""
+	for character: String in text:
+		if character == "\n" or font.get_string_size(line+character,HORIZONTAL_ALIGNMENT_LEFT,-1,size_value).x > width:
+			result.append(line)
+			line = "" if character == "\n" else character
+		else: line += character
+	if not line.is_empty(): result.append(line)
+	return result
+
+func _draw_guide(screen: Vector2) -> void:
+	var hint: Dictionary = main.guide.get_hint()
+	if not bool(hint.get("visible", false)):
+		_button(Rect2(18,397,300,34), "显示战役引导", "guide_toggle", "提示会跟随当前真实战役进度")
+		return
+	var height: float = clampf(screen.y - 599, 145, 248)
+	var rect: Rect2 = Rect2(18,397,300,height)
+	overlay_rects.append(rect)
+	_panel(rect, Color(PANEL,0.97), GOLD)
+	_text(rect.position+Vector2(12,27), "%d/%d  %s" % [int(hint.get("step",1)),int(hint.get("total",11)),String(hint.get("title","当前目标"))],15,GOLD,276)
+	_bar(Rect2(rect.position+Vector2(12,39),Vector2(276,4)),float(hint.get("step",1))/float(hint.get("total",11)),TEAL)
+	var lines: Array[String] = _wrap_text(main.guide_text(String(hint.get("text",""))),276,14)
+	var limit: int = clampi(int((height-112)/20),2,6)
+	for i: int in range(mini(limit,lines.size())):
+		var line: String = lines[i]+("…" if i == limit-1 and lines.size()>limit else "")
+		_text(rect.position+Vector2(12,67+i*20),line,14,PAPER)
+	var bottom: float = rect.end.y-38
+	_button(Rect2(30,bottom,84,27),"定位","guide_focus","只移动镜头，不替你下令",false,false,Vector2(hint.get("target",Vector2(-1,-1))).x>=0)
+	_button(Rect2(124,bottom,84,27),"展开","guide_more","暂停查看完整提示")
+	_button(Rect2(218,bottom,88,27),"隐藏","guide_toggle","之后可从这里或设置中恢复")
+
+func _draw_guide_dialog(screen: Vector2) -> void:
+	var panel: Rect2 = Rect2(screen*0.5-Vector2(420,280),Vector2(840,560))
+	_panel(panel,PANEL,GOLD)
+	var hint: Dictionary = main.guide.get_hint()
+	_text(panel.position+Vector2(30,49),String(hint.get("title","战役引导")),28,GOLD)
+	var lines: Array[String] = _wrap_text(main.guide_text(String(hint.get("text",""))),780,20)
+	for i: int in range(mini(lines.size(),10)): _text(panel.position+Vector2(30,101+i*31),lines[i],20,PAPER)
+	_text(panel.position+Vector2(30,440),"引导不会改变任务状态，你可以自由选择推进与撤收方案。",16,MUTED)
+	_button(Rect2(panel.position+Vector2(30,482),Vector2(370,46)),"定位并返回战役","guide_focus","",false,false,Vector2(hint.get("target",Vector2(-1,-1))).x>=0)
+	_button(Rect2(panel.position+Vector2(420,482),Vector2(390,46)),"返回战役","resume","")
 
 func _draw_help(screen: Vector2) -> void:
 	var panel: Rect2 = Rect2(screen.x * 0.5 - 430, screen.y * 0.5 - 325, 860, 650)
@@ -256,8 +338,8 @@ func _draw_help(screen: Vector2) -> void:
 		"6. 后方追兵持续逼近。先运走人员设备，再封关争取时间。",
 		"7. 派工程师到东侧出口施工，保护最后的补给与撤离路线。",
 		"镜头：%s/%s/%s/%s 或中键拖动，滚轮缩放，小地图定位。" % [main.binding_label("camera_up"),main.binding_label("camera_left"),main.binding_label("camera_down"),main.binding_label("camera_right")],
-		"编队：Ctrl+1–4 保存，1–4 选择，%s 切队，%s 定位驻点。" % [main.binding_label("next_squad"), main.binding_label("focus_command")],
-		"%s 暂停；%s 保存，%s 读取；L 补给线，O 范围。" % [main.binding_label("pause_game"), main.binding_label("quick_save"),main.binding_label("quick_load")]
+		"编队：%s / %s / %s / %s 选择，配合 Ctrl 保存；%s 切队，%s 定位。" % [main.binding_label("group_1"),main.binding_label("group_2"),main.binding_label("group_3"),main.binding_label("group_4"),main.binding_label("next_squad"),main.binding_label("focus_command")],
+		"%s 暂停；%s 保存，%s 读取；%s 补给线，%s 范围。" % [main.binding_label("pause_game"),main.binding_label("quick_save"),main.binding_label("quick_load"),main.binding_label("logistics_toggle"),main.binding_label("ranges_toggle")]
 	]
 	for i: int in range(lines.size()):
 		_text(panel.position + Vector2(34, 91 + i * 41), lines[i], 17, PAPER if i == 0 else MUTED)
@@ -276,6 +358,8 @@ func handle_mouse(event: InputEventMouseButton) -> bool:
 				elif event.button_index == MOUSE_BUTTON_RIGHT: main._issue_context(tile)
 			elif event.button_index == MOUSE_BUTTON_LEFT: main.ui_action(item.action)
 			return true
+	for rect: Rect2 in overlay_rects:
+		if rect.has_point(point): return true
 	var screen: Vector2 = get_viewport_rect().size
 	return not main.menu.is_empty() or point.y < 64 or point.y > screen.y - 190 or Rect2(18, 82, 300, 305).has_point(point) or Rect2(screen.x - 268, 82, 250, maxf(0, screen.y - 482)).has_point(point)
 
@@ -287,15 +371,15 @@ func _panel(rect: Rect2, fill: Color, border: Color) -> void:
 	style.set_corner_radius_all(8)
 	draw_style_box(style, rect)
 
-func _button(rect: Rect2, label: String, action: String, tip: String, active: bool = false, danger: bool = false) -> void:
-	var over: bool = rect.has_point(get_viewport().get_mouse_position()) and main.capture_path.is_empty()
-	var border: Color = GOLD if active else (RED if danger else Color("4d6c70"))
+func _button(rect: Rect2, label: String, action: String, tip: String, active: bool = false, danger: bool = false, enabled: bool = true) -> void:
+	var over: bool = enabled and rect.has_point(get_viewport().get_mouse_position()) and main.capture_path.is_empty()
+	var border: Color = Color("34464b") if not enabled else (GOLD if active else (RED if danger else Color("4d6c70")))
 	_panel(rect, Color("35555a") if over else (Color("3a4840") if active else PANEL), border)
 	if not label.is_empty():
 		var size_value: int = 17 if rect.size.x > 130 else 15
 		var text_width: float = font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, size_value).x
-		_text(rect.position + Vector2(maxf(9, (rect.size.x - text_width) * 0.5), rect.size.y * 0.5 + size_value * 0.38), label, size_value, GOLD if active else PAPER)
-	hotspots.append({"rect":rect, "action":action, "tip":tip})
+		_text(rect.position + Vector2(maxf(9, (rect.size.x - text_width) * 0.5), rect.size.y * 0.5 + size_value * 0.38), label, size_value, MUTED if not enabled else (GOLD if active else PAPER))
+	if enabled: hotspots.append({"rect":rect, "action":action, "tip":tip})
 	if over and not tip.is_empty(): tooltip = tip
 
 func _text(pos: Vector2, text: String, size_value: int = 18, color: Color = PAPER, width: float = -1.0) -> void:

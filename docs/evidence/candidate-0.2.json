@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0-dev",
+  "simulation_sha256": "9b918e3649df7e2a5d7a997417e798addd3b9752ff3f47063c9dcb0ba07e2d38",
+  "runtime": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "game_script_physical_lines": 5989,
+  "source_sha256": {
+    "scripts/campaign_guide.gd": "d3f7c3fcfd922d615a77ee3c74d9d019d44068b2c2cc4d3efd2abd25cbd02e72",
+    "scripts/campaign_save_store.gd": "f26708434ac96871f89795f402748a6a39330e49390c2bf574e359c86ac5ecf1",
+    "scripts/campaign_simulation.gd": "9b918e3649df7e2a5d7a997417e798addd3b9752ff3f47063c9dcb0ba07e2d38",
+    "scripts/hud.gd": "29008eb1de3354f2b34fd5709e0cc249c5db8eebc73e93843d4b69f4e147fae1",
+    "scripts/main.gd": "9bd0726fb952ffc988b8e8b76017b58c9f36bc10b4bd5f710801286e3081c4e8",
+    "scripts/world_view.gd": "6fa9d75589f0e5c848dc315ff070807ef4db4021cdc47b43c25ea472a47137da"
+  },
+  "tests": {
+    "baseline_simulation": 170,
+    "navigation_combat_evacuation": 125,
+    "full_guide": 102,
+    "rendered_ui": 124,
+    "rendered_preferences_recovery": 286,
+    "engine_event_dispatch": 48,
+    "file_store": 134,
+    "separate_process_continuation": 90
+  },
+  "public_mission": {
+    "simulated_seconds": 1590,
+    "outcome": "victory",
+    "camps": 3,
+    "home_deliveries": 3,
+    "middle_deliveries": 5,
+    "survivors_at_exit": 6,
+    "command_truck_at_exit": true
+  },
+  "stress_record": "docs/benchmarks/2026-10-31-navigation-staging-final.json",
+  "limits": [
+    "One campaign",
+    "Synthetic input and scripted route, fresh-human playtest open",
+    "Headless CPU timings are not rendered FPS",
+    "Native Windows execution and clean-machine support open",
+    "Steam account/store/build review unconfigured"
+  ]
+}

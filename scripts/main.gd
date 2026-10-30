@@ -3,8 +3,11 @@ extends Node2D
 const Simulation = preload("res://scripts/campaign_simulation.gd")
 const WorldView = preload("res://scripts/world_view.gd")
 const Hud = preload("res://scripts/hud.gd")
+const Guide = preload("res://scripts/campaign_guide.gd")
+const SaveStore = preload("res://scripts/campaign_save_store.gd")
 const TILE: float = 48.0
 const SAVE_PATH: String = "user://campaign-save.json"
+const AUTOSAVE_PATH: String = "user://campaign-autosave.json"
 const CONFIG_PATH: String = "user://settings.cfg"
 
 var sim: Variant
@@ -21,8 +24,24 @@ var started: bool = false
 var menu: String = "title"
 var speed: float = 1.0
 var volume: float = 0.6
+var music_volume: float = 0.35
+var effects_volume: float = 0.7
+var muted: bool = false
+var fullscreen: bool = false
+var window_resolution: Vector2i = Vector2i(1440, 810)
+var display_configured: bool = false
+var ui_scale: float = 1.0
+var settings_tab: String = "controls"
+var settings_page: int = 0
+var settings_feedback: String = ""
+var guide: RefCounted = Guide.new()
+var save_store: RefCounted = SaveStore.new()
+var last_sim_message: String = ""
+var guide_enabled: bool = true
+var guide_clock: float = 0.0
 var edge_scroll: bool = false
 var dragging: bool = false
+var selection_double_click: bool = false
 var drag_start: Vector2 = Vector2.ZERO
 var pan_active: bool = false
 var group_bindings: Dictionary = {}
@@ -33,13 +52,17 @@ var sound_cooldown: float = 0.0
 var capture_path: String = ""
 var capture_frames: int = 0
 var tick_count: int = 0
+var closing: bool = false
 var feedback: String = ""
 var feedback_left: float = 0.0
 var sound_player: AudioStreamPlayer
+var music_player: AudioStreamPlayer
 var command_names: Dictionary = {
 	"camera_up": "镜头向上", "camera_down": "镜头向下", "camera_left": "镜头向左", "camera_right": "镜头向右",
 	"build_menu": "建设面板", "production_menu": "生产面板", "orders_menu": "小队指挥", "train_menu": "训练招募", "pause_game": "战术暂停",
-	"attack_move": "攻击移动", "focus_command": "定位指挥部", "next_squad": "切换小队", "quick_save": "快速保存", "quick_load": "快速读取"
+	"attack_move": "攻击移动", "focus_command": "定位指挥部", "next_squad": "切换小队", "quick_save": "快速保存", "quick_load": "快速读取",
+	"help_menu": "操作手册", "logistics_toggle": "补给线显示", "ranges_toggle": "覆盖范围", "speed_up": "加快速度", "speed_down": "减慢速度",
+	"group_1": "编队1（Ctrl保存）", "group_2": "编队2（Ctrl保存）", "group_3": "编队3（Ctrl保存）", "group_4": "编队4（Ctrl保存）"
 }
 
 func _ready() -> void:
@@ -47,6 +70,7 @@ func _ready() -> void:
 	_load_settings()
 	sim = Simulation.new()
 	sim.reset(42)
+	guide.reset(guide_enabled)
 	selected_camp = int(sim.camps[0].id)
 	world = WorldView.new()
 	world.sim = sim
@@ -65,7 +89,10 @@ func _ready() -> void:
 	layer.add_child(hud)
 	sound_player = AudioStreamPlayer.new()
 	add_child(sound_player)
-	AudioServer.set_bus_volume_db(0, linear_to_db(maxf(volume, 0.001)))
+	_setup_audio()
+	_apply_display_settings()
+	get_tree().auto_accept_quit = false
+	get_window().close_requested.connect(_on_close_requested)
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture="):
 			capture_path = arg.trim_prefix("--capture=")
@@ -80,11 +107,14 @@ func _setup_inputs() -> void:
 		"camera_up": KEY_W, "camera_down": KEY_S, "camera_left": KEY_A, "camera_right": KEY_D,
 		"build_menu": KEY_B, "production_menu": KEY_P, "orders_menu": KEY_V, "train_menu": KEY_N, "pause_game": KEY_SPACE,
 		"attack_move": KEY_X, "focus_command": KEY_HOME, "next_squad": KEY_TAB,
-		"quick_save": KEY_F5, "quick_load": KEY_F9
+		"quick_save": KEY_F5, "quick_load": KEY_F9,
+		"help_menu": KEY_H, "logistics_toggle": KEY_L, "ranges_toggle": KEY_O, "speed_up": KEY_EQUAL, "speed_down": KEY_MINUS,
+		"group_1": KEY_1, "group_2": KEY_2, "group_3": KEY_3, "group_4": KEY_4
 	}
 	for action: String in bindings:
 		if not InputMap.has_action(action):
 			InputMap.add_action(action)
+		InputMap.action_erase_events(action)
 		var key: InputEventKey = InputEventKey.new()
 		key.physical_keycode = bindings[action]
 		InputMap.action_add_event(action, key)
@@ -107,15 +137,24 @@ func _process(delta: float) -> void:
 			save_campaign(false)
 		if sim.outcome != "playing":
 			menu = sim.outcome
-	if sim.effects.size() > 0 and sound_cooldown <= 0.0 and started and menu.is_empty():
+	if sim.effects.size() > 0 and sound_cooldown <= 0.0 and started and menu.is_empty() and not sim.paused:
 		_play_tone(115.0, 0.035, 0.10)
 		sound_cooldown = 0.28
 	selected_ids = selected_ids.filter(func(id: int) -> bool: return not sim.get_unit(id).is_empty() and float(sim.get_unit(id).get("hp", 0.0)) > 0.0)
+	guide_clock += delta
+	if started and guide_clock >= 0.25:
+		guide_clock = 0.0
+		guide.update(sim, selected_ids, selected_camp)
+		if feedback_left <= 0.0 and not sim.messages.is_empty() and String(sim.messages.back()) != last_sim_message:
+			last_sim_message = String(sim.messages.back())
+			_notify(last_sim_message)
 	world.selected_ids = selected_ids
 	world.hover_tile = Vector2i(get_global_mouse_position() / TILE)
 	world.build_kind = build_kind
 	world.drag_selecting = dragging
 	world.drag_selection_rect = Rect2(drag_start, get_global_mouse_position() - drag_start)
+	var hint: Dictionary = guide.get_hint()
+	world.guide_target = hint.get("target", Vector2(-1, -1)) if started and bool(hint.get("visible", false)) else Vector2(-1, -1)
 	world.queue_redraw()
 	hud.queue_redraw()
 	if not capture_path.is_empty():
@@ -125,12 +164,12 @@ func _process(delta: float) -> void:
 			var frame: Image = get_viewport().get_texture().get_image()
 			var result: Error = frame.save_png(capture_path)
 			print("CAPTURE_RESULT ", result, " ", capture_path)
-			get_tree().quit(0 if result == OK else 1)
+			_quit_cleanly(0 if result == OK else 1)
 	elif capture_frames > 0:
 		capture_frames -= 1
 		if capture_frames == 0:
 			print("SMOKE_OK ticks=", tick_count, " units=", sim.units.size())
-			get_tree().quit()
+			_quit_cleanly()
 
 func _move_camera(delta: float) -> void:
 	var direction: Vector2 = Input.get_vector("camera_left", "camera_right", "camera_up", "camera_down")
@@ -149,13 +188,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		if not waiting_binding.is_empty():
 			if event.keycode == KEY_ESCAPE:
 				waiting_binding = ""
+				settings_feedback = "已取消，原按键保持不变。"
 				return
-			var binding: InputEventKey = InputEventKey.new()
-			binding.physical_keycode = event.physical_keycode
-			InputMap.action_erase_events(waiting_binding)
-			InputMap.action_add_event(waiting_binding, binding)
-			waiting_binding = ""
-			_save_settings()
+			_try_bind(waiting_binding, event)
 			return
 		if event.keycode == KEY_ESCAPE:
 			if not pending_task.is_empty() or attack_move:
@@ -181,15 +216,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			attack_move = true
 			_notify("攻击移动：左键选择目标区域，右键取消。")
 		elif event.is_action_pressed("next_squad"): _next_squad()
-		elif event.keycode >= KEY_1 and event.keycode <= KEY_4:
-			_group_key(int(event.keycode - KEY_0), event.ctrl_pressed, event.shift_pressed)
-		elif event.keycode == KEY_L: world.show_logistics = not world.show_logistics
-		elif event.keycode == KEY_O: world.show_ranges = not world.show_ranges
-		elif event.keycode == KEY_H: menu = "help"
-		elif event.keycode == KEY_EQUAL: speed = minf(3.0, speed + 1.0)
-		elif event.keycode == KEY_MINUS: speed = maxf(1.0, speed - 1.0)
+		elif _group_action_index(event) > 0:
+			_group_key(_group_action_index(event), event.ctrl_pressed, event.shift_pressed)
+		elif event.is_action_pressed("logistics_toggle"): world.show_logistics = not world.show_logistics
+		elif event.is_action_pressed("ranges_toggle"): world.show_ranges = not world.show_ranges
+		elif event.is_action_pressed("help_menu"): menu = "help"
+		elif event.is_action_pressed("speed_up"): speed = minf(3.0, speed + 1.0)
+		elif event.is_action_pressed("speed_down"): speed = maxf(1.0, speed - 1.0)
 	if event is InputEventMouseButton:
-		if hud.handle_mouse(event): return
+		if event.button_index == MOUSE_BUTTON_MIDDLE and not event.pressed: pan_active = false
+		if hud.handle_mouse(event):
+			if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed: dragging = false
+			return
 		if not started or not menu.is_empty(): return
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP and event.pressed: _zoom(1.12)
 		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN and event.pressed: _zoom(1.0 / 1.12)
@@ -202,18 +240,24 @@ func _unhandled_input(event: InputEvent) -> void:
 					_play_tone(460.0 if ok else 140.0, 0.08)
 					if build_kind != "road" and ok: build_kind = ""
 				elif attack_move:
-					sim.command_move(selected_ids, get_global_mouse_position() / TILE, true)
+					var target: Vector2 = get_global_mouse_position() / TILE
+					sim.command_move(selected_ids, target, true)
+					guide.observe("move", {"target": target})
 					attack_move = false
 				elif not pending_task.is_empty():
-					sim.command_task(selected_ids, pending_task, get_global_mouse_position() / TILE)
+					var target: Vector2 = get_global_mouse_position() / TILE
+					guide.observe(pending_task, {"target": target})
+					sim.command_task(selected_ids, pending_task, target)
 					pending_task = ""
 				else:
 					dragging = true
+					selection_double_click = event.double_click
 					drag_start = get_global_mouse_position()
 			else:
 				if dragging:
-					_select(get_global_mouse_position(), event.shift_pressed, event.double_click)
+					_select(get_global_mouse_position(), event.shift_pressed, selection_double_click)
 					dragging = false
+					selection_double_click = false
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			if not build_kind.is_empty() or attack_move or not pending_task.is_empty():
 				build_kind = ""
@@ -241,7 +285,8 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 	if not closest.is_empty():
 		if same_kind:
 			for u: Dictionary in sim.units:
-				if u.get("team") == "friendly" and u.get("kind") == closest.get("kind"):
+				var visible_position: Vector2 = get_canvas_transform() * (Vector2(u.get("pos", Vector2.ZERO)) * TILE)
+				if u.get("team") == "friendly" and u.get("kind") == closest.get("kind") and float(u.get("hp",0)) > 0 and get_viewport_rect().has_point(visible_position):
 					if not selected_ids.has(u.id): selected_ids.append(u.id)
 		elif not selected_ids.has(closest.id): selected_ids.append(closest.id)
 		if int(closest.get("camp_id", -1)) >= 0: selected_camp = int(closest.get("camp_id"))
@@ -251,12 +296,14 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 			var d: float = Vector2(camp.pos).distance_to(point / TILE)
 			if d < best: selected_camp = int(camp.id); best = d
 	_play_tone(650.0, 0.025, 0.15)
+	guide.observe("selection", {"count": selected_ids.size()})
 
 func _issue_context(target: Vector2) -> void:
 	if selected_ids.is_empty():
 		_notify("先左键选择或拖框选择小队。")
 		return
 	if not pending_task.is_empty():
+		guide.observe(pending_task, {"target": target})
 		sim.command_task(selected_ids, pending_task, target)
 		pending_task = ""
 		_notify("已向目标区域派出任务小队。")
@@ -268,6 +315,7 @@ func _issue_context(target: Vector2) -> void:
 		sim.command_task(selected_ids, "repair", target)
 	else:
 		sim.command_move(selected_ids, target, true)
+		guide.observe("move", {"target": target})
 	_notify("已下达小队指令。")
 	_play_tone(540.0, 0.035, 0.15)
 
@@ -320,25 +368,88 @@ func focus_camp(id: int) -> void:
 
 func ui_action(action: String) -> void:
 	_play_tone(500.0, 0.04, 0.18)
-	if action == "new": start_campaign()
+	if action == "new":
+		if started and sim.outcome == "playing": menu = "restart"
+		else: start_campaign()
+	elif action == "restart_confirm":
+		if started and not save_campaign(false):
+			_notify("自动保存失败，未重新开始；请先手动保存或检查存储空间。")
+			return
+		start_campaign()
 	elif action == "resume": menu = ""
+	elif action == "title":
+		if started and sim.outcome == "playing": save_campaign(false)
+		started = false
+		menu = "title"
+		build_kind = ""
+		pending_task = ""
+	elif action == "guide_more": menu = "guide"
 	elif action == "load": load_campaign()
 	elif action == "save": save_campaign()
-	elif action == "settings": menu = "settings"
+	elif action == "settings":
+		menu = "settings"
+		settings_page = 0
+		settings_feedback = ""
+	elif action.begins_with("settings_tab:"):
+		settings_tab = action.trim_prefix("settings_tab:")
+	elif action == "bindings_prev": settings_page = maxi(0, settings_page - 1)
+	elif action == "bindings_next": settings_page = mini((command_names.size() - 1) / 10, settings_page + 1)
+	elif action == "bindings_reset":
+		_setup_inputs()
+		waiting_binding = ""
+		settings_feedback = "所有快捷键已恢复默认。"
+		_save_settings()
+	elif action == "guide_toggle":
+		guide_enabled = not bool(guide.get_hint().get("visible", false))
+		if guide_enabled: guide.observe("show")
+		else: guide.dismiss()
+		_save_settings()
+	elif action == "guide_focus":
+		var point: Vector2 = guide.get_hint().get("target", Vector2(-1, -1))
+		if point.x >= 0: camera.position = point * TILE
+		if menu == "guide": menu = ""
+	elif action == "load_auto": load_campaign("auto")
+	elif action == "load_backup": load_campaign("backup")
+	elif action == "fullscreen":
+		fullscreen = not fullscreen
+		display_configured = true
+		_apply_display_settings()
+		_save_settings()
+	elif action == "resolution":
+		var resolutions: Array[Vector2i] = [Vector2i(1280,720), Vector2i(1440,810), Vector2i(1600,900), Vector2i(1920,1080)]
+		window_resolution = resolutions[(resolutions.find(window_resolution) + 1) % resolutions.size()]
+		display_configured = true
+		_apply_display_settings()
+		_save_settings()
+	elif action == "ui_scale":
+		ui_scale = 1.0 if ui_scale >= 1.19 else snappedf(ui_scale + 0.1, 0.1)
+		_apply_display_settings()
+		_save_settings()
+	elif action == "mute":
+		muted = not muted
+		_apply_audio_settings()
+		_save_settings()
+	elif action == "music_volume" or action == "effects_volume":
+		if action == "music_volume": music_volume = 0.0 if music_volume >= 0.99 else minf(1.0, music_volume + 0.1)
+		else: effects_volume = 0.0 if effects_volume >= 0.99 else minf(1.0, effects_volume + 0.1)
+		_apply_audio_settings()
+		_save_settings()
 	elif action == "help": menu = "help"
 	elif action == "back": menu = "pause" if started else "title"
-	elif action == "quit": get_tree().quit()
+	elif action == "quit": _on_close_requested()
 	elif action == "pause": sim.paused = not sim.paused
 	elif action == "speed": speed = 1.0 if speed >= 3.0 else speed + 1.0
 	elif action == "menu": menu = "pause"
 	elif action == "logistics": world.show_logistics = not world.show_logistics
 	elif action == "ranges": world.show_ranges = not world.show_ranges
 	elif action == "volume":
-		volume = 0.0 if volume > 0.95 else volume + 0.2
-		AudioServer.set_bus_volume_db(0, linear_to_db(maxf(volume, 0.001)))
+		volume = 0.0 if volume > 0.95 else minf(1.0, volume + 0.2)
+		_apply_audio_settings()
 		_save_settings()
 	elif action == "edge_scroll": edge_scroll = not edge_scroll; _save_settings()
-	elif action.begins_with("bind:"): waiting_binding = action.trim_prefix("bind:")
+	elif action.begins_with("bind:"):
+		waiting_binding = action.trim_prefix("bind:")
+		settings_feedback = "请按一个新按键；Esc 取消。"
 	elif action.begins_with("tab:"): current_tab = action.trim_prefix("tab:"); build_kind = ""
 	elif action.begins_with("build:"):
 		pending_task = ""
@@ -366,12 +477,21 @@ func ui_action(action: String) -> void:
 
 func start_campaign() -> void:
 	sim.reset(42)
+	guide.reset(guide_enabled)
+	guide.update(sim, [], int(sim.camps[0].id))
 	started = true
 	menu = ""
 	build_kind = ""
 	pending_task = ""
+	attack_move = false
+	dragging = false
+	selection_double_click = false
+	pan_active = false
 	speed = 1.0
 	accumulator = 0.0
+	autosave_time = 0.0
+	last_sim_message = ""
+	group_bindings.clear()
 	selected_camp = int(sim.camps[0].id)
 	selected_ids.clear()
 	for unit: Dictionary in sim.units:
@@ -380,57 +500,121 @@ func start_campaign() -> void:
 	camera.zoom = Vector2.ONE * 1.05
 	_notify("第一战役 · 峡谷突围。前方清场扩张，后方尸潮将在整备期后抵达。H 查看操作。")
 
+func _save_payload() -> Dictionary:
+	var state: Dictionary = sim.save_state()
+	var live_groups: Dictionary = {}
+	for key: Variant in group_bindings:
+		var ids: Array = []
+		for id: int in group_bindings[key]:
+			if not sim.get_unit(id).is_empty(): ids.append(id)
+		live_groups[str(key)] = ids
+	var live_selection: Array = []
+	for id: int in selected_ids:
+		if not sim.get_unit(id).is_empty(): live_selection.append(id)
+	state["ui"] = {
+		"camera_x": camera.position.x, "camera_y": camera.position.y, "zoom": camera.zoom.x,
+		"selected_camp": selected_camp, "selected_ids": live_selection, "groups": live_groups,
+		"speed": speed, "logistics": world.show_logistics, "ranges": world.show_ranges,
+		"guide": guide.save_state()
+	}
+	return state
+
+func _valid_number(value: Variant, limit: float = 10000000.0) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) and absf(float(value)) <= limit
+
+func _valid_ids(value: Variant) -> bool:
+	if not value is Array or value.size() > 256: return false
+	for id: Variant in value:
+		if not _valid_number(id) or float(id) < 1 or float(id) != floorf(float(id)): return false
+	return true
+
+func _validate_save_payload(data: Dictionary) -> bool:
+	var ui_value: Variant = data.get("ui", {})
+	if not ui_value is Dictionary: return false
+	var ui: Dictionary = ui_value
+	for key: String in ["camera_x", "camera_y", "zoom", "selected_camp", "speed"]:
+		if ui.has(key) and not _valid_number(ui[key]): return false
+	if ui.has("zoom") and (float(ui.zoom) < 0.35 or float(ui.zoom) > 1.6): return false
+	if ui.has("speed") and (float(ui.speed) < 1 or float(ui.speed) > 3): return false
+	for key: String in ["logistics", "ranges"]:
+		if ui.has(key) and not ui[key] is bool: return false
+	if ui.has("selected_ids") and not _valid_ids(ui.selected_ids): return false
+	var groups: Variant = ui.get("groups", {})
+	if not groups is Dictionary or groups.size() > 4: return false
+	for key: Variant in groups:
+		if not str(key).is_valid_int() or int(key) < 1 or int(key) > 4 or not _valid_ids(groups[key]): return false
+	if ui.has("guide"):
+		if not ui.guide is Dictionary: return false
+		var restored_guide: RefCounted = Guide.new()
+		if not restored_guide.load_state(ui.guide): return false
+	var candidate: RefCounted = Simulation.new()
+	if not candidate.load_state(data): return false
+	for id: Variant in ui.get("selected_ids", []):
+		if candidate.get_unit(int(id)).is_empty(): return false
+	for key: Variant in groups:
+		for id: Variant in groups[key]:
+			if candidate.get_unit(int(id)).is_empty(): return false
+	return true
+
 func save_campaign(manual: bool = true) -> bool:
 	if not started: return false
-	var state: Dictionary = sim.save_state()
-	state["ui"] = {"camera_x": camera.position.x, "camera_y": camera.position.y, "zoom": camera.zoom.x, "selected_camp": selected_camp}
-	var file: FileAccess = FileAccess.open(SAVE_PATH + ".tmp", FileAccess.WRITE)
-	if file == null:
-		if manual: _notify("存档失败：无法写入存档文件。")
-		return false
-	file.store_string(JSON.stringify(state))
-	file.close()
-	var error: Error = DirAccess.rename_absolute(ProjectSettings.globalize_path(SAVE_PATH + ".tmp"), ProjectSettings.globalize_path(SAVE_PATH))
-	if manual: _notify("战役已保存 · %s 快速读取" % binding_label("quick_load") if error == OK else "存档替换失败。")
+	var path: String = SAVE_PATH if manual else AUTOSAVE_PATH
+	var error: Error = save_store.write(path, _save_payload(), Callable(self, "_validate_save_payload"))
+	if manual:
+		_notify("战役已保存 · %s 快速读取" % binding_label("quick_load") if error == OK else "存档失败：原存档和有效备份保持不变。")
+	elif error != OK:
+		_notify("自动保存失败，请检查存储空间；手动存档未被覆盖。")
 	return error == OK
 
-func load_campaign() -> bool:
-	if not FileAccess.file_exists(SAVE_PATH):
-		_notify("尚无战役存档。")
+func load_campaign(slot: String = "manual") -> bool:
+	var path: String = SAVE_PATH
+	if slot == "auto": path = AUTOSAVE_PATH
+	elif slot == "backup": path = SAVE_PATH + ".bak"
+	elif slot != "manual": return false
+	var read_result: Dictionary = save_store.read(path)
+	if not bool(read_result.get("ok", false)):
+		_notify("无法读取存档：%s。可在菜单选择自动存档或有效备份。" % String(read_result.get("error", "数据不可用")))
 		return false
-	var text: String = FileAccess.get_file_as_string(SAVE_PATH)
-	var parser: JSON = JSON.new()
-	if parser.parse(text) != OK:
-		_notify("无法读取存档：JSON 数据损坏。")
+	var data: Dictionary = read_result.data
+	if not _validate_save_payload(data):
+		_notify("无法读取存档：数据损坏或版本不兼容，当前战役保持不变。")
 		return false
-	var parsed: Variant = parser.data
-	if not parsed is Dictionary:
-		_notify("无法读取存档：数据格式不正确。")
-		return false
-	var ui_value: Variant = parsed.get("ui", {})
-	if not ui_value is Dictionary:
-		_notify("无法读取存档：界面状态损坏，当前战役保持不变。")
-		return false
-	var ui_state: Dictionary = ui_value
-	for key: String in ["camera_x", "camera_y", "zoom", "selected_camp"]:
-		if ui_state.has(key):
-			var value: Variant = ui_state[key]
-			if not (value is int or value is float) or not is_finite(float(value)) or absf(float(value)) > 10000000.0:
-				_notify("无法读取存档：镜头或驻点数据损坏。")
-				return false
-	if ui_state.has("zoom") and (float(ui_state.zoom) < 0.35 or float(ui_state.zoom) > 1.6):
-		_notify("无法读取存档：缩放数据超出范围。")
-		return false
-	if not sim.load_state(parsed):
-		_notify("无法读取存档：数据损坏或版本不兼容。")
-		return false
+	var ui: Dictionary = data.get("ui", {})
+	var restored_guide: RefCounted = Guide.new()
+	if ui.has("guide"): restored_guide.load_state(ui.guide)
+	else: restored_guide.reset(guide_enabled)
+	# Every metadata field and the complete simulation have been validated before
+	# touching the live run. Simulation.load_state is itself transactional.
+	if not sim.load_state(data): return false
+	guide = restored_guide
 	started = true
 	menu = ""
+	build_kind = ""
+	pending_task = ""
+	attack_move = false
+	dragging = false
+	pan_active = false
+	accumulator = 0.0
+	autosave_time = 0.0
+	last_sim_message = ""
+	# JSON numbers decode as floats; IDs must retain integer semantics for
+	# selection membership, groups and the guide's observed milestones.
 	selected_ids.clear()
-	camera.position = Vector2(float(ui_state.get("camera_x", 624)), float(ui_state.get("camera_y", 1008)))
-	camera.zoom = Vector2.ONE * clampf(float(ui_state.get("zoom", 0.95)), 0.35, 1.6)
-	selected_camp = int(ui_state.get("selected_camp", 0))
-	_notify("战役已恢复。")
+	for id: Variant in ui.get("selected_ids", []): selected_ids.append(int(id))
+	group_bindings.clear()
+	for key: Variant in ui.get("groups", {}):
+		var group_ids: Array = []
+		for id: Variant in ui.groups[key]: group_ids.append(int(id))
+		group_bindings[int(key)] = group_ids
+	camera.position = Vector2(float(ui.get("camera_x", 624)), float(ui.get("camera_y", 1008)))
+	camera.zoom = Vector2.ONE * float(ui.get("zoom", 1.05))
+	selected_camp = int(ui.get("selected_camp", 0))
+	if sim.get_camp(selected_camp).is_empty(): selected_camp = int(sim.camps[0].id)
+	guide.update(sim, selected_ids, selected_camp)
+	speed = float(ui.get("speed", 1.0))
+	world.show_logistics = bool(ui.get("logistics", true))
+	world.show_ranges = bool(ui.get("ranges", false))
+	_notify("已恢复有效备份；可手动保存修复主存档。" if slot == "backup" else ("自动存档已恢复。" if slot == "auto" else "战役已恢复。"))
 	return true
 
 func binding_label(action: String) -> String:
@@ -442,27 +626,168 @@ func _notify(text: String) -> void:
 	feedback = text
 	feedback_left = 5.0
 
+func _group_action_index(event: InputEventKey) -> int:
+	for index: int in range(1, 5):
+		if event.is_action_pressed("group_%d" % index): return index
+	return 0
+
+func _try_bind(action: String, event: InputEventKey) -> bool:
+	if not command_names.has(action): return false
+	var code: int = int(event.physical_keycode)
+	if code == 0 or code in [KEY_CTRL, KEY_SHIFT, KEY_ALT, KEY_META] or event.ctrl_pressed or event.alt_pressed or event.meta_pressed:
+		settings_feedback = "请选择一个独立按键。编队保存仍使用 Ctrl + 编队键。"
+		return false
+	for other: String in command_names:
+		if other == action: continue
+		var events: Array[InputEvent] = InputMap.action_get_events(other)
+		if not events.is_empty() and events[0] is InputEventKey and int(events[0].physical_keycode) == code:
+			settings_feedback = "与“%s”冲突，原绑定未改变。请换一个键或按 Esc。" % command_names[other]
+			return false
+	var binding: InputEventKey = InputEventKey.new()
+	binding.physical_keycode = code
+	InputMap.action_erase_events(action)
+	InputMap.action_add_event(action, binding)
+	waiting_binding = ""
+	settings_feedback = "%s 已设为 %s。" % [command_names[action], binding_label(action)]
+	_save_settings()
+	return true
+
+func _setting_number(value: Variant, fallback: float, minimum: float, maximum: float) -> float:
+	return clampf(float(value), minimum, maximum) if _valid_number(value) else fallback
+
 func _load_settings() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	if config.load(CONFIG_PATH) != OK: return
-	volume = float(config.get_value("audio", "volume", 0.6))
-	edge_scroll = bool(config.get_value("input", "edge_scroll", false))
+	volume = _setting_number(config.get_value("audio", "volume", 0.6), 0.6, 0, 1)
+	music_volume = _setting_number(config.get_value("audio", "music", 0.35), 0.35, 0, 1)
+	effects_volume = _setting_number(config.get_value("audio", "effects", 0.7), 0.7, 0, 1)
+	var mute_value: Variant = config.get_value("audio", "muted", false)
+	muted = mute_value if mute_value is bool else false
+	var edge_value: Variant = config.get_value("input", "edge_scroll", false)
+	edge_scroll = edge_value if edge_value is bool else false
+	var guide_value: Variant = config.get_value("game", "guide", true)
+	guide_enabled = guide_value if guide_value is bool else true
+	var full_value: Variant = config.get_value("video", "fullscreen", false)
+	fullscreen = full_value if full_value is bool else false
+	var configured: Variant = config.get_value("video", "configured", false)
+	display_configured = configured if configured is bool else false
+	var resolution: Variant = config.get_value("video", "resolution", Vector2i(1440,810))
+	if resolution is Vector2i and resolution.x >= 1152 and resolution.x <= 7680 and resolution.y >= 648 and resolution.y <= 4320:
+		window_resolution = resolution
+	ui_scale = _setting_number(config.get_value("video", "ui_scale", 1.0), 1.0, 1.0, 1.2)
+	var proposed: Dictionary = {}
+	var used: Dictionary = {}
+	var valid: bool = true
 	for action: String in command_names:
-		var keycode: int = int(config.get_value("keys", action, 0))
-		if keycode > 0:
-			var key: InputEventKey = InputEventKey.new()
-			key.physical_keycode = keycode
-			InputMap.action_erase_events(action)
-			InputMap.action_add_event(action, key)
+		var current_events: Array[InputEvent] = InputMap.action_get_events(action)
+		var default_code: int = int(current_events[0].physical_keycode) if not current_events.is_empty() else 0
+		var saved: Variant = config.get_value("keys", action, default_code)
+		if not saved is int or saved <= 0 or saved > 0x02000000 or saved in [KEY_ESCAPE, KEY_CTRL, KEY_ALT, KEY_SHIFT, KEY_META] or used.has(saved):
+			valid = false
+			break
+		proposed[action] = saved
+		used[saved] = true
+	if not valid:
+		_setup_inputs()
+		settings_feedback = "按键配置无效或重复，已恢复默认快捷键。"
+		return
+	for action: String in proposed:
+		var key: InputEventKey = InputEventKey.new()
+		key.physical_keycode = int(proposed[action])
+		InputMap.action_erase_events(action)
+		InputMap.action_add_event(action, key)
 
 func _save_settings() -> void:
 	var config: ConfigFile = ConfigFile.new()
 	config.set_value("audio", "volume", volume)
+	config.set_value("audio", "music", music_volume)
+	config.set_value("audio", "effects", effects_volume)
+	config.set_value("audio", "muted", muted)
 	config.set_value("input", "edge_scroll", edge_scroll)
+	config.set_value("game", "guide", guide_enabled)
+	config.set_value("video", "fullscreen", fullscreen)
+	config.set_value("video", "configured", display_configured)
+	config.set_value("video", "resolution", window_resolution)
+	config.set_value("video", "ui_scale", ui_scale)
 	for action: String in command_names:
 		var events: Array[InputEvent] = InputMap.action_get_events(action)
 		if not events.is_empty() and events[0] is InputEventKey: config.set_value("keys", action, events[0].physical_keycode)
-	config.save(CONFIG_PATH)
+	var temporary: String = CONFIG_PATH + ".tmp"
+	if config.save(temporary) == OK:
+		if DirAccess.rename_absolute(ProjectSettings.globalize_path(temporary), ProjectSettings.globalize_path(CONFIG_PATH)) != OK:
+			settings_feedback = "设置保存失败，当前设置仍在本次运行生效。"
+
+func _apply_display_settings() -> void:
+	if DisplayServer.get_name() == "headless": return
+	var window: Window = get_window()
+	window.content_scale_factor = ui_scale
+	if display_configured:
+		window.mode = Window.MODE_FULLSCREEN if fullscreen else Window.MODE_WINDOWED
+		if not fullscreen: window.size = window_resolution
+
+func _setup_audio() -> void:
+	for name_value: String in ["Music", "SFX"]:
+		if AudioServer.get_bus_index(name_value) < 0:
+			AudioServer.add_bus()
+			AudioServer.set_bus_name(AudioServer.bus_count - 1, name_value)
+			AudioServer.set_bus_send(AudioServer.bus_count - 1, "Master")
+	sound_player.bus = "SFX"
+	music_player = AudioStreamPlayer.new()
+	music_player.bus = "Music"
+	if ResourceLoader.exists("res://assets/audio/canyon_ambient.wav"):
+		var music: AudioStreamWAV = load("res://assets/audio/canyon_ambient.wav") as AudioStreamWAV
+		music.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		music.loop_begin = 0
+		music.loop_end = music.data.size() / 2
+		music_player.stream = music
+	add_child(music_player)
+	_apply_audio_settings()
+	if music_player.stream != null and DisplayServer.get_name() != "headless": music_player.play()
+
+func _apply_audio_settings() -> void:
+	AudioServer.set_bus_volume_db(0, linear_to_db(maxf(volume, 0.001)))
+	AudioServer.set_bus_mute(0, muted or volume <= 0.0)
+	var music_bus: int = AudioServer.get_bus_index("Music")
+	var effects_bus: int = AudioServer.get_bus_index("SFX")
+	if music_bus >= 0:
+		AudioServer.set_bus_volume_db(music_bus, linear_to_db(maxf(music_volume, 0.0001)))
+		AudioServer.set_bus_mute(music_bus, music_volume <= 0.0)
+	if effects_bus >= 0:
+		AudioServer.set_bus_volume_db(effects_bus, linear_to_db(maxf(effects_volume, 0.0001)))
+		AudioServer.set_bus_mute(effects_bus, effects_volume <= 0.0)
+
+func guide_text(text: String) -> String:
+	var result: String = text
+	var names: Dictionary = {"pause":"pause_game", "build":"build_menu", "orders":"orders_menu", "production":"production_menu", "train":"train_menu"}
+	for key: String in names: result = result.replace("{" + key + "}", binding_label(names[key]))
+	return result
+
+func _on_close_requested() -> void:
+	if closing: return
+	if started and sim.outcome == "playing": save_campaign(false)
+	_quit_cleanly()
+
+func _quit_cleanly(exit_code: int = 0) -> void:
+	if closing: return
+	closing = true
+	set_process(false)
+	set_process_input(false)
+	set_process_unhandled_input(false)
+	_release_audio()
+	# Let the audio thread retire active WAV playbacks before engine shutdown.
+	await get_tree().create_timer(0.12).timeout
+	get_tree().quit(exit_code)
+
+func _exit_tree() -> void:
+	_release_audio()
+
+func _release_audio() -> void:
+	if is_instance_valid(music_player):
+		music_player.stop()
+		music_player.stream = null
+	if is_instance_valid(sound_player):
+		sound_player.stop()
+		sound_player.stream = null
 
 func _play_tone(frequency: float, duration: float, gain: float = 0.25) -> void:
 	if sound_player == null or volume <= 0.001: return

@@ -45,6 +45,8 @@ func _run() -> void:
 	await _test_quick_save_load_and_bad_data()
 	await _test_settings_and_rebinding()
 	await _capture("res://work/ui-test.png")
+	app.queue_free()
+	await _frames(6)
 	print("Rendered UI checks: %d; failures: %d" % [checks, failures.size()])
 	print("Test user data: ", user_root)
 	for failure: String in failures:
@@ -286,6 +288,10 @@ func _test_quick_save_load_and_bad_data() -> void:
 	var state_before: String = JSON.stringify(app.sim.save_state())
 	_write_test_save("{ malformed save")
 	await _key(KEY_F9)
+	# A passive simulation notification must not erase a fresh load error on
+	# the guide's next 250 ms observation pulse.
+	await create_timer(0.35).timeout
+	await _frames()
 	_check(JSON.stringify(app.sim.save_state()) == state_before, "malformed disk save does not replace the running simulation")
 	_check(app.feedback.contains("无法读取"), "failed disk load reports a clear user-facing error")
 	if valid_data is Dictionary:

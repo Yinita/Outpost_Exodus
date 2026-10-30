@@ -40,6 +40,7 @@ var show_ranges: bool = false
 var drag_selection_rect: Rect2 = Rect2()
 var drag_selecting: bool = false
 var world_font: Font = null
+var guide_target: Vector2 = Vector2(-1, -1)
 var use_building_sprites: bool = true
 var building_atlas: Texture2D = null
 
@@ -97,6 +98,7 @@ func _draw() -> void:
 			_draw_unit(entity)
 	_draw_effects()
 	_draw_orders()
+	_draw_guide_target()
 	_draw_build_preview()
 	if drag_selecting:
 		draw_rect(drag_selection_rect.abs(), Color(CYAN, 0.10), true)
@@ -975,6 +977,16 @@ func _draw_orders() -> void:
 		draw_line(p + Vector2(-4.0, 0.0), p + Vector2(4.0, 0.0), CYAN, 2.0)
 		draw_line(p + Vector2(0.0, -4.0), p + Vector2(0.0, 4.0), CYAN, 2.0)
 
+
+func _draw_guide_target() -> void:
+	if guide_target.x < 0.0 or guide_target.y < 0.0:
+		return
+	var point: Vector2 = guide_target * TILE_SIZE
+	var pulse: float = 0.5 + 0.5 * sin(float(Time.get_ticks_msec()) / 320.0)
+	draw_arc(point, 24.0 + pulse * 5.0, 0, TAU, 32, Color(ORANGE, 0.75), 2.0)
+	draw_colored_polygon(PackedVector2Array([point+Vector2(-9,-47), point+Vector2(9,-47), point+Vector2(0,-34)]), ORANGE)
+	if world_font != null:
+		draw_string(world_font, point+Vector2(-14,-55), "目标", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, ORANGE)
 
 func _draw_build_preview() -> void:
 	if build_kind.is_empty() or hover_tile.x < 0 or hover_tile.y < 0:

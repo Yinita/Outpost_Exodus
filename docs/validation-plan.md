@@ -94,3 +94,82 @@ On clean Windows and Linux machines: install the export, launch without Godot/ed
 ## Evidence log format
 
 For every candidate record: date, build/commit, runtime, command or manual scenario, OS/hardware, expected result, observed result, pass/fail, log/video path and remaining issue. Preserve failed observations. `Not run` and `not implemented` remain distinct from `passed`.
+
+## Navigation/combat and busy-scene evidence — 2026-10-31
+
+This section adds evidence for the navigation/combat iteration; it does not replace the earlier campaign, UI or public-command playthrough records.
+
+`tests/test_navigation_combat.gd` checks observable positions, target arrival, inventory delivery, completed buildings, actual damage and subsequent state. It does not call private pathfinding, separation or line-of-sight helpers as the proof of correctness. The initial implementation exposed five failures: final infantry overlap, firing through a workshop, firing through an intervening solid high plateau, missing legal elevated fire across a canyon, and melee through an unconnected cliff edge. A further dense-pursuer regression correctly exposed separation bypassing the pursuit front. These failed observations led to product fixes rather than weaker assertions.
+
+The expanded suite passed **9 scenarios, 86 checks, 0 failures**, process exit 0 and no script errors, on 2026-10-31 against simulation SHA-256 `68e07ddfb56e1c1b934d96028def730e74fa24e0ef4d42a5fe37221c88ba974c`. In addition to the original scenarios, it covers forty pursuers crowded against the front limit, a live workshop destroyed by actual pursuit damage ceasing to block subsequent fire without manual cache reset, and balanced evacuation loading. The latter verifies actual 50-fuel/40-food reserve shortfall loading, remaining material capacity, material-first behavior when the receiver already has reserves, partial dispatch when source stock is insufficient, source deductions and physical delivery. Ordinary food consumption is isolated in a separate staging camp for exact cargo-conservation checks; these are controlled rule fixtures, not a balanced full-campaign playthrough.
+
+```bash
+/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64 --headless --path . -s tests/test_navigation_combat.gd
+```
+
+### Reproducible CPU simulation workload
+
+```bash
+/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64 --headless --path . -s tests/benchmark_campaign.gd -- --runs=3 --warmup=120 --samples=600 --save-every=150
+```
+
+Hardware/runtime reported by the process: Intel Core i7-14700, 28 logical processors, Linux/Ubuntu 22.04, approximately 60.7 GB physical RAM, Godot 4.7.2 stable. This is the editor-capable development runtime in headless mode. Other OS activity, CPU scheduling and power policy are not controlled.
+
+Each of three independently reset runs uses 120 warm-up ticks and 600 measured `sim.tick(0.05)` calls: 6 simulated seconds warm-up plus 30 measured simulated seconds per run, 1,800 measured calls in total. The actual mission terrain contains 32 live friendlies and 100 live enemies in near contact, powered production, paid construction, supply roads, workers/vehicle hauling and four real JSON save/write/read/validate cycles per run. Actor/existing-building HP is deliberately increased to preserve the requested workload; combat, movement, collision, construction and resource transfer still execute. This is a controlled stress fixture, not a balance or fair-difficulty playthrough.
+
+The same benchmark source and parameters produced these valid snapshots; each retained the exact 32/100 population, observed three actual resource-parcel deliveries and completed two ordered buildings per run. The simulation source was unchanged during each complete measurement.
+
+| Snapshot | Simulation SHA-256 prefix | Tick p50 | Tick p95 | Tick p99 | Maximum tick | Process RSS high-water |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Navigation implementation before connectivity/circle-check optimization | `bae9e0b4` | 23.056 ms | 27.941 ms | 30.798 ms | 37.387 ms | 130.6 MB |
+| Cached connectivity and exact circle/grid intersection | `883a6fb6` | 20.793 ms | 25.827 ms | 28.242 ms | 35.715 ms | 131.0 MB |
+
+Raw reports, including full hashes, each sample, per-run variation, memory measurements and workload counters:
+
+- `docs/benchmarks/2026-10-31-navigation-before-cache.json`
+- `docs/benchmarks/2026-10-31-navigation-cache.json`
+
+These are curated copies of the original `work/benchmarks/` reports so the evidence remains available in version control and source packages; transient test saves are not included.
+
+Percentiles use the nearest-rank method across individual measured calls. Tick timing excludes instrumentation, JSON serialization, disk I/O and validation; those operations are measured separately. In the cached snapshot, twelve save measurements had median serialization 7.888 ms, temporary-file close/rename 0.491 ms, and read/parse/semantic-validation 10.750 ms. These buffered-write timings are not an fsync/power-loss durability test. RSS/VmHWM comes from Linux procfs; Godot static allocation is recorded separately and is not presented as process RSS.
+
+**These are CPU simulation timings, not 60 FPS evidence.** They omit rendering, GPU work, input, audio and platform integration, and do not establish minimum hardware or release-build frame pacing. The 20–28 ms typical/tail tick costs remain material and need full-frame profiling and further optimization. Each snapshot applies to its recorded source hash; later rule changes are not silently assigned the same measurement.
+
+
+## Guide, input, settings and persistent recovery — 2026-10-31
+
+The 0.2 development iteration adds actual runtime modules `campaign_guide.gd` and `campaign_save_store.gd`. The guide reads genuine capture, completed construction, transport and exit state; it cannot award progress by clicking a button. It can be hidden, expanded or camera-focused, and its state persists with the campaign. The file layer keeps manual and automatic slots independent, stages validated writes, preserves a valid last backup even when the primary is corrupt, and rolls back interrupted replacements within the tested filesystem scenarios.
+
+| Suite | Current passing evidence | Scope |
+| --- | ---: | --- |
+| `tests/test_ui.gd` | 124 checks | Real scene/HUD, production, training, groups, minimap, save/load and rebinding; rerun after the audio changes |
+| `tests/test_preferences_recovery.gd` | 286 checks, 6 groups | Rendered guide focus/hide, bad-guide transaction rejection, explicit auto/backup recovery, restart confirmation/cancel/old-run recovery, all 23 action remaps/conflicts, persistent display and audio, master gain clamp and genuine zero-level mute, separate Music/SFX zero and restore |
+| `tests/test_input_dispatch.gd` | 48 checks, 7 groups | Engine event dispatch for world selection/double-click, visible-kind selection, menu blocking, drag/pan ending over HUD, zoom and keyboard actions |
+| `tests/test_save_store.gd` | 134 checks, 8 groups | Real isolated files: validated writes, exact-byte backup rotation, invalid/truncated/oversized reads, unwritable destinations, staged failures/rollback and preserving foreign temporary files |
+| `tests/test_cross_process.gd` | 90 checks | Separate writer and reader OS processes; title-HUD load restores midway roads, production, movement, guide and integer-typed selections/groups; full payload continuation equals the writer baseline at 1/5/15/35 simulated seconds |
+| `tests/test_guide.gd` | 102 checks | Read-only observation, click non-completion, preferences, malformed metadata rejection, and a full real mission through three deliveries, abandonment, powered exit work and actual arrival. The explicitly partial `-- --quick` run is 45 checks. |
+
+Every listed run exited 0 without engine/script errors. Graphical runs used the Linux NVIDIA compatibility renderer described above. The cross-process artifacts are retained under `work/cross-process-data/` (summary, execution PIDs and baseline); each scenario refuses to operate outside its project-local isolated user directory. The writer and reader have different PIDs and the original writer exits before reader execution.
+
+The rendered recovery tests first exposed and then verified fixes for two user-visible errors: restarting silently discarded a run, and JSON-decoded float IDs broke membership checks used by selection, groups and guide hints after a load. The product now asks for restart confirmation, writes the old run to the independent auto slot before reset, and normalizes restored IDs before guide observation. Audio tests also caught an unclamped master step above 100%; master levels now clamp and zero levels mute the real bus.
+
+Engine input tests inject events through `Viewport.push_input` and `Input.parse_input_event` with OS cursor alignment; they do not call HUD/controller action helpers. They still are synthesized tests, not human hardware input or usability proof. Audio bus assertions do not replace listening. File failure/rollback checks do not simulate sudden power loss or every filesystem. Cross-process continuation does not yet cover every combat/packing/exit checkpoint or native Windows. Fresh-player onboarding, accessibility and broad device/platform acceptance remain open.
+
+### Full-guide mission and evacuation congestion fix
+
+The complete guide suite on simulation SHA-256 `9b918e3649df7e2a5d7a997417e798addd3b9752ff3f47063c9dcb0ba07e2d38` passed 102 checks with exit 0 and no engine/script warnings. It reached the genuine three-delivery forward-stock condition at 1011.6 simulated seconds, finished the powered exit at 1576.4, and achieved actual command-truck/survivor victory at **1590.0 seconds (26:30)**. Every guide milestone, hide/restore and final reset assertion remained active. Log: `work/guide-full-latest.log`.
+
+The full-mission investigation exposed a gap missed by first-parcel tests: four evacuation workers stopped at the first position within 2.5 tiles of the depot, blocking its loading approach. A real recorded failure had an empty truck waiting 327.4 seconds, 3.2267 tiles from its origin, after only one delivered load. `tests/fixtures/evacuation-return-blocked.json` preserves that genuine state. The corrected simulation assigns distinct legal staging positions away from the loading approach and waits for each assigned target; a saved layout marker preserves resumed paths. Older packing saves migrate once. Resuming the unchanged failure fixture now loads the next 180-material parcel and starts its outbound trip after 7.6 simulated seconds, without injecting stock, moving actors directly, disabling collision or reducing costs. Broader regression and stress records follow below.
+
+The independent `test_mission_playthrough.gd` also passed against that same source hash at **1590.0 simulated seconds**, exit 0. This revised public strategy uses observed inventories and completed deliveries rather than the historical fixed-time abandonment schedule. It retains paid defenses, both cleared resource branches, three built camps, real sealing and an explicit urgent abandonment. The home convoy delivered three times and the middle convoy five times. Abandonment left 83.73 supplies, 43.9291 fuel and 84 crude; no inventories or HP were injected. The powered exit completed at 1576.4 seconds, then six survivors and the command truck actually arrived. Final stocks were approximately 104.96 materials, 19.81 supplies and 17.4426 fuel, with no unfinished buildings. The physical elapsed time was 161.73 seconds on the development runtime; it is not a rendered-FPS result. Versioned logs are retained as `docs/evidence/mission-0.2.txt` and `docs/evidence/guide-0.2.txt`. The older 1547.2-second run above remains historical evidence for the earlier implementation.
+
+
+## Final staging candidate regression and stress snapshot
+
+On simulation SHA-256 `9b918e3649df7e2a5d7a997417e798addd3b9752ff3f47063c9dcb0ba07e2d38`, the complete navigation/combat suite passed **11 scenarios, 125 checks, 0 failures**, exit 0. It includes three successive physical flat-terrain deliveries at 21.4/56.2/91.0 seconds, recovery of the unchanged real blocked-return fixture, distinct packing targets, preservation of layout version/targets/paths over JSON saves and repeated loads, deterministic subsequent cargo continuation, and atomic rejection of a malformed layout version. The dense pursuer-front concern described in the earlier snapshot is now included and passing. Baseline campaign checks (170) and the two-process continuation suite (90) were also rerun successfully after the staging fix. Logs are local `work/navigation-final.log`, `work/campaign-final.log` and `work/cross-process-final.log`.
+
+The final three-run busy workload completed with **1,800 measured ticks**, unchanged source throughout, and no benchmark errors. Each run retained 32/32 friendlies and 100/100 enemies, three actual resource deliveries, two completed paid buildings and 5,670 observed combat-effect samples. Tick p50 was **20.987 ms**, p95 **25.896 ms**, p99 **28.335 ms**, maximum **33.863 ms**; process RSS high-water was **132.604 MB** (decimal). Twelve saves had median serialization 7.906 ms, buffered write/rename 0.450 ms, and read/parse/semantic validation 15.853 ms. The older and final measurements are separate observations, not a statistically controlled comparison.
+
+The complete raw final record, sample timings, workload counters, runtime details and source hashes ship with the source as `docs/benchmarks/2026-10-31-navigation-staging-final.json`. This remains a development-runtime, headless CPU workload. It does not establish rendered frame time, native release performance, minimum hardware, input/audio behavior or clean-machine support. The full-frame 60-FPS target remains an open release gate.
+
+The final rendered UI rerun also exposed a notification timing race: the passive simulation-message pulse could overwrite a newly displayed load error. Passive notices now wait while explicit action feedback is visible. The corrupt-save test waits across the 250 ms pulse and still sees the load error; the full 124-check UI suite passes with no errors or audio-resource leaks. Preferences/recovery (286) and separate-process recovery (90) also passed in the final staging iteration.
