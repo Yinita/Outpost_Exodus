@@ -1,0 +1,41 @@
+# 开发计划与估算
+
+工作名：逐营突围 / Outpost Exodus。英文目前作为开发名，不视作已完成商标或商店名核查。建议 GitHub 仓库名 outpost-exodus。
+
+## 技术决定
+
+Godot 4.7.2 stable，带明确类型的 GDScript；固定斜俯视 2D、两层地形、显式坡道与桥梁连接。使用成熟引擎承担窗口、输入、资源导入、UI、2D 绘制与导出，项目内实现战役规则。
+
+模拟和显示分离，界面只下达命令。存档保存真实库存、人员、施工、训练、物流和随机状态。先验证完整首关，再增加独立战役与内容。保持单人设计，当前不加入联网、无限世界和自由地形破坏。
+
+## 里程碑
+
+1. 首关实际实现：四人开路、建设驻点、生产/供能、扩军、资源运输、追兵、撤收、封关、出口胜负。当前在集成验证中。
+2. 首关玩法打磨：陌生玩家独立上手、清楚的战役目标和反馈、拥堵与自动任务可靠性、难度节奏、存档与失败恢复。
+3. 美术与音效：统一卡通素材规格、角色动画、地形边缘、战斗反馈、环境声音、UI 音效和来源台账；替换临时反馈音。
+4. 内容与设置：多张独立战役、教程、难度、音量与分辨率/全屏、完整按键配置、无障碍与小地图可读性。
+5. 发布验证：Windows/Linux 正式导出、性能与长时间稳定性、Steam 集成/声明/商店素材与外部试玩。账号级提交和商店发布需到最后结合实际账号完成。
+
+## 代码量与工期估计
+
+以下是 1 名熟悉游戏开发的全职开发者加 AI 辅助的规划范围，并非已有代码实测或交付保证。自有代码包含必要测试工具，不含引擎、第三方库、素材、场景序列化和生成文件。
+
+| 阶段 | 自有代码量 | 参考周期 |
+| --- | --- | --- |
+| 能验证推进与撤守的灰盒 | 3,000–8,000 行 | 3–6 周 |
+| 完整单关 Demo | 12,000–30,000 行 | 3–6 个月 |
+| 3–5 关、经打磨的首发产品 | 40,000–90,000 行 | 12–24 个月 |
+
+新增地图主要增加内容制作和验证，不按关卡数量线性增加代码。AI 生成速度不能直接换算玩法、美术、可靠性或发行完成度。每轮用实际缺陷、试玩与构建证据修正估计。
+
+## GitHub 工作方式
+
+每项功能用小提交记录，main 保持可启动，阶段版打 tag；设计、代码、场景、测试和素材来源都可审阅。正式代码许可证与美术分发许可分开明确。远程仓库未建立前继续本地 Git 开发，避免把账号设置变成玩法开发的前置阻塞。
+
+## 官方参考
+
+- Godot 正式版记录：https://godotengine.org/download/archive/
+- Godot Camera2D：https://docs.godotengine.org/en/stable/classes/class_camera2d.html
+- Godot 输入映射：https://docs.godotengine.org/en/stable/classes/class_inputmap.html
+- Godot 版本管理：https://docs.godotengine.org/en/stable/tutorials/best_practices/version_control_systems.html
+- GitHub LFS：https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage

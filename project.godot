@@ -1,0 +1,31 @@
+; Outpost Exodus / 逐营突围
+config_version=5
+
+[application]
+config/name="逐营突围 · Outpost Exodus"
+config/version="0.1.0-dev"
+config/description="向前建设，向后撤守。卡通废土战役式生存策略。"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[display]
+window/size/viewport_width=1600
+window/size/viewport_height=900
+window/size/window_width_override=1440
+window/size/window_height_override=810
+window/size/min_width=1152
+window/size/min_height=648
+window/stretch/mode="canvas_items"
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+textures/canvas_textures/default_texture_filter=2
+environment/defaults/default_clear_color=Color(0.12, 0.15, 0.16, 1)
+
+[audio]
+driver/enable_input=false
+
+[debug]
+gdscript/warnings/treat_warnings_as_errors=false
