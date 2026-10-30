@@ -1,0 +1,41 @@
+{
+  "version": "0.3.1-dev",
+  "script_sha256": {
+    "scripts/actor_atlas.gd": "12f1944d749588d7f174d13dadc4d0f77b16d505ff3fc5213c5f9a2853aba07f",
+    "scripts/actor_canvas.gd": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+    "scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+    "scripts/campaign_guide.gd": "c883ad89733b7fbed34b254e99adbb2f038d12e466b79004259144d60d40f215",
+    "scripts/campaign_save_store.gd": "f26708434ac96871f89795f402748a6a39330e49390c2bf574e359c86ac5ecf1",
+    "scripts/campaign_simulation.gd": "0cdc7a386506672c6375de5ea82aa554eff4ff558403811ca3b6d3e1510f3dd0",
+    "scripts/cartoon_canvas.gd": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+    "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+    "scripts/diagnostics/render_runner.gd": "95d42ce0fbe672f7c6e4bf7230a99f3cea7947d0d20aa48f23353c16c12cd88b",
+    "scripts/hud.gd": "787d79292cab3c8cedf272d683eedeb0540e5b8c8349e2add1cd3e449519e2c5",
+    "scripts/main.gd": "a28b08b678c062e83492a6936be94fa63bf1d19e06a8409978664cbb1c87ee86",
+    "scripts/terrain_cache.gd": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+    "scripts/world_view.gd": "ab668298166ba229db48f4f3f1e5a793148cfa65fb8ac37bf75d9340522f6687"
+  },
+  "physical_script_lines": 7722,
+  "physical_test_lines": 6405,
+  "physical_tool_lines": 814,
+  "verified_this_iteration": {
+    "campaign": 170,
+    "navigation_combat": 132,
+    "guide_full_canyon": 102,
+    "delta_full_route": 116,
+    "ridge_full_route": 116,
+    "hud_layout_cache": 286,
+    "rendered_ui": 124,
+    "preferences_recovery": 286,
+    "campaign_selection": 114,
+    "render_cache": 23,
+    "cartoon_primitives": 5
+  },
+  "not_verified": [
+    "fresh-human playability",
+    "minimum hardware/stable60fps",
+    "native Windows execution/clean machines",
+    "final sound/mix/accessibility",
+    "Steam accounts/store/build review"
+  ]
+}

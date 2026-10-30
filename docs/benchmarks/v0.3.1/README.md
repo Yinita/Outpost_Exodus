@@ -1,0 +1,9 @@
+# 0.3.1 performance evidence
+
+Canonical CPU measurement keeps tests/benchmark_campaign.gd unchanged. simulation-baseline.json and simulation-candidate.json each contain three independent runs with120warmup and600timed ticks, actual combat/hauling/construction and four validated periodic saves per run. Baseline source is retained as baseline_simulation.gd.txt. Mean15.043647→12.644658ms; this is headless CPU evidence, not FPS or minimum hardware.
+
+paired-state.json compares complete encoded Variant state and serialized entry order after every one of720ticks, alternating tick order. Source hashes bind both versions. To reproduce, copy the .gd.txt helpers back under work/perf-v04 with their original .gd names, then run the paired helper headlessly from this project. The baseline requires this project's unchanged catalog dependency. MAX_UNIT_RADIUS must bound all configured unit sizes; the permanent navigation suite now asserts that configuration invariant.
+
+HUD measurements in docs/evidence/v0.3.1/baseline-clean.txt and candidate-clean.txt time only HUD _draw CPU over120frames/mode with paused simulation and hidden world. Those clean verbose runs replace the earlier ignored probe that exited before retiring music playback. Five decoded1600x900RGBA images match exactly; exact-pixel-comparison.json records their hashes. Every-frame draw, hover, hotspots and minimap updates remain enabled.
+
+Cartoon oval measurement draws193shapes per frame. The reference and cached nativeRGBA match, including alpha and a reflected/rotated caller transform; eviction reconstructs the same pixels. The first ignored probe was rejected because its hidden SubViewports never rendered. The permanent test uses UPDATE_ALWAYS and requires actual used pixels. Corrected isolated median802→580microseconds; this is a primitive draw CPU measurement, not whole-game FPS.

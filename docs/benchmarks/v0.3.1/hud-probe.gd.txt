@@ -1,0 +1,64 @@
+extends SceneTree
+const Hud = preload("res://scripts/hud.gd")
+class TimedHud:
+	extends Hud
+	var timings: Array[int] = []
+	func _draw() -> void:
+		var started: int = Time.get_ticks_usec()
+		super._draw()
+		timings.append(Time.get_ticks_usec() - started)
+class BaselineTimedHud:
+	extends "res://work/hud-probe/hud-before.gd"
+	var timings: Array[int] = []
+	func _draw() -> void:
+		var started: int = Time.get_ticks_usec()
+		super._draw()
+		timings.append(Time.get_ticks_usec() - started)
+var app: Variant
+func _initialize() -> void:
+	call_deferred("_run")
+func _run() -> void:
+	root.size = Vector2i(1600,900)
+	root.content_scale_size = Vector2i(1600,900)
+	AudioServer.set_bus_mute(0,true)
+	app = load("res://main.tscn").instantiate()
+	root.add_child(app)
+	app.set_process(false)
+	app.world.hide()
+	var parent: Node = app.hud.get_parent()
+	app.hud.free()
+	var baseline: bool = "--baseline" in OS.get_cmdline_user_args()
+	app.hud = BaselineTimedHud.new() if baseline else TimedHud.new()
+	app.hud.main = app
+	parent.add_child(app.hud)
+	app.sim.paused = true
+	app.started = true
+	app.edge_scroll = false
+	Input.warp_mouse(Vector2(800,450))
+	var report: Dictionary = {}
+	for mode: String in ([] if DisplayServer.get_name() == "headless" else ["", "campaigns", "settings", "help", "guide"]):
+		app.menu = mode
+		for i: int in range(8):
+			app.hud.queue_redraw()
+			await process_frame
+		app.hud.timings.clear()
+		for i: int in range(120):
+			app.hud.queue_redraw()
+			await process_frame
+		await RenderingServer.frame_post_draw
+		var image: Image = root.get_texture().get_image()
+		var name: String = mode if mode != "" else "gameplay"
+		image.save_png("res://work/hud-probe/%s-clean-%s.png" % ["baseline" if baseline else "candidate", name])
+		var values: Array[int] = app.hud.timings.duplicate()
+		values.sort()
+		var total: int = 0
+		for v: int in values: total += v
+		report[mode if mode != "" else "gameplay"] = {"mean_us":float(total)/values.size(),"median_us":values[values.size()/2],"p95_us":values[int(values.size()*0.95)],"samples":values.size(),"pixel_hash":hash(image.get_data())}
+	print("HUD_PROBE ",JSON.stringify(report))
+	app._release_audio()
+	app.queue_free()
+	app = null
+	# Allow deferred scene teardown, canvas commands, and rendered resources to
+	# drain before the SceneTree script itself is destroyed.
+	for index: int in range(6): await process_frame
+	quit()

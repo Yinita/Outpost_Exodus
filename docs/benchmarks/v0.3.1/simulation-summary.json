@@ -1,0 +1,59 @@
+{
+  "baseline_sha256": "ebac56e95a2c2fe3bd8ea26747719c96a8d194351d0161dc0959eebcf3780943",
+  "candidate_sha256": "0cdc7a386506672c6375de5ea82aa554eff4ff558403811ca3b6d3e1510f3dd0",
+  "canonical_benchmark_sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a",
+  "profile": "simulation-profile.json",
+  "paired_state_report": "paired-state.json",
+  "benchmark_baseline": "simulation-baseline.json",
+  "benchmark_candidate": "simulation-candidate.json",
+  "baseline_tick_ms": {
+    "max_ms": 25.866,
+    "mean_ms": 15.0436472222222,
+    "p50_ms": 14.638,
+    "p95_ms": 18.298,
+    "p99_ms": 20.508,
+    "samples": 1800
+  },
+  "candidate_tick_ms": {
+    "max_ms": 22.247,
+    "mean_ms": 12.6446583333333,
+    "p50_ms": 12.29,
+    "p95_ms": 15.354,
+    "p99_ms": 18.107,
+    "samples": 1800
+  },
+  "reduction_percent": {
+    "mean_ms": 15.946856858921532,
+    "p50_ms": 16.040442683426704,
+    "p95_ms": 16.08919007541807,
+    "p99_ms": 11.707626292178663,
+    "max_ms": 13.991339982989249
+  },
+  "full_encoded_state_identical_ticks": 720,
+  "tick_state_sequence_sha256": "c6c60ec9eb1cb60cd1c9e35ec800df469b145efe89b6da5d38d5795cfade9385",
+  "campaign_checks": 170,
+  "campaign_failures": 0,
+  "navigation_combat_checks": 125,
+  "navigation_combat_failures": 0,
+  "unchanged_workload": {
+    "friendly_count": [
+      32,
+      32
+    ],
+    "enemy_count": [
+      100,
+      100
+    ],
+    "completed_ordered_buildings": 2,
+    "hauling_cargo_actor_samples": 728,
+    "resource_parcels_delivered": 3,
+    "combat_effect_samples": 5670,
+    "nonempty_cargo_actor_samples": 1131,
+    "remaining_nearby_salvage": 99748.0,
+    "valid_saves_per_run": 4
+  },
+  "method": "Non-overlapping standalone processes, each3independent canonical runs with120warmup and600timed0.05s ticks. Benchmark fixture, per-run measurement, periodic saves and workload validation inherited unchanged from tests/benchmark_campaign.gd. Paired equivalence alternates tick order and compares full encoded Variant state and serialized entry order every tick across720ticks. Instrumented profile is diagnostic only, not the reported performance result.",
+  "change": "Conservative axis-distance rejection before per-neighbor radius/sqrt work in three body loops; remove redundant str/float conversions for validated String kind radius lookup; retain exact contact calculations, order, state and frequency.",
+  "maintenance_invariant": "MAX_UNIT_RADIUS0.46 must stay >=every UNIT_RADII value; paired regression helper asserts this.",
+  "review": "Independent read-only agent found no correctness findings for valid simulation states."
+}

@@ -1,0 +1,47 @@
+{
+  "gameplay": {
+    "size": [
+      1600,
+      900
+    ],
+    "exact_rgba_equal": true,
+    "rgba_sha256": "ffb517c9ab09d9622d4a3535074a5f358b8665d07913872db7c0d1acee6ef7cb",
+    "bytes_compared": 5760000
+  },
+  "campaigns": {
+    "size": [
+      1600,
+      900
+    ],
+    "exact_rgba_equal": true,
+    "rgba_sha256": "78beebfb19a42ecca8ec7eace903c1eb995e09dfe5864ebd4124fd50b19225fa",
+    "bytes_compared": 5760000
+  },
+  "settings": {
+    "size": [
+      1600,
+      900
+    ],
+    "exact_rgba_equal": true,
+    "rgba_sha256": "911b81b4da3787da34eda8f349168271dba65f7e795f3705eb4f1f543ccae6a8",
+    "bytes_compared": 5760000
+  },
+  "help": {
+    "size": [
+      1600,
+      900
+    ],
+    "exact_rgba_equal": true,
+    "rgba_sha256": "ab60781f93b93402b8744e774e4fbf4e38764396ea4a9c4ad65bda755bc194c1",
+    "bytes_compared": 5760000
+  },
+  "guide": {
+    "size": [
+      1600,
+      900
+    ],
+    "exact_rgba_equal": true,
+    "rgba_sha256": "6fc7e84aaee5dd0ee50a7c9654bf0e36d2f17c3f672c53ff57d9f8d68e95fc3a",
+    "bytes_compared": 5760000
+  }
+}

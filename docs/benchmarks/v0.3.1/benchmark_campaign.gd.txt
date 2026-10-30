@@ -1,0 +1,39 @@
+extends "res://tests/benchmark_campaign.gd"
+## Keep canonical setup, measurements and workload validation byte-for-byte inherited.
+var baseline_mode: bool = false
+func _make_busy_scene() -> Dictionary:
+	var fixture: Dictionary = super._make_busy_scene()
+	if baseline_mode:
+		var sim: Variant = load("res://work/perf-v04/baseline_simulation.gd").new()
+		assert(sim.load_state(fixture.sim.save_state()))
+		fixture.sim = sim
+	return fixture
+
+func _run() -> void:
+	for argument: String in OS.get_cmdline_user_args():
+		if argument == "--baseline": baseline_mode = true
+	var source_path: String = "res://work/perf-v04/baseline_simulation.gd" if baseline_mode else "res://scripts/campaign_simulation.gd"
+	var source_hash: String = FileAccess.get_sha256(source_path)
+	var aggregate: Array = []
+	var results: Array = []
+	for index: int in range(3):
+		var result: Dictionary = _measure_run(index)
+		results.append(result)
+		aggregate.append_array(result.tick_samples_usec)
+		print("SIMULATION_RUN ", index + 1, " ", JSON.stringify(result.tick_ms))
+	var report: Dictionary = {
+		"mode": "baseline" if baseline_mode else "candidate",
+		"recorded_utc": Time.get_datetime_string_from_system(true, true) + "Z",
+		"runtime": Engine.get_version_info(), "cpu":OS.get_processor_name(),
+		"display_server": DisplayServer.get_name(), "debug_build": OS.is_debug_build(),
+		"simulation_sha256": source_hash, "simulation_sha256_at_end":FileAccess.get_sha256(source_path),
+		"canonical_benchmark_sha256": FileAccess.get_sha256("res://tests/benchmark_campaign.gd"),
+		"method": "Inherited unmodified canonical fixture and _measure_run: 3 independent runs; 120 warmup +600 timed ticks; STEP0.05; saves every150 samples; full32/100 population, combat, paid construction and actual hauling invariants.",
+		"aggregate_tick_ms": _stats(aggregate), "runs":results, "errors":errors,
+		"valid_workload":errors.is_empty(), "source_changed_during_run":source_hash != FileAccess.get_sha256(source_path),
+	}
+	var path: String = "res://work/perf-v04/simulation-" + report.mode + ".json"
+	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(report,"\t"))
+	print("SIMULATION_REPORT ",path," ",JSON.stringify(report.aggregate_tick_ms)," valid_workload=",report.valid_workload)
+	quit(0 if report.valid_workload and not report.source_changed_during_run else 1)

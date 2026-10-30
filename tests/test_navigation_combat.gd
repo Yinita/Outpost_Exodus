@@ -11,6 +11,8 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
+	for radius: float in Simulation.UNIT_RADII.values():
+		_check(radius <= Simulation.MAX_UNIT_RADIUS, "collision prefilter contains every configured body radius")
 	var cases: Array[Callable] = [
 		_test_group_arrival_and_spacing,
 		_test_separation_respects_cliffs,

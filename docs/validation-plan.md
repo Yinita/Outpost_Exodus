@@ -210,3 +210,14 @@ Recognized mission tags are also bound to an inner identity marker for the new l
 
 
 The first native 0.3 measurement was rejected: strategic zoom stored a legal minimum as float32 0.349999994, just outside the former double-precision validation bound. The maximum 1.6 endpoint can round outward too. A narrow 0.000001 validation tolerance plus clamped restoration preserves real endpoint saves while rejecting 0.3499/1.6001. Actual minimum/maximum zoom disk roundtrips add eight assertions; selection now passes114/0. The failed native attempt is retained in docs/evidence/v0.3/native-candidate-a-rejected.json. It is not passing performance evidence. A fresh native measurement of the corrected export is required before packaging.
+
+
+## 0.3.1 behavior-preserving performance iteration
+
+No simulation frequency, unit budget, AI cadence or workload changes. Conservative axis rejection reduces unnecessary per-neighbor radius/distance work, with exact contact math and neighbor order retained. The complete encoded state and serialized entry order match the0.3 baseline at every one of720ticks. Canonical standalone3x600timed ticks plus120warmup per run retain all32/100 actors, real combat, hauling, two completed buildings and four validated periodic saves per run: mean15.043647→12.644658ms,p9518.298→15.354. Raw reports, source hashes and reproduction helper texts are under docs/benchmarks/v0.3.1.
+
+Campaign170 and navigation132 pass; the latter includes seven configuration-bound assertions. All three real public-command routes were rerun: original guide102 wins at1590.0seconds/6evacuees; Delta116 at1654.3/5; Ridge116 at1782.5/6. The new-map routes still serialize/load during evacuation and actually fund/power/complete the exit. These remain scripted route evidence, not uncoached human acceptance.
+
+HUD caches only immutable presentation inputs. The new layout286 checks cover changed text/size/width/punctuation/fonts and bounded eviction. Existing renderedUI124, preferences286 and selection114 pass. Clean verbose isolated120frame-per-mode HUD runs have byte-identical decodedRGBA across gameplay,campaigns,settings,help,guide; gameplay draw CPU median1.978→1.275ms. A prior ignored probe's music-playback teardown leak was diagnosed and corrected; fresh measurements have clean exits.
+
+Native oval5 checks require nonempty rendered pixels and preserve exactRGBA for193shapes, including reflected/rotated caller transforms, alpha and eviction/reconstruction. The corrected isolated median is802→580microseconds. GPU cache23 still passes with the shared primitive change. Whole-game native FPS is measured separately for the actual export and attached to that build; none of these isolated CPU values prove stable60FPS.

@@ -31,6 +31,8 @@ const MAX_ENEMIES: int = 100
 const EPSILON: float = 0.000001
 const UNIT_RADII: Dictionary = {"rifle": 0.28, "engineer": 0.28, "worker": 0.24, "truck": 0.46, "zombie": 0.28, "runner": 0.24, "brute": 0.36}
 const HIGH_GROUND_RANGE_BONUS: float = 1.0
+# Conservative axis bound for rejecting distant neighbors before radius lookup.
+const MAX_UNIT_RADIUS: float = 0.46
 
 var time: float = 0.0
 var phase: String = "preparation"
@@ -609,7 +611,7 @@ func _path_heap_pop(heap: Array) -> Dictionary:
 
 
 func _unit_radius(unit: Dictionary) -> float:
-	return float(UNIT_RADII.get(str(unit.get("kind", "rifle")), 0.28))
+	return UNIT_RADII.get(unit.get("kind", "rifle"), 0.28)
 
 
 func _body_position_valid(position: Vector2, radius: float, team: String) -> bool:
@@ -745,8 +747,12 @@ func _set_unit_position(unit: Dictionary, position: Vector2) -> void:
 
 func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
 	var radius: float = _unit_radius(unit)
+	var broadphase_radius: float = radius + MAX_UNIT_RADIUS
 	for other in _nearby_bodies(position):
 		if int(other["id"]) == int(unit["id"]) or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+			continue
+		var offset: Vector2 = position - Vector2(other["pos"])
+		if absf(offset.x) > broadphase_radius or absf(offset.y) > broadphase_radius:
 			continue
 		var minimum: float = radius + _unit_radius(other) - 0.01
 		if position.distance_squared_to(Vector2(other["pos"])) < minimum * minimum:
@@ -806,12 +812,15 @@ func _separate_bodies() -> void:
 			if float(unit["hp"]) <= 0.0 or str(unit["state"]) == "evacuated":
 				continue
 			var radius: float = _unit_radius(unit)
+			var broadphase_radius: float = radius + MAX_UNIT_RADIUS
 			var team: String = str(unit["team"])
 			var unit_id: int = int(unit["id"])
 			for other in _nearby_bodies(Vector2(unit["pos"])):
 				if int(other["id"]) <= unit_id or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
 					continue
 				var offset: Vector2 = Vector2(unit["pos"]) - Vector2(other["pos"])
+				if absf(offset.x) > broadphase_radius or absf(offset.y) > broadphase_radius:
+					continue
 				var other_radius: float = _unit_radius(other)
 				var minimum: float = radius + other_radius
 				var distance: float = offset.length()
@@ -2186,6 +2195,7 @@ func _improves_existing_overlap(unit: Dictionary, destination: Vector2) -> bool:
 	# wall; requiring a completely clear first step would deadlock both bodies.
 	var origin: Vector2 = Vector2(unit["pos"])
 	var radius: float = _unit_radius(unit)
+	var broadphase_radius: float = radius + MAX_UNIT_RADIUS
 	var unit_id: int = int(unit["id"])
 	var old_penetration: float = 0.0
 	var new_penetration: float = 0.0
@@ -2203,9 +2213,14 @@ func _improves_existing_overlap(unit: Dictionary, destination: Vector2) -> bool:
 			continue
 		if not same_bucket:
 			seen[identifier] = true
+		var other_position: Vector2 = Vector2(other["pos"])
+		var old_offset: Vector2 = origin - other_position
+		var new_offset: Vector2 = destination - other_position
+		if (absf(old_offset.x) > broadphase_radius or absf(old_offset.y) > broadphase_radius) and (absf(new_offset.x) > broadphase_radius or absf(new_offset.y) > broadphase_radius):
+			continue
 		var minimum: float = radius + _unit_radius(other) - 0.01
-		var previous: float = maxf(0.0, minimum - origin.distance_to(Vector2(other["pos"])))
-		var next: float = maxf(0.0, minimum - destination.distance_to(Vector2(other["pos"])))
+		var previous: float = maxf(0.0, minimum - origin.distance_to(other_position))
+		var next: float = maxf(0.0, minimum - destination.distance_to(other_position))
 		if next > previous + EPSILON:
 			return false
 		old_penetration += previous

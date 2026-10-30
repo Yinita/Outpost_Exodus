@@ -1,0 +1,123 @@
+{
+	"baseline_sha256": "ebac56e95a2c2fe3bd8ea26747719c96a8d194351d0161dc0959eebcf3780943",
+	"fixture_sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a",
+	"profile_inclusive_exclusive_calls": {
+		"_body_is_clear": [
+			4299953,
+			2895630,
+			233945
+		],
+		"_body_position_valid": [
+			1309833,
+			1071627,
+			450785
+		],
+		"_closest_unit": [
+			822218,
+			822218,
+			66000
+		],
+		"_closest_visible_target": [
+			975705,
+			557376,
+			15107
+		],
+		"_ensure_navigation_index": [
+			361828,
+			361828,
+			663711
+		],
+		"_find_path": [
+			95352,
+			83864,
+			1950
+		],
+		"_improves_existing_overlap": [
+			3828886,
+			2644335,
+			207987
+		],
+		"_line_of_sight": [
+			421032,
+			366098,
+			109096
+		],
+		"_move_unit": [
+			11171227,
+			390517,
+			52989
+		],
+		"_nearby_bodies": [
+			433667,
+			433667,
+			789382
+		],
+		"_recover_static_positions": [
+			379952,
+			133853,
+			600
+		],
+		"_separate_bodies": [
+			6092091,
+			3862753,
+			1200
+		],
+		"_set_unit_position": [
+			80867,
+			80867,
+			133281
+		],
+		"_static_motion_clear": [
+			1617880,
+			505886,
+			348016
+		],
+		"_step": [
+			20270793,
+			90934,
+			600
+		],
+		"_try_body_move": [
+			10174633,
+			858626,
+			234633
+		],
+		"_unit_radius": [
+			4056948,
+			4056948,
+			8402355
+		],
+		"_update_enemy": [
+			11663819,
+			301584,
+			60000
+		],
+		"_update_logistics": [
+			27582,
+			25679,
+			600
+		],
+		"_update_power": [
+			57343,
+			45999,
+			600
+		],
+		"_update_towers": [
+			37818,
+			6226,
+			600
+		],
+		"_update_units": [
+			19873410,
+			242431,
+			600
+		],
+		"_yield_idle_friend": [
+			443578,
+			431847,
+			22894
+		]
+	},
+	"ticks": 600,
+	"wall_usec": 20272618
+}

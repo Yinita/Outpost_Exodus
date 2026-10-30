@@ -12,11 +12,13 @@ const CYAN: Color = Color("6ce2df")
 const ORANGE: Color = Color("f3a343")
 const RED: Color = Color("df6a57")
 const GREEN: Color = Color("93b37a")
+const OVAL_SHAPE_CACHE_LIMIT: int = 128
 
 var sim: Variant = null
 var _cliff_tint: Color = CLIFF
 var _grass_tint: Color = Color("8d8c54")
 var _grass_highlight: Color = Color("9e8249")
+var _oval_shapes: Dictionary = {}
 
 func _visual_style() -> Dictionary:
 	return sim.mission_data.get("visual", {}) if sim != null else {}
@@ -118,11 +120,17 @@ func _poly(points: PackedVector2Array, color: Color, outline_width: float = 2.0)
 
 
 func _oval(center: Vector2, radii: Vector2, color: Color) -> void:
-	var points: PackedVector2Array = PackedVector2Array()
-	for step: int in range(16):
-		var angle: float = TAU * float(step) / 16.0
-		points.append(center + Vector2(cos(angle) * radii.x, sin(angle) * radii.y))
-	draw_colored_polygon(points, color)
+	# Shadows and selection ovals reuse the same radii. Translate their original
+	# sixteen vertices in native code rather than recomputing trig per actor.
+	if not _oval_shapes.has(radii):
+		var shape: PackedVector2Array = PackedVector2Array()
+		for step: int in range(16):
+			var angle: float = TAU * float(step) / 16.0
+			shape.append(Vector2(cos(angle) * radii.x, sin(angle) * radii.y))
+		if _oval_shapes.size() >= OVAL_SHAPE_CACHE_LIMIT:
+			_oval_shapes.erase(_oval_shapes.keys()[0])
+		_oval_shapes[radii] = shape
+	draw_colored_polygon(Transform2D(0.0, center) * _oval_shapes[radii], color)
 
 
 func _draw_decorations(bounds: Rect2i) -> void:

@@ -12,12 +12,26 @@ const GOLD: Color = Color("f0b45e")
 const RED: Color = Color("e98572")
 
 var main: Node
-var font: Font
+var font: Font:
+	set(value):
+		if font == value: return
+		if font != null and font.changed.is_connected(_clear_text_layouts):
+			font.changed.disconnect(_clear_text_layouts)
+		font = value
+		_clear_text_layouts()
+		if font != null: font.changed.connect(_clear_text_layouts)
 var hotspots: Array[Dictionary] = []
 var map_rect: Rect2 = Rect2()
 var tooltip: String = ""
 var overlay_rects: Array[Rect2] = []
 var _campaign_previews: Dictionary = {}
+# Cache only pure presentation work. Game state, geometry, hover and hotspots
+# are still read and drawn every frame; no simulation or input invalidation is
+# needed. Bounds also cover arbitrarily many guide texts and window sizes.
+const TEXT_LAYOUT_CACHE_LIMIT: int = 256
+const PANEL_STYLE_CACHE_LIMIT: int = 64
+var _text_layouts: Dictionary = {}
+var _panel_styles: Dictionary = {}
 
 func _ready() -> void:
 	font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
@@ -385,15 +399,25 @@ func _draw_settings(screen: Vector2) -> void:
 		_text(panel.position + Vector2(30, 440 if compact else 542), "音量点击循环调整；独立音乐和音效声道立即生效。", 15, MUTED)
 	_button(Rect2(panel.position + Vector2(30, panel.size.y - 77), Vector2(760, 46)), "返回", "back", "")
 
-func _wrap_text(text: String, width: float, size_value: int) -> Array[String]:
+func _clear_text_layouts() -> void:
+	_text_layouts.clear()
+
+func _wrap_text(text: String, width: float, size_value: int, hanging_punctuation: bool = true) -> Array[String]:
+	var key: Array = [text, width, size_value, hanging_punctuation]
+	if _text_layouts.has(key): return _text_layouts[key]
 	var result: Array[String] = []
 	var line: String = ""
 	for character: String in text:
-		if character == "\n" or (font.get_string_size(line+character,HORIZONTAL_ALIGNMENT_LEFT,-1,size_value).x > width and not "，。；：！？、）】」".contains(character)):
+		if character == "\n" or (font.get_string_size(line+character,HORIZONTAL_ALIGNMENT_LEFT,-1,size_value).x > width and not (hanging_punctuation and "，。；：！？、）】」".contains(character))):
 			result.append(line)
 			line = "" if character == "\n" else character
 		else: line += character
 	if not line.is_empty(): result.append(line)
+	# Callers only inspect lines. Prevent accidental mutation of a shared layout.
+	result.make_read_only()
+	if _text_layouts.size() >= TEXT_LAYOUT_CACHE_LIMIT:
+		_text_layouts.erase(_text_layouts.keys()[0])
+	_text_layouts[key] = result
 	return result
 
 func _draw_guide(screen: Vector2) -> void:
@@ -489,13 +513,21 @@ func handle_mouse(event: InputEventMouseButton) -> bool:
 	var screen: Vector2 = get_viewport_rect().size
 	return not main.menu.is_empty() or point.y < 64 or point.y > screen.y - 190 or Rect2(18, 82, 300, 305).has_point(point) or Rect2(screen.x - 268, 82, 250, maxf(0, screen.y - 482)).has_point(point)
 
-func _panel(rect: Rect2, fill: Color, border: Color) -> void:
+func _panel_style(fill: Color, border: Color) -> StyleBoxFlat:
+	var key: Array = [fill, border]
+	if _panel_styles.has(key): return _panel_styles[key]
 	var style: StyleBoxFlat = StyleBoxFlat.new()
 	style.bg_color = fill
 	style.border_color = border
 	style.set_border_width_all(2)
 	style.set_corner_radius_all(8)
-	draw_style_box(style, rect)
+	if _panel_styles.size() >= PANEL_STYLE_CACHE_LIMIT:
+		_panel_styles.erase(_panel_styles.keys()[0])
+	_panel_styles[key] = style
+	return style
+
+func _panel(rect: Rect2, fill: Color, border: Color) -> void:
+	draw_style_box(_panel_style(fill, border), rect)
 
 func _button(rect: Rect2, label: String, action: String, tip: String, active: bool = false, danger: bool = false, enabled: bool = true) -> void:
 	var over: bool = enabled and rect.has_point(get_viewport().get_mouse_position()) and main.capture_path.is_empty()
@@ -512,15 +544,7 @@ func _text(pos: Vector2, text: String, size_value: int = 18, color: Color = PAPE
 	draw_string(font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, width, size_value, color)
 
 func _lines(pos: Vector2, text: String, size_value: int, color: Color) -> void:
-	var lines: Array[String] = []
-	var current: String = ""
-	for character: String in text:
-		if character == "\n" or font.get_string_size(current + character, HORIZONTAL_ALIGNMENT_LEFT, -1, size_value).x > 332:
-			lines.append(current)
-			current = "" if character == "\n" else character
-		else:
-			current += character
-	if not current.is_empty(): lines.append(current)
+	var lines: Array[String] = _wrap_text(text, 332, size_value, false)
 	for i: int in range(mini(lines.size(), 2)): _text(pos + Vector2(0, i * (size_value + 6)), lines[i], size_value, color)
 
 func _bar(rect: Rect2, amount: float, color: Color) -> void:
