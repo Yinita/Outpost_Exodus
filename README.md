@@ -2,7 +2,7 @@
 
 单人、2D 卡通废土战役式推进生存策略。向前清理尸群、铺路建营、生产供能；向后撤出人员设备、封关断后，最终完成出口工程并突围。
 
-当前为 **0.2.0-dev**，包含一场实际可玩的峡谷战役。长期目标是高度可玩并满足 Steam 发布门槛；目前不能视作正式发行版本。
+当前为 **0.3.0-dev**，包含三场实际可玩的独立战役。长期目标是高度可玩并满足 Steam 发布门槛；目前不能视作正式发行版本。
 
 ## 运行
 
@@ -19,7 +19,7 @@ chmod +x run.sh
 GODOT_BIN=/absolute/path/to/godot ./run.sh
 ```
 
-启动菜单选择“开始峡谷战役”，按左侧可隐藏、可展开的行动引导推进。需要确认完整规则时，在菜单打开“操作与目标”。
+启动菜单打开“选择战役”，选择裂谷突围、双桥湿地或山脊换防，按左侧可隐藏、可展开的行动引导推进。需要确认完整规则时，在菜单打开“操作与目标”。
 
 ## 当前操作
 
@@ -42,7 +42,17 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 
 手动存档、自动存档相互独立。每次有效写入会保留上一份有效备份；主文件损坏时，在菜单明确选择“恢复手动备份”。重新开始需确认，并先保存旧局到自动存档。
 
-## 首关的实际规则
+## 三场独立战役
+
+| 战役 | 地形与决策 | 已验证的公开指令路线 |
+| --- | --- | --- |
+| 裂谷突围 | 高地与两道关口，先建材或先燃料 | 26.50 分钟，6 人撤出 |
+| 双桥湿地 | 南岸废料、北岸原油，两桥影响转运路线 | 27.57 分钟，5 人撤出 |
+| 山脊换防 | 北侧高脊与南谷绕行，换防时机影响车队安全 | 29.71 分钟，6 人撤出 |
+
+各关从自己的队伍和库存开始；这些是脚本指令验证，不替代陌生玩家试玩。进行中切关会先确认并把旧局写入自动存档。
+
+## 当前实际规则
 
 - 高地崖壁阻断通行，坡道、桥梁构成合法跨层路线；单位有体积和分散站位。高地提供射程，实体山体/完整建筑遮挡射击，峡谷上方可以射击，近战不能跨崖攻击。
 - 工程队实际领取材料、移动到工地施工，道路可以按路段连续铺设。
@@ -81,9 +91,14 @@ XDG_DATA_HOME="$PWD/work/test-ui-data" godot --path . --script res://tests/test_
 安装对应的官方 Godot 4.7.2 Linux/Windows x86_64 release templates 后，提交当前源码，执行：
 
 ```bash
+python3 -m venv work/pe-resources-venv
+work/pe-resources-venv/bin/pip install -r tools/build-requirements.txt
 GODOT_TEMPLATES_DIR=/absolute/path/to/templates ./tools/export_release.sh
 DISPLAY=:0 python3 tools/smoke_native.py
-python3 tools/package_builds.py
+python3 tools/package_builds.py --performance-report /absolute/path/to/native-diagnostics/rendered-benchmark.json
 ```
 
-工具校验模板摘要、记录导出对应的 Git 提交。Linux 原生启动和截图检查通过后，才能打包原生 Linux/Windows 开发版与源码。构建使用正式运行模板，不附带编辑器；验证状态仍是开发版。Windows 尚未在原生 Windows 系统执行，最低配置和陌生玩家试玩仍未完成。
+工具校验模板摘要、记录导出对应的 Git 提交。Linux 原生启动、截图和忙碌场景完整测量通过后，才能打包原生 Linux/Windows 开发版与源码。Windows 图标/版本由固定版本构建工具写入，并独立校验 PE 结构和代码节不变。构建使用正式运行模板，不附带编辑器；验证状态仍是开发版。Windows 尚未在原生 Windows 系统执行，最低配置和陌生玩家试玩仍未完成。
+
+
+开发测量使用 `--render-diagnostics`，仅允许全新的专用用户目录，避免碰到正常战役。命令与测量边界见 [验证记录](docs/validation-plan.md)。它会在实际原生游戏中运行 32 友军/100 敌人的控制场景并执行一次真实存档，不代表关卡平衡或最低配置。

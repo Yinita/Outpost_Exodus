@@ -1,0 +1,42 @@
+{
+	"abandoned_stock": {
+		"crude": 204.000000000004,
+		"fuel": 37.5441000000257,
+		"materials": 0.0,
+		"salvage": 0.0,
+		"supplies": 39.0500000000051
+	},
+	"delivered_trips": {
+		"1": 3,
+		"46": 5
+	},
+	"emergency_abandonment": true,
+	"exit_paid_costs": {
+		"fuel": 45.005,
+		"materials": 140.0,
+		"supplies": 30.0
+	},
+	"exit_powered_progress": true,
+	"failures": [],
+	"json_checkpointed": true,
+	"label": "COMPLETE",
+	"mission": "ridge",
+	"sealed_west": true,
+	"summary": {
+		"crude": 122.999999999996,
+		"evacuated": 6,
+		"exit_progress": 1.0,
+		"fuel": 21.5218000000054,
+		"materials": 139.000000000011,
+		"outcome": "victory",
+		"people": 6,
+		"phase": "evacuation",
+		"power": 14.0,
+		"power_capacity": 24.0,
+		"pursuit_eta": 508.72580645143,
+		"salvage": 175.999999999993,
+		"supplies": 40.4600000000016,
+		"time": 1782.49999999947,
+		"zombies": 100
+	}
+}

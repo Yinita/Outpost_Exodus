@@ -1,18 +1,11 @@
-extends Node2D
+extends "res://scripts/actor_canvas.gd"
 ## Original modular sprite artwork and procedural terrain for the campaign.
 ## All positions are continuous simulation tile coordinates, never screen pixels.
 
-const TILE_SIZE: float = 48.0
-const INK: Color = Color("252a2c")
-const SAND: Color = Color("cda16a")
-const SAND_LIGHT: Color = Color("d7b37b")
-const HIGH_SAND: Color = Color("e4bc7b")
-const CLIFF: Color = Color("9a6b4f")
-const TEAL: Color = Color("3a9297")
-const CYAN: Color = Color("6ce2df")
-const ORANGE: Color = Color("f3a343")
-const RED: Color = Color("df6a57")
-const GREEN: Color = Color("93b37a")
+const DecorationCache = preload("res://scripts/decoration_cache.gd")
+const ActorAtlas = preload("res://scripts/actor_atlas.gd")
+const TerrainCache = preload("res://scripts/terrain_cache.gd")
+
 const BUILDING_ATLAS_PATH: String = "res://assets/buildings-atlas.png"
 const BUILDING_REGIONS: Dictionary = {
 	"command": Rect2(12.0, 31.0, 435.0, 404.0),
@@ -31,7 +24,6 @@ const BUILDING_WIDTHS: Dictionary = {
 	"barricade": 140.0, "fuel": 125.0, "quarry": 108.0, "exit": 142.0
 }
 
-var sim: Variant = null
 var selected_ids: Array = []
 var hover_tile: Vector2i = Vector2i(-1, -1)
 var build_kind: String = ""
@@ -43,6 +35,16 @@ var world_font: Font = null
 var guide_target: Vector2 = Vector2(-1, -1)
 var use_building_sprites: bool = true
 var building_atlas: Texture2D = null
+var cache_terrain: bool = true
+var cache_actors: bool = true
+var cache_decorations: bool = true
+var _decoration_viewport: SubViewport
+var _decoration_surface: Node2D
+var _decoration_signature: int = -1
+var _actor_viewport: SubViewport
+var _terrain_viewport: SubViewport
+var _terrain_surface: Node2D
+var _terrain_signature: int = -1
 
 
 func _ready() -> void:
@@ -50,6 +52,65 @@ func _ready() -> void:
 	if ResourceLoader.exists(BUILDING_ATLAS_PATH):
 		building_atlas = load(BUILDING_ATLAS_PATH) as Texture2D
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	_refresh_terrain_cache()
+	_refresh_decoration_cache()
+	_setup_actor_atlas()
+
+
+func _process(_delta: float) -> void:
+	_refresh_terrain_cache()
+	_refresh_decoration_cache()
+
+
+func _refresh_decoration_cache() -> void:
+	if sim == null or not cache_decorations: return
+	var signature: int = hash([sim.mission_id, sim.map_size, sim.terrain, sim.ramps, sim.roads.keys()])
+	if _decoration_viewport != null and signature == _decoration_signature: return
+	if _decoration_viewport == null:
+		_decoration_viewport = SubViewport.new()
+		_decoration_viewport.disable_3d = true
+		_decoration_viewport.transparent_bg = true
+		add_child(_decoration_viewport)
+		_decoration_surface = DecorationCache.new()
+		_decoration_surface.position = Vector2(80, 80)
+		_decoration_viewport.add_child(_decoration_surface)
+	_decoration_viewport.size = Vector2i(sim.map_size) * int(TILE_SIZE) + Vector2i(160, 160)
+	_decoration_surface.sim = sim
+	_decoration_surface.queue_redraw()
+	_decoration_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	_decoration_signature = signature
+
+
+func _setup_actor_atlas() -> void:
+	if not cache_actors or _actor_viewport != null: return
+	_actor_viewport = SubViewport.new()
+	_actor_viewport.size = ActorAtlas.ATLAS_SIZE
+	_actor_viewport.disable_3d = true
+	_actor_viewport.transparent_bg = true
+	add_child(_actor_viewport)
+	var painter: Node2D = ActorAtlas.new()
+	_actor_viewport.add_child(painter)
+	painter.queue_redraw()
+	_actor_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+
+
+func _refresh_terrain_cache() -> void:
+	if sim == null or not cache_terrain: return
+	var signature: int = hash([sim.mission_id, sim.map_size, sim.terrain, sim.ramps])
+	if _terrain_viewport != null and signature == _terrain_signature: return
+	if _terrain_viewport == null:
+		_terrain_viewport = SubViewport.new()
+		_terrain_viewport.disable_3d = true
+		_terrain_viewport.transparent_bg = false
+		add_child(_terrain_viewport)
+		_terrain_surface = TerrainCache.new()
+		_terrain_surface.position = Vector2(80, 80)
+		_terrain_viewport.add_child(_terrain_surface)
+	_terrain_viewport.size = Vector2i(sim.map_size) * int(TILE_SIZE) + Vector2i(160, 160)
+	_terrain_surface.sim = sim
+	_terrain_surface.queue_redraw()
+	_terrain_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	_terrain_signature = signature
 
 
 func tile_to_world(p: Vector2) -> Vector2:
@@ -65,11 +126,18 @@ func _draw() -> void:
 		return
 	var size: Vector2i = sim.map_size
 	var bounds: Rect2i = _visible_tiles(size)
-	draw_rect(Rect2(Vector2(-80.0, -80.0), Vector2(size) * TILE_SIZE + Vector2(160.0, 160.0)), Color("343637"))
-	_draw_ground(bounds)
-	_draw_cliffs(bounds)
+	if cache_terrain and _terrain_viewport != null:
+		draw_texture(_terrain_viewport.get_texture(), Vector2(-80, -80))
+	else:
+		draw_rect(Rect2(Vector2(-80.0, -80.0), Vector2(size) * TILE_SIZE + Vector2(160.0, 160.0)), Color("343637"))
+		_draw_ground(bounds)
+		_draw_cliffs(bounds)
+		_draw_water_bridges()
 	_draw_roads(bounds)
-	_draw_decorations(bounds)
+	if cache_decorations and _decoration_viewport != null:
+		draw_texture(_decoration_viewport.get_texture(), Vector2(-80, -80))
+	else:
+		_draw_decorations(bounds)
 	_draw_pursuit(size)
 	_draw_sites()
 	if show_logistics:
@@ -123,76 +191,6 @@ func _position_visible(draw_position: Vector2, bounds: Rect2i, margin: int) -> b
 
 func _sort_draw_items(a: Dictionary, b: Dictionary) -> bool:
 	return float(a["y"]) < float(b["y"])
-
-
-func _terrain_at(tile: Vector2i) -> int:
-	var size: Vector2i = sim.map_size
-	if tile.x < 0 or tile.y < 0 or tile.x >= size.x or tile.y >= size.y:
-		return -2
-	var rows: Array = sim.terrain
-	if tile.y >= rows.size():
-		return -2
-	var row: Array = rows[tile.y]
-	if tile.x >= row.size():
-		return -2
-	return int(row[tile.x])
-
-
-func _noise(tile: Vector2i, channel: int = 0) -> float:
-	var value: float = sin(float(tile.x * 127 + tile.y * 311 + channel * 73 + 17) * 12.9898) * 43758.5453
-	return value - floorf(value)
-
-
-func _draw_ground(bounds: Rect2i) -> void:
-	for y: int in range(bounds.position.y, bounds.end.y):
-		for x: int in range(bounds.position.x, bounds.end.x):
-			var tile: Vector2i = Vector2i(x, y)
-			var elevation: int = _terrain_at(tile)
-			var origin: Vector2 = Vector2(tile) * TILE_SIZE
-			var grain: float = _noise(tile)
-			if elevation < 0:
-				var canyon_color: Color = Color("66594f").lerp(Color("756052"), grain * 0.6)
-				draw_rect(Rect2(origin, Vector2.ONE * TILE_SIZE), canyon_color)
-				if grain < 0.17:
-					draw_line(origin + Vector2(9.0, 31.0), origin + Vector2(28.0, 36.0), Color("554c46"), 2.0)
-				continue
-			var base: Color = SAND.lerp(SAND_LIGHT, 0.28 + grain * 0.13)
-			if elevation > 0:
-				base = HIGH_SAND.lerp(Color("d8ab6d"), 0.25 + grain * 0.12)
-			draw_rect(Rect2(origin, Vector2.ONE * TILE_SIZE + Vector2.ONE), base)
-			if grain < 0.22:
-				var patch: Vector2 = origin + Vector2(7.0 + grain * 50.0, 10.0 + _noise(tile, 2) * 18.0)
-				_oval(patch, Vector2(15.0, 5.0), Color(base.darkened(0.045), 0.65))
-			if _noise(tile, 8) < 0.2:
-				var p: Vector2 = origin + Vector2(8.0 + _noise(tile, 9) * 31.0, 9.0 + _noise(tile, 10) * 30.0)
-				draw_line(p, p + Vector2(3.0, 0.0), Color("a98860"), 1.1)
-				draw_line(p + Vector2(7.0, 3.0), p + Vector2(9.0, 3.0), Color("ead0a0"), 1.3)
-
-
-func _draw_cliffs(bounds: Rect2i) -> void:
-	var ramps: Dictionary = sim.ramps
-	for y: int in range(bounds.position.y, bounds.end.y):
-		for x: int in range(bounds.position.x, bounds.end.x):
-			var tile: Vector2i = Vector2i(x, y)
-			var height: int = _terrain_at(tile)
-			if height < 0:
-				continue
-			var p: Vector2 = Vector2(tile) * TILE_SIZE
-			var below: int = _terrain_at(tile + Vector2i.DOWN)
-			var right: int = _terrain_at(tile + Vector2i.RIGHT)
-			var left: int = _terrain_at(tile + Vector2i.LEFT)
-			var cliff_depth: float = 34.0 if height > 0 else 22.0
-			if below < height and not ramps.has(tile) and not ramps.has(tile + Vector2i.DOWN):
-				_poly(PackedVector2Array([p + Vector2(0.0, 46.0), p + Vector2(48.0, 46.0), p + Vector2(45.0, 48.0 + cliff_depth), p + Vector2(31.0, 51.0 + cliff_depth), p + Vector2(13.0, 48.0 + cliff_depth), p + Vector2(-2.0, 47.0 + cliff_depth)]), CLIFF, 1.5)
-				draw_line(p + Vector2(1.0, 46.0), p + Vector2(47.0, 46.0), Color("f3cc8a"), 3.0)
-				for seam: int in range(3):
-					var sx: float = 9.0 + float(seam) * 15.0 + _noise(tile, seam + 3) * 5.0
-					draw_polyline(PackedVector2Array([p + Vector2(sx, 49.0), p + Vector2(sx - 3.0, 55.0), p + Vector2(sx - 1.0, 48.0 + cliff_depth)]), Color("795740"), 1.5)
-			if right < height and not ramps.has(tile):
-				_poly(PackedVector2Array([p + Vector2(47.0, 1.0), p + Vector2(63.0, 12.0), p + Vector2(62.0, 47.0 + cliff_depth), p + Vector2(47.0, 47.0)]), Color("8a6049"), 1.2)
-				draw_line(p + Vector2(52.0, 17.0), p + Vector2(57.0, 45.0 + cliff_depth), Color("6f5442"), 1.4)
-			if left < height and not ramps.has(tile):
-				draw_line(p + Vector2(1.0, 3.0), p + Vector2(1.0, 44.0), Color("a97f53"), 2.0)
 
 
 func _draw_roads(bounds: Rect2i) -> void:
@@ -302,52 +300,6 @@ func _draw_ramp(tile: Vector2i) -> void:
 		draw_line(p + Vector2(5.0, sy + 2.0), p + Vector2(42.0, sy + 2.0), Color("8b775c"), 1.0)
 	draw_line(p + Vector2(2.0, 5.0), p + Vector2(0.0, 46.0), Color("665644"), 3.0)
 	draw_line(p + Vector2(45.0, 5.0), p + Vector2(48.0, 46.0), Color("665644"), 3.0)
-
-
-func _draw_decorations(bounds: Rect2i) -> void:
-	var roads: Dictionary = sim.roads
-	var ramps: Dictionary = sim.ramps
-	for y: int in range(bounds.position.y, bounds.end.y):
-		for x: int in range(bounds.position.x, bounds.end.x):
-			var tile: Vector2i = Vector2i(x, y)
-			if _terrain_at(tile) < 0 or roads.has(tile) or ramps.has(tile):
-				continue
-			var n: float = _noise(tile, 12)
-			var center: Vector2 = (Vector2(tile) + Vector2(0.3 + _noise(tile, 13) * 0.4, 0.3 + _noise(tile, 14) * 0.4)) * TILE_SIZE
-			if n < 0.033:
-				_draw_rock(center, 0.55 + _noise(tile, 15) * 0.65)
-			elif n < 0.048:
-				_draw_dead_tree(center, 0.7 + _noise(tile, 15) * 0.4)
-			elif n < 0.17:
-				_draw_grass(center, _noise(tile, 15))
-			elif n > 0.987:
-				draw_set_transform(center)
-				_draw_barrel(Vector2.ZERO, Color("7d8980"), 0.55)
-				draw_set_transform(Vector2.ZERO)
-
-
-func _draw_rock(center: Vector2, scale_value: float) -> void:
-	var s: float = scale_value
-	_oval(center + Vector2(1.0, 5.0) * s, Vector2(15.0, 6.0) * s, Color("a58b68"))
-	_poly(PackedVector2Array([center + Vector2(-13.0, 2.0) * s, center + Vector2(-8.0, -9.0) * s, center + Vector2(3.0, -13.0) * s, center + Vector2(13.0, -4.0) * s, center + Vector2(14.0, 5.0) * s, center + Vector2(-1.0, 8.0) * s]), Color("8d9187"), 1.6)
-	_poly(PackedVector2Array([center + Vector2(-8.0, -9.0) * s, center + Vector2(3.0, -13.0) * s, center + Vector2(5.0, -2.0) * s, center + Vector2(-2.0, 2.0) * s]), Color("b2b3a0"), 0.0)
-
-
-func _draw_grass(center: Vector2, variation: float) -> void:
-	var color: Color = Color("8d8c54").lerp(Color("9e8249"), variation)
-	draw_line(center, center + Vector2(-5.0, -7.0), color, 1.8)
-	draw_line(center, center + Vector2(-1.0, -10.0), color, 1.8)
-	draw_line(center, center + Vector2(4.0, -8.0), color, 1.8)
-	draw_line(center + Vector2(-4.0, 1.0), center + Vector2(6.0, 1.0), Color("b19560"), 1.3)
-
-
-func _draw_dead_tree(center: Vector2, scale_value: float) -> void:
-	var s: float = scale_value
-	_oval(center + Vector2(3.0, 3.0) * s, Vector2(16.0, 5.0) * s, Color("b1946c"))
-	draw_polyline(PackedVector2Array([center + Vector2(-2.0, 2.0) * s, center + Vector2(1.0, -18.0) * s, center + Vector2(-2.0, -33.0) * s]), INK, 5.0 * s)
-	draw_line(center + Vector2(0.0, -15.0) * s, center + Vector2(-13.0, -25.0) * s, INK, 3.5 * s)
-	draw_line(center + Vector2(0.0, -20.0) * s, center + Vector2(12.0, -29.0) * s, INK, 3.5 * s)
-	draw_line(center + Vector2(-1.0, -1.0) * s, center + Vector2(1.0, -26.0) * s, Color("796547"), 2.0 * s)
 
 
 func _draw_pursuit(size: Vector2i) -> void:
@@ -811,12 +763,18 @@ func _draw_unit(unit: Dictionary) -> void:
 		_dashed_circle(p + Vector2(0.0, 4.0), 17.0 if kind != "truck" else 33.0, Color(CYAN, 0.95), 2.5, 10)
 		_oval(p + Vector2(0.0, 4.0), Vector2(15.0, 6.0), Color(CYAN, 0.13))
 	draw_set_transform(p + Vector2(0.0, bob), 0.0, Vector2(facing, 1.0))
-	if kind == "truck":
-		_draw_truck(unit)
-	elif team == "enemy":
-		_draw_zombie(kind, id_value, moving)
+	var carrying: bool = _cargo_amount(unit.get("cargo", unit.get("cargo_amount", 0.0))) > 0.0
+	var region: Rect2 = ActorAtlas.region(kind, moving, carrying, ActorAtlas.frame(kind, moving, float(sim.time), id_value))
+	if cache_actors and _actor_viewport != null and region.has_area():
+		draw_texture_rect_region(_actor_viewport.get_texture(), ActorAtlas.destination(), region)
 	else:
-		_draw_survivor(kind, id_value, moving, _cargo_amount(unit.get("cargo", {})) > 0.0)
+		_actor_time = float(sim.time)
+		if kind == "truck":
+			_draw_truck(unit)
+		elif team == "enemy":
+			_draw_zombie(kind, id_value, moving)
+		else:
+			_draw_survivor(kind, id_value, moving, carrying)
 	draw_set_transform(Vector2.ZERO)
 	var hp: float = float(unit.get("hp", 100.0))
 	var max_hp: float = maxf(1.0, float(unit.get("max_hp", 100.0)))
@@ -828,102 +786,6 @@ func _draw_unit(unit: Dictionary) -> void:
 		var squad: int = int(unit.get("squad", 0))
 		if squad > 0:
 			_label(p + Vector2(0.0, 24.0), str(squad), Color("31595b"), 11)
-
-
-func _draw_survivor(kind: String, id_value: int, moving: bool, carrying: bool) -> void:
-	var stride: float = sin(float(sim.time) * 8.0 + float(id_value)) * 3.0 if moving else 0.0
-	draw_line(Vector2(-5.0, 0.0), Vector2(-6.0 + stride, 8.0), INK, 5.5)
-	draw_line(Vector2(5.0, 0.0), Vector2(6.0 - stride, 8.0), INK, 5.5)
-	_box(Rect2(-9.0 + stride, 6.0, 8.0, 4.0), Color("354647"), 1.1)
-	_box(Rect2(2.0 - stride, 6.0, 8.0, 4.0), Color("354647"), 1.1)
-	var shirt: Color = Color("cf994e") if kind == "engineer" or kind == "worker" else Color("8b9a7b")
-	_poly(PackedVector2Array([Vector2(-8.0, -13.0), Vector2(6.0, -13.0), Vector2(10.0, 1.0), Vector2(-9.0, 2.0)]), shirt, 1.8)
-	_box(Rect2(-13.0, -12.0, 6.0, 13.0), Color("796d4f"), 1.5)
-	draw_line(Vector2(-3.0, -11.0), Vector2(0.0, 0.0), Color("554e3b"), 2.0)
-	draw_circle(Vector2(0.0, -19.0), 7.7, INK)
-	draw_circle(Vector2(0.0, -19.0), 6.0, Color("e2ba8b"))
-	var helmet: Color = ORANGE if kind == "engineer" else (Color("b5aa78") if kind == "worker" else TEAL)
-	_poly(PackedVector2Array([Vector2(-8.0, -20.0), Vector2(-7.0, -26.0), Vector2(-3.0, -29.0), Vector2(5.0, -28.0), Vector2(8.0, -23.0), Vector2(9.0, -20.0)]), helmet, 1.7)
-	draw_line(Vector2(-9.0, -20.0), Vector2(10.0, -20.0), INK, 2.0)
-	draw_line(Vector2(-6.0, -25.0), Vector2(1.0, -27.0), Color("b7d3b1") if kind == "rifle" else Color("f5d78f"), 1.5)
-	draw_circle(Vector2(4.0, -18.0), 1.3, INK)
-	if kind == "rifle":
-		_box(Rect2(3.0, -10.0, 22.0, 5.0), Color("425352"), 1.5)
-		_box(Rect2(22.0, -10.0, 7.0, 4.0), Color("2d3739"), 1.0)
-		draw_line(Vector2(3.0, -6.0), Vector2(13.0, -5.0), Color("e1b585"), 4.0)
-		_box(Rect2(10.0, -6.0, 5.0, 6.0), Color("655944"), 1.0)
-	elif kind == "engineer":
-		draw_line(Vector2(6.0, -7.0), Vector2(13.0, -4.0), Color("e2ba8b"), 4.0)
-		_draw_wrench(Vector2(17.0, -7.0), Color("c7d1bd"), 0.65)
-	else:
-		draw_line(Vector2(5.0, -7.0), Vector2(12.0, -2.0), Color("e2ba8b"), 4.0)
-		if carrying:
-			_draw_crate(Vector2(17.0, -3.0), 0.48)
-		else:
-			draw_line(Vector2(13.0, -8.0), Vector2(17.0, 6.0), INK, 3.0)
-			_box(Rect2(9.0, -11.0, 11.0, 5.0), Color("a5aea0"), 1.0)
-
-
-func _draw_zombie(kind: String, id_value: int, moving: bool) -> void:
-	var brute: bool = kind == "brute"
-	var scale_value: float = 1.42 if brute else 1.0
-	var stride: float = sin(float(sim.time) * (13.0 if kind == "runner" else 7.0) + float(id_value)) * 4.0 if moving else 0.0
-	var skin: Color = Color("90a16a") if not brute else Color("7e9365")
-	var cloth: Color = Color("8d6658") if kind == "runner" else Color("737f68")
-	draw_line(Vector2(-5.0 * scale_value, 0.0), Vector2(-6.0 * scale_value + stride, 9.0), INK, 5.0 * scale_value)
-	draw_line(Vector2(4.0 * scale_value, 0.0), Vector2(7.0 * scale_value - stride, 8.0), INK, 5.0 * scale_value)
-	_poly(PackedVector2Array([Vector2(-8.0, -15.0) * scale_value, Vector2(8.0, -14.0) * scale_value, Vector2(9.0, 3.0) * scale_value, Vector2(2.0, 0.0) * scale_value, Vector2(-1.0, 4.0) * scale_value, Vector2(-10.0, 1.0) * scale_value]), cloth, 1.8)
-	draw_line(Vector2(5.0, -11.0) * scale_value, Vector2(19.0, -7.0) * scale_value, INK, 5.0)
-	draw_line(Vector2(5.0, -11.0) * scale_value, Vector2(19.0, -7.0) * scale_value, skin, 3.0)
-	draw_line(Vector2(-5.0, -8.0) * scale_value, Vector2(12.0, -3.0) * scale_value, INK, 4.5)
-	draw_line(Vector2(-5.0, -8.0) * scale_value, Vector2(12.0, -3.0) * scale_value, skin, 2.5)
-	draw_circle(Vector2(1.0, -21.0) * scale_value, 8.0 * scale_value, INK)
-	draw_circle(Vector2(1.0, -21.0) * scale_value, 6.5 * scale_value, skin)
-	draw_circle(Vector2(5.0, -22.0) * scale_value, 1.7, Color("d7b364"))
-	draw_circle(Vector2(5.0, -22.0) * scale_value, 0.8, INK)
-	draw_line(Vector2(2.0, -16.0) * scale_value, Vector2(7.0, -16.0) * scale_value, INK, 1.5)
-	if brute:
-		_box(Rect2(-11.0, -44.0, 24.0, 10.0), Color("69736a"), 2.0)
-		_box(Rect2(-12.0, -17.0, 25.0, 12.0), Color("797f68"), 1.5)
-		draw_line(Vector2(-11.0, -12.0), Vector2(12.0, -12.0), Color("b5aa7d"), 2.0)
-	elif kind == "runner":
-		draw_line(Vector2(-6.0, -26.0), Vector2(8.0, -25.0), RED, 3.0)
-	else:
-		draw_line(Vector2(-5.0, -25.0), Vector2(-3.0, -29.0), Color("555b46"), 2.0)
-
-
-func _draw_truck(unit: Dictionary) -> void:
-	_oval(Vector2(-17.0, 13.0), Vector2(7.0, 8.0), INK)
-	_oval(Vector2(18.0, 13.0), Vector2(7.0, 8.0), INK)
-	_oval(Vector2(-17.0, 13.0), Vector2(3.0, 4.0), Color("8a9489"))
-	_oval(Vector2(18.0, 13.0), Vector2(3.0, 4.0), Color("8a9489"))
-	_box(Rect2(-32.0, -10.0, 39.0, 25.0), Color("6f9188"), 2.3)
-	_poly(PackedVector2Array([Vector2(-32.0, -10.0), Vector2(-24.0, -22.0), Vector2(8.0, -22.0), Vector2(7.0, -10.0)]), Color("a2ad92"), 1.7)
-	_poly(PackedVector2Array([Vector2(7.0, -10.0), Vector2(11.0, -23.0), Vector2(26.0, -23.0), Vector2(34.0, -8.0), Vector2(34.0, 14.0), Vector2(7.0, 14.0)]), Color("d29a4d"), 2.2)
-	_poly(PackedVector2Array([Vector2(13.0, -19.0), Vector2(24.0, -19.0), Vector2(29.0, -9.0), Vector2(12.0, -9.0)]), Color("79b0ab"), 1.7)
-	draw_line(Vector2(15.0, -17.0), Vector2(20.0, -12.0), Color("c6e0c3"), 1.4)
-	_box(Rect2(30.0, -1.0, 6.0, 7.0), Color("f4d98e"), 1.4)
-	_box(Rect2(28.0, 12.0, 11.0, 4.0), Color("63736c"), 1.2)
-	draw_line(Vector2(-30.0, 5.0), Vector2(4.0, 5.0), Color("405d5d"), 2.0)
-	var cargo: float = _cargo_amount(unit.get("cargo", unit.get("cargo_amount", 0.0)))
-	if cargo > 0.0:
-		_draw_crate(Vector2(-19.0, -12.0), 0.65)
-		_draw_crate(Vector2(-4.0, -14.0), 0.65)
-	_box(Rect2(14.0, -31.0, 10.0, 7.0), Color("b77537"), 1.4)
-	draw_circle(Vector2(19.0, -31.0), 3.4, ORANGE)
-
-
-func _cargo_amount(value: Variant) -> float:
-	if value is Dictionary:
-		var cargo: Dictionary = value
-		var total: float = 0.0
-		for quantity_value: Variant in cargo.values():
-			if quantity_value is int or quantity_value is float:
-				total += maxf(0.0, float(quantity_value))
-		return total
-	if value is int or value is float:
-		return maxf(0.0, float(value))
-	return 0.0
 
 
 func _draw_effects() -> void:
@@ -1015,47 +877,11 @@ func _draw_build_preview() -> void:
 	_badge(draw_position + Vector2(0.0, half + 18.0), preview_label, color, 11)
 
 
-func _draw_barrel(p: Vector2, color: Color, scale_value: float = 1.0) -> void:
-	var s: float = scale_value
-	_box(Rect2(p + Vector2(-10.0, -15.0) * s, Vector2(20.0, 26.0) * s), color, 1.7)
-	_oval(p + Vector2(0.0, -15.0) * s, Vector2(10.0, 4.0) * s, color.lightened(0.18))
-	draw_line(p + Vector2(-10.0, -7.0) * s, p + Vector2(10.0, -7.0) * s, color.darkened(0.35), 2.0 * s)
-	draw_line(p + Vector2(-10.0, 4.0) * s, p + Vector2(10.0, 4.0) * s, color.darkened(0.35), 2.0 * s)
-	draw_circle(p + Vector2(3.0, -15.0) * s, 1.4 * s, INK)
-
-
-func _draw_crate(p: Vector2, scale_value: float = 1.0) -> void:
-	var s: float = scale_value
-	_box(Rect2(p + Vector2(-12.0, -12.0) * s, Vector2(24.0, 23.0) * s), Color("b68e58"), 1.7)
-	_poly(PackedVector2Array([p + Vector2(-12.0, -12.0) * s, p + Vector2(-5.0, -17.0) * s, p + Vector2(17.0, -17.0) * s, p + Vector2(12.0, -12.0) * s]), Color("d0ac71"), 1.2)
-	_poly(PackedVector2Array([p + Vector2(12.0, -12.0) * s, p + Vector2(17.0, -17.0) * s, p + Vector2(17.0, 5.0) * s, p + Vector2(12.0, 11.0) * s]), Color("846f4f"), 1.2)
-	draw_line(p + Vector2(-9.0, -8.0) * s, p + Vector2(9.0, 7.0) * s, Color("6c5e43"), 2.0 * s)
-	draw_line(p + Vector2(9.0, -8.0) * s, p + Vector2(-9.0, 7.0) * s, Color("6c5e43"), 2.0 * s)
-
-
-func _draw_wrench(p: Vector2, color: Color, scale_value: float = 1.0) -> void:
-	var s: float = scale_value
-	draw_line(p + Vector2(-6.0, 7.0) * s, p + Vector2(5.0, -4.0) * s, INK, 7.0 * s)
-	draw_line(p + Vector2(-6.0, 7.0) * s, p + Vector2(5.0, -4.0) * s, color, 4.0 * s)
-	draw_arc(p + Vector2(7.0, -6.0) * s, 5.5 * s, 0.05, PI * 1.48, 10, INK, 6.0 * s)
-	draw_arc(p + Vector2(7.0, -6.0) * s, 5.5 * s, 0.05, PI * 1.48, 10, color, 3.0 * s)
-
-
 func _draw_pickaxe(p: Vector2, color: Color) -> void:
 	draw_line(p + Vector2(-8.0, 9.0), p + Vector2(7.0, -10.0), INK, 5.0)
 	draw_line(p + Vector2(-8.0, 9.0), p + Vector2(7.0, -10.0), Color("a18151"), 2.7)
 	draw_polyline(PackedVector2Array([p + Vector2(-3.0, -14.0), p + Vector2(8.0, -11.0), p + Vector2(15.0, -3.0)]), INK, 6.0)
 	draw_polyline(PackedVector2Array([p + Vector2(-3.0, -14.0), p + Vector2(8.0, -11.0), p + Vector2(15.0, -3.0)]), color, 3.0)
-
-
-func _poly(points: PackedVector2Array, color: Color, outline_width: float = 2.0) -> void:
-	if points.size() < 3:
-		return
-	draw_colored_polygon(points, color)
-	if outline_width > 0.0:
-		var outline: PackedVector2Array = points.duplicate()
-		outline.append(points[0])
-		draw_polyline(outline, INK, outline_width, true)
 
 
 func _polyline_point(points: PackedVector2Array, fraction: float) -> Vector2:
@@ -1069,20 +895,6 @@ func _polyline_point(points: PackedVector2Array, fraction: float) -> Vector2:
 			return points[index - 1].lerp(points[index], remaining / length)
 		remaining -= length
 	return points[points.size() - 1]
-
-
-func _box(rectangle: Rect2, color: Color, outline_width: float = 2.0) -> void:
-	draw_rect(rectangle, color)
-	if outline_width > 0.0:
-		draw_rect(rectangle, INK, false, outline_width)
-
-
-func _oval(center: Vector2, radii: Vector2, color: Color) -> void:
-	var points: PackedVector2Array = PackedVector2Array()
-	for step: int in range(16):
-		var angle: float = TAU * float(step) / 16.0
-		points.append(center + Vector2(cos(angle) * radii.x, sin(angle) * radii.y))
-	draw_colored_polygon(points, color)
 
 
 func _dashed_circle(center: Vector2, radius: float, color: Color, width: float, segments: int) -> void:

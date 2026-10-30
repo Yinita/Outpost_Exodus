@@ -3,6 +3,8 @@ extends RefCounted
 ## All orders, construction, logistics and evacuation happen in simulation time.
 
 const SAVE_VERSION: int = 1
+const CampaignCatalog = preload("res://scripts/campaign_catalog.gd")
+const MISSION_SAVE_TAGS: Dictionary = {"canyon": "rift_escape_01", "delta": "wetland_escape_02", "ridge": "ridge_escape_03"}
 const BUILD_COSTS: Dictionary = {
 	"road": {"materials": 2.0},
 	"camp": {"materials": 50.0, "supplies": 10.0},
@@ -50,6 +52,12 @@ var exit_progress: float = 0.0
 var evacuated: int = 0
 var seed_value: int = 42
 var chokes: Array = []
+var mission_id: String = "canyon"
+var _mission_data: Dictionary = CampaignCatalog.mission("canyon")
+# A fresh copy prevents a UI consumer from changing this run's mission metadata.
+var mission_data: Dictionary:
+	get:
+		return _mission_data.duplicate(true)
 var mission_name: String = "裂谷突围"
 var objective: String = "清理北部废料场与南部油库，铺路建立前营，修复东部撤离站。"
 var main_truck_id: int = 0
@@ -84,24 +92,42 @@ var _road_connections: Dictionary = {}
 var _road_source_ref: Dictionary = {}
 var _road_source_count: int = -1
 var _spatial_buckets: Dictionary = {}
+# Neighborhood snapshots are read-only and retain the bucket iteration order.
+# Membership changes invalidate every affected snapshot; position dictionaries
+# themselves stay live so body checks always see the latest coordinates.
+var _spatial_neighborhoods: Dictionary = {}
 var _spatial_valid: bool = false
 var _movement_units: Array = []
 var _walk_components: Dictionary = {}
+# Filled only for the unit-update loop, in original units order. Targets stay
+# live references so movement, deaths and nearest-target ties remain unchanged.
+var _target_units_by_team: Dictionary = {}
 
 
-func reset(mission_seed: int = 42) -> void:
+func reset(mission_seed: int = 42, requested_mission_id: String = "canyon") -> bool:
+	# Reject the request before touching RNG, clocks, metadata or live arrays.
+	var definition: Dictionary = CampaignCatalog.mission(requested_mission_id)
+	if definition.is_empty():
+		return false
+	var geometry: Dictionary = CampaignCatalog.terrain_for(definition)
+	if geometry.is_empty():
+		return false
+	_apply_mission_metadata(definition)
 	seed_value = mission_seed
 	_rng.seed = mission_seed
 	time = 0.0
 	phase = "preparation"
 	outcome = "playing"
 	paused = false
-	pursuit_x = -5.0
-	pursuit_eta = 540.0
-	pursuit_speed = 0.035
-	pursuit_start = 150.0
+	pursuit_x = _pacing("pursuit_x", -5.0)
+	pursuit_eta = _pacing("pursuit_eta", 540.0)
+	pursuit_speed = _pacing("pursuit_speed", 0.035)
+	pursuit_start = _pacing("pursuit_start", 150.0)
 	exit_progress = 0.0
 	evacuated = 0
+	main_truck_id = 0
+	exit_building_id = 0
+	exit_site_id = 0
 	_next_id = 1
 	_ai_clock = 0.0
 	_logistics_clock = 0.0
@@ -120,89 +146,57 @@ func reset(mission_seed: int = 42) -> void:
 	_jobs.clear()
 	_invalidate_navigation()
 	_spatial_valid = false
-	_create_terrain()
-	var home: Dictionary = _make_camp(Vector2(9, 22), "后方营地", 220.0, 150.0, 110.0)
-	var home_id: int = int(home["id"])
-	_add_building("command", Vector2(9, 22), home_id, 1.0)
-	_add_building("generator", Vector2(9, 25), home_id, 1.0)
-	_add_building("workshop", Vector2(12, 22), home_id, 1.0)
-	_add_building("tower", Vector2(16, 20), home_id, 1.0)
-	for x in range(8, 19):
-		roads[Vector2i(x, 23)] = {"progress": 1.0, "camp_id": home_id}
-	for y in range(20, 26):
-		roads[Vector2i(9, y)] = {"progress": 1.0, "camp_id": home_id}
-	for y in range(20, 24):
-		roads[Vector2i(18, y)] = {"progress": 1.0, "camp_id": home_id}
-	roads[Vector2i(17, 22)] = {"progress": 1.0, "camp_id": home_id}
-	_add_unit("rifle", "friendly", Vector2(12, 20), home_id, 1)
-	_add_unit("rifle", "friendly", Vector2(13, 20), home_id, 1)
-	_add_unit("rifle", "friendly", Vector2(12, 21), home_id, 1)
-	_add_unit("engineer", "friendly", Vector2(10, 21), home_id, 1)
-	_add_unit("worker", "friendly", Vector2(8, 23), home_id, 0)
-	_add_unit("worker", "friendly", Vector2(10, 24), home_id, 0)
-	_add_unit("worker", "friendly", Vector2(11, 24), home_id, 0)
-	var truck: Dictionary = _add_unit("truck", "friendly", Vector2(11, 23), home_id, 0)
-	main_truck_id = int(truck["id"])
-	_add_site("cache", Vector2(25, 20), "旧公路补给", {"materials": 35.0, "supplies": 45.0, "fuel": 15.0})
-	_add_site("quarry", Vector2(35, 10), "北部废料场", {"salvage": 420.0})
-	_add_site("fuel", Vector2(35, 31), "南部油库", {"crude": 280.0})
-	_add_site("cache", Vector2(53, 21), "前营旧址", {"materials": 70.0, "supplies": 50.0, "fuel": 25.0})
-	var exit_site: Dictionary = _add_site("exit", Vector2(72, 19), "东部撤离站", {})
-	exit_site_id = int(exit_site["id"])
-	var exit_building: Dictionary = _add_building("exit", Vector2(72, 19), -1, 0.0)
+	map_size = definition["map_size"]
+	terrain = geometry["terrain"]
+	ramps = geometry["ramps"]
+	var camp_ids: Dictionary = {}
+	for entry: Dictionary in definition["camps"]:
+		var stock: Dictionary = entry["stock"]
+		var camp: Dictionary = _make_camp(entry["pos"], entry["name"], float(stock.get("materials", 0.0)), float(stock.get("supplies", 0.0)), float(stock.get("fuel", 0.0)))
+		for resource: String in ["salvage", "crude"]:
+			camp[resource] = float(stock.get(resource, 0.0))
+		camp["energy"] = float(entry["energy"])
+		camp_ids[entry["key"]] = int(camp["id"])
+	# Keep the original creation sequence: IDs, guard placement and RNG state are
+	# part of existing Canyon saves and their deterministic continuation.
+	for entry: Dictionary in definition["buildings"]:
+		_add_building(entry["kind"], entry["pos"], int(camp_ids[entry["camp"]]), float(entry["progress"]))
+	for entry: Dictionary in definition["roads"]:
+		roads[entry["pos"]] = {"progress": 1.0, "camp_id": int(camp_ids[entry["camp"]])}
+	for entry: Dictionary in definition["units"]:
+		var unit: Dictionary = _add_unit(entry["kind"], "friendly", entry["pos"], int(camp_ids[entry["camp"]]), int(entry["squad"]))
+		if bool(entry["main_truck"]):
+			main_truck_id = int(unit["id"])
+	var exit_position: Vector2 = Vector2.ZERO
+	for entry: Dictionary in definition["sites"]:
+		var site: Dictionary = _add_site(entry["kind"], entry["pos"], entry["name"], entry["stock"].duplicate(true))
+		if entry["key"] == definition["exit"]["site"]:
+			exit_site_id = int(site["id"])
+			exit_position = entry["pos"]
+	var exit_building: Dictionary = _add_building("exit", exit_position, -1, 0.0)
 	exit_building["construction_started"] = false
-	exit_building["required_power"] = 6.0
+	exit_building["required_power"] = float(definition["exit"]["required_power"])
 	exit_building_id = int(exit_building["id"])
-	_spawn_guards(Vector2(25, 20), 3, false)
-	_spawn_guards(Vector2(35, 10), 5, false)
-	_spawn_guards(Vector2(35, 31), 4, true)
-	_spawn_guards(Vector2(53, 21), 5, true)
-	_spawn_guards(Vector2(72, 19), 6, true)
-	chokes = [
-		{"pos": Vector2(21, 20), "name": "西部关口", "sealed": false, "pending": false, "building_id": 0},
-		{"pos": Vector2(61, 20), "name": "东部关口", "sealed": false, "pending": false, "building_id": 0}
-	]
+	for entry: Dictionary in definition["sites"]:
+		_spawn_guards(entry["pos"], int(entry["guards"]), bool(entry["runner"]))
+	chokes = []
+	for entry: Dictionary in definition["chokes"]:
+		chokes.append({"pos": entry["pos"], "name": entry["name"], "sealed": false, "pending": false, "building_id": 0})
 	_update_power(0.0)
-	_message("战役开始：先带步枪队与工程师越过西部关口，清理前方补给。")
-	_message("道路连接资源点后，工人会实际往返运料；发电机只为附近设施供能。")
+	for message: String in definition["messages"]:
+		_message(message)
+	return true
 
 
-func _create_terrain() -> void:
-	terrain.clear()
-	for y in range(map_size.y):
-		var row: Array = []
-		for x in range(map_size.x):
-			var value: int = 0
-			if x < 2 or x > 77 or y < 3 or y > 36:
-				value = -1
-			if x >= 3 and x <= 17 and y >= 14 and y <= 29:
-				value = 1
-			if x >= 29 and x <= 43 and y >= 6 and y <= 15:
-				value = 1
-			if x >= 48 and x <= 59 and y >= 16 and y <= 25:
-				value = 1
-			if x >= 67 and x <= 76 and y >= 14 and y <= 25:
-				value = 1
-			if (x >= 20 and x <= 22) or (x >= 60 and x <= 62):
-				value = 0 if y >= 19 and y <= 21 else -1
-			row.append(value)
-		terrain.append(row)
-	# Explicit crossings are the only way to change terrain height.
-	for x in range(17, 20):
-		for y in range(20, 23):
-			ramps[Vector2i(x, y)] = true
-	for x in range(34, 37):
-		for y in range(15, 18):
-			ramps[Vector2i(x, y)] = true
-	for x in range(47, 50):
-		for y in range(20, 23):
-			ramps[Vector2i(x, y)] = true
-	for x in range(58, 61):
-		for y in range(19, 22):
-			ramps[Vector2i(x, y)] = true
-	for x in range(65, 69):
-		for y in range(18, 22):
-			ramps[Vector2i(x, y)] = true
+func _apply_mission_metadata(definition: Dictionary) -> void:
+	_mission_data = definition.duplicate(true)
+	mission_id = String(definition["id"])
+	mission_name = String(definition["name"])
+	objective = String(definition["objective"])
+
+
+func _pacing(key: String, fallback: float) -> float:
+	return float(_mission_data["pacing"].get(key, fallback))
 
 
 func tick(delta: float) -> void:
@@ -220,7 +214,7 @@ func _step(delta: float) -> void:
 	if time + EPSILON >= pursuit_start and phase == "preparation":
 		phase = "advance"
 		_message("后方主尸潮开始推进。留意地图西侧的红色前沿，准备建立前营。")
-	if pursuit_x > 33.0 and phase != "evacuation":
+	if pursuit_x > _pacing("evacuation_x", 33.0) and phase != "evacuation":
 		phase = "evacuation"
 		_message("进入撤离阶段：将物资和能源向东转移，封关为车队争取时间。")
 	for effect in effects:
@@ -698,6 +692,7 @@ func _find_spawn_position(requested: Vector2, kind: String, team: String, maximu
 
 func _rebuild_spatial_index() -> void:
 	_spatial_buckets.clear()
+	_spatial_neighborhoods.clear()
 	_movement_units = units.duplicate()
 	_movement_units.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return int(a["id"]) < int(b["id"]))
 	for unit in _movement_units:
@@ -714,12 +709,15 @@ func _nearby_bodies(position: Vector2) -> Array:
 	if not _spatial_valid:
 		_rebuild_spatial_index()
 	var bucket: Vector2i = Vector2i(position.floor())
+	if _spatial_neighborhoods.has(bucket):
+		return _spatial_neighborhoods[bucket]
 	var result: Array = []
 	for dy in range(-1, 2):
 		for dx in range(-1, 2):
 			var key: Vector2i = bucket + Vector2i(dx, dy)
 			if _spatial_buckets.has(key):
 				result.append_array(_spatial_buckets[key])
+	_spatial_neighborhoods[bucket] = result
 	return result
 
 
@@ -738,6 +736,11 @@ func _set_unit_position(unit: Dictionary, position: Vector2) -> void:
 	if not _spatial_buckets.has(next_bucket):
 		_spatial_buckets[next_bucket] = []
 	_spatial_buckets[next_bucket].append(unit)
+	for dy in range(-1, 2):
+		for dx in range(-1, 2):
+			var offset: Vector2i = Vector2i(dx, dy)
+			_spatial_neighborhoods.erase(previous_bucket + offset)
+			_spatial_neighborhoods.erase(next_bucket + offset)
 
 
 func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
@@ -802,27 +805,31 @@ func _separate_bodies() -> void:
 		for unit in _movement_units:
 			if float(unit["hp"]) <= 0.0 or str(unit["state"]) == "evacuated":
 				continue
+			var radius: float = _unit_radius(unit)
+			var team: String = str(unit["team"])
+			var unit_id: int = int(unit["id"])
 			for other in _nearby_bodies(Vector2(unit["pos"])):
-				if int(other["id"]) <= int(unit["id"]) or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+				if int(other["id"]) <= unit_id or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
 					continue
 				var offset: Vector2 = Vector2(unit["pos"]) - Vector2(other["pos"])
-				var minimum: float = _unit_radius(unit) + _unit_radius(other)
+				var other_radius: float = _unit_radius(other)
+				var minimum: float = radius + other_radius
 				var distance: float = offset.length()
 				if distance >= minimum - 0.005:
 					continue
-				var direction: Vector2 = offset / distance if distance > 0.0001 else Vector2.RIGHT.rotated(float((int(unit["id"]) + int(other["id"])) % 8) * PI / 4.0)
+				var direction: Vector2 = offset / distance if distance > 0.0001 else Vector2.RIGHT.rotated(float((unit_id + int(other["id"])) % 8) * PI / 4.0)
 				var push: float = minf(0.15, minimum - distance + 0.015)
 				var first_weight: float = 0.5
-				if str(unit["team"]) == str(other["team"]):
+				if team == str(other["team"]):
 					if _movement_priority(unit) > _movement_priority(other):
 						first_weight = 0.15
 					elif _movement_priority(unit) < _movement_priority(other):
 						first_weight = 0.85
 				var first: Vector2 = Vector2(unit["pos"]) + direction * push * first_weight
 				var second: Vector2 = Vector2(other["pos"]) - direction * push * (1.0 - first_weight)
-				if _within_pursuit_front(unit, first) and _static_motion_clear(Vector2(unit["pos"]), first, _unit_radius(unit), str(unit["team"])):
+				if _within_pursuit_front(unit, first) and _static_motion_clear(Vector2(unit["pos"]), first, radius, team):
 					_set_unit_position(unit, first)
-				if _within_pursuit_front(other, second) and _static_motion_clear(Vector2(other["pos"]), second, _unit_radius(other), str(other["team"])):
+				if _within_pursuit_front(other, second) and _static_motion_clear(Vector2(other["pos"]), second, other_radius, str(other["team"])):
 					_set_unit_position(other, second)
 
 
@@ -958,7 +965,7 @@ func command_task(ids: Array, task: String, target: Vector2) -> void:
 func _closest_unit(position: Vector2, team: String, kinds: Array = [], maximum_distance: float = INF) -> Dictionary:
 	var result: Dictionary = {}
 	var distance: float = maximum_distance
-	for unit in units:
+	for unit in _target_units_by_team.get(team, units):
 		if str(unit["team"]) != team or float(unit["hp"]) <= 0.0 or str(unit["state"]) == "evacuated":
 			continue
 		if not kinds.is_empty() and not kinds.has(str(unit["kind"])):
@@ -1912,7 +1919,7 @@ func _closest_visible_target(attacker: Dictionary, team: String) -> Dictionary:
 	var position: Vector2 = Vector2(attacker["pos"])
 	var maximum: float = get_attack_range(attacker)
 	var best: Dictionary = {}
-	for target in units:
+	for target in _target_units_by_team.get(team, units):
 		if str(target["team"]) != team or float(target["hp"]) <= 0.0 or str(target["state"]) == "evacuated":
 			continue
 		var distance: float = position.distance_to(Vector2(target["pos"]))
@@ -1959,6 +1966,11 @@ func _update_units(delta: float) -> void:
 	if rethink:
 		_ai_clock = 0.0
 	var barrier_attackers: Dictionary = {}
+	for target in units:
+		var team: String = str(target["team"])
+		if not _target_units_by_team.has(team):
+			_target_units_by_team[team] = []
+		_target_units_by_team[team].append(target)
 	for unit in _movement_units:
 		if float(unit["hp"]) <= 0.0 or str(unit["state"]) == "evacuated":
 			continue
@@ -2003,6 +2015,7 @@ func _update_units(delta: float) -> void:
 			elif order == "evac_gather":
 				unit["state"] = "packing"
 	_separate_bodies()
+	_target_units_by_team.clear()
 
 
 func _update_enemy(unit: Dictionary, delta: float, rethink: bool, barrier_attackers: Dictionary) -> void:
@@ -2010,7 +2023,7 @@ func _update_enemy(unit: Dictionary, delta: float, rethink: bool, barrier_attack
 	var victim: Dictionary = _closest_unit(position, "friendly", [], 8.0 if not bool(unit.get("pursuer", false)) else 14.0)
 	# Seeing survivors across a sealed bridge must not prevent the horde from
 	# attacking that bridge. Otherwise it stared at an unreachable target.
-	var barrier: Dictionary = _blocking_barrier_ahead(position, Vector2(victim["pos"]) if not victim.is_empty() else Vector2(78, 20))
+	var barrier: Dictionary = _blocking_barrier_ahead(position, Vector2(victim["pos"]) if not victim.is_empty() else Vector2(_mission_data["guide"]["landmarks"]["exit"]) + Vector2(6, 1))
 	if not barrier.is_empty():
 		if _melee_attack_possible(unit, barrier):
 			var barrier_id: int = int(barrier["id"])
@@ -2055,7 +2068,7 @@ func _update_enemy(unit: Dictionary, delta: float, rethink: bool, barrier_attack
 				_set_target(unit, Vector2(target_building["pos"]))
 		elif bool(unit.get("pursuer", false)):
 			if rethink and float(unit["repath"]) <= 0.0:
-				var destination: Vector2 = Vector2(73, 20)
+				var destination: Vector2 = Vector2(_mission_data["guide"]["landmarks"]["exit"]) + Vector2(1, 1)
 				var active_camp: Dictionary = _nearest_camp(position, false)
 				if not active_camp.is_empty():
 					destination = Vector2(active_camp["pos"])
@@ -2171,18 +2184,27 @@ func _within_pursuit_front(unit: Dictionary, destination: Vector2) -> bool:
 func _improves_existing_overlap(unit: Dictionary, destination: Vector2) -> bool:
 	# Existing overlaps from old saves/spawn fixtures may slide apart along a
 	# wall; requiring a completely clear first step would deadlock both bodies.
+	var origin: Vector2 = Vector2(unit["pos"])
+	var radius: float = _unit_radius(unit)
+	var unit_id: int = int(unit["id"])
 	var old_penetration: float = 0.0
 	var new_penetration: float = 0.0
 	var seen: Dictionary = {}
-	var neighbors: Array = _nearby_bodies(Vector2(unit["pos"]))
-	neighbors.append_array(_nearby_bodies(destination))
+	var neighbors: Array = _nearby_bodies(origin)
+	# Short movement within one bucket has exactly the same neighbor sequence.
+	# Avoid scanning it twice, and copy only when merging two cached snapshots.
+	var same_bucket: bool = Vector2i(origin.floor()) == Vector2i(destination.floor())
+	if not same_bucket:
+		neighbors = neighbors.duplicate()
+		neighbors.append_array(_nearby_bodies(destination))
 	for other in neighbors:
 		var identifier: int = int(other["id"])
-		if identifier == int(unit["id"]) or seen.has(identifier) or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+		if identifier == unit_id or (not same_bucket and seen.has(identifier)) or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
 			continue
-		seen[identifier] = true
-		var minimum: float = _unit_radius(unit) + _unit_radius(other) - 0.01
-		var previous: float = maxf(0.0, minimum - Vector2(unit["pos"]).distance_to(Vector2(other["pos"])))
+		if not same_bucket:
+			seen[identifier] = true
+		var minimum: float = radius + _unit_radius(other) - 0.01
+		var previous: float = maxf(0.0, minimum - origin.distance_to(Vector2(other["pos"])))
 		var next: float = maxf(0.0, minimum - destination.distance_to(Vector2(other["pos"])))
 		if next > previous + EPSILON:
 			return false
@@ -2266,7 +2288,7 @@ func _repair_nearby(unit: Dictionary, delta: float) -> void:
 
 func _update_pursuit(delta: float) -> void:
 	if time + EPSILON < pursuit_start:
-		pursuit_eta = pursuit_start - time + (21.0 - pursuit_x) / pursuit_speed
+		pursuit_eta = pursuit_start - time + (_pacing("first_gate_x", 21.0) - pursuit_x) / pursuit_speed
 		return
 	var blocked: bool = false
 	for choke in chokes:
@@ -2295,7 +2317,7 @@ func _update_pursuit(delta: float) -> void:
 		_spawn_clock = 0.0
 		var amount: int = 2 if time < 500.0 else 3
 		for index in range(mini(amount, MAX_ENEMIES - enemy_count)):
-			var raw: Vector2 = Vector2(maxf(2.0, pursuit_x - 0.5), 19.0 + float(index))
+			var raw: Vector2 = Vector2(maxf(2.0, pursuit_x - 0.5), _pacing("spawn_y", 19.0) + float(index))
 			var tile: Vector2i = _nearest_tile(raw, "enemy")
 			if tile.x < 0:
 				continue
@@ -2313,7 +2335,7 @@ func _update_pursuit(delta: float) -> void:
 	for building in buildings:
 		if float(building["hp"]) > 0.0 and Vector2(building["pos"]).x < pursuit_x - 3.0:
 			building["hp"] = maxf(0.0, float(building["hp"]) - delta * 8.0)
-	var threatened_x: float = 72.0
+	var threatened_x: float = _pacing("exit_x", 72.0)
 	for camp in camps:
 		if str(camp["state"]) != "abandoned" and Vector2(camp["pos"]).x >= pursuit_x:
 			threatened_x = minf(threatened_x, Vector2(camp["pos"]).x)
@@ -2508,17 +2530,35 @@ func save_state() -> Dictionary:
 		"food_clock": _food_clock, "last_pursuit_warning": _last_pursuit_warning,
 		"rng_state": str(_rng.state)
 	}
-	return {"version": SAVE_VERSION, "mission": "rift_escape_01", "payload": _encode_value(payload)}
+	# Keep legacy Canyon saves byte-compatible while binding new mission payloads
+	# to their outer tag, so swapping two recognized tags cannot change identity.
+	if mission_id != "canyon":
+		payload["mission_id"] = mission_id
+	return {"version": SAVE_VERSION, "mission": MISSION_SAVE_TAGS[mission_id], "payload": _encode_value(payload)}
 
 
 func load_state(data: Dictionary) -> bool:
-	if not _is_number(data.get("version")) or int(data["version"]) != SAVE_VERSION or str(data.get("mission", "")) != "rift_escape_01" or not data.has("payload"):
+	if not _is_number(data.get("version")) or int(data["version"]) != SAVE_VERSION or not data.get("mission", null) is String or not data.has("payload"):
 		return false
+	var requested_id: String = ""
+	for candidate: String in MISSION_SAVE_TAGS:
+		if data["mission"] == MISSION_SAVE_TAGS[candidate]:
+			requested_id = candidate
+			break
+	if requested_id.is_empty():
+		return false
+	var definition: Dictionary = CampaignCatalog.mission(requested_id)
 	_decode_budget = 120000
 	var decoded: Variant = _decode_value(data["payload"], 0)
 	if _decode_budget < 0 or not decoded is Dictionary or not _validate_state(decoded):
 		return false
 	var state: Dictionary = decoded
+	if state.has("mission_id"):
+		if not state["mission_id"] is String or state["mission_id"] != requested_id:
+			return false
+	elif requested_id != "canyon":
+		return false
+	_apply_mission_metadata(definition)
 	time = float(state["time"])
 	phase = str(state["phase"])
 	outcome = str(state["outcome"])
@@ -2542,8 +2582,8 @@ func load_state(data: Dictionary) -> bool:
 	main_truck_id = int(state["main_truck_id"])
 	exit_building_id = int(state["exit_building_id"])
 	exit_site_id = int(state["exit_site_id"])
-	pursuit_speed = float(state.get("pursuit_speed", 0.035))
-	pursuit_start = float(state.get("pursuit_start", 150.0))
+	pursuit_speed = float(state.get("pursuit_speed", _pacing("pursuit_speed", 0.035)))
+	pursuit_start = float(state.get("pursuit_start", _pacing("pursuit_start", 150.0)))
 	_next_id = int(state["next_id"])
 	_jobs = state["jobs"]
 	_ai_clock = float(state.get("ai_clock", 0.0))

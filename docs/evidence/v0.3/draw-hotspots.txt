@@ -1,0 +1,84 @@
+errors ['no real resource pickup and delivery observed; increase --frames or investigate hauling', 'no real resource pickup and delivery observed; increase --frames or investigate hauling'] sources stable True
+fixture hash matches canonical True
+
+ZOOM normal wall {'intervals_over_16_667_ms': 116, 'intervals_over_33_333_ms': 79, 'max': 56669.0, 'max_ms': 56.669, 'mean': 33378.9666666667, 'mean_ms': 33.3789666666667, 'nonzero_samples': 120, 'observed_fps': 29.9589861479634, 'p50': 36819.0, 'p50_ms': 36.819, 'p95': 48722.0, 'p95_ms': 48.722, 'p99': 54559.0, 'p99_ms': 54.559, 'samples': 120} tick {'max': 26823.0, 'max_ms': 26.823, 'mean': 19681.9125, 'mean_ms': 19.6819125, 'nonzero_samples': 80, 'p50': 19621.0, 'p50_ms': 19.621, 'p95': 23362.0, 'p95_ms': 23.362, 'p99': 26823.0, 'p99_ms': 26.823, 'samples': 80}
+main
+  _process ms/frame 14.735 p95 30.406 calls 120 ms/call 14.7354
+  _move_camera ms/frame 0.006 p95 0.01 calls 120 ms/call 0.0065
+world
+  _draw ms/frame 7.337 p95 8.281 calls 120 ms/call 7.337
+  _draw_unit ms/frame 2.442 p95 2.748 calls 15840 ms/call 0.0185
+  _draw_decorations ms/frame 2.04 p95 2.239 calls 120 ms/call 2.04
+  _draw_sites ms/frame 0.808 p95 0.973 calls 120 ms/call 0.8077
+  _draw_building ms/frame 0.657 p95 0.762 calls 1440 ms/call 0.0547
+  _draw_orders ms/frame 0.461 p95 0.515 calls 120 ms/call 0.4614
+  _draw_roads ms/frame 0.347 p95 0.394 calls 120 ms/call 0.3474
+  _draw_logistics ms/frame 0.144 p95 0.176 calls 120 ms/call 0.1442
+  _draw_effects ms/frame 0.03 p95 0.098 calls 120 ms/call 0.03
+  _draw_guide_target ms/frame 0.023 p95 0.035 calls 120 ms/call 0.0234
+  _process ms/frame 0.015 p95 0.022 calls 120 ms/call 0.0153
+  _refresh_terrain_cache ms/frame 0.013 p95 0.017 calls 120 ms/call 0.0128
+  _draw_pursuit ms/frame 0.001 p95 0.002 calls 120 ms/call 0.001
+  _draw_build_preview ms/frame 0.001 p95 0.001 calls 120 ms/call 0.0007
+hud
+  _draw ms/frame 2.364 p95 2.818 calls 120 ms/call 2.3636
+  _draw_dock ms/frame 0.652 p95 0.711 calls 120 ms/call 0.6518
+  _draw_minimap ms/frame 0.515 p95 0.611 calls 120 ms/call 0.5146
+  _draw_guide ms/frame 0.509 p95 0.583 calls 120 ms/call 0.5089
+  _draw_top ms/frame 0.336 p95 0.421 calls 120 ms/call 0.3358
+  _draw_objectives ms/frame 0.169 p95 0.194 calls 120 ms/call 0.1691
+  _draw_camp_cards ms/frame 0.099 p95 0.113 calls 120 ms/call 0.0985
+draw_calls 2451.358
+performance_physics_ms 0.018
+performance_process_ms 52.899
+render_setup_cpu_ms 0.005
+rendered_objects 5481.967
+rendered_primitives 46701.883
+viewport_render_cpu_ms 3.683
+viewport_render_gpu_ms 1.713
+ticks 0 frames 40 wallmean 19.208 processmean 1.477 worldmean 7.077 hudmean 2.292
+ticks 1 frames 80 wallmean 40.465 processmean 21.365 worldmean 7.467 hudmean 2.399
+correlation wall main _process 0.9839
+correlation wall world _draw 0.3808
+correlation wall hud _draw 0.3376
+
+ZOOM strategic wall {'intervals_over_16_667_ms': 120, 'intervals_over_33_333_ms': 110, 'max': 64560.0, 'max_ms': 64.56, 'mean': 45557.3083333333, 'mean_ms': 45.5573083333333, 'nonzero_samples': 120, 'observed_fps': 21.9503749581342, 'p50': 45515.0, 'p50_ms': 45.515, 'p95': 58438.0, 'p95_ms': 58.438, 'p99': 62629.0, 'p99_ms': 62.629, 'samples': 120} tick {'max': 27019.0, 'max_ms': 27.019, 'mean': 19688.9908256881, 'mean_ms': 19.6889908256881, 'nonzero_samples': 109, 'p50': 19429.0, 'p50_ms': 19.429, 'p95': 23878.0, 'p95_ms': 23.878, 'p99': 26924.0, 'p99_ms': 26.924, 'samples': 109}
+main
+  _process ms/frame 19.987 p95 31.235 calls 120 ms/call 19.9869
+  _move_camera ms/frame 0.007 p95 0.01 calls 120 ms/call 0.0069
+world
+  _draw ms/frame 10.392 p95 11.66 calls 120 ms/call 10.3924
+  _draw_decorations ms/frame 4.637 p95 5.105 calls 120 ms/call 4.6369
+  _draw_unit ms/frame 2.549 p95 2.97 calls 15840 ms/call 0.0193
+  _draw_sites ms/frame 0.939 p95 1.156 calls 120 ms/call 0.9389
+  _draw_building ms/frame 0.74 p95 0.841 calls 1560 ms/call 0.0569
+  _draw_orders ms/frame 0.465 p95 0.519 calls 120 ms/call 0.4651
+  _draw_roads ms/frame 0.446 p95 0.506 calls 120 ms/call 0.4463
+  _draw_logistics ms/frame 0.165 p95 0.197 calls 120 ms/call 0.1651
+  _draw_effects ms/frame 0.033 p95 0.096 calls 120 ms/call 0.0331
+  _draw_guide_target ms/frame 0.024 p95 0.036 calls 120 ms/call 0.0242
+  _process ms/frame 0.018 p95 0.025 calls 120 ms/call 0.0183
+  _refresh_terrain_cache ms/frame 0.015 p95 0.022 calls 120 ms/call 0.0154
+  _draw_pursuit ms/frame 0.001 p95 0.002 calls 120 ms/call 0.0011
+  _draw_build_preview ms/frame 0.001 p95 0.001 calls 120 ms/call 0.0009
+hud
+  _draw ms/frame 2.48 p95 2.955 calls 120 ms/call 2.4803
+  _draw_dock ms/frame 0.658 p95 0.767 calls 120 ms/call 0.6579
+  _draw_minimap ms/frame 0.54 p95 0.619 calls 120 ms/call 0.5402
+  _draw_guide ms/frame 0.537 p95 0.648 calls 120 ms/call 0.5368
+  _draw_top ms/frame 0.38 p95 0.537 calls 120 ms/call 0.3801
+  _draw_objectives ms/frame 0.182 p95 0.216 calls 120 ms/call 0.182
+  _draw_camp_cards ms/frame 0.105 p95 0.126 calls 120 ms/call 0.105
+draw_calls 3005.275
+performance_physics_ms 0.018
+performance_process_ms 62.472
+render_setup_cpu_ms 0.005
+rendered_objects 7353.358
+rendered_primitives 53001.733
+viewport_render_cpu_ms 4.775
+viewport_render_gpu_ms 3.011
+ticks 0 frames 11 wallmean 24.751 processmean 1.135 worldmean 9.952 hudmean 2.414
+ticks 1 frames 109 wallmean 47.657 processmean 21.889 worldmean 10.437 hudmean 2.487
+correlation wall main _process 0.9679
+correlation wall world _draw 0.4254
+correlation wall hud _draw 0.2966

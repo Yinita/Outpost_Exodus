@@ -1,8 +1,9 @@
 extends RefCounted
-## Read-only, state-driven first-campaign guidance. This never issues game orders.
+## Read-only, state-driven campaign guidance. This never issues game orders.
 ## Hints may be ignored; completed or superseded milestones are inferred from sim.
 
 const SAVE_VERSION: int = 1
+const CampaignCatalog = preload("res://scripts/campaign_catalog.gd")
 const TOTAL_STEPS: int = 11
 const UNKNOWN_TARGET: Vector2 = Vector2(-1.0, -1.0)
 const OBSERVABLE_ACTIONS: Array[String] = ["selection", "move", "clear", "build", "orders", "production", "train", "evacuate", "seal"]
@@ -13,6 +14,8 @@ var _preferred_branch: String = "any"
 var _observed: Array[String] = []
 var _bound: bool = false
 var _campaign_seed: int = 0
+var _mission_id: String = CampaignCatalog.DEFAULT_ID
+var _mission_data: Dictionary = CampaignCatalog.mission()
 var _last_sim_time: float = 0.0
 var _hint: Dictionary = {
 	"title": "带4人清理公路补给", "text": "框选3名步枪兵和1名工程师。可用{pause}暂停观察，再用{orders}选择清剿目标。",
@@ -27,6 +30,8 @@ func reset(enabled: bool = true) -> void:
 	_observed.clear()
 	_bound = false
 	_campaign_seed = 0
+	_mission_id = CampaignCatalog.DEFAULT_ID
+	_mission_data = CampaignCatalog.mission()
 	_last_sim_time = 0.0
 	_set_hint(1, "带4人清理公路补给", "框选3名步枪兵和1名工程师。可用{pause}暂停观察，再用{orders}选择清剿目标。", UNKNOWN_TARGET)
 
@@ -36,16 +41,20 @@ func update(sim: Variant, selected_ids: Array = [], selected_camp: int = 0) -> v
 		return
 	var now: float = float(sim.time)
 	var mission_seed: int = int(sim.seed_value)
-	if _bound and (mission_seed != _campaign_seed or now + 0.001 < _last_sim_time):
+	var current_mission: String = String(sim.mission_id)
+	if _bound and (current_mission != _mission_id or mission_seed != _campaign_seed or now + 0.001 < _last_sim_time):
 		# A new/reset/rewound simulation must not inherit another run's route facts.
 		# Visibility is a user preference and survives automatic rebinding.
 		_preferred_branch = "any"
 		_observed.clear()
+	if not _bound or current_mission != _mission_id:
+		_mission_data = sim.mission_data
 	_bound = true
 	_campaign_seed = mission_seed
+	_mission_id = current_mission
 	_last_sim_time = now
-	var exit_site: Dictionary = _site(sim, "exit", 60.0, 80.0)
-	var exit_position: Vector2 = exit_site.get("pos", Vector2(72.0, 19.0))
+	var exit_site: Dictionary = _mission_site(sim, "exit")
+	var exit_position: Vector2 = exit_site.get("pos", _landmark("exit"))
 	if String(sim.outcome) == "victory":
 		_set_hint(TOTAL_STEPS, "突围完成", "指挥车和幸存者已实际抵达。你可以重新开始尝试另一条资源顺序，也可以隐藏引导。", exit_position, true)
 		return
@@ -70,9 +79,9 @@ func update(sim: Variant, selected_ids: Array = [], selected_camp: int = 0) -> v
 		var camp_position: Vector2 = camp.get("pos", Vector2.ZERO)
 		if String(camp.get("state", "")) == "abandoned":
 			continue
-		if camp_position.x >= 45.0:
+		if camp_position.x >= _guide_number("front_min_x", 45.0):
 			front = camp
-		elif camp_position.x >= 20.0:
+		elif camp_position.x >= _guide_number("middle_min_x", 20.0):
 			middle = camp
 	if not front.is_empty():
 		_forward_hint(sim, camps, front, exit_site, exit_building, selected_camp)
@@ -80,11 +89,11 @@ func update(sim: Variant, selected_ids: Array = [], selected_camp: int = 0) -> v
 	if not middle.is_empty():
 		_middle_hint(sim, home, middle, selected_camp)
 		return
-	var highway: Dictionary = _site(sim, "cache", 20.0, 40.0)
-	var highway_position: Vector2 = highway.get("pos", Vector2(25.0, 20.0))
+	var highway: Dictionary = _mission_site(sim, "highway")
+	var highway_position: Vector2 = highway.get("pos", _landmark("highway"))
 	if not bool(highway.get("captured", false)):
 		var selected_fighters: int = 0
-		var first_fighter: Vector2 = home.get("pos", Vector2(9.0, 22.0))
+		var first_fighter: Vector2 = home.get("pos", _landmark("home"))
 		var units: Array = sim.units
 		for value: Variant in units:
 			var unit: Dictionary = value
@@ -97,15 +106,21 @@ func update(sim: Variant, selected_ids: Array = [], selected_camp: int = 0) -> v
 		else:
 			_set_hint(1, "清理西关东侧的公路补给", "用{orders}选择清剿并指定公路补给点，或下达攻击移动。清掉守卫并留人在附近占领；工程师可随队，战斗中可用{pause}调整。", highway_position)
 		return
-	var road_target: Vector2 = Vector2(26.0, 21.0)
-	if not bool(sim.road_connected(Vector2(home["pos"]), road_target)):
+	var road_target: Vector2 = _landmark("highway_road")
+	var camp_site: Vector2 = _landmark("middle_camp")
+	var road_reached: bool = bool(sim.road_connected(Vector2(home["pos"]), road_target))
+	var camp_reached: bool = bool(sim.road_connected(Vector2(home["pos"]), camp_site))
+	if not road_reached or not camp_reached:
+		# A road can reach the marker's radius before reaching the camp's radius.
+		# Focus the remaining extension, rather than an already planned road tile.
+		if road_reached and not camp_reached:
+			road_target = camp_site
 		var road_text: String = "打开{build}选择道路，在定位点附近下单。道路会沿可通行路线逐格施工；工人送达材料并完工后才形成连接。"
 		if _pending_road_near(sim, road_target):
 			road_text = "道路已规划，等待工人领取建材并逐格铺设。先不要重复下单；规划线还不能运货，可用{pause}检查工人和施工进度。"
 		_set_hint(2, "铺通通往中营的道路", road_text, road_target)
 		return
-	var camp_site: Vector2 = Vector2(26.0, 23.0)
-	var camp_project: Dictionary = _camp_project(sim, 20.0, 45.0)
+	var camp_project: Dictionary = _camp_project(sim, _guide_number("middle_min_x", 20.0), _guide_number("front_min_x", 45.0))
 	if not camp_project.is_empty():
 		_set_hint(3, "等待中营实际建成", "中营工地已存在。工程师要领取、运送材料并完成施工；完工前不会出现可用库存，也不要重复建造。", camp_project.get("pos", camp_site))
 	else:
@@ -126,19 +141,23 @@ func _middle_hint(sim: Variant, home: Dictionary, middle: Dictionary, selected_c
 		return
 	if _branch_hint(sim, middle):
 		return
-	var east_site: Dictionary = _site(sim, "cache", 45.0, 65.0)
-	var east_position: Vector2 = east_site.get("pos", Vector2(53.0, 21.0))
+	var east_site: Dictionary = _mission_site(sim, "forward")
+	var east_position: Vector2 = east_site.get("pos", _landmark("forward_cache"))
 	if not bool(east_site.get("captured", false)):
 		_set_hint(7, "清理东侧旧营址", "带战斗小队清理东侧旧营址。你可用{train}在供能军营补充兵力；先后选择资源支线都可以，推进前留意中营的口粮与燃料。", east_position)
 		return
-	if not bool(sim.road_connected(Vector2(middle["pos"]), east_position)):
-		_set_hint(7, "把公路接向东侧营址", "用{build}把道路接到东侧旧营址附近，等待真实施工完成。可分段修路控制开销；铺路本身不会把中营库存搬过去。", Vector2(53.0, 22.0))
+	var front_reached: bool = bool(sim.road_connected(Vector2(middle["pos"]), _landmark("front_camp")))
+	if not bool(sim.road_connected(Vector2(middle["pos"]), east_position)) or not front_reached:
+		var road_target: Vector2 = _landmark("forward_road")
+		if not front_reached and bool(sim.road_connected(Vector2(middle["pos"]), road_target)):
+			road_target = _landmark("front_camp")
+		_set_hint(7, "把公路接向东侧营址", "用{build}把道路接到东侧旧营址附近，等待真实施工完成。可分段修路控制开销；铺路本身不会把中营库存搬过去。", road_target)
 		return
-	var camp_project: Dictionary = _camp_project(sim, 45.0, 80.0)
+	var camp_project: Dictionary = _camp_project(sim, _guide_number("front_min_x", 45.0), float(_mission_data["map_size"].x))
 	if not camp_project.is_empty():
-		_set_hint(7, "等待东侧前营完工", "工程师正在建立前营。保留中营物资与运输车，等前营成为有效接收点，再用{orders}撤收后营。", camp_project.get("pos", Vector2(54.0, 23.0)))
+		_set_hint(7, "等待东侧前营完工", "工程师正在建立前营。保留中营物资与运输车，等前营成为有效接收点，再用{orders}撤收后营。", camp_project.get("pos", _landmark("front_camp")))
 	else:
-		_set_hint(7, "向东建立接收物资的前营", "用{build}在已连路的东侧营址附近建营地。先保留撤营与启动资金，前营建成后用{orders}把中营的人员和物资实际运过去。", Vector2(54.0, 23.0))
+		_set_hint(7, "向东建立接收物资的前营", "用{build}在已连路的东侧营址附近建营地。先保留撤营与启动资金，前营建成后用{orders}把中营的人员和物资实际运过去。", _landmark("front_camp"))
 
 
 func _forward_hint(sim: Variant, camps: Array[Dictionary], front: Dictionary, exit_site: Dictionary, exit_building: Dictionary, selected_camp: int) -> void:
@@ -165,16 +184,17 @@ func _optional_seal_hint(sim: Variant, camp: Dictionary) -> bool:
 	# A safe optional detour, superseded by starting local construction.
 	# No observed click is treated as a sealed barrier; sim remains authoritative.
 	var generators: Dictionary = _building(sim, "generator", int(camp["id"]))
-	var chokes: Array = sim.chokes
-	if not generators.is_empty() or chokes.is_empty():
+	var choke_index: int = _rear_choke_index(sim, camp)
+	if not generators.is_empty() or choke_index < 0:
 		return false
-	var choke: Dictionary = chokes[0]
+	var choke: Dictionary = sim.chokes[choke_index]
 	var position: Vector2 = choke.get("pos", UNKNOWN_TARGET)
-	if bool(choke.get("sealed", false)) or _friendlies_behind(sim, 0) > 0 or position.x < float(sim.pursuit_x) + 1.0:
+	if bool(choke.get("sealed", false)) or _friendlies_behind(sim, choke_index) > 0 or position.x < float(sim.pursuit_x) + 1.0:
 		return false
 	if float(camp.get("materials", 0.0)) < 105.0:
 		return false
-	_set_hint(5, "可选：安全封住后关争取时间", "人员和车辆已越过西关，可在{orders}使用“封锁后关”，消耗25建材拖延追兵。也可直接用{build}继续本营发电与工坊，引导不会限制你的选择。", position)
+	var gate_name: String = String(choke.get("name", "后方关口"))
+	_set_hint(5, "可选：安全封住后关争取时间", "人员和车辆已越过%s，可在{orders}使用“封锁后关”，消耗25建材拖延追兵。也可直接用{build}继续本营发电与工坊，引导不会限制你的选择。" % gate_name, position)
 	return true
 
 
@@ -196,8 +216,10 @@ func _transfer_hint(sim: Variant, origin: Dictionary, destination: Dictionary, s
 			_set_hint(step_number, "后营撤收：等待运输或紧急弃营", stock_text + "可继续等待搬运；也可再次点击{orders}里的“撤收驻点”紧急弃营。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。", target)
 			return
 	var safety: String = "等人员和车都到关口东侧，再考虑{orders}封关；也可自行选择分兵留守。"
-	if _friendlies_behind(sim, 0) > 0:
-		safety = "仍有友军在西关后方，暂时别封关；可用{pause}查看撤离队伍。"
+	var choke_index: int = _rear_choke_index(sim, destination)
+	if _friendlies_behind(sim, choke_index) > 0:
+		var gate_name: String = String(sim.chokes[choke_index].get("name", "后方关口"))
+		safety = "仍有友军在%s后方，暂时别封关；可用{pause}查看撤离队伍。" % gate_name
 	_set_hint(step_number, "等待运输车装运和卸货", stock_text + "不要手动改运输车命令。" + safety, target)
 
 
@@ -248,18 +270,19 @@ func _classify_no_fuel_hint(sim: Variant, camp: Dictionary, step_number: int) ->
 
 
 func _branch_hint(sim: Variant, camp: Dictionary) -> bool:
-	var north: Dictionary = _site(sim, "quarry", 0.0, 80.0)
-	var south: Dictionary = _site(sim, "fuel", 0.0, 80.0)
-	var ordered: Array[Dictionary] = [north, south]
+	# Legacy north/south preferences mean materials/fuel, regardless of geography.
+	var materials_branch: Dictionary = _mission_site(sim, "quarry")
+	var fuel_branch: Dictionary = _mission_site(sim, "fuel")
+	var ordered: Array[Dictionary] = [materials_branch, fuel_branch]
 	if _preferred_branch == "south" or (_preferred_branch == "any" and float(camp.get("fuel", 0.0)) < 20.0):
-		ordered = [south, north]
+		ordered = [fuel_branch, materials_branch]
 	for site: Dictionary in ordered:
 		if site.is_empty():
 			continue
 		var at: Vector2 = site.get("pos", UNKNOWN_TARGET)
 		var name: String = String(site.get("name", "资源支线"))
 		if not bool(site.get("captured", false)):
-			_set_hint(6, "选择资源支线：" + name, "北线废料可加工建材，南线原油可加工燃料，先后顺序由你决定。带队清剿后还要连路，让工人实际运回，再用{production}选择配方。", at)
+			_set_hint(6, "选择资源支线：" + name, String(_mission_data["guide"]["branch_text"]) + "带队清剿后还要连路，让工人实际运回，再用{production}选择配方。", at)
 			return true
 		if not bool(sim.road_connected(Vector2(camp["pos"]), at)):
 			_set_hint(6, "把" + name + "接入营地道路", "此处已清理，但资源不会自动到账。用{build}连路，工人才能往返搬运；保留本营启动资金，再用{production}加工带回的原料。", at)
@@ -268,7 +291,7 @@ func _branch_hint(sim: Variant, camp: Dictionary) -> bool:
 
 
 func _exit_hint(sim: Variant, exit_site: Dictionary, exit_building: Dictionary) -> void:
-	var target: Vector2 = exit_site.get("pos", Vector2(72.0, 19.0))
+	var target: Vector2 = exit_site.get("pos", _landmark("exit"))
 	if not bool(exit_site.get("captured", false)):
 		_set_hint(10, "先清理撤离站守卫", "带战斗小队清理东部撤离站并留人在附近占领。此时仍可{pause}整队；军营与{train}用于补充兵力，别把指挥车送进未清理的敌群。", target)
 		return
@@ -285,7 +308,7 @@ func _exit_hint(sim: Variant, exit_site: Dictionary, exit_building: Dictionary) 
 		_set_hint(10, "备齐撤离站施工物资", cost_text + "物资必须实际进入前营。用{production}加工原料并保留燃料；达到条件后会自动扣费立项，随后由工程师施工。", active_camp.get("pos", target))
 		return
 	if not bool(exit_building.get("powered", false)):
-		_set_hint(10, "为出口施工提供本地电力", "撤离站工程已立项，需要附近发电机持续提供6电力。用{build}在出口附近接路建发电机，确保所属营地有成品燃料，并在{production}优先保障撤离供能。", target + Vector2(-2.0, 2.0))
+		_set_hint(10, "为出口施工提供本地电力", "撤离站工程已立项，需要附近发电机持续提供6电力。用{build}在出口附近接路建发电机，确保所属营地有成品燃料，并在{production}优先保障撤离供能。", _landmark("exit_power"))
 		return
 	_set_hint(10, "保护工程师，等待撤离站完工", "道路、资金和供能已就绪，工程师仍需实际到场施工。守住出口与运输线；可以整队、修理，等真实建造进度完成后再全员到场。", target)
 
@@ -354,14 +377,44 @@ func _east_active_camp(sim: Variant) -> Dictionary:
 	return result
 
 
-func _site(sim: Variant, kind: String, minimum_x: float, maximum_x: float) -> Dictionary:
+func _landmark(key: String) -> Vector2:
+	return Vector2(_mission_data["guide"]["landmarks"].get(key, UNKNOWN_TARGET))
+
+
+func _guide_number(key: String, fallback: float) -> float:
+	return float(_mission_data["guide"].get(key, fallback))
+
+
+func _mission_site(sim: Variant, key: String) -> Dictionary:
+	# Live sites retain the legacy save schema. Bind each catalog key by its
+	# immutable position and kind rather than guessing from an x-coordinate band.
+	var definition: Dictionary = {}
+	for entry: Dictionary in _mission_data["sites"]:
+		if String(entry["key"]) == key:
+			definition = entry
+			break
+	if definition.is_empty():
+		return {}
 	var sites: Array = sim.sites
 	for value: Variant in sites:
 		var site: Dictionary = value
 		var at: Vector2 = site.get("pos", UNKNOWN_TARGET)
-		if String(site.get("kind", "")) == kind and at.x >= minimum_x and at.x < maximum_x:
+		if String(site.get("kind", "")) == String(definition["kind"]) and at.distance_to(Vector2(definition["pos"])) < 0.01:
 			return site
 	return {}
+
+
+func _rear_choke_index(sim: Variant, camp: Dictionary) -> int:
+	var result: int = -1
+	var closest_x: float = -INF
+	var camp_x: float = Vector2(camp.get("pos", UNKNOWN_TARGET)).x
+	var chokes: Array = sim.chokes
+	for index: int in range(chokes.size()):
+		var choke_x: float = Vector2(chokes[index].get("pos", UNKNOWN_TARGET)).x
+		if choke_x < camp_x and choke_x > closest_x:
+			result = index
+			closest_x = choke_x
+	return result
 
 
 func _building(sim: Variant, kind: String, camp_id: int) -> Dictionary:
@@ -479,11 +532,12 @@ func observe(action: String, data: Dictionary = {}) -> void:
 		var raw_target: Variant = data.get("target", UNKNOWN_TARGET)
 		if raw_target is Vector2 or raw_target is Vector2i:
 			var target: Vector2 = Vector2(raw_target)
-			if target.x >= 28.0 and target.x <= 44.0:
-				if target.y < 17.0:
-					_preferred_branch = "north"
-				elif target.y > 25.0:
-					_preferred_branch = "south"
+			if not target.is_finite():
+				return
+			var quarry_distance: float = target.distance_to(_landmark("quarry"))
+			var fuel_distance: float = target.distance_to(_landmark("fuel"))
+			if minf(quarry_distance, fuel_distance) <= 8.0:
+				_preferred_branch = "north" if quarry_distance < fuel_distance else "south"
 
 
 func dismiss() -> void:
@@ -516,6 +570,7 @@ func save_state() -> Dictionary:
 		"version": SAVE_VERSION, "enabled": _enabled, "dismissed": _dismissed,
 		"preferred_branch": _preferred_branch, "observed": _observed.duplicate(),
 		"bound": _bound, "campaign_seed": _campaign_seed, "last_sim_time": _last_sim_time,
+		"mission_id": _mission_id,
 		"hint": hint
 	}
 
@@ -526,7 +581,11 @@ func load_state(data: Dictionary) -> bool:
 	for key: String in required:
 		if not data.has(key):
 			return false
-	if data.size() != required.size():
+	# Old v1 saves predate mission selection and therefore belong to Canyon.
+	var saved_mission: Variant = data.get("mission_id", CampaignCatalog.DEFAULT_ID)
+	if not saved_mission is String or not CampaignCatalog.ids().has(saved_mission):
+		return false
+	if data.size() != required.size() + (1 if data.has("mission_id") else 0):
 		return false
 	if not _integer(data["version"]) or int(data["version"]) != SAVE_VERSION:
 		return false
@@ -583,6 +642,8 @@ func load_state(data: Dictionary) -> bool:
 	_observed = observations
 	_bound = bool(data["bound"])
 	_campaign_seed = int(data["campaign_seed"])
+	_mission_id = String(saved_mission)
+	_mission_data = CampaignCatalog.mission(_mission_id)
 	_last_sim_time = float(data["last_sim_time"])
 	_hint = hint
 	return true

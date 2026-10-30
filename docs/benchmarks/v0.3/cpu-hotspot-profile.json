@@ -1,0 +1,162 @@
+{
+  "baseline_sha256": "9b918e3649df7e2a5d7a997417e798addd3b9752ff3f47063c9dcb0ba07e2d38",
+  "candidate_sha256": "76149dceec1ffe5bcb95cb778aa8eaf6fd2ef5fd8cf9c32dc0cdb6acab5b8d53",
+  "profile_method": "Ignored instrumented baseline clone. 100 warmup then100 sampled 0.05s busy fixture ticks. Inclusive function timings; instrumentation has overhead and is for hotspot attribution only.",
+  "profile_inclusive_usec_and_call_count": {
+    "_step": [
+      2860930,
+      100
+    ],
+    "_update_units": [
+      2802084,
+      100
+    ],
+    "_move_unit": [
+      1569598,
+      10169
+    ],
+    "_separate_bodies": [
+      700170,
+      200
+    ],
+    "_improves_existing_overlap": [
+      694865,
+      43748
+    ],
+    "_nearby_bodies": [
+      331314,
+      193478
+    ],
+    "_closest_unit": [
+      244636,
+      11000
+    ]
+  },
+  "staged_uninstrumented_paired_probes": [
+    {
+      "patch": "neighborhood snapshots and single-cell overlap scan",
+      "identical_state_ticks": 300,
+      "timed_ticks": 200,
+      "baseline_ms": {
+        "mean": 23.871425,
+        "p50": 22.817,
+        "p99": 32.528
+      },
+      "candidate_ms": {
+        "mean": 20.86604,
+        "p50": 19.867,
+        "p99": 28.941
+      }
+    },
+    {
+      "patch": "plus transient ordered target lists per team",
+      "identical_state_ticks": 300,
+      "timed_ticks": 200,
+      "baseline_ms": {
+        "mean": 24.019605,
+        "p50": 22.886,
+        "p99": 32.754
+      },
+      "candidate_ms": {
+        "mean": 19.777635,
+        "p50": 18.823,
+        "p99": 27.871
+      }
+    },
+    {
+      "patch": "plus loop-invariant dictionary field lookups hoisted",
+      "identical_state_ticks": 300,
+      "timed_ticks": 200,
+      "baseline_ms": {
+        "mean": 23.92137,
+        "p50": 22.724,
+        "p99": 32.577
+      },
+      "candidate_ms": {
+        "mean": 17.164875,
+        "p50": 16.275,
+        "p99": 24.859
+      }
+    }
+  ],
+  "limits": "Small paired samples against same fixture and exact saved state comparison after each tick; saved state checks outside timing. CPU-only, no renderer/FPS/minimum hardware claim. Canonical3x600 final benchmark pending.",
+  "final_exact_state_paired_probe": {
+    "identical_state_ticks": 600,
+    "timed_ticks": 500,
+    "baseline_ms": {
+      "mean": 22.641232,
+      "p50": 21.903,
+      "p95": 28.135,
+      "p99": 29.898,
+      "max": 36.291
+    },
+    "candidate_ms": {
+      "mean": 16.44542,
+      "p50": 15.848,
+      "p95": 20.58,
+      "p99": 22.175,
+      "max": 28.222
+    },
+    "mean_reduction_percent": 27.365114662482,
+    "log": "work/perf/paired-final.log"
+  },
+  "regressions": {
+    "campaign_checks": 170,
+    "campaign_failures": 0,
+    "navigation_combat_checks": 125,
+    "navigation_combat_failures": 0,
+    "fullmission": {
+      "outcome": "victory",
+      "simulated_seconds": 1590.0,
+      "evacuated": 6,
+      "delivered_home_loads": 3,
+      "delivered_middle_loads": 5,
+      "funded_powered_exit": true,
+      "explicit_inventory_abandonment": true,
+      "log": "work/perf/mission-playthrough-final.log"
+    }
+  },
+  "canonical_final": {
+    "stats": {
+      "max_ms": 25.694,
+      "mean_ms": 15.1759638888889,
+      "p50_ms": 14.756,
+      "p95_ms": 18.289,
+      "p99_ms": 20.699,
+      "samples": 1800
+    },
+    "valid_workload": true,
+    "errors": [],
+    "source_changed_during_run": false,
+    "simulation_sha256": "76149dceec1ffe5bcb95cb778aa8eaf6fd2ef5fd8cf9c32dc0cdb6acab5b8d53",
+    "memory_end": {
+      "godot_static_bytes": 26569484,
+      "godot_static_peak_bytes": 52451272,
+      "process_linux": {
+        "VmHWM_bytes": 132947968,
+        "VmRSS_bytes": 132947968,
+        "available": true,
+        "source": "/proc/self/status"
+      }
+    },
+    "log": "work/perf/canonical-final.log",
+    "report": "work/perf/canonical-final.json"
+  },
+  "canonical_baseline_comparison": {
+    "baseline_report": "docs/benchmarks/2026-10-31-navigation-staging-final.json",
+    "baseline_stats": {
+      "max_ms": 33.863,
+      "mean_ms": 21.4537,
+      "p50_ms": 20.987,
+      "p95_ms": 25.896,
+      "p99_ms": 28.335,
+      "samples": 1800
+    },
+    "percent_reduction": {
+      "mean_ms": 29.261787529009453,
+      "p50_ms": 29.68980797636631,
+      "p95_ms": 29.37519308001235,
+      "p99_ms": 26.949002999823534
+    }
+  }
+}

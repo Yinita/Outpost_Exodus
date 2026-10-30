@@ -1,27 +1,25 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, version **0.2.0-dev**. The active objective remains a highly playable game that meets Steam release standards. This is a substantial internal first-campaign build; the objective is not complete.
+Project: 逐营突围 / Outpost Exodus, **0.3.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
 
-## Implemented and verified
+## Proven work
 
-- Actual Godot 4.7.2 project with original 2D cartoon terrain/characters, generated transparent building sprites and Chinese UI. Runtime logic is separate from rendering and controls. Six game scripts total 5,989 physical lines, including comments/blank lines; tests and tools are counted separately.
-- Real selection/groups, 23 rebindable commands, minimap, camera zoom/pan, paid construction, independent camp stocks, local fuel/power, production, training, physical transport, pursuit, staged evacuation, destructible sealing and genuine exit work/arrival requirements.
-- Body separation, legal cliff/ramp movement and formation slots; solid high terrain/buildings block shots, open canyon air permits elevated fire, and melee cannot attack through disconnected cliff edges.
-- A dismissible 11-step contextual guide follows actual state. Its complete public-command mission passes 102 checks and wins at 1590.0 simulated seconds (26:30), after both resource branches, three camps, real multi-load transfers, abandonment, a sealed rear choke, powered exit construction and vehicle/survivor arrival.
-- 170 baseline simulation checks, 124 rendered UI checks, 286 rendered preferences/recovery checks, 48 engine-event dispatch checks, 134 isolated file-layer checks and 90 separate-process continuation checks pass. Detailed scopes and limits are in validation-plan.md.
-- Manual and auto slots are independent. Validated staged writes preserve exact-byte backups and tested rollback behavior. Explicit menu recovery and restart confirmation preserve progress. Integer selection/group IDs remain valid after JSON load. Mid-road/production/movement save continuation matches a separate process through 35 simulated seconds.
-- Full-mission replay caught evacuation workers parking in the loading lane. The original failed state is retained as a regression fixture. Distinct staging slots fix both new evacuations and old packing saves; the unchanged stuck snapshot resumes its next physical 180-material load within 7.6 simulated seconds. Navigation/combat regression includes that case and repeated multi-load delivery.
-- Real Music/SFX buses, independent levels and zero-volume mute, an original synthesized background loop, persisted window/fullscreen/resolution/UI scale, conflict-safe remapping, safe restart and clean audio shutdown are implemented. Bus tests do not substitute for listening/accessibility testing.
-- Official Linux and Windows x86_64 release templates are pinned and verified by file digest. Export tooling requires committed source, records export provenance, ships font/Godot notices and excludes editor/test/work assets. Native Linux smoke passed 80 simulation ticks and a real 1440×810 rendered capture with clean shutdown; evidence is tied to exe/pck hashes before packaging. Windows execution remains unverified.
-- Local Git is initialized. No GitHub remote repository has been created or pushed. Source archives are local deliverables, not remote backups or a settled public license grant.
+- Three selectable independent campaigns: Canyon/裂谷突围, Delta/双桥湿地 and Ridge/山脊换防. They have different legal terrain/ramp/bridge routes, resource placement, retreat positions and pursuit timing. Each begins with its own inventory and forces. Wetland water/bridges and ridge rock palettes are rendered from mission visual metadata.
+- Public-command victories: Canyon 1590.0 seconds/6 evacuees; Delta 1654.3/5; Ridge 1782.5/6. New routes complete both resource branches, three camps, real deliveries, west-gate sealing and deliberate abandonment. Each new route actually serializes/loads during middle-camp evacuation, then pays 140 materials/45 fuel/30 supplies and completes the real six-power exit before vehicle/survivor arrival.
+- Catalog reset/save integration preserves the original Canyon creation order, initial encoded state and rift_escape_01 save tag. New mission tags are validated before live-state replacement. Invalid mission IDs fail atomically; mission definitions are returned as defensive copies.
+- Read-only guide targets, branch text and safe gate checks follow actual mission landmarks. Existing north/south save values retain material/fuel meanings even where geographic directions reverse. Old v1 guide states remain readable. Partial-road hints now identify the remaining extension rather than prompting a duplicate order or unreachable camp.
+- Campaign selection from title/pause/end menus, confirmation before replacing a live run, old-run AUTO recovery and manual/backup preservation. Short screens at 1280x720/120% keep selection, guide, settings, help and confirmation usable; controls paginate six per page there, ten on normal screens.
+- Exact-state simulation optimization reduces the canonical 1800-tick CPU median from 20.987 to 14.756 ms. A 600-tick baseline/candidate pair compares complete encoded state after every tick. Campaign170, navigation125 and real full-mission victory remain passing.
+- Static ground/cliffs, transparent decorations and minimap terrain are cached; roads, actors, cargo, selection, health, orders and effects remain live. Original procedural actors now also render into a reusable eight-frame atlas, retaining vector fallback. Native GPU tests cover read-only rendering, cargo/selection changes, actual completed roads, camera movement and three-map cache invalidation.
+- Full editor-runtime rendered measurements established the original busy 1080p baseline (about 14.66 FPS normal/9.98 strategic), then staged improvements. These were real 32/100 actor workloads, not idle scenes. Final native exported performance and 60-FPS/minimum-hardware acceptance remain separate evidence.
+- New original SVG app icon and generated PNG/ICO layers. Build-time LIEF/pefile tooling writes and independently re-parses Windows icons/version resources; all non-resource bytes, imports, manifest, entrypoint and subsystem are preserved. Native Windows execution remains open.
+- Dedicated native render diagnostics runs only in a fresh isolated data root, measures actual main-loop frames and one real save per zoom, and records executable/PCK hashes. It is not a player-facing game mode and does not alter normal saves/settings.
+- Earlier working input, construction, power, recruitment, convoy, pursuit, atomic save/backup, settings and native-launch behavior remain in place. Local Git only; no GitHub remote has been created or pushed.
 
-## Remaining work toward the full objective
+## Evidence
 
-1. Observe fresh players using the delivered guide and actual hardware input without coaching. Validate the early micro/later macro transition, power/road clarity, abandonment decisions, alternative routes and difficulty pacing.
-2. Improve terrain landmarks, character animation, effects, audio mix and UI readability while retaining the cartoon direction. Complete provenance/license and accessibility review.
-3. Add genuinely different independent campaigns once first-mission decisions and pacing are tested. One campaign is currently implemented.
-4. Profile full rendered native frames at 1080p, strategic zoom and peak evacuation. CPU-only stress measurements are not 60-FPS or minimum-hardware proof. Add extended start/save/load/finish soak and wider seeds/layouts.
-5. Test native Windows and clean Linux machines, full packed-build playthrough/save recovery, final icons/version metadata and missing-device behavior.
-6. Complete actual Steam account/App ID/store/depot/build review and any explicitly advertised Steam features. This project does not yet configure or verify those external steps.
+See docs/evidence/v0.3 and docs/benchmarks/v0.3, plus validation-plan.md. Passing counts include campaign170, navigation125, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection106, UI124, preferences286, separate-process90, GPU cache23 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
 
-No open gate above is treated as passed. See release-gates.md and validation-plan.md for recorded evidence, historical failures and practical limits.
+## Still required
+
+Fresh-player observation and alternative human routes; difficulty/pacing and failure recovery tuning; final animation/audio mix/localization/accessibility/focus review; full native frame pacing/soak/minimum hardware; clean Windows/Linux installation and full packed-build play; final asset/license audit; and actual Steam account/store/depot/build review and any advertised Steam features. No open gate is silently passed, and the goal remains active.

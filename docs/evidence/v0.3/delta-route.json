@@ -1,0 +1,42 @@
+{
+	"abandoned_stock": {
+		"crude": 189.999999999985,
+		"fuel": 40.461600000023,
+		"materials": 0.0,
+		"salvage": 0.0,
+		"supplies": 49.2500000000048
+	},
+	"delivered_trips": {
+		"1": 3,
+		"46": 5
+	},
+	"emergency_abandonment": true,
+	"exit_paid_costs": {
+		"fuel": 45.005,
+		"materials": 140.0,
+		"supplies": 30.0
+	},
+	"exit_powered_progress": true,
+	"failures": [],
+	"json_checkpointed": true,
+	"label": "COMPLETE",
+	"mission": "delta",
+	"sealed_west": true,
+	"summary": {
+		"crude": 137.975000000015,
+		"evacuated": 5,
+		"exit_progress": 1.0,
+		"fuel": 22.2048000000059,
+		"materials": 144.679999999999,
+		"outcome": "victory",
+		"people": 7,
+		"phase": "advance",
+		"power": 14.0,
+		"power_capacity": 24.0,
+		"pursuit_eta": 718.666666666626,
+		"salvage": 146.319999999986,
+		"supplies": 27.5650000000004,
+		"time": 1654.29999999959,
+		"zombies": 100
+	}
+}

@@ -1,0 +1,58 @@
+{
+  "version": "0.3.0-dev",
+  "script_sha256": {
+    "scripts/actor_atlas.gd": "12f1944d749588d7f174d13dadc4d0f77b16d505ff3fc5213c5f9a2853aba07f",
+    "scripts/actor_canvas.gd": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+    "scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+    "scripts/campaign_guide.gd": "c883ad89733b7fbed34b254e99adbb2f038d12e466b79004259144d60d40f215",
+    "scripts/campaign_save_store.gd": "f26708434ac96871f89795f402748a6a39330e49390c2bf574e359c86ac5ecf1",
+    "scripts/campaign_simulation.gd": "ebac56e95a2c2fe3bd8ea26747719c96a8d194351d0161dc0959eebcf3780943",
+    "scripts/cartoon_canvas.gd": "9367f64b02eecc9349e1b19a187c13d07fa3701f1ee0336b3374f6c3b09ac48d",
+    "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+    "scripts/diagnostics/render_runner.gd": "95d42ce0fbe672f7c6e4bf7230a99f3cea7947d0d20aa48f23353c16c12cd88b",
+    "scripts/hud.gd": "8efb27dc1048474d7f4532c93b15706c02ae66274db877cf42713f4a41ffd5cc",
+    "scripts/main.gd": "c76539491c436e1b6a38aa0cead266ba17b3632eaad0a49bb2b39edaa3e65db7",
+    "scripts/terrain_cache.gd": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+    "scripts/world_view.gd": "ab668298166ba229db48f4f3f1e5a793148cfa65fb8ac37bf75d9340522f6687"
+  },
+  "physical_script_lines": 7670,
+  "independent_missions": {
+    "canyon": {
+      "seconds": 1590,
+      "evacuated": 6
+    },
+    "delta": {
+      "seconds": 1654.3,
+      "evacuated": 5
+    },
+    "ridge": {
+      "seconds": 1782.5,
+      "evacuated": 6
+    }
+  },
+  "verified_checks": {
+    "campaign": 170,
+    "navigation_combat": 125,
+    "file_store": 134,
+    "catalog": 152,
+    "variants_basic": 115,
+    "delta_full_route": 116,
+    "ridge_full_route": 116,
+    "guide_full_canyon": 102,
+    "mission_guide": 137,
+    "campaign_selection": 106,
+    "rendered_ui": 124,
+    "preferences_recovery": 286,
+    "cross_process": 90,
+    "render_cache": 23,
+    "native_diagnostic_preflight": 40,
+    "engine_event_dispatch": 48
+  },
+  "not_verified": [
+    "fresh-human playability",
+    "minimum hardware/stable60fps",
+    "native Windows execution/clean machines",
+    "final sound/mix/accessibility",
+    "Steam accounts/store/build review"
+  ]
+}

@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Original vector artwork for Outpost Exodus. Geometry only; no fonts or external assets. -->
+  <defs>
+    <clipPath id="badge"><rect x="18" y="18" width="476" height="476" rx="100"/></clipPath>
+  </defs>
+  <rect x="18" y="18" width="476" height="476" rx="100" fill="#24373a" stroke="#111d20" stroke-width="20"/>
+  <g clip-path="url(#badge)" stroke="#182326" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Broad silhouettes remain legible at launcher and taskbar sizes. -->
+    <path d="M30 330 100 300 170 318 222 289 289 309 355 283 487 319 518 518H-8Z" fill="#a86b43" stroke-width="14"/>
+    <path d="M28 332 99 305 167 326 223 299 289 320 355 294 492 330 484 381 425 365 375 389 314 368 246 388 170 367 110 390 30 369Z" fill="#d7af73" stroke-width="12"/>
+    <path d="m79 401 24 18-11 43M395 414l-20 34 19 26M164 442l-23 38" fill="none" stroke="#754b35" stroke-width="13"/>
+    <!-- The escape road leaves the open gate and winds down the cliff. -->
+    <path d="M301 287C302 321 409 315 411 350S287 380 269 411 298 463 228 519" fill="none" stroke-width="65"/>
+    <path d="M301 287C302 321 409 315 411 350S287 380 269 411 298 463 228 519" fill="none" stroke="#edc88c" stroke-width="43"/>
+    <path d="m349 330 20 3m15 22-22 7m-55 27-16 9m-13 44-3 19" fill="none" stroke="#bd8954" stroke-width="7"/>
+    <!-- Scrap watchtower: massive roof, open lookout, braced timber feet. -->
+    <path d="m131 223-19 114h28l23-114m72 0 24 113h-30l-25-113" fill="#aa774e" stroke-width="13"/>
+    <path d="m134 251 94 68m-85 2 76-72" fill="none" stroke-width="15"/>
+    <path d="M123 144h22v90h-22zm94 0h22v90h-22z" fill="#d4ad71" stroke-width="10"/>
+    <path d="m105 144 72-57 80 53-8 23H111Z" fill="#70a8ab" stroke-width="13"/>
+    <path d="m176 88-8 64m38-41 37 29" fill="none" stroke="#467b80" stroke-width="10"/>
+    <path d="M112 222h140v30H112Z" fill="#bd8d5c" stroke-width="12"/>
+    <path d="M129 222v-23h47l11 23m8 0v-23h42v23" fill="#e1bd82" stroke-width="10"/>
+    <circle cx="132" cy="237" r="4" fill="#182326" stroke="none"/>
+    <circle cx="232" cy="237" r="4" fill="#182326" stroke="none"/>
+    <!-- A cyan lamp is a clear secondary landmark beneath the roof. -->
+    <path d="M181 164v15" fill="none" stroke-width="8"/>
+    <rect x="165" y="179" width="32" height="33" rx="8" fill="#6ce6df" stroke-width="9"/>
+    <path d="M174 189h13" fill="none" stroke="#c6fff1" stroke-width="5"/>
+    <!-- Open camp gate, teal plate and orange hazard edge. -->
+    <path d="M268 246h25v65h-25zm78-2h26v68h-26z" fill="#79a6a4" stroke-width="11"/>
+    <path d="M278 248v-29h81v27" fill="none" stroke-width="18"/>
+    <path d="M280 223h76" fill="none" stroke="#d6b276" stroke-width="12"/>
+    <path d="m269 276 21-15m58 29 22-15" fill="none" stroke="#ed8a38" stroke-width="12"/>
+    <!-- Energy, a recurring camp resource, forms the dominant sky mark. -->
+    <path d="m367 66-71 111 55-11-25 65 101-124-63 17 29-58Z" fill="#f49a38" stroke-width="12"/>
+    <path d="m361 89-36 62 36-8" fill="none" stroke="#ffd07b" stroke-width="8"/>
+  </g>
+  <rect x="22" y="22" width="468" height="468" rx="96" fill="none" stroke="#d3a669" stroke-opacity=".36" stroke-width="5"/>
+</svg>

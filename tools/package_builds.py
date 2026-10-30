@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import zipfile
 
@@ -28,6 +29,8 @@ def sha256(path: Path) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=PROJECT.parent)
+    parser.add_argument("--performance-report", type=Path, required=True,
+                        help="Full native Linux render diagnostics JSON for the current exe/PCK")
     options = parser.parse_args()
     if git("status", "--porcelain"):
         raise SystemExit("Commit the candidate first: packaging requires a clean source tree.")
@@ -46,6 +49,23 @@ def main() -> None:
         payload = PROJECT / "builds" / "linux-release" / name
         if not payload.is_file() or smoke.get("payload_sha256", {}).get(name) != sha256(payload):
             raise SystemExit("Linux native smoke evidence is stale; rerun tools/smoke_native.py.")
+    performance = json.loads(options.performance_report.read_text())
+    if any(performance.get(key) is not True for key in ("native_export_proof", "performance_evidence", "valid_workload")) or performance.get("errors"):
+        raise SystemExit("Require a successful full native render measurement; quick/editor data is insufficient.")
+    if performance.get("binaries_changed_during_run") or performance.get("source_changed_during_run"):
+        raise SystemExit("Native render measurement changed its source or payload during the run.")
+    for key, name in (("executable", "outpost-exodus.x86_64"), ("adjacent_pck", "outpost-exodus.pck")):
+        expected = sha256(PROJECT / "builds/linux-release" / name)
+        if any(performance.get(stage, {}).get(key, {}).get("sha256") != expected for stage in ("binaries_before", "binaries_after")):
+            raise SystemExit("Native render evidence is stale; remeasure the current export.")
+    zooms = performance.get("zooms", [])
+    if {zoom.get("name") for zoom in zooms} != {"normal", "strategic"}:
+        raise SystemExit("Measure both normal and strategic zoom before packaging.")
+    for zoom in zooms:
+        if zoom.get("measured_frames", 0) < 600 or zoom.get("warmup_frames", 0) < 120 or not zoom.get("valid_workload"):
+            raise SystemExit("Native render workload/frame coverage is incomplete.")
+        if not zoom.get("save_measurements") or not all(save.get("write_and_read_valid") for save in zoom["save_measurements"]):
+            raise SystemExit("Native render run did not verify its real mid-run save.")
     output = options.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     source_name = f"outpost-exodus-source-{version}.zip"
@@ -60,6 +80,10 @@ def main() -> None:
     for platform, executable in (("linux", "outpost-exodus.x86_64"), ("windows", "outpost-exodus.exe")):
         directory = PROJECT / "builds" / f"{platform}-release"
         files = [directory / name for name in (executable, "outpost-exodus.pck", "FONT-NOTICE.txt", "GODOT-LICENSE.txt", "GODOT-COPYRIGHT.txt")]
+        if platform == "linux":
+            target = directory / "native-render-measurement.json"
+            shutil.copy2(options.performance_report, target)
+            files.append(target)
         missing = [str(path) for path in files if not path.is_file()]
         if missing:
             raise SystemExit(f"Missing native export files: {missing}")
@@ -79,6 +103,8 @@ def main() -> None:
             "platform": f"{platform} x86_64 official release template",
             "development_build": True, "steam_ready": False,
             "native_launch_verified_here": platform == "linux",
+            "native_render_measured_here": platform == "linux",
+            "performance_measurement_is_not_minimum_hardware_or_60fps_acceptance": True,
             "validation": "See source docs/validation-plan.md and docs/current-checkpoint.md for exact evidence and limits.",
             "sha256": {path.name: sha256(path) for path in files},
         }
@@ -89,15 +115,16 @@ def main() -> None:
 {launch}
 可执行文件与 outpost-exodus.pck 必须保留在同一目录，无需安装 Godot 编辑器。
 
-开始：菜单选择“开始峡谷战役”，按左侧引导行动。
+开始：菜单选择“选择战役”，可玩裂谷突围、双桥湿地、山脊换防三场独立战役。
+每关从自己的队伍与库存开始；当前进行中的切关会先确认并保存旧局到自动存档。
 操作：左键选择/拖框，右键移动，X攻击移动；WASD/中键/滚轮控制镜头。
 小地图左键定位，右键下令；B建设、V指挥、P生产、N训练。
 Ctrl+1–4保存编队，1–4选择；Space战术暂停；F5手动保存、F9读取。
 Esc菜单提供设置、帮助、自动存档和手动存档备份恢复。
 后方追兵会迫使你撤营。先运走口粮、燃料与建材，给出口工程和当地发电预留资源。
 
-这是内部开发版，当前只包含一场峡谷战役。代码提交：{commit}
-Linux在开发机器启动和渲染验证；Windows仅完成导出和文件格式检查，尚未在Windows执行。
+这是内部开发版，包含三场独立战役。代码提交：{commit}
+Linux在开发机器启动、渲染并测量忙碌场景；Windows已验证图标/版本资源及PE结构，尚未在Windows执行。
 人工可玩性、最低配置、完整美术/音效与Steam发布验证仍在进行，详细状态见同版源码docs。
 存档和设置写入系统用户数据目录，不写入安装目录。请保留随包字体和Godot版权通知。
 """

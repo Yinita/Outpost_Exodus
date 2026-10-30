@@ -1,6 +1,7 @@
 extends Node2D
 
 const Simulation = preload("res://scripts/campaign_simulation.gd")
+const Catalog = preload("res://scripts/campaign_catalog.gd")
 const WorldView = preload("res://scripts/world_view.gd")
 const Hud = preload("res://scripts/hud.gd")
 const Guide = preload("res://scripts/campaign_guide.gd")
@@ -22,6 +23,9 @@ var attack_move: bool = false
 var pending_task: String = ""
 var started: bool = false
 var menu: String = "title"
+var selected_mission_id: String = Catalog.DEFAULT_ID
+var pending_mission_id: String = ""
+var campaign_return_menu: String = "title"
 var speed: float = 1.0
 var volume: float = 0.6
 var music_volume: float = 0.35
@@ -66,10 +70,26 @@ var command_names: Dictionary = {
 }
 
 func _ready() -> void:
+	var diagnostics: Script
+	if OS.get_cmdline_user_args().has("--render-diagnostics"):
+		diagnostics = load("res://scripts/diagnostics/render_runner.gd") as Script
+		var isolation_errors: Array[String] = diagnostics.validate_environment()
+		if not isolation_errors.is_empty():
+			for error: String in isolation_errors: printerr("DIAGNOSTICS_REFUSED ", error)
+			get_tree().quit(2)
+			return
 	_setup_inputs()
 	_load_settings()
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--mission="):
+			var requested: String = argument.trim_prefix("--mission=")
+			if not Catalog.ids().has(requested):
+				printerr("Unknown mission: ", requested)
+				get_tree().quit(2)
+				return
+			selected_mission_id = requested
 	sim = Simulation.new()
-	sim.reset(42)
+	sim.reset(42, selected_mission_id)
 	guide.reset(guide_enabled)
 	selected_camp = int(sim.camps[0].id)
 	world = WorldView.new()
@@ -77,7 +97,7 @@ func _ready() -> void:
 	world.world_font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
 	add_child(world)
 	camera = Camera2D.new()
-	camera.position = Vector2(16.0, 22.0) * TILE
+	camera.position = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
 	camera.zoom = Vector2.ONE * 1.05
 	add_child(camera)
 	var layer: CanvasLayer = CanvasLayer.new()
@@ -100,7 +120,11 @@ func _ready() -> void:
 		if arg == "--smoke":
 			capture_frames = 240
 			start_campaign()
-	_notify("欢迎来到峡谷。先选择小队，清理燃料点并建立前哨。")
+	_notify("欢迎来到逐营突围。选择战役，带领小队开路并转移营地。")
+	if diagnostics != null:
+		var runner: Node = diagnostics.new()
+		runner.app = self
+		get_tree().root.call_deferred("add_child", runner)
 
 func _setup_inputs() -> void:
 	var bindings: Dictionary = {
@@ -120,6 +144,7 @@ func _setup_inputs() -> void:
 		InputMap.action_add_event(action, key)
 
 func _process(delta: float) -> void:
+	if menu == "settings": settings_page = clampi(settings_page, 0, (command_names.size() - 1) / settings_binding_page_size())
 	feedback_left = maxf(0.0, feedback_left - delta)
 	sound_cooldown = maxf(0.0, sound_cooldown - delta)
 	if started and menu.is_empty():
@@ -198,6 +223,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				attack_move = false
 			elif not build_kind.is_empty():
 				build_kind = ""
+			elif menu == "campaigns":
+				ui_action("campaign_back")
+			elif menu == "restart":
+				ui_action("resume")
 			elif menu == "settings" or menu == "help":
 				menu = "pause" if started else "title"
 			else:
@@ -369,20 +398,50 @@ func focus_camp(id: int) -> void:
 func ui_action(action: String) -> void:
 	_play_tone(500.0, 0.04, 0.18)
 	if action == "new":
-		if started and sim.outcome == "playing": menu = "restart"
+		if started and sim.outcome == "playing":
+			pending_mission_id = String(sim.mission_id)
+			menu = "restart"
 		else: start_campaign()
+	elif action == "campaigns":
+		campaign_return_menu = menu if menu in ["title", "pause", "victory", "defeat"] else ("pause" if started else "title")
+		pending_mission_id = ""
+		menu = "campaigns"
+	elif action == "campaign_back":
+		pending_mission_id = ""
+		menu = campaign_return_menu
+	elif action.begins_with("campaign:"):
+		var requested: String = action.trim_prefix("campaign:")
+		if not Catalog.ids().has(requested):
+			_notify("无法选择此战役，当前进度保持不变。")
+			return
+		if started and sim.outcome == "playing":
+			pending_mission_id = requested
+			menu = "restart"
+		else: start_campaign(requested)
 	elif action == "restart_confirm":
+		var requested: String = pending_mission_id if not pending_mission_id.is_empty() else (String(sim.mission_id) if started else selected_mission_id)
+		if not Catalog.ids().has(requested):
+			_notify("无法选择此战役，当前进度保持不变。")
+			return
 		if started and not save_campaign(false):
 			_notify("自动保存失败，未重新开始；请先手动保存或检查存储空间。")
 			return
-		start_campaign()
-	elif action == "resume": menu = ""
+		start_campaign(requested)
+	elif action == "resume":
+		pending_mission_id = ""
+		menu = ""
 	elif action == "title":
 		if started and sim.outcome == "playing": save_campaign(false)
 		started = false
+		pending_mission_id = ""
 		menu = "title"
 		build_kind = ""
 		pending_task = ""
+	elif action.begins_with("guide_branch:"):
+		var branch: String = action.trim_prefix("guide_branch:")
+		if branch in ["north", "south", "any"]:
+			guide.observe("branch", {"kind": branch})
+			guide.update(sim, selected_ids, selected_camp)
 	elif action == "guide_more": menu = "guide"
 	elif action == "load": load_campaign()
 	elif action == "save": save_campaign()
@@ -393,7 +452,7 @@ func ui_action(action: String) -> void:
 	elif action.begins_with("settings_tab:"):
 		settings_tab = action.trim_prefix("settings_tab:")
 	elif action == "bindings_prev": settings_page = maxi(0, settings_page - 1)
-	elif action == "bindings_next": settings_page = mini((command_names.size() - 1) / 10, settings_page + 1)
+	elif action == "bindings_next": settings_page = mini((command_names.size() - 1) / settings_binding_page_size(), settings_page + 1)
 	elif action == "bindings_reset":
 		_setup_inputs()
 		waiting_binding = ""
@@ -475,8 +534,14 @@ func ui_action(action: String) -> void:
 			pending_task = action.trim_prefix("task:")
 			_notify("在地图左键选择任务区域；也可在小地图右键指定。")
 
-func start_campaign() -> void:
-	sim.reset(42)
+func start_campaign(mission_id: String = "") -> void:
+	var requested: String = selected_mission_id if mission_id.is_empty() else mission_id
+	if not Catalog.ids().has(requested):
+		_notify("无法选择此战役，当前进度保持不变。")
+		return
+	sim.reset(42, requested)
+	selected_mission_id = String(sim.mission_id)
+	pending_mission_id = ""
 	guide.reset(guide_enabled)
 	guide.update(sim, [], int(sim.camps[0].id))
 	started = true
@@ -496,9 +561,9 @@ func start_campaign() -> void:
 	selected_ids.clear()
 	for unit: Dictionary in sim.units:
 		if unit.get("team") == "friendly" and unit.get("kind") in ["rifle", "engineer"]: selected_ids.append(unit.id)
-	camera.position = Vector2(16, 22) * TILE
+	camera.position = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
 	camera.zoom = Vector2.ONE * 1.05
-	_notify("第一战役 · 峡谷突围。前方清场扩张，后方尸潮将在整备期后抵达。H 查看操作。")
+	_notify("%s · 前方清场扩张，后方尸潮将在整备期后抵达。%s 查看操作。" % [String(sim.mission_name), binding_label("help_menu")])
 
 func _save_payload() -> Dictionary:
 	var state: Dictionary = sim.save_state()
@@ -586,6 +651,8 @@ func load_campaign(slot: String = "manual") -> bool:
 	# Every metadata field and the complete simulation have been validated before
 	# touching the live run. Simulation.load_state is itself transactional.
 	if not sim.load_state(data): return false
+	selected_mission_id = String(sim.mission_id)
+	pending_mission_id = ""
 	guide = restored_guide
 	started = true
 	menu = ""
@@ -606,7 +673,8 @@ func load_campaign(slot: String = "manual") -> bool:
 		var group_ids: Array = []
 		for id: Variant in ui.groups[key]: group_ids.append(int(id))
 		group_bindings[int(key)] = group_ids
-	camera.position = Vector2(float(ui.get("camera_x", 624)), float(ui.get("camera_y", 1008)))
+	var home_camera: Vector2 = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
+	camera.position = Vector2(float(ui.get("camera_x", home_camera.x)), float(ui.get("camera_y", home_camera.y)))
 	camera.zoom = Vector2.ONE * float(ui.get("zoom", 1.05))
 	selected_camp = int(ui.get("selected_camp", 0))
 	if sim.get_camp(selected_camp).is_empty(): selected_camp = int(sim.camps[0].id)
@@ -651,6 +719,9 @@ func _try_bind(action: String, event: InputEventKey) -> bool:
 	settings_feedback = "%s 已设为 %s。" % [command_names[action], binding_label(action)]
 	_save_settings()
 	return true
+
+func settings_binding_page_size() -> int:
+	return 6 if get_viewport_rect().size.y < 736 else 10
 
 func _setting_number(value: Variant, fallback: float, minimum: float, maximum: float) -> float:
 	return clampf(float(value), minimum, maximum) if _valid_number(value) else fallback
