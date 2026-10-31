@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+PASS _test_new_game_and_keyboard_dispatch
+PASS _test_single_shift_and_box_selection
+PASS _test_right_click_orders
+PASS _test_release_over_hud
+PASS _test_middle_release_over_hud
+PASS _test_menu_blocks_combat_dispatch
+PASS _test_double_click_visible_same_kind
+Engine input dispatch checks: 48; failures: 0
+Isolated user data: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/input-dispatch-data/godot/app_userdata/逐营突围 · Outpost Exodus

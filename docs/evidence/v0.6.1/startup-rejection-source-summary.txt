@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "cases": 3,
+  "passed_checks": 15,
+  "report": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/result.json",
+  "errors": []
+}

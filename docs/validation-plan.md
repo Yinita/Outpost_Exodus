@@ -276,3 +276,31 @@ The first0.6 export was rejected by the clean-tree guard when import created fou
 
 
 The diagnostic-only startup correction now records native focus samples and waits for12consecutive focused/non-suspended/non-minimized rendered frames before installing the measured scene; failure remains an explicit diagnostic error. Its explicit quick editor-capable probe settles in about282milliseconds and observes4normal/5strategic real ticks with32/100actors, while current isolated preflight40passes. These are functional startup checks, not accepted performance or completed-haul evidence. An unchanged1dec nativeMainCLI smoke reaches80ticks/30units, retained with its earlier payload identity. The next full measurement still requires a newly exported committed candidate and fresh isolation.
+
+
+The subsequent0.6`native-v06-focused` export at`f2894b3bdc13be0c513bfe10b9ad8cb5d3655c00` passed both3600frame workloads and real saves, with means59.790/59.625FPS. Its accepted report is external exact-payload0.6evidence; the preceding failed attempts remain historical records. It does not establish0.6.1performance or minimum hardware.
+
+## 0.6.1 actual-loop native campaign validation
+
+The new validator addresses a separate open gate: an entire campaign must execute through the actual exported Main loop, renderer and file layer. Existing headless source-project routes remain useful rule evidence; they do not prove the packed game's complete20 Hz execution. The bundled `--campaign-validation` entry uses the unchanged Canyon rules and public player commands. It retains normal Engine.time_scale = 1, chooses3×through normal UI actions and never calls `sim.tick()` or Main._process manually. Minimum simulated economic windows remain in the route, with actual completion/capture/delivery conditions added.
+
+Main validates a fresh dedicated `CAMPAIGN_VALIDATION_ROOT` and XDG children before reading settings. The Linux helper also reads the actual process command line from `/proc/self/cmdline`, since Godot strips recognized engine arguments from its public argument list. Fixed-FPS, engine time-scale, disabled render-loop and movie-writing switches are rejected. Native focus must settle before start; product focus suspension stays active and interruption rejects the run. A separate wall-clock watchdog prevents a paused or stalled scenario from appearing complete.
+
+At loaded outbound middle withdrawal, real synchronous `save_campaign()` and `load_campaign()` must preserve normalized complete simulation/RNG and saved UI metadata. The guide's derived cache is refreshed read-only before saving because Main refreshes it on load. IDs are retained and dictionaries re-read after load. Continued delivery, three actual middle parcels, deliberate remaining-stock abandonment, paid140 materials/45 fuel / 30 supplies exit construction, local power, command-truck arrival and at least four evacuees are required. Final primary/backup automatic saves must also validate.
+
+Run the wrapper after a clean committed export, from a source checkout that contains the tools. After separate native frame/smoke checks and packaging, prefer the actual unpacked Linux download as `--build-dir`; a direct export directory is also supported:
+
+```bash
+DISPLAY=:0 python3 tools/run_native_campaign.py \
+  --build-dir "$PWD/builds/linux-release" \
+  --isolation-root "$PWD/work/native-campaign-v061-full" \
+  --max-seconds 900
+```
+
+Use a different fresh root for `--prepare-only`. The launcher verifies source-commit metadata and EXE/PCK identities before and after the owned native process, rejects script/error/leak output, and validates `output/campaign-validation.json`. `output/campaign-progress.json` is observation only; `verification.json` cannot become successful until the final report, clean process exit and all exact-payload checks pass. Neither mode produces FPS evidence. Final0.6.1 full native route and native frame measurement are pending this candidate snapshot; eventual reports must bind to their actual EXE/PCK.
+
+`docs/evidence/v0.6.1` retains the editor-capable prepare check, static/compile results and diagnostic guard/capability baselines with explicit limits. NativeWindows, clean machines, mouse-driven full UI, human playability/listening, final asset/accessibility/license review, minimum hardware/frame pacing and actual Steam review remain open.
+
+A subsequent actual Main negative startup probe exposed processing before world initialization after a queued diagnostic refusal. Main now disables processing/input before quitting for validation rejection or unknown mission. The original nil-access baseline and clean fixed expected-exit2 output remain separate. Editor-prepare and48input records before this narrow negative-path fix are not claimed as exact final-Main evidence.
+
+The final actual-Main source startup regression runs three isolated cases: campaign validation without its dedicated root, render validation without its root, and an unknown mission. All15checks pass, each process returns expected exit2 with the intended marker, and no script/error/leak output, settings/saves or source drift occurs. The Python test can target a native build after export; that mode is not claimed by the source result.

@@ -1,0 +1,469 @@
+{
+	"automatic_saves": {
+		"backup": {
+			"exists": false,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/campaign-prepare-editor/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json.bak",
+			"schema_valid": false,
+			"sha256": "",
+			"simulation_time": null
+		},
+		"observed_file_changes": 0,
+		"primary": {
+			"exists": false,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/campaign-prepare-editor/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+			"schema_valid": false,
+			"sha256": "",
+			"simulation_time": null
+		}
+	},
+	"binaries_after": {
+		"adjacent_pck": {
+			"available": false,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.pck",
+			"sha256": null
+		},
+		"executable": {
+			"available": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+			"sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+		}
+	},
+	"binaries_before": {
+		"adjacent_pck": {
+			"available": false,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.pck",
+			"sha256": null
+		},
+		"executable": {
+			"available": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+			"sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e"
+		}
+	},
+	"binaries_changed": false,
+	"captures": [],
+	"checks": 7,
+	"complete_campaign_evidence": false,
+	"display_server": "X11",
+	"errors": [],
+	"events": [
+		{
+			"event": "campaign_started",
+			"initial_state_sha256": "561d92d6d9c06f724cd0a3987e797209052b7f3cf0666e2d61b952bf55c416a6",
+			"main_tick_count": 0,
+			"mission": "canyon",
+			"simulation_time": 0.0,
+			"speed": 3.0,
+			"wall_seconds": 0.623749
+		},
+		{
+			"event": "wait_started",
+			"label": "prepare-only actual main-loop progress",
+			"main_tick_count": 0,
+			"simulation_deadline": 6.0,
+			"simulation_time": 0.0,
+			"wall_seconds": 0.623944
+		},
+		{
+			"event": "wait_complete",
+			"label": "prepare-only actual main-loop progress",
+			"main_tick_count": 20,
+			"simulation_time": 1.0000000000000002,
+			"wall_seconds": 0.945993
+		}
+	],
+	"final": {
+		"evacuated": 0,
+		"exit_powered": false,
+		"exit_progress": 0.0,
+		"outcome": "playing",
+		"summary": {
+			"crude": 0.0,
+			"evacuated": 0,
+			"exit_progress": 0.0,
+			"fuel": 109.93099999999998,
+			"materials": 220.0,
+			"outcome": "playing",
+			"people": 7,
+			"phase": "preparation",
+			"power": 5.0,
+			"power_capacity": 12.0,
+			"pursuit_eta": 891.8571428571428,
+			"salvage": 45.0,
+			"supplies": 150.31000000000006,
+			"time": 1.0000000000000002,
+			"zombies": 23
+		},
+		"truck_distance": 61.13100814819336,
+		"truck_state": "idle"
+	},
+	"gpu_adapter": "NVIDIA GeForce RTX 5060",
+	"main_loop": {
+		"fixed_step_seconds": 0.05,
+		"invalid_time_steps": 0,
+		"observed_frames": 20,
+		"observed_sim_seconds": 1.0000000000000002,
+		"observed_ticks": 20,
+		"raw_main_ticks": 20,
+		"terminal_noop_ticks": 0
+	},
+	"max_fps": 0,
+	"native_export_proof": false,
+	"os": "Linux",
+	"prepare_complete": true,
+	"prepare_only": true,
+	"recorded_utc": "2026-10-31 03:06:46Z",
+	"rendering_method": "gl_compatibility",
+	"route": {
+		"not_run": true,
+		"success": false
+	},
+	"runtime": {
+		"build": "official",
+		"hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+		"hex": 263938,
+		"major": 4,
+		"minor": 7,
+		"patch": 2,
+		"status": "stable",
+		"string": "4.7.2-stable (official)",
+		"timestamp": 0
+	},
+	"save_reload": {
+		"success": false
+	},
+	"schema_version": 1,
+	"scope": "Public-command automated Canyon route through actual Main20Hz fixed simulation, renderer and file save/load. No direct simulation step/state injection; standard3x UI speed. Not physical-mouse, human-playability, Windows, clean-machine or FPS evidence.",
+	"sources_after": {
+		"res://assets/audio/canyon_ambient.wav": {
+			"sha256": "4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_build.wav": {
+			"sha256": "1e8ef2be5057c330760bf84c4a320fe7b611b973cfc63190f3f8af9f72763977",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_confirm.wav": {
+			"sha256": "65cdda9a1997f596b40ed1fb021ed081701f0f98343d82b1d3181d290f544091",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_impact.wav": {
+			"sha256": "49fcb7bf0d03229f8fc1a04454412f910869936420899e09b594b64c77e89661",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_loot.wav": {
+			"sha256": "8d7e64549b23991d6851884619571e1dafb5b4d49429d79f5a565e545908e91c",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_reject.wav": {
+			"sha256": "aba491d27649b3513e0603a5daba29f256dc4536bfc9f3ec450c330c7a5cf436",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_shot_a.wav": {
+			"sha256": "67420ad0bc3a66fa5369867bd9685b555ac1a6ca0011739704676847703d4fba",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_shot_b.wav": {
+			"sha256": "c3f780271090f978d14b85df9bb5cd4c0bd2a6325969150feda72a6064f0405f",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_warning.wav": {
+			"sha256": "0fed177282618be9a9665ceca50c450e393f05339d4b45cfb3a086e6f7e9cd54",
+			"status": "source_available"
+		},
+		"res://assets/buildings-atlas.png": {
+			"sha256": "64b3410843505cbed18438f839b8e49d7242c1c3dbd944369a9a95a35906afc3",
+			"status": "source_available"
+		},
+		"res://assets/fonts/NotoSansCJK-Regular.ttc": {
+			"sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+			"status": "source_available"
+		},
+		"res://main.tscn": {
+			"sha256": "adf348911449e73f956fabed42b487d062ad633b7577a4c6d07018f59498341c",
+			"status": "source_available"
+		},
+		"res://project.godot": {
+			"sha256": "deae45b77790df73a32906b56415dee123facbb8f38ef94ac93d81558b528cd6",
+			"status": "source_available"
+		},
+		"res://scripts/actor_atlas.gd": {
+			"sha256": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+			"status": "source_available"
+		},
+		"res://scripts/actor_canvas.gd": {
+			"sha256": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_catalog.gd": {
+			"sha256": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_guide.gd": {
+			"sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_save_store.gd": {
+			"sha256": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_simulation.gd": {
+			"sha256": "1e381e2fa0031c9ba67920caa1cbb5252eaf23052f827d99b9f9152e555851f7",
+			"status": "source_available"
+		},
+		"res://scripts/cartoon_canvas.gd": {
+			"sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+			"status": "source_available"
+		},
+		"res://scripts/construction_rules.gd": {
+			"sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701",
+			"status": "source_available"
+		},
+		"res://scripts/decoration_cache.gd": {
+			"sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+			"status": "source_available"
+		},
+		"res://scripts/diagnostics/campaign_route.gd": {
+			"sha256": "1cba36f17f105bdc4a7a402f8b4d3aa7fbe80e86aa379ad12774aade58931ef2",
+			"status": "source_available"
+		},
+		"res://scripts/diagnostics/campaign_runner.gd": {
+			"sha256": "7fa951f529a24d16242aa9bd7beb04307b9d7f7c53e1263671eeb2159eeaa0cf",
+			"status": "source_available"
+		},
+		"res://scripts/diagnostics/render_runner.gd": {
+			"sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c",
+			"status": "source_available"
+		},
+		"res://scripts/game_audio.gd": {
+			"sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+			"status": "source_available"
+		},
+		"res://scripts/hud.gd": {
+			"sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+			"status": "source_available"
+		},
+		"res://scripts/main.gd": {
+			"sha256": "032615c08fbddf658a7acd214972a7057d68706f214acc549b6fbe93f6e0fe38",
+			"status": "source_available"
+		},
+		"res://scripts/recruitment_rules.gd": {
+			"sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190",
+			"status": "source_available"
+		},
+		"res://scripts/render_motion.gd": {
+			"sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+			"status": "source_available"
+		},
+		"res://scripts/terrain_cache.gd": {
+			"sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+			"status": "source_available"
+		},
+		"res://scripts/world_view.gd": {
+			"sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda",
+			"status": "source_available"
+		}
+	},
+	"sources_before": {
+		"res://assets/audio/canyon_ambient.wav": {
+			"sha256": "4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_build.wav": {
+			"sha256": "1e8ef2be5057c330760bf84c4a320fe7b611b973cfc63190f3f8af9f72763977",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_confirm.wav": {
+			"sha256": "65cdda9a1997f596b40ed1fb021ed081701f0f98343d82b1d3181d290f544091",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_impact.wav": {
+			"sha256": "49fcb7bf0d03229f8fc1a04454412f910869936420899e09b594b64c77e89661",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_loot.wav": {
+			"sha256": "8d7e64549b23991d6851884619571e1dafb5b4d49429d79f5a565e545908e91c",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_reject.wav": {
+			"sha256": "aba491d27649b3513e0603a5daba29f256dc4536bfc9f3ec450c330c7a5cf436",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_shot_a.wav": {
+			"sha256": "67420ad0bc3a66fa5369867bd9685b555ac1a6ca0011739704676847703d4fba",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_shot_b.wav": {
+			"sha256": "c3f780271090f978d14b85df9bb5cd4c0bd2a6325969150feda72a6064f0405f",
+			"status": "source_available"
+		},
+		"res://assets/audio/sfx_warning.wav": {
+			"sha256": "0fed177282618be9a9665ceca50c450e393f05339d4b45cfb3a086e6f7e9cd54",
+			"status": "source_available"
+		},
+		"res://assets/buildings-atlas.png": {
+			"sha256": "64b3410843505cbed18438f839b8e49d7242c1c3dbd944369a9a95a35906afc3",
+			"status": "source_available"
+		},
+		"res://assets/fonts/NotoSansCJK-Regular.ttc": {
+			"sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+			"status": "source_available"
+		},
+		"res://main.tscn": {
+			"sha256": "adf348911449e73f956fabed42b487d062ad633b7577a4c6d07018f59498341c",
+			"status": "source_available"
+		},
+		"res://project.godot": {
+			"sha256": "deae45b77790df73a32906b56415dee123facbb8f38ef94ac93d81558b528cd6",
+			"status": "source_available"
+		},
+		"res://scripts/actor_atlas.gd": {
+			"sha256": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+			"status": "source_available"
+		},
+		"res://scripts/actor_canvas.gd": {
+			"sha256": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_catalog.gd": {
+			"sha256": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_guide.gd": {
+			"sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_save_store.gd": {
+			"sha256": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+			"status": "source_available"
+		},
+		"res://scripts/campaign_simulation.gd": {
+			"sha256": "1e381e2fa0031c9ba67920caa1cbb5252eaf23052f827d99b9f9152e555851f7",
+			"status": "source_available"
+		},
+		"res://scripts/cartoon_canvas.gd": {
+			"sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+			"status": "source_available"
+		},
+		"res://scripts/construction_rules.gd": {
+			"sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701",
+			"status": "source_available"
+		},
+		"res://scripts/decoration_cache.gd": {
+			"sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+			"status": "source_available"
+		},
+		"res://scripts/diagnostics/campaign_route.gd": {
+			"sha256": "1cba36f17f105bdc4a7a402f8b4d3aa7fbe80e86aa379ad12774aade58931ef2",
+			"status": "source_available"
+		},
+		"res://scripts/diagnostics/campaign_runner.gd": {
+			"sha256": "7fa951f529a24d16242aa9bd7beb04307b9d7f7c53e1263671eeb2159eeaa0cf",
+			"status": "source_available"
+		},
+		"res://scripts/diagnostics/render_runner.gd": {
+			"sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c",
+			"status": "source_available"
+		},
+		"res://scripts/game_audio.gd": {
+			"sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+			"status": "source_available"
+		},
+		"res://scripts/hud.gd": {
+			"sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+			"status": "source_available"
+		},
+		"res://scripts/main.gd": {
+			"sha256": "032615c08fbddf658a7acd214972a7057d68706f214acc549b6fbe93f6e0fe38",
+			"status": "source_available"
+		},
+		"res://scripts/recruitment_rules.gd": {
+			"sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190",
+			"status": "source_available"
+		},
+		"res://scripts/render_motion.gd": {
+			"sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+			"status": "source_available"
+		},
+		"res://scripts/terrain_cache.gd": {
+			"sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+			"status": "source_available"
+		},
+		"res://scripts/world_view.gd": {
+			"sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda",
+			"status": "source_available"
+		}
+	},
+	"sources_changed": false,
+	"startup_focus": {
+		"elapsed_ms": 240.677,
+		"ready": true,
+		"required_stable_frames": 12,
+		"samples": [
+			{
+				"focused": true,
+				"frame": 0,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 1,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 2,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 3,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 4,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 5,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 6,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 7,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 8,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 9,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 10,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 11,
+				"suspended": false
+			}
+		],
+		"stable_frames": 12
+	},
+	"time_scale": 1.0,
+	"user_data_dir": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/campaign-prepare-editor/data/godot/app_userdata/逐营突围 · Outpost Exodus",
+	"wall_elapsed_seconds": 1.323208
+}

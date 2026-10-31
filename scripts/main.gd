@@ -91,10 +91,17 @@ func _ready() -> void:
 	var diagnostics: Script
 	if OS.get_cmdline_user_args().has("--render-diagnostics"):
 		diagnostics = load("res://scripts/diagnostics/render_runner.gd") as Script
+	elif OS.get_cmdline_user_args().has("--campaign-validation"):
+		diagnostics = load("res://scripts/diagnostics/campaign_runner.gd") as Script
+	if (OS.get_cmdline_user_args().has("--render-diagnostics") or OS.get_cmdline_user_args().has("--campaign-validation")) and (diagnostics == null or not diagnostics.can_instantiate()):
+		printerr("DIAGNOSTICS_REFUSED validation entry could not be loaded")
+		_reject_startup()
+		return
+	if diagnostics != null:
 		var isolation_errors: Array[String] = diagnostics.validate_environment()
 		if not isolation_errors.is_empty():
 			for error: String in isolation_errors: printerr("DIAGNOSTICS_REFUSED ", error)
-			get_tree().quit(2)
+			_reject_startup()
 			return
 	_setup_inputs()
 	_load_settings()
@@ -103,7 +110,7 @@ func _ready() -> void:
 			var requested: String = argument.trim_prefix("--mission=")
 			if not Catalog.ids().has(requested):
 				printerr("Unknown mission: ", requested)
-				get_tree().quit(2)
+				_reject_startup()
 				return
 			selected_mission_id = requested
 	sim = Simulation.new()
@@ -146,6 +153,14 @@ func _ready() -> void:
 		var runner: Node = diagnostics.new()
 		runner.app = self
 		get_tree().root.call_deferred("add_child", runner)
+
+func _reject_startup() -> void:
+	# SceneTree.quit is queued. Retire callbacks before an incomplete scene can
+	# receive its first process/input notification with no simulation or World.
+	set_process(false)
+	set_process_input(false)
+	set_process_unhandled_input(false)
+	get_tree().quit(2)
 
 func _setup_inputs() -> void:
 	var bindings: Dictionary = {

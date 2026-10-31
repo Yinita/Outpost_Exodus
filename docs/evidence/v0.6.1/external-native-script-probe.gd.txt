@@ -1,0 +1,4 @@
+extends SceneTree
+func _initialize() -> void:
+	print("EXTERNAL_NATIVE_SCRIPT_PROBE_EXECUTED")
+	quit()

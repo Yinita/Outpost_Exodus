@@ -1,0 +1,11 @@
+{
+  "recorded_utc": "2026-10-31T03:12:49.999335+00:00",
+  "tool_path": "tools/run_native_campaign.py",
+  "tool_sha256": "695a350460a4fdb12544a692936783872f1205437a387f92f8cdacdebda4ef64",
+  "report_gating_checks": 38,
+  "filesystem_guard_checks": 9,
+  "failures": 0,
+  "python_compile": "passed",
+  "native_game_launched": false,
+  "scope": "Verifier-only synthetic acceptance/rejection and own disposable filesystem safety fixture. Actual native argv proof is mandatory, exact launch args must match, clock/render overrides fail. Not a native gameplay or FPS proof; existing-run sentinel stayed unchanged."
+}

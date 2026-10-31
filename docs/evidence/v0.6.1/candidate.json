@@ -1,0 +1,583 @@
+{
+  "version": "0.6.1-dev",
+  "scope": "Frozen source-candidate snapshot before final export/full native campaign and frame measurement. Physical counts include comments and blanks. Gameplay, packaged diagnostics, test/benchmark scripts, build tools and test-only helpers are separated. Engine, external libraries, assets, caches, exported binaries, serialized scenes and mirrored probe snapshots excluded. Actual binary/commit provenance is supplied by export and separate native reports.",
+  "groups": {
+    "gameplay": {
+      "files": 16,
+      "physical_lines": 8096,
+      "nonblank_lines": 7367,
+      "entries": {
+        "scripts/actor_atlas.gd": {
+          "physical_lines": 98,
+          "nonblank_lines": 81,
+          "sha256": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1"
+        },
+        "scripts/actor_canvas.gd": {
+          "physical_lines": 121,
+          "nonblank_lines": 106,
+          "sha256": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda"
+        },
+        "scripts/campaign_catalog.gd": {
+          "physical_lines": 488,
+          "nonblank_lines": 447,
+          "sha256": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556"
+        },
+        "scripts/campaign_guide.gd": {
+          "physical_lines": 699,
+          "nonblank_lines": 619,
+          "sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda"
+        },
+        "scripts/campaign_save_store.gd": {
+          "physical_lines": 228,
+          "nonblank_lines": 204,
+          "sha256": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc"
+        },
+        "scripts/campaign_simulation.gd": {
+          "physical_lines": 2832,
+          "nonblank_lines": 2594,
+          "sha256": "1e381e2fa0031c9ba67920caa1cbb5252eaf23052f827d99b9f9152e555851f7"
+        },
+        "scripts/cartoon_canvas.gd": {
+          "physical_lines": 215,
+          "nonblank_lines": 185,
+          "sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533"
+        },
+        "scripts/construction_rules.gd": {
+          "physical_lines": 207,
+          "nonblank_lines": 184,
+          "sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701"
+        },
+        "scripts/decoration_cache.gd": {
+          "physical_lines": 5,
+          "nonblank_lines": 5,
+          "sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da"
+        },
+        "scripts/game_audio.gd": {
+          "physical_lines": 201,
+          "nonblank_lines": 169,
+          "sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612"
+        },
+        "scripts/hud.gd": {
+          "physical_lines": 678,
+          "nonblank_lines": 642,
+          "sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7"
+        },
+        "scripts/main.gd": {
+          "physical_lines": 1107,
+          "nonblank_lines": 1056,
+          "sha256": "c73a7676ddda6e76111af6ff6e80d71313641bfb8b691f707693f6199a1ca798"
+        },
+        "scripts/recruitment_rules.gd": {
+          "physical_lines": 180,
+          "nonblank_lines": 157,
+          "sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190"
+        },
+        "scripts/render_motion.gd": {
+          "physical_lines": 68,
+          "nonblank_lines": 52,
+          "sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac"
+        },
+        "scripts/terrain_cache.gd": {
+          "physical_lines": 11,
+          "nonblank_lines": 10,
+          "sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2"
+        },
+        "scripts/world_view.gd": {
+          "physical_lines": 958,
+          "nonblank_lines": 856,
+          "sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda"
+        }
+      }
+    },
+    "diagnostics": {
+      "files": 3,
+      "physical_lines": 1380,
+      "nonblank_lines": 1250,
+      "entries": {
+        "scripts/diagnostics/campaign_route.gd": {
+          "physical_lines": 295,
+          "nonblank_lines": 252,
+          "sha256": "1cba36f17f105bdc4a7a402f8b4d3aa7fbe80e86aa379ad12774aade58931ef2"
+        },
+        "scripts/diagnostics/campaign_runner.gd": {
+          "physical_lines": 390,
+          "nonblank_lines": 341,
+          "sha256": "8cbe73bb34433f876a7c30544d25a779c0f2f36a48ee38c839cb91f8026cbe5c"
+        },
+        "scripts/diagnostics/render_runner.gd": {
+          "physical_lines": 695,
+          "nonblank_lines": 657,
+          "sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c"
+        }
+      }
+    },
+    "tests_and_benchmarks": {
+      "files": 30,
+      "physical_lines": 9320,
+      "nonblank_lines": 8577,
+      "entries": {
+        "tests/benchmark_campaign.gd": {
+          "physical_lines": 326,
+          "nonblank_lines": 312,
+          "sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a"
+        },
+        "tests/benchmark_rendered.gd": {
+          "physical_lines": 562,
+          "nonblank_lines": 534,
+          "sha256": "548610b926bf0f81ea2410adaf454bb38fea258bd3552205a14773e997b12fdc"
+        },
+        "tests/render_fixture.gd": {
+          "physical_lines": 53,
+          "nonblank_lines": 47,
+          "sha256": "5dde89a1d150d3968144775b0b3eeeeb6239f77a2b05cf39f31a94ac783f459d"
+        },
+        "tests/test_actor_overlays.gd": {
+          "physical_lines": 262,
+          "nonblank_lines": 243,
+          "sha256": "b999cb0377635a15ee729e15c7ffa3d180ef9558e43f9910186490c38c91b37c"
+        },
+        "tests/test_campaign.gd": {
+          "physical_lines": 671,
+          "nonblank_lines": 639,
+          "sha256": "adb011d3eeb99b784df6efe934e95d26ab5ac6d9c460a3a75919958dbecd9886"
+        },
+        "tests/test_campaign_catalog.gd": {
+          "physical_lines": 258,
+          "nonblank_lines": 233,
+          "sha256": "be1cf7a4dc3d21e72e9ecb5dcdfa553bf84bcb0ca867e1df82fd48c0b2e6650a"
+        },
+        "tests/test_campaign_diagnostics.gd": {
+          "physical_lines": 196,
+          "nonblank_lines": 173,
+          "sha256": "8fdcc185b5f0f311e322eb6df60cfa8c3773674ac5b9a055be3f87d39f6d402b"
+        },
+        "tests/test_campaign_selection.gd": {
+          "physical_lines": 276,
+          "nonblank_lines": 248,
+          "sha256": "ac04ee3e37f3f12d74c0fa331ac00d89f3d3c23695b1159a5a4556cf3628edad"
+        },
+        "tests/test_campaign_variants.gd": {
+          "physical_lines": 464,
+          "nonblank_lines": 438,
+          "sha256": "e82535eae7ef896270f116a90c9a45923732ad9e6aa386e285b4924270a83bd6"
+        },
+        "tests/test_cartoon_primitives.gd": {
+          "physical_lines": 91,
+          "nonblank_lines": 85,
+          "sha256": "98faf5ea3a460c5d319b410824625828542e4c4c0e9fe82abedcab24013b1cda"
+        },
+        "tests/test_construction_feedback.gd": {
+          "physical_lines": 325,
+          "nonblank_lines": 290,
+          "sha256": "24f2cf61baf88f5dab40e890b57d072670bd219bf0715672a005963016e030b5"
+        },
+        "tests/test_construction_ui.gd": {
+          "physical_lines": 161,
+          "nonblank_lines": 152,
+          "sha256": "2f08b49a868adbf5c807709ccb47586d5668f05044ca9500c5c3a68f817d2788"
+        },
+        "tests/test_cross_process.gd": {
+          "physical_lines": 336,
+          "nonblank_lines": 296,
+          "sha256": "3925172f867cc7ace2e6b96374bbce494f50abe01e6e85b202ec871ada6de2da"
+        },
+        "tests/test_exit_recovery.gd": {
+          "physical_lines": 261,
+          "nonblank_lines": 241,
+          "sha256": "3ea41ec9dbe3c16cff794b11c9b54ad62ba43dbe3b9676c7ba25c0b4f6702cd7"
+        },
+        "tests/test_focus_recovery.gd": {
+          "physical_lines": 325,
+          "nonblank_lines": 301,
+          "sha256": "4a7cfc57347059161e0255d721319ba627eaa5a9d486818b8d23455db6801b37"
+        },
+        "tests/test_game_audio.gd": {
+          "physical_lines": 284,
+          "nonblank_lines": 255,
+          "sha256": "5d40519f50f56e662c0a4050d2fa9c32ae69ecc61904b1244bc87f0c3a95970f"
+        },
+        "tests/test_guide.gd": {
+          "physical_lines": 465,
+          "nonblank_lines": 431,
+          "sha256": "9e93c60234713a182f9b59ec3227a5168365c929c481bd6b6f6dd8a105ea556a"
+        },
+        "tests/test_hud_layout_cache.gd": {
+          "physical_lines": 56,
+          "nonblank_lines": 53,
+          "sha256": "28a68928444eb5aa64d56c411f3fba911e90e3663675b400f5c2f763670fb0db"
+        },
+        "tests/test_input_dispatch.gd": {
+          "physical_lines": 350,
+          "nonblank_lines": 301,
+          "sha256": "9b432a2416ee1d64c7dd6b779810d5c49fd4829c613fc63cfb29e6d0000b0a44"
+        },
+        "tests/test_macro_controls.gd": {
+          "physical_lines": 409,
+          "nonblank_lines": 381,
+          "sha256": "eb62f12aa5b521e8fdaf7a1a7263833f5424c7e510565f75a454ddd4a4629255"
+        },
+        "tests/test_mission_guide.gd": {
+          "physical_lines": 277,
+          "nonblank_lines": 247,
+          "sha256": "4060cfb2df54c37402eb10f4db311938527a7a9e508e723f26dd8d8aca53bb9b"
+        },
+        "tests/test_mission_playthrough.gd": {
+          "physical_lines": 171,
+          "nonblank_lines": 164,
+          "sha256": "5a4d5a5468cb76894c3ba11a8280e30b3a16c18fa439a557a21c2de1eecc764d"
+        },
+        "tests/test_navigation_combat.gd": {
+          "physical_lines": 602,
+          "nonblank_lines": 573,
+          "sha256": "99e6b6d06a0edce07ea44e92b119ec2ac5f5eddaf4b293e97b7c34437c12264d"
+        },
+        "tests/test_preferences_recovery.gd": {
+          "physical_lines": 586,
+          "nonblank_lines": 527,
+          "sha256": "472ea1adc637648c92b1d92a0edcb0d2c27f05f076f159a5f766d3eb8c920a06"
+        },
+        "tests/test_recruitment_feedback.gd": {
+          "physical_lines": 381,
+          "nonblank_lines": 346,
+          "sha256": "97289a8e14bc3d187626f43a2e96c888a8eacecdaafcf966701293dc91d12458"
+        },
+        "tests/test_render_cache.gd": {
+          "physical_lines": 133,
+          "nonblank_lines": 127,
+          "sha256": "52e57d7e8fc81e1179dbf323267fc5d1d131434950e715939fcc965ea5ef2635"
+        },
+        "tests/test_render_diagnostics.gd": {
+          "physical_lines": 129,
+          "nonblank_lines": 121,
+          "sha256": "4cabbbfe26b18d49300243318066c9855914680403d127bb2cc948ae661fdec1"
+        },
+        "tests/test_render_motion.gd": {
+          "physical_lines": 186,
+          "nonblank_lines": 172,
+          "sha256": "9d2fe5435e12f6eab998b645abe438f60f91fd51151ea661add86c470fcc8f93"
+        },
+        "tests/test_save_store.gd": {
+          "physical_lines": 351,
+          "nonblank_lines": 295,
+          "sha256": "a18917490e6cb5bd2df8ed1c514ff003adc31cbc5fd2e6714f71bd7f275c56ca"
+        },
+        "tests/test_ui.gd": {
+          "physical_lines": 373,
+          "nonblank_lines": 352,
+          "sha256": "4f47bf48fbe8a897f6dc11446ae42bb2c7b409020f6d843c099628c5d829d8fc"
+        }
+      }
+    },
+    "build_and_generation_tools": {
+      "files": 7,
+      "physical_lines": 1234,
+      "nonblank_lines": 1124,
+      "entries": {
+        "tools/export_release.sh": {
+          "physical_lines": 71,
+          "nonblank_lines": 71,
+          "sha256": "198c3be3cdec172f1677bb049017a93109af3977a59f9025fb9d8f11e3dc84f1"
+        },
+        "tools/generate_audio.py": {
+          "physical_lines": 39,
+          "nonblank_lines": 38,
+          "sha256": "0ea10f3e662713ec087c6183b77be44d900fd2b9ffde276dba80514a868cf1a6"
+        },
+        "tools/generate_sfx.py": {
+          "physical_lines": 142,
+          "nonblank_lines": 128,
+          "sha256": "b374e2284388b716151b3d5d54010684084038fb531b0de15ff0ddcfb4d12555"
+        },
+        "tools/package_builds.py": {
+          "physical_lines": 144,
+          "nonblank_lines": 131,
+          "sha256": "5856520c0d5514e1989acf3457dffd2fc402f48e574ff860b86a15be3b9b88a1"
+        },
+        "tools/patch_windows_resources.py": {
+          "physical_lines": 303,
+          "nonblank_lines": 265,
+          "sha256": "64ccbbe97b0235d4f37c1e3c086a9c7ea308fba4afc3f25e3a7f34fea099e255"
+        },
+        "tools/run_native_campaign.py": {
+          "physical_lines": 359,
+          "nonblank_lines": 329,
+          "sha256": "695a350460a4fdb12544a692936783872f1205437a387f92f8cdacdebda4ef64"
+        },
+        "tools/smoke_native.py": {
+          "physical_lines": 176,
+          "nonblank_lines": 162,
+          "sha256": "e9080a7b9ed06c056fd3aaa190f94e24ed18f6b9e4c9b6b1b757ee4d2ddfcfad"
+        }
+      }
+    },
+    "other_source_helpers": {
+      "files": 2,
+      "physical_lines": 95,
+      "nonblank_lines": 91,
+      "entries": {
+        "run.sh": {
+          "physical_lines": 14,
+          "nonblank_lines": 14,
+          "sha256": "5f3533e607e00733b225d3525b703866091d5a7a20f4677a5b0623a0c7fbffec"
+        },
+        "tools/render_icon.gd": {
+          "physical_lines": 81,
+          "nonblank_lines": 77,
+          "sha256": "d34b25f6cf8ed466c121ecffdfa304d24def929979d2c15d5b77629fe182ebc2"
+        }
+      }
+    },
+    "native_test_helpers": {
+      "files": 2,
+      "physical_lines": 212,
+      "nonblank_lines": 194,
+      "entries": {
+        "tests/native_focus_helper.py": {
+          "physical_lines": 70,
+          "nonblank_lines": 65,
+          "sha256": "51d9708efe0f1285ca7af1a0d1baa1f654809f3960ca48b48b6d7c5547f0b636"
+        },
+        "tests/test_startup_rejection.py": {
+          "physical_lines": 142,
+          "nonblank_lines": 129,
+          "sha256": "9f40b20e8d1af194a2fc35408bd0e3fadceff93f2f9949b8eaf6f975195519bb"
+        }
+      }
+    }
+  },
+  "all_own_source_physical_lines": 20337,
+  "configuration_sha256": {
+    "project.godot": "97e32c5cd943d6fbff681c54611d919cbe4a10649a9dc306b140ae8bb01f84fa",
+    "main.tscn": "adf348911449e73f956fabed42b487d062ad633b7577a4c6d07018f59498341c",
+    "export_presets.cfg": "eb5e5a53077b1417b41bc600c376fa5600842cc0fc3bca4817f8ad8deacefc00"
+  },
+  "asset_sha256": {
+    "assets/audio/canyon_ambient.wav": "4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769",
+    "assets/audio/sfx_build.wav": "1e8ef2be5057c330760bf84c4a320fe7b611b973cfc63190f3f8af9f72763977",
+    "assets/audio/sfx_confirm.wav": "65cdda9a1997f596b40ed1fb021ed081701f0f98343d82b1d3181d290f544091",
+    "assets/audio/sfx_impact.wav": "49fcb7bf0d03229f8fc1a04454412f910869936420899e09b594b64c77e89661",
+    "assets/audio/sfx_loot.wav": "8d7e64549b23991d6851884619571e1dafb5b4d49429d79f5a565e545908e91c",
+    "assets/audio/sfx_reject.wav": "aba491d27649b3513e0603a5daba29f256dc4536bfc9f3ec450c330c7a5cf436",
+    "assets/audio/sfx_shot_a.wav": "67420ad0bc3a66fa5369867bd9685b555ac1a6ca0011739704676847703d4fba",
+    "assets/audio/sfx_shot_b.wav": "c3f780271090f978d14b85df9bb5cd4c0bd2a6325969150feda72a6064f0405f",
+    "assets/audio/sfx_warning.wav": "0fed177282618be9a9665ceca50c450e393f05339d4b45cfb3a086e6f7e9cd54"
+  },
+  "raw_text_sha256": {
+    "campaign-preflight-parcels.txt": "5b1f1f9754a1be633ecf099a3764b1caff05b895989e0da4625f82dde20a18b6",
+    "campaign-preflight.txt": "bc68e26e67ec80c425ebe4bcc3a7d29ea2ef6a66aca192703a3aecc61ec9dd12",
+    "candidate-final-import.txt": "0ce7f15b789bf9a60441a1db5ad2cb13bb3f8016f3f19b53127f066a6d9b1159",
+    "candidate-import.txt": "0ce7f15b789bf9a60441a1db5ad2cb13bb3f8016f3f19b53127f066a6d9b1159",
+    "editor-prepare-earlier.txt": "70b9a2d0c15c714e264b629fe165db4f0d14f0e1a0036858880bfc0cb32d8153",
+    "editor-prepare-final.txt": "9be3c04292baa218723f42e18e17ead23552eb106c2d3056e881ef9052846a4c",
+    "engine-args-baseline-rejected.txt": "bc68e26e67ec80c425ebe4bcc3a7d29ea2ef6a66aca192703a3aecc61ec9dd12",
+    "engine-argv-discovery.gd.txt": "04153320c0a3e15144ea5c6093c8d7885c4aee2e837d47d01c165ee1a3003407",
+    "engine-argv-discovery.txt": "9c577b18c03a825a5565a4bc9d2e5c08879dce47d22da41b29848d9f5fed4fdf",
+    "engine-disable-render-rejected.txt": "3fc1ecbf8f2cfaae541590c5fa3d285d6c3a9f08db29f1200ad8d7bb98a0f84e",
+    "engine-fixed-fps-rejected.txt": "0e3d5683ea1cb4dea86365bbbebebdee57d43e39881041dbd2f7f018af7197e9",
+    "engine-input-final.txt": "aff0d7fe42af963c8552e2e788479577c8aa9729ec0f228bea54bffb585813c1",
+    "engine-input-isolation-refused.txt": "aaf40059b8b96c37669714bc58572060e28ea8d5f5d1c362516b04a50486a147",
+    "engine-time-scale-rejected.txt": "fadc264e04b5d61a6a73b804e01d2acba5c7fc3ea3c8b01107ccc3dd4956d022",
+    "external-native-script-probe.gd.txt": "47d0ca89459db16f19e10c27ae67532d4855a8cdd6662da11c72a87bf6f6e8a5",
+    "external-native-script-probe.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-release-help.txt": "a3662ddef4c374681611b6c61c8ec6f48d6d350abb884785043466415db9986e",
+    "route-compile.txt": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e",
+    "runner-compile.txt": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e",
+    "startup-refusal-baseline-rejected.txt": "721db6086974e823b3fd2e1c09b4ff89a40a7e114cdbd68a9779abebdf847dcc",
+    "startup-refusal-fixed.txt": "53cdad5f4a9a7b6fde4db1422df52fde9f74d42119b1e146a3f01328800df330",
+    "startup-rejection-source-summary.txt": "7dbd8a4d3a39bf051e09e2e6dec9ffb295c55e10a9c2e48e52f9d2e676262594",
+    "startup-source-campaign_without_root.txt": "53cdad5f4a9a7b6fde4db1422df52fde9f74d42119b1e146a3f01328800df330",
+    "startup-source-render_without_root.txt": "d112a972552f8cc976a26cd1ea7d03b87905ffab48c1f60991f3f29d5cd8d711",
+    "startup-source-unknown_mission.txt": "14441cb479084a97a7baabd12ce1d2b6aadd09812eb58fbc85d5b9937286ce43"
+  },
+  "record_json_sha256": {
+    "editor-prepare-earlier.json": "7b7275634eafa34fcdd0ffeaec50ff52aa95ade35841632e9799833382cd7735",
+    "editor-prepare-final.json": "e154c113b0a8ec3bc7240104d74d460cee743068d5dd72039af9e0a68d276b7e",
+    "engine-negative-summary.json": "4359ae8098002ccbeed951062ed6a3923523a71db682ba964f7980906db4255d",
+    "external-script-capability.json": "8e877eec77ef1012172801079bbec6e53e62c6d298ab8194c2d2c305f690dc00",
+    "startup-refusal-baseline.json": "cf9f7e5ece1802946744223d969326ba2e676008f13465f2b3ba884f9901a32a",
+    "startup-rejection-source-final.json": "e02ce0c1e53fa73524b70ab2b15b200ffec0fd3610c837179cdb5fc7d3d33d1a",
+    "wrapper-checks.json": "75d0d2478ac5ce9481bc2c92f045fdd3ce6891b7f80c0a7abd48a329d97e7ffa"
+  },
+  "verified_this_iteration": {
+    "static_preflight": {
+      "checks": 73,
+      "failures": 0,
+      "delivery_observer_facade_checks": 13,
+      "scope": "Headless parse/environment/freshness/symlink and controlled delivery-observer facade; never creates Main or steps a real campaign."
+    },
+    "engine_negative_checks": {
+      "checks": 3,
+      "failures": 0,
+      "runner_sha256": "1418742d27abbeefd031a318c08927147a361cc83839551bc644dd01cd7c9998",
+      "scope": "Negative actual engine flags rejected before static preflight; headless only, no campaign; runner source hash belongs to the recorded guard snapshot before later observer/prepare additions, not silently relabeled as the final whole runner.",
+      "records": [
+        {
+          "case": "fixed-fps",
+          "returncode": 2,
+          "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-engineflag-rawargv-fixed-fps.log",
+          "args": [
+            "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+            "--headless",
+            "--fixed-fps",
+            "60",
+            "--script",
+            "res://tests/test_campaign_diagnostics.gd",
+            "--",
+            "--campaign-validation"
+          ]
+        },
+        {
+          "case": "time-scale",
+          "returncode": 2,
+          "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-engineflag-rawargv-time-scale.log",
+          "args": [
+            "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+            "--headless",
+            "--time-scale",
+            "3",
+            "--script",
+            "res://tests/test_campaign_diagnostics.gd",
+            "--",
+            "--campaign-validation"
+          ]
+        },
+        {
+          "case": "disable-render",
+          "returncode": 2,
+          "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-engineflag-rawargv-disable-render.log",
+          "args": [
+            "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+            "--headless",
+            "--disable-render-loop",
+            "--script",
+            "res://tests/test_campaign_diagnostics.gd",
+            "--",
+            "--campaign-validation"
+          ]
+        }
+      ]
+    },
+    "startup_rejection_source_final": {
+      "cases": 3,
+      "passed_checks": 15,
+      "scope": "Actual Main source startup processes for campaign/render missing isolation and unknown mission; each expected exit2, no script/error/leak output or player files, unchanged source before/after. Native-build mode remains pending.",
+      "original_report": "startup-rejection-source-final.json"
+    },
+    "engine_input_final": {
+      "checks": 48,
+      "failures": 0,
+      "scope": "Actual engine-event dispatch on pre-startup-refusal-fix Main; not relabeled exact final Main. Wrong-XDG preliminary refusal is separate."
+    },
+    "editor_prepare_final": {
+      "native_export_proof": false,
+      "complete_campaign_evidence": false,
+      "prepare_complete": true,
+      "main_loop": {
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 21,
+        "observed_sim_seconds": 1.0000000000000002,
+        "observed_ticks": 20,
+        "raw_main_ticks": 20,
+        "terminal_noop_ticks": 0
+      },
+      "save_reload": {
+        "disk_schema_valid": true,
+        "file_sha256": "57c8de0edf5699a12e96d6bdf3188822c6d9957b42ff677150a3296b55ef9e4f",
+        "full_simulation_equal": true,
+        "full_ui_equal": true,
+        "label": "prepare-only_initial_state",
+        "load_success": true,
+        "read_only_guide_refreshed_before_save": true,
+        "simulation_sha256": "b42453592bfab7c09fa09d4a4c7364feea10c5565a36777afdb7e40c62aa853b",
+        "simulation_time": 1.0000000000000002,
+        "success": true,
+        "write_success": true
+      },
+      "scope": "Pre-startup-refusal-fix editor prepare with actual Main progress and real disk initial-state roundtrip. Its own source/configuration hashes are retained; not exact final Main, full loaded-withdrawal/native/FPS evidence.",
+      "source_binding": {
+        "differences_from_frozen_candidate": [
+          "project.godot",
+          "scripts/main.gd"
+        ],
+        "scope": "Original source/configuration hashes are retained. Editor prepare predates the narrow Main startup-refusal fix and documentation version metadata update; it is not relabeled exact final Main or native evidence."
+      }
+    },
+    "wrapper_gating_and_filesystem_checks": {
+      "recorded_utc": "2026-10-31T03:12:49.999335+00:00",
+      "tool_path": "tools/run_native_campaign.py",
+      "tool_sha256": "695a350460a4fdb12544a692936783872f1205437a387f92f8cdacdebda4ef64",
+      "report_gating_checks": 38,
+      "filesystem_guard_checks": 9,
+      "failures": 0,
+      "python_compile": "passed",
+      "native_game_launched": false,
+      "scope": "Verifier-only synthetic acceptance/rejection and own disposable filesystem safety fixture. Actual native argv proof is mandatory, exact launch args must match, clock/render overrides fail. Not a native gameplay or FPS proof; existing-run sentinel stayed unchanged."
+    },
+    "earlier_editor_prepare": {
+      "native_export_proof": false,
+      "complete_campaign_evidence": false,
+      "prepare_complete": true,
+      "main_loop": {
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 20,
+        "observed_sim_seconds": 1.0000000000000002,
+        "observed_ticks": 20,
+        "raw_main_ticks": 20,
+        "terminal_noop_ticks": 0
+      },
+      "scope": "Earlier editor-capable prepare execution before final raw-argv guard; full original report is retained with its own source hashes. Not native/full-campaign/FPS evidence."
+    }
+  },
+  "known_rejected_guard_baseline": {
+    "record": "engine-args-baseline-rejected.txt",
+    "description": "Actual fixed-fps engine flag was incorrectly accepted while relying on OS.get_cmdline_args, which removes recognized engine options. Original log reports60static checks with no failures; that pass is rejected as clock-guard evidence. Corrected raw-proc negatives are separate. A complete contemporaneous source snapshot was not captured for the baseline."
+  },
+  "earlier_release_cli_capability": {
+    "scope": "Capability probe of the earlier0.6 release payload; not a game failure or full-campaign record. The parent launcher reported timeout exit124 and the redirected native log contains no unique external-script marker. Actual native help is captured separately; no external-script execution is inferred from a zero/timeout exit alone.",
+    "source_commit": "f2894b3bdc13be0c513bfe10b9ad8cb5d3655c00",
+    "export_metadata_sha256": "7437e7945132ca5b7314494637c8a7f47af7577afcf3cafb0cc7d0d6be58ad62",
+    "payload_sha256": {
+      "outpost-exodus.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+      "outpost-exodus.pck": "2e34aed3b4c6d9ac352cb4333ce6feb44827324f98c6960c73d5823f41bc7b46"
+    },
+    "probe_script": "external-native-script-probe.gd.txt",
+    "native_log": "external-native-script-probe.txt",
+    "reported_launcher_exit_code": 124,
+    "unique_marker": "EXTERNAL_NATIVE_SCRIPT_PROBE_EXECUTED",
+    "unique_marker_in_log": false,
+    "native_help": "native-release-help.txt",
+    "native_help_exit_code": 0
+  },
+  "native_campaign_evidence": {
+    "status": "pending matching clean committed export and complete native run",
+    "expected_isolation": "work/native-campaign-v061-full",
+    "final_game_report": "output/campaign-validation.json",
+    "independent_launcher_report": "verification.json",
+    "progress_only": "output/campaign-progress.json",
+    "prepare_only_is_not_full_campaign": true
+  },
+  "native_performance": {
+    "status": "pending separately after exact-payload full campaign",
+    "expected_isolation": "work/benchmarks/native-v061-full",
+    "required_warmup_per_zoom": 120,
+    "required_measured_frames_per_zoom": 3600,
+    "historical_fps_reused": false
+  },
+  "open_gates": [
+    "fresh-player playability and listening",
+    "mouse-driven full UI",
+    "native Windows and clean-machine full playthrough",
+    "minimum hardware and stable frame pacing",
+    "final art/accessibility/localization/license acceptance",
+    "actual Steam account/store/depot/review"
+  ],
+  "known_rejected_startup_baseline": {
+    "scope": "Actual rejected-startup product defect, distinct from earlier test-XDG refusals. Main queued quit after validation rejection but its processing still ran before world initialization, causing a nil world.motion access. Root is fixing this; no corrected pass is inferred here.",
+    "raw_log": "startup-refusal-baseline-rejected.txt",
+    "raw_log_sha256": "721db6086974e823b3fd2e1c09b4ff89a40a7e114cdbd68a9779abebdf847dcc",
+    "main_sha256_from_pre_unfreeze_candidate": "032615c08fbddf658a7acd214972a7057d68706f214acc549b6fbe93f6e0fe38",
+    "source_snapshot_scope": "This hash was captured in the previously frozen candidate before the refusal probe/fix; complete contemporaneous baseline text was not separately copied by this documentation task."
+  }
+}

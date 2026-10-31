@@ -1,0 +1,7 @@
+{
+  "scope": "Actual rejected-startup product defect, distinct from earlier test-XDG refusals. Main queued quit after validation rejection but its processing still ran before world initialization, causing a nil world.motion access. Root is fixing this; no corrected pass is inferred here.",
+  "raw_log": "startup-refusal-baseline-rejected.txt",
+  "raw_log_sha256": "721db6086974e823b3fd2e1c09b4ff89a40a7e114cdbd68a9779abebdf847dcc",
+  "main_sha256_from_pre_unfreeze_candidate": "032615c08fbddf658a7acd214972a7057d68706f214acc549b6fbe93f6e0fe38",
+  "source_snapshot_scope": "This hash was captured in the previously frozen candidate before the refusal probe/fix; complete contemporaneous baseline text was not separately copied by this documentation task."
+}

@@ -1,0 +1,168 @@
+{
+  "success": true,
+  "started_utc": "2026-10-31T03:23:48.763160+00:00",
+  "mode": "source-runtime actual Main",
+  "scope": "Actual Main startup rejection only; no campaign, GUI, FPS or human-playability claim",
+  "directory": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u",
+  "timeout_per_case": 20.0,
+  "cases": [
+    {
+      "name": "campaign_without_root",
+      "success": true,
+      "checks": {
+        "expected_exit_2": true,
+        "expected_refusal_marker": true,
+        "no_script_error_or_resource_leak": true,
+        "no_player_save_or_settings_created": true,
+        "did_not_time_out": true
+      },
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+        "--headless",
+        "--",
+        "--campaign-validation"
+      ],
+      "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+      "returncode": 2,
+      "timed_out": false,
+      "wall_seconds": 0.491,
+      "isolated_environment": {
+        "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/campaign_without_root/data",
+        "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/campaign_without_root/config",
+        "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/campaign_without_root/cache"
+      },
+      "unset_environment": [
+        "CAMPAIGN_VALIDATION_ROOT",
+        "BENCH_ISOLATION_ROOT"
+      ],
+      "expected_marker": "DIAGNOSTICS_REFUSED CAMPAIGN_VALIDATION_ROOT",
+      "unexpected_player_state": [],
+      "log": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/campaign_without_root/native-process.log",
+        "bytes": 169,
+        "sha256": "53cdad5f4a9a7b6fde4db1422df52fde9f74d42119b1e146a3f01328800df330"
+      }
+    },
+    {
+      "name": "render_without_root",
+      "success": true,
+      "checks": {
+        "expected_exit_2": true,
+        "expected_refusal_marker": true,
+        "no_script_error_or_resource_leak": true,
+        "no_player_save_or_settings_created": true,
+        "did_not_time_out": true
+      },
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+        "--headless",
+        "--",
+        "--render-diagnostics"
+      ],
+      "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+      "returncode": 2,
+      "timed_out": false,
+      "wall_seconds": 0.3831,
+      "isolated_environment": {
+        "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/render_without_root/data",
+        "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/render_without_root/config",
+        "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/render_without_root/cache"
+      },
+      "unset_environment": [
+        "CAMPAIGN_VALIDATION_ROOT",
+        "BENCH_ISOLATION_ROOT"
+      ],
+      "expected_marker": "DIAGNOSTICS_REFUSED BENCH_ISOLATION_ROOT",
+      "unexpected_player_state": [],
+      "log": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/render_without_root/native-process.log",
+        "bytes": 165,
+        "sha256": "d112a972552f8cc976a26cd1ea7d03b87905ffab48c1f60991f3f29d5cd8d711"
+      }
+    },
+    {
+      "name": "unknown_mission",
+      "success": true,
+      "checks": {
+        "expected_exit_2": true,
+        "expected_refusal_marker": true,
+        "no_script_error_or_resource_leak": true,
+        "no_player_save_or_settings_created": true,
+        "did_not_time_out": true
+      },
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+        "--headless",
+        "--",
+        "--mission=missing"
+      ],
+      "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+      "returncode": 2,
+      "timed_out": false,
+      "wall_seconds": 0.3754,
+      "isolated_environment": {
+        "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/unknown_mission/data",
+        "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/unknown_mission/config",
+        "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/unknown_mission/cache"
+      },
+      "unset_environment": [
+        "CAMPAIGN_VALIDATION_ROOT",
+        "BENCH_ISOLATION_ROOT"
+      ],
+      "expected_marker": "Unknown mission: missing",
+      "unexpected_player_state": [],
+      "log": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/startup-rejection-tests/run-20261031T032348-p9ghxe9u/unknown_mission/native-process.log",
+        "bytes": 98,
+        "sha256": "14441cb479084a97a7baabd12ce1d2b6aadd09812eb58fbc85d5b9937286ce43"
+      }
+    }
+  ],
+  "errors": [],
+  "bound_files_before": {
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh": {
+      "bytes": 638,
+      "sha256": "5f3533e607e00733b225d3525b703866091d5a7a20f4677a5b0623a0c7fbffec"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/project.godot": {
+      "bytes": 983,
+      "sha256": "97e32c5cd943d6fbff681c54611d919cbe4a10649a9dc306b140ae8bb01f84fa"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/main.gd": {
+      "bytes": 48265,
+      "sha256": "c73a7676ddda6e76111af6ff6e80d71313641bfb8b691f707693f6199a1ca798"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/diagnostics/campaign_runner.gd": {
+      "bytes": 21015,
+      "sha256": "8cbe73bb34433f876a7c30544d25a779c0f2f36a48ee38c839cb91f8026cbe5c"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/diagnostics/render_runner.gd": {
+      "bytes": 38093,
+      "sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c"
+    }
+  },
+  "bound_files_after": {
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh": {
+      "bytes": 638,
+      "sha256": "5f3533e607e00733b225d3525b703866091d5a7a20f4677a5b0623a0c7fbffec"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/project.godot": {
+      "bytes": 983,
+      "sha256": "97e32c5cd943d6fbff681c54611d919cbe4a10649a9dc306b140ae8bb01f84fa"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/main.gd": {
+      "bytes": 48265,
+      "sha256": "c73a7676ddda6e76111af6ff6e80d71313641bfb8b691f707693f6199a1ca798"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/diagnostics/campaign_runner.gd": {
+      "bytes": 21015,
+      "sha256": "8cbe73bb34433f876a7c30544d25a779c0f2f36a48ee38c839cb91f8026cbe5c"
+    },
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/diagnostics/render_runner.gd": {
+      "bytes": 38093,
+      "sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c"
+    }
+  },
+  "bound_files_changed": false,
+  "finished_utc": "2026-10-31T03:23:50.013908+00:00"
+}

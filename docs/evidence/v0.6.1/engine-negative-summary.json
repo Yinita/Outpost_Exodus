@@ -1,0 +1,52 @@
+{
+  "checks": 3,
+  "failures": 0,
+  "runner_sha256": "1418742d27abbeefd031a318c08927147a361cc83839551bc644dd01cd7c9998",
+  "scope": "Negative actual engine flags rejected before static preflight; headless only, no campaign",
+  "records": [
+    {
+      "case": "fixed-fps",
+      "returncode": 2,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-engineflag-rawargv-fixed-fps.log",
+      "args": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+        "--headless",
+        "--fixed-fps",
+        "60",
+        "--script",
+        "res://tests/test_campaign_diagnostics.gd",
+        "--",
+        "--campaign-validation"
+      ]
+    },
+    {
+      "case": "time-scale",
+      "returncode": 2,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-engineflag-rawargv-time-scale.log",
+      "args": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+        "--headless",
+        "--time-scale",
+        "3",
+        "--script",
+        "res://tests/test_campaign_diagnostics.gd",
+        "--",
+        "--campaign-validation"
+      ]
+    },
+    {
+      "case": "disable-render",
+      "returncode": 2,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-engineflag-rawargv-disable-render.log",
+      "args": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/run.sh",
+        "--headless",
+        "--disable-render-loop",
+        "--script",
+        "res://tests/test_campaign_diagnostics.gd",
+        "--",
+        "--campaign-validation"
+      ]
+    }
+  ]
+}

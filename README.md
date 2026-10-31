@@ -2,7 +2,7 @@
 
 单人、2D 卡通废土战役式推进生存策略。向前清理尸群、铺路建营、生产供能；向后撤出人员设备、封关断后，最终完成出口工程并突围。
 
-当前为 **0.6.0-dev**，包含三场实际可玩的独立战役。长期目标是高度可玩并满足 Steam 发布门槛；目前不能视作正式发行版本。
+当前为 **0.6.1-dev**，包含三场实际可玩的独立战役。长期目标是高度可玩并满足 Steam 发布门槛；目前不能视作正式发行版本。
 
 ## 运行
 
@@ -124,3 +124,14 @@ python3 tools/package_builds.py --performance-report /absolute/path/to/native-di
 
 
 开发测量使用 `--render-diagnostics`，仅允许全新的专用用户目录，避免碰到正常战役。命令与测量边界见 [验证记录](docs/validation-plan.md)。它会在实际原生游戏中运行 32 友军/100 敌人的控制场景并执行一次真实存档，不代表关卡平衡或最低配置。
+
+
+整关导出验证使用单独的 `--campaign-validation` 入口，由 `tools/run_native_campaign.py` 从实际 Linux 导出目录启动并核对 EXE、PCK 与构建来源。它保留正常 Main 主循环和 0.05 秒固定模拟步，通过正常界面选择 3 倍速度，只下达公开战役命令，并在载货撤营途中实际存读档。该入口要求全新的隔离目录；Linux 实际进程参数还会拒绝固定 FPS、时间缩放或电影录制等改时钟选项。普通战役、存档和界面不需要 Python；Python 启动器仅用于开发验收。
+
+```bash
+DISPLAY=:0 python3 tools/run_native_campaign.py \
+  --build-dir "$PWD/builds/linux-release" \
+  --isolation-root "$PWD/work/native-campaign-candidate-a"
+```
+
+`--prepare-only` 只验证原生启动与少量正常主循环推进，不能证明完成整关。整关结果写入隔离目录的 `output/campaign-validation.json`，进度写入 `output/campaign-progress.json`，启动器独立验收写入 `verification.json`。完整原生战役和新版本性能仍需在提交、导出之后分别验证；这些自动路线也不替代陌生玩家试玩、Windows 或干净机器验收。

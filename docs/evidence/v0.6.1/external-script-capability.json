@@ -1,0 +1,16 @@
+{
+  "scope": "Capability probe of the earlier0.6 release payload; not a game failure or full-campaign record. The parent launcher reported timeout exit124 and the redirected native log contains no unique external-script marker. Actual native help is captured separately; no external-script execution is inferred from a zero/timeout exit alone.",
+  "source_commit": "f2894b3bdc13be0c513bfe10b9ad8cb5d3655c00",
+  "export_metadata_sha256": "7437e7945132ca5b7314494637c8a7f47af7577afcf3cafb0cc7d0d6be58ad62",
+  "payload_sha256": {
+    "outpost-exodus.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "outpost-exodus.pck": "2e34aed3b4c6d9ac352cb4333ce6feb44827324f98c6960c73d5823f41bc7b46"
+  },
+  "probe_script": "external-native-script-probe.gd.txt",
+  "native_log": "external-native-script-probe.txt",
+  "reported_launcher_exit_code": 124,
+  "unique_marker": "EXTERNAL_NATIVE_SCRIPT_PROBE_EXECUTED",
+  "unique_marker_in_log": false,
+  "native_help": "native-release-help.txt",
+  "native_help_exit_code": 0
+}
