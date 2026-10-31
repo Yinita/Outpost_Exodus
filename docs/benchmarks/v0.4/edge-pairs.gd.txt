@@ -1,0 +1,99 @@
+extends "res://tests/test_navigation_combat.gd"
+const Baseline = preload("res://work/body-perf-v04/baseline_simulation.gd")
+var comparisons: int = 0
+var mutations: Array[String] = []
+var sequence: HashingContext = HashingContext.new()
+func _run() -> void:
+	sequence.start(HashingContext.HASH_SHA256)
+	_test_cache_live_state()
+	_test_dense_deaths_and_recovery()
+	print("EDGE_PAIRS ", JSON.stringify({"comparisons":comparisons,"mutations":mutations,"sequence_sha256":sequence.finish().hex_encode(),"failures":failures,"candidate_sha256":FileAccess.get_sha256("res://scripts/campaign_simulation.gd")}))
+	quit(0 if failures.is_empty() else 1)
+func _pair_from(sim: Variant) -> Array:
+	var old: Variant = Baseline.new()
+	assert(old.load_state(sim.save_state()))
+	var candidate_path: String = "res://scripts/campaign_simulation.gd"
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--candidate="): candidate_path = argument.trim_prefix("--candidate=")
+	var candidate: Variant = load(candidate_path).new()
+	assert(candidate.load_state(sim.save_state()))
+	return [old,candidate]
+func _equal(pair: Array, label: String) -> void:
+	comparisons += 1
+	var old_state: Dictionary = pair[0].save_state()
+	var new_state: Dictionary = pair[1].save_state()
+	var text: String = JSON.stringify(new_state)
+	_check(old_state == new_state and JSON.stringify(old_state) == text, label)
+	sequence.update(text.to_utf8_buffer())
+func _test_cache_live_state() -> void:
+	var sim: Variant = _base()
+	sim.units = [_unit(10,"truck",Vector2(12.9,12)),_unit(21,"worker",Vector2(13.35,12)),_unit(22,"truck",Vector2(14.1,12)),_unit(23,"worker",Vector2(13,13))]
+	sim.units[0].order = "move"
+	var pair: Array = _pair_from(sim)
+	for current: Variant in pair: current._rebuild_spatial_index()
+	# Cached same-bucket neighborhood must retain live positions and hp/state.
+	for displacement: Vector2 in [Vector2(13.02,12),Vector2(13.08,12),Vector2(13.9,12),Vector2(14.04,12),Vector2(13.5,12)]:
+		_check(pair[0]._body_is_clear(pair[0].units[0],Vector2(13,12)) == pair[1]._body_is_clear(pair[1].units[0],Vector2(13,12)),"same/cross-bucket clear result")
+		_check(pair[0]._improves_existing_overlap(pair[0].units[0],displacement) == pair[1]._improves_existing_overlap(pair[1].units[0],displacement),"same/cross-bucket overlap result")
+		for current: Variant in pair:
+			current._set_unit_position(current.units[1],displacement)
+		_equal(pair,"same/cross-bucket live positions")
+	for current: Variant in pair:
+		current.units[1].hp = 0.0
+		current.units[2].state = "evacuated"
+	for current: Variant in pair:
+		_check(current._body_is_clear(current.units[0],Vector2(13.8,12)),"live dead/evacuated state is skipped after cache creation")
+	var old_yield: Variant = pair[0]._yield_idle_friend(pair[0].units[0],Vector2(pair[0].units[1].pos),Vector2.RIGHT,0.08)
+	var new_yield: Variant = pair[1]._yield_idle_friend(pair[1].units[0],Vector2(pair[1].units[1].pos),Vector2.RIGHT,0.08)
+	_check(old_yield and new_yield,"newly dead friend retains yield behavior")
+	_check(pair[1].units[1].pos != Vector2(13.5,12),"newly dead friend actually moved")
+	_equal(pair,"newly dead yield updates live Dictionary")
+	mutations.append("newly dead friend yielded from cached neighborhood")
+	for current: Variant in pair:
+		current._separate_bodies()
+	_equal(pair,"separation skips live dead/evacuated state")
+	for current: Variant in pair:
+		var state: Dictionary = current.save_state()
+		assert(current.load_state(state))
+	_equal(pair,"load after populated snapshots")
+	for current: Variant in pair:
+		current.reset(31,"delta")
+		current.tick(STEP)
+	_equal(pair,"reset switches mission after populated snapshots")
+	mutations.append("reset/load after cached same/cross-bucket movement")
+func _test_dense_deaths_and_recovery() -> void:
+	var sim: Variant = _base()
+	sim.units = [_unit(10,"truck",Vector2(5,30)),_unit(900,"worker",Vector2(6,28))]
+	for index: int in range(32):
+		var unit: Dictionary = _unit(30+index,"rifle" if index%2 == 0 else "worker",Vector2(12+index%8*0.42,12+index/8*0.42))
+		unit.hp = 1.0
+		unit.max_hp = 100.0
+		unit.range = 2.4
+		unit.damage = 9.0
+		unit.order = "move" if index%2 == 0 else "idle"
+		sim.units.append(unit)
+	for index: int in range(36):
+		var unit: Dictionary = _unit(100+index,"zombie",Vector2(13+index%6*0.45,13+index/6*0.45),"enemy")
+		unit.hp = 1.0
+		unit.max_hp = 100.0
+		unit.range = 0.85
+		unit.damage = 9.0
+		sim.units.append(unit)
+	var pair: Array = _pair_from(sim)
+	for tick: int in range(80):
+		if tick == 5:
+			# Valid fixture edits between ticks force metadata refresh on rebuild.
+			for current: Variant in pair:
+				for unit: Dictionary in current.units:
+					if unit.id == 10:
+						unit.pos = Vector2(12.4,12.4)
+					if unit.id == 900:
+						unit.kind = "engineer"
+				current.buildings.append(_building(8000,"barricade",Vector2(12,12)))
+			mutations.append("kind/position edits and completed solid footprint before next tick")
+		if tick == 20:
+			for current: Variant in pair: _check(current.load_state(current.save_state()),"dense fixture remains valid through deaths/recovery")
+		for current: Variant in pair: current.tick(STEP)
+		_equal(pair,"dense low-HP tick %d" % tick)
+	_check(pair[1].units.size()<70,"dense fixture observes combat deaths")
+	mutations.append("dense low-HP combat removes actors")

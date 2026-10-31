@@ -27,6 +27,7 @@ const BUILDING_WIDTHS: Dictionary = {
 var selected_ids: Array = []
 var hover_tile: Vector2i = Vector2i(-1, -1)
 var build_kind: String = ""
+var build_preview: Dictionary = {}
 var show_logistics: bool = true
 var show_ranges: bool = false
 var drag_selection_rect: Rect2 = Rect2()
@@ -758,10 +759,7 @@ func _draw_unit(unit: Dictionary) -> void:
 	var facing: float = -1.0 if target.x < draw_position.x - 0.05 else 1.0
 	if team == "enemy" and absf(target.x - draw_position.x) < 0.05:
 		facing = -1.0
-	_oval(p + Vector2(2.0, 9.0), Vector2(13.0 if kind != "truck" else 29.0, 5.0 if kind != "truck" else 11.0), Color(0.18, 0.22, 0.20, 0.30))
-	if selected:
-		_dashed_circle(p + Vector2(0.0, 4.0), 17.0 if kind != "truck" else 33.0, Color(CYAN, 0.95), 2.5, 10)
-		_oval(p + Vector2(0.0, 4.0), Vector2(15.0, 6.0), Color(CYAN, 0.13))
+	_draw_actor_overlays(p, kind, selected)
 	draw_set_transform(p + Vector2(0.0, bob), 0.0, Vector2(facing, 1.0))
 	var carrying: bool = _cargo_amount(unit.get("cargo", unit.get("cargo_amount", 0.0))) > 0.0
 	var region: Rect2 = ActorAtlas.region(kind, moving, carrying, ActorAtlas.frame(kind, moving, float(sim.time), id_value))
@@ -786,6 +784,18 @@ func _draw_unit(unit: Dictionary) -> void:
 		var squad: int = int(unit.get("squad", 0))
 		if squad > 0:
 			_label(p + Vector2(0.0, 24.0), str(squad), Color("31595b"), 11)
+
+
+func _draw_actor_overlays(p: Vector2, kind: String, selected: bool) -> void:
+	# Ground decorations are independent of the body's facing and walking bob.
+	# A live selection chooses one of four prepainted regions in the body atlas.
+	if cache_actors and _actor_viewport != null:
+		draw_texture_rect_region(_actor_viewport.get_texture(), ActorAtlas.overlay_destination(p), ActorAtlas.overlay_region(kind, selected))
+		return
+	_oval(p + Vector2(2.0, 9.0), Vector2(29.0, 11.0) if kind == "truck" else Vector2(13.0, 5.0), Color(0.18, 0.22, 0.20, 0.30))
+	if selected:
+		_dashed_circle(p + Vector2(0.0, 4.0), 33.0 if kind == "truck" else 17.0, Color(CYAN, 0.95), 2.5, 10)
+		_oval(p + Vector2(0.0, 4.0), Vector2(15.0, 6.0), Color(CYAN, 0.13))
 
 
 func _draw_effects() -> void:
@@ -853,16 +863,15 @@ func _draw_guide_target() -> void:
 func _draw_build_preview() -> void:
 	if build_kind.is_empty() or hover_tile.x < 0 or hover_tile.y < 0:
 		return
-	var draw_position: Vector2 = (Vector2(hover_tile) + Vector2.ONE * 0.5) * TILE_SIZE
-	var valid: bool = bool(sim.is_walkable(hover_tile))
-	var buildings: Array = sim.buildings
-	if build_kind != "road":
-		for value: Variant in buildings:
-			var building: Dictionary = value
-			var building_position: Vector2 = building.get("pos", Vector2.ZERO)
-			if building_position.distance_to(Vector2(hover_tile) + Vector2.ONE * 0.5) < 1.3:
-				valid = false
+	# Buildings use the simulation's integer anchor; roads paint tile centers.
+	var draw_position: Vector2 = (Vector2(hover_tile) + (Vector2.ONE * 0.5 if build_kind == "road" else Vector2.ZERO)) * TILE_SIZE
+	var valid: bool = bool(build_preview.get("ok", false))
 	var color: Color = CYAN if valid else RED
+	if build_kind == "road":
+		for tile: Vector2i in build_preview.get("road_tiles", []):
+			var center: Vector2 = (Vector2(tile) + Vector2.ONE * 0.5) * TILE_SIZE
+			draw_rect(Rect2(center - Vector2(16, 13), Vector2(32, 26)), Color(color, 0.12))
+			draw_rect(Rect2(center - Vector2(16, 13), Vector2(32, 26)), Color(color, 0.6), false, 1.3)
 	var half: float = 20.0 if build_kind == "road" else 36.0
 	draw_rect(Rect2(draw_position - Vector2.ONE * half, Vector2.ONE * half * 2.0), Color(color, 0.14))
 	var points: Array[Vector2] = [Vector2(-half, -half), Vector2(half, -half), Vector2(half, half), Vector2(-half, half)]

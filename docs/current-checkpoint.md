@@ -1,6 +1,6 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, **0.3.1-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
+Project: 逐营突围 / Outpost Exodus, **0.4.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
 
 ## Proven work
 
@@ -21,9 +21,14 @@ Project: 逐营突围 / Outpost Exodus, **0.3.1-dev**. The objective remains a h
 
 - Compact JSON saves retain full precision, all schema checks, atomic staging/replacement and byte-exact old backups. The canonical420tick save shrinks398196→146158bytes; twelve actual-validator AB/BA pairs reduce repeated-write p5075.817→54.143ms. Save-store134, cross-process90 and legacy BOM/CRLF/UTF8 backup preservation pass. Native reports remain bound to each actual exported payload.
 
+- 0.4 adds one authoritative read-only construction planner used by preview and fresh click commits: actual nearest active supply camp, local deficits, exact full road route/price, duplicate-road explanations, legal spacing/pursuit/path checks and advisory idle crew status. Valid orders retain the original rules and success messages. Caller mutation cannot alter job road arrays.
+- Production now reports continuous recipe state and actual powered/finished workshop counts, with reasons for missing/unfinished local generators, finished fuel, completed roads, range, priority and recipe inputs. Query calls never allocate power or change resources.
+- Construction markers align with actual building anchors, road routes are shown, and clicks always re-query. View data caches on simulation time and relevant controller input; direct reset/load invalidates it. Compact panels/buttons/resources/time/selection and paused construction fit supported small views. Tab shortcuts now cancel construction consistently with tab clicks.
+- Further movement optimization reduces canonical mean12.790→11.129ms and retains720full-state snapshots plus89dense/live-death/cache edge comparisons. Ground shadows/selection reuse four unused cells of the same actor atlas with live selection/health/cargo/facing. Isolated actor redraw CPU2695→541microseconds, drawcalls1342→139; rasterized overlay edges differ slightly from vectors, with measured foreground mean RGB error2.75/255. Whole-game native results remain separately bound to each exported payload.
+
 ## Evidence
 
-See docs/evidence/v0.3.1 and docs/benchmarks/v0.3.1 for this performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Passing counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
+See docs/evidence/v0.4 and docs/benchmarks/v0.4 for this gameplay-feedback/performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Passing counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
 
 ## Still required
 

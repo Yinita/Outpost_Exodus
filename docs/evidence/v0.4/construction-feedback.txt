@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS _test_queries_and_atomic_commits
+PASS _test_rejection_reasons
+PASS _test_local_inventory_and_road_costs
+PASS _test_cached_preview_invalidation
+PASS _test_builders_and_recovery
+PASS _test_production_status
+PASS _test_exit_power_is_progress_gate
+Construction feedback checks: 187; failures: 0

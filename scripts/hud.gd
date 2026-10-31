@@ -54,7 +54,7 @@ func _draw() -> void:
 		var notification: Rect2 = Rect2(340, 82, maxf(300, screen.x - 670), 42)
 		_panel(notification, Color("253d40"), TEAL)
 		_text(notification.position + Vector2(14, 27), main.feedback, 16, PAPER, notification.size.x - 28)
-	if main.sim.paused and main.menu.is_empty():
+	if main.sim.paused and main.menu.is_empty() and main.build_kind.is_empty():
 		_panel(Rect2(screen.x * 0.5 - 110, 138, 220, 40), INK, GOLD)
 		_text(Vector2(screen.x * 0.5 - 86, 165), "战术暂停 · 空格继续", 18, GOLD)
 	if not main.menu.is_empty(): _draw_menu(screen)
@@ -66,14 +66,16 @@ func _draw() -> void:
 
 func _draw_top(screen: Vector2, summary: Dictionary) -> void:
 	_panel(Rect2(0, 0, screen.x, 64), INK, Color("456065"))
-	_text(Vector2(22, 43), "逐营突围", 29, PAPER)
-	_text(Vector2(165, 42), "OUTPOST EXODUS", 12, MUTED)
+	var compact: bool = screen.x < 1280
+	_text(Vector2(22, 43), "逐营突围", 24 if compact else 29, PAPER)
+	if not compact: _text(Vector2(165, 42), "OUTPOST EXODUS", 12, MUTED)
 	var entries: Array = [["材", "materials", TEAL], ["供", "supplies", PAPER], ["油", "fuel", GOLD], ["人", "people", TEAL]]
 	for i: int in range(entries.size()):
-		var x: float = 340 + i * 132
-		_panel(Rect2(x, 12, 31, 36), PANEL, entries[i][2])
-		_text(Vector2(x + 7, 37), entries[i][0], 17, entries[i][2])
-		_text(Vector2(x + 42, 39), str(int(summary.get(entries[i][1], 0))), 23, PAPER)
+		var spacing: float = minf(120, (screen.x - 560) / 4.0) if compact else 132.0
+		var x: float = (160 if compact else 340) + i * spacing
+		_panel(Rect2(x, 12, 27 if compact else 31, 36), PANEL, entries[i][2])
+		_text(Vector2(x + 6, 37), entries[i][0], 15 if compact else 17, entries[i][2])
+		_text(Vector2(x + (35 if compact else 42), 39), str(int(summary.get(entries[i][1], 0))), 20 if compact else 23, PAPER)
 	var minutes: int = int(main.sim.time) / 60
 	var seconds: int = int(main.sim.time) % 60
 	_text(Vector2(screen.x - 357, 39), "%02d:%02d" % [minutes, seconds], 22, MUTED)
@@ -81,7 +83,7 @@ func _draw_top(screen: Vector2, summary: Dictionary) -> void:
 	_button(Rect2(screen.x - 181, 13, 68, 36), "×%d" % int(main.speed), "speed", "切换游戏速度；%s / %s" % [main.binding_label("speed_up"), main.binding_label("speed_down")])
 	_button(Rect2(screen.x - 103, 13, 82, 36), "菜单", "menu", "设置、帮助和战役存档")
 
-func _draw_objectives(_screen: Vector2, summary: Dictionary) -> void:
+func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 	_panel(Rect2(18, 82, 300, 222), Color(PANEL, 0.95), Color("52716d"))
 	_text(Vector2(34, 111), "%02d  %s" % [Catalog.ids().find(String(main.sim.mission_id)) + 1, String(main.sim.mission_name)], 22, PAPER, 268)
 	_text(Vector2(34, 139), "指挥车 + 至少4人抵达撤离站", 14, MUTED)
@@ -98,14 +100,11 @@ func _draw_objectives(_screen: Vector2, summary: Dictionary) -> void:
 	_text(Vector2(34, 286), "%s 帮助 · %s 保存 / %s 读取" % [main.binding_label("help_menu"), main.binding_label("quick_save"), main.binding_label("quick_load")], 13, MUTED)
 	var selection_text: String = "未选择单位 · 左键或拖框选择"
 	if not main.selected_ids.is_empty(): selection_text = "已选择 %d 人 / 辆 · 右键下令" % main.selected_ids.size()
-	_panel(Rect2(18, 318, 300, 64), Color(INK, 0.92), Color("456065"))
-	_text(Vector2(33, 346), selection_text, 15, PAPER)
-	_text(Vector2(33, 369), "%s 攻击 · %s 切队 · Ctrl+编队键保存" % [main.binding_label("attack_move"), main.binding_label("next_squad")], 12, MUTED)
-	if not main.build_kind.is_empty():
-		_panel(Rect2(18, 397, 300, 75), PANEL, GOLD)
-		var names: Dictionary = {"road":"道路", "camp":"前哨营地", "generator":"发电机", "workshop":"工坊", "tower":"岗哨炮塔", "barricade":"路障"}
-		_text(Vector2(33, 426), "施工：" + names.get(main.build_kind, main.build_kind), 18, GOLD)
-		_text(Vector2(33, 452), "左键放置 · 右键取消", 14, MUTED)
+	var short: bool = screen.y < 580
+	var selection_top: float = 306 if short else 318
+	_panel(Rect2(18, selection_top, 300, 40 if short else 64), Color(INK, 0.92), Color("456065"))
+	_text(Vector2(33, selection_top + (17 if short else 28)), selection_text, 13 if short else 15, PAPER)
+	_text(Vector2(33, selection_top + (34 if short else 51)), "%s 攻击 · %s 切队 · Ctrl+编队键保存" % [main.binding_label("attack_move"), main.binding_label("next_squad")], 10 if short else 12, MUTED)
 
 func _draw_camp_cards(screen: Vector2) -> void:
 	var y: float = 82
@@ -156,17 +155,30 @@ func _draw_dock(screen: Vector2) -> void:
 	elif main.current_tab == "production":
 		var camp: Dictionary = main.sim.get_camp(main.selected_camp)
 		var name_text: String = String(camp.get("name", "未选择驻点"))
-		_text(Vector2(20, top + 79), name_text + " · 生产队列", 18, PAPER)
+		var recipe_area: float = width * 0.55
+		var priority_x: float = 20 + recipe_area + 12
+		var priority_width: float = (width - recipe_area - 36) / 3.0
+		_text(Vector2(20, top + 79), name_text + " · 连续生产", 17, PAPER, recipe_area - 12)
 		var recipe: String = String(camp.get("recipe", "idle"))
 		var recipes: Array = [["materials", "加工建材"], ["supplies", "生产补给"], ["fuel", "提炼燃料"], ["idle", "暂停生产"]]
+		var recipe_width: float = (recipe_area - 24) / 4.0
 		for i: int in range(recipes.size()):
-			_button(Rect2(20 + i * 136, top + 95, 125, 58), recipes[i][1], "recipe:" + recipes[i][0], "驻点需要相应资源来源、工坊与本地供电。", recipe == recipes[i][0])
+			_button(Rect2(20 + i * (recipe_width + 6), top + 95, recipe_width, 58), recipes[i][1], "recipe:" + recipes[i][0], "驻点需要实际运入的原料、完工工坊与本地供电；生产补给消耗成品燃料。", recipe == recipes[i][0])
 		var priority: String = String(camp.get("priority", "production"))
 		var priorities: Array = [["production","生产优先"], ["defense","防守优先"], ["evacuation","撤离优先"]]
 		for i: int in range(priorities.size()):
-			_button(Rect2(590 + i * 130, top + 95, 120, 58), priorities[i][1], "priority:" + priorities[i][0], "供电不足时，优先保障选定任务。", priority == priorities[i][0])
-		_text(Vector2(590, top + 79), "供能预设", 16, GOLD)
-		_text(Vector2(20, top + 178), "原料：废料 %d  /  原油 %d" % [int(camp.get("salvage", 0)), int(camp.get("crude", 0))], 12, MUTED)
+			_button(Rect2(priority_x + i * (priority_width + 6), top + 95, priority_width, 58), priorities[i][1], "priority:" + priorities[i][0], "供电不足时，优先保障选定任务。", priority == priorities[i][0])
+		_text(Vector2(priority_x, top + 79), "供能预设", 16, GOLD)
+		var status: Dictionary = main.production_readout
+		var running: bool = status.get("code", "") == "running"
+		var readout: String = "%s · 供能工坊 %d/%d" % [String(status.get("text", "读取生产状态")), int(status.get("working", 0)), int(status.get("total", 0))]
+		if running:
+			readout += " · 废料 %d / 原油 %d / 燃料 %d" % [int(camp.get("salvage", 0)), int(camp.get("crude", 0)), int(camp.get("fuel", 0))]
+		else:
+			readout += " · " + String(status.get("detail", ""))
+		var status_rect: Rect2 = Rect2(20, top + 158, width - 20, 29)
+		_text(Vector2(20, top + 178), readout, 12, TEAL if running else GOLD, width - 20)
+		if status_rect.has_point(get_viewport().get_mouse_position()): tooltip = String(status.get("detail", ""))
 	elif main.current_tab == "training":
 		var camp: Dictionary = main.sim.get_camp(main.selected_camp)
 		var recruits: Array = [["rifle","步枪兵","供能军营"], ["engineer","工程师","供能军营"], ["worker","工人","本地发电"], ["truck","运输车","供能工坊"]]
@@ -421,6 +433,9 @@ func _wrap_text(text: String, width: float, size_value: int, hanging_punctuation
 	return result
 
 func _draw_guide(screen: Vector2) -> void:
+	if not main.build_kind.is_empty():
+		_draw_construction_preview(screen)
+		return
 	var hint: Dictionary = main.guide.get_hint()
 	if screen.y < 690:
 		var compact: Rect2 = Rect2(340, 186, minf(300, screen.x - 620), 34)
@@ -446,6 +461,39 @@ func _draw_guide(screen: Vector2) -> void:
 	_button(Rect2(30,bottom,84,27),"定位","guide_focus","只移动镜头，不替你下令",false,false,Vector2(hint.get("target",Vector2(-1,-1))).x>=0)
 	_button(Rect2(124,bottom,84,27),"展开","guide_more","暂停查看完整提示")
 	_button(Rect2(218,bottom,88,27),"隐藏","guide_toggle","之后可从这里或设置中恢复")
+
+func _resource_text(values: Dictionary) -> String:
+	var labels: Dictionary = {"materials": "建材", "supplies": "补给", "fuel": "燃料"}
+	var parts: PackedStringArray = []
+	for key: String in values:
+		var amount: float = float(values[key])
+		var number: String = "<0.1" if amount > 0.0 and amount < 0.1 else String.num(amount, 1).trim_suffix(".0")
+		parts.append(String(labels.get(key, key)) + " " + number)
+	return " / ".join(parts)
+
+func _draw_construction_preview(screen: Vector2) -> void:
+	var rect: Rect2 = Rect2(340, 140, minf(422, screen.x - 628), minf(230, screen.y - 350)) if screen.y < 840 else Rect2(18, 397, 300, clampf(screen.y - 607, 230, 248))
+	var plan: Dictionary = main.build_preview
+	var valid: bool = bool(plan.get("ok", false))
+	var accent: Color = TEAL if valid else RED
+	var names: Dictionary = {"road": "道路", "camp": "前哨营地", "generator": "发电机", "workshop": "工坊", "tower": "岗哨炮塔", "barracks": "军营", "barricade": "临时路障"}
+	overlay_rects.append(rect)
+	_panel(rect, PANEL, accent)
+	var title: String = "施工预览 · " + String(names.get(main.build_kind, main.build_kind)) + (" · 暂停" if main.sim.paused else "")
+	_text(rect.position + Vector2(12, 27), title, 17, accent, rect.size.x - 24)
+	var camp_name: String = String(plan.get("camp_name", ""))
+	_text(rect.position + Vector2(12, 51), "供料：" + (camp_name if not camp_name.is_empty() else "无运作营地"), 13, PAPER, rect.size.x - 24)
+	var costs: Dictionary = plan.get("costs", {})
+	_text(rect.position + Vector2(12, 73), "需要：" + (_resource_text(costs) if not costs.is_empty() else "暂无可下单路线"), 13, GOLD, rect.size.x - 24)
+	var lines: Array[String] = _wrap_text(String(plan.get("message", "移动到地图选择施工位置。")), rect.size.x - 24, 14)
+	var limit: int = clampi(int((rect.size.y - 164) / 18) + 1, 1, 4)
+	for i: int in range(mini(limit, lines.size())):
+		_text(rect.position + Vector2(12, 98 + i * 18), lines[i] + ("…" if i == limit - 1 and lines.size() > limit else ""), 14, PAPER)
+	var missing: Dictionary = plan.get("missing", {})
+	var note: String = "缺少：" + _resource_text(missing) if not missing.is_empty() else String(plan.get("warning", ""))
+	if note.is_empty(): note = "左键下单 · 右键取消"
+	_text(Vector2(rect.position.x + 12, rect.end.y - 48), note, 12, GOLD, rect.size.x - 24)
+	_button(Rect2(rect.position.x + 12, rect.end.y - 36, rect.size.x - 24, 26), "取消施工", "cancel_build", "取消放置，不影响已安排的工程")
 
 func _draw_guide_dialog(screen: Vector2) -> void:
 	var panel_size: Vector2 = Vector2(minf(900, screen.x - 32), minf(620, screen.y - 32))

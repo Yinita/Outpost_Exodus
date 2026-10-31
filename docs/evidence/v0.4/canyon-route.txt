@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS _test_read_only_observation
+PASS _test_persistence_and_bad_states
+GUIDE_ROUTE road point captured t=40.0000000000003
+GUIDE_ROUTE wait home convoy and all friendlies crossing west gate reached=true t=200.499999999993
+GUIDE_ROUTE first evacuation delivered t=200.499999999993
+GUIDE_ROUTE resource branches connected t=665.500000000083
+GUIDE_ROUTE wait three or more physically delivered loads and viable forward inventories reached=true t=1011.60000000016
+GUIDE_ROUTE wait last loaded truck arriving at forward camp reached=true t=1011.80000000016
+GUIDE_ROUTE forward camp supplied t=1046.80000000014
+GUIDE_ROUTE wait transported crude refined into a fuel reserve reached=true t=1169.80000000003
+GUIDE_ROUTE wait rations produced before exit construction reached=true t=1231.59999999998
+GUIDE_ROUTE wait funded powered exit actually finishing reached=true t=1576.39999999966
+GUIDE_ROUTE wait command truck and survivors arriving at the exit reached=true t=1589.99999999965
+PASS _test_actual_mission_progression
+Guide checks: 102; failures: 0

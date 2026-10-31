@@ -1,0 +1,21 @@
+{
+	"performance": [],
+	"pixel_comparison": [
+		{
+			"changed_pixels": 41595,
+			"foreground_mean_channel_error_255": 2.74967268051369,
+			"foreground_pixels": 210330,
+			"max_channel_error_255": 81.000002771616,
+			"pixels": 921600,
+			"zoom": 1.05
+		},
+		{
+			"changed_pixels": 4596,
+			"foreground_mean_channel_error_255": 2.70044807806588,
+			"foreground_pixels": 23356,
+			"max_channel_error_255": 79.0000028908253,
+			"pixels": 921600,
+			"zoom": 0.35
+		}
+	]
+}

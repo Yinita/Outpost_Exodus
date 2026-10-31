@@ -22,6 +22,11 @@ var selected_ids: Array = []
 var selected_camp: int = 0
 var current_tab: String = "build"
 var build_kind: String = ""
+var build_preview: Dictionary = {}
+var production_readout: Dictionary = {}
+var _build_preview_key: Array = []
+var _production_readout_key: Array = []
+var _ui_revision: int = 0
 var attack_move: bool = false
 var pending_task: String = ""
 var started: bool = false
@@ -177,8 +182,10 @@ func _process(delta: float) -> void:
 			last_sim_message = String(sim.messages.back())
 			_notify(last_sim_message)
 	world.selected_ids = selected_ids
-	world.hover_tile = Vector2i(get_global_mouse_position() / TILE)
+	world.hover_tile = world.world_to_tile(get_global_mouse_position())
 	world.build_kind = build_kind
+	_refresh_context_readouts()
+	world.build_preview = build_preview
 	world.drag_selecting = dragging
 	world.drag_selection_rect = Rect2(drag_start, get_global_mouse_position() - drag_start)
 	var hint: Dictionary = guide.get_hint()
@@ -211,7 +218,39 @@ func _move_camera(delta: float) -> void:
 	camera.position += direction.limit_length() * delta * 780.0 / camera.zoom.x
 	camera.position = camera.position.clamp(Vector2.ZERO, Vector2(sim.map_size) * TILE)
 
+func _refresh_context_readouts() -> void:
+	# Preview computation may involve routing. Reuse it until a simulation step,
+	# relevant input action, hovered tile or mode changes; clicks always re-query.
+	if started and menu.is_empty() and not build_kind.is_empty():
+		var key: Array = [sim, sim.time, _ui_revision, build_kind, world.hover_tile]
+		if key != _build_preview_key:
+			build_preview = sim.query_build(build_kind, world.hover_tile, false)
+			_build_preview_key = key
+	else:
+		build_preview = {}
+		_build_preview_key.clear()
+	if started and current_tab == "production":
+		var key: Array = [sim, sim.time, _ui_revision, selected_camp, sim.paused, menu]
+		if key != _production_readout_key:
+			production_readout = sim.get_production_status(selected_camp)
+			_production_readout_key = key
+	else:
+		production_readout = {}
+		_production_readout_key.clear()
+
+func _place_build(tile: Vector2i) -> Dictionary:
+	var result: Dictionary = sim.try_build(build_kind, tile)
+	_notify(String(result.get("message", "无法安排施工。")))
+	var ok: bool = bool(result.get("ok", false))
+	_play_tone(460.0 if ok else 140.0, 0.08)
+	if build_kind != "road" and ok: build_kind = ""
+	_ui_revision += 1
+	_build_preview_key.clear()
+	return result
+
 func _unhandled_input(event: InputEvent) -> void:
+	if (event is InputEventMouseButton and event.pressed) or (event is InputEventKey and event.pressed and not event.echo):
+		_ui_revision += 1
 	if event is InputEventKey and event.pressed and not event.echo:
 		if not waiting_binding.is_empty():
 			if event.keycode == KEY_ESCAPE:
@@ -237,10 +276,10 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		if not menu.is_empty(): return
 		if event.is_action_pressed("pause_game"): sim.paused = not sim.paused
-		elif event.is_action_pressed("build_menu"): current_tab = "build"
-		elif event.is_action_pressed("production_menu"): current_tab = "production"
-		elif event.is_action_pressed("orders_menu"): current_tab = "orders"
-		elif event.is_action_pressed("train_menu"): current_tab = "training"
+		elif event.is_action_pressed("build_menu"): ui_action("tab:build")
+		elif event.is_action_pressed("production_menu"): ui_action("tab:production")
+		elif event.is_action_pressed("orders_menu"): ui_action("tab:orders")
+		elif event.is_action_pressed("train_menu"): ui_action("tab:training")
 		elif event.is_action_pressed("quick_save"): save_campaign()
 		elif event.is_action_pressed("quick_load"): load_campaign()
 		elif event.is_action_pressed("focus_command"): focus_camp(selected_camp)
@@ -267,10 +306,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				if not build_kind.is_empty():
-					var ok: bool = sim.build(build_kind, Vector2i(get_global_mouse_position() / TILE))
-					_notify("已安排施工。工程师会前往工地。" if ok else "无法施工：检查材料、可达性和工程师位置。")
-					_play_tone(460.0 if ok else 140.0, 0.08)
-					if build_kind != "road" and ok: build_kind = ""
+					_place_build(world.world_to_tile(get_global_mouse_position()))
 				elif attack_move:
 					var target: Vector2 = get_global_mouse_position() / TILE
 					sim.command_move(selected_ids, target, true)
@@ -399,6 +435,7 @@ func focus_camp(id: int) -> void:
 	camera.position = Vector2(camp.pos) * TILE
 
 func ui_action(action: String) -> void:
+	_ui_revision += 1
 	_play_tone(500.0, 0.04, 0.18)
 	if action == "new":
 		if started and sim.outcome == "playing":
@@ -513,6 +550,7 @@ func ui_action(action: String) -> void:
 		waiting_binding = action.trim_prefix("bind:")
 		settings_feedback = "请按一个新按键；Esc 取消。"
 	elif action.begins_with("tab:"): current_tab = action.trim_prefix("tab:"); build_kind = ""
+	elif action == "cancel_build": build_kind = ""
 	elif action.begins_with("build:"):
 		pending_task = ""
 		attack_move = false
@@ -543,6 +581,9 @@ func start_campaign(mission_id: String = "") -> void:
 		_notify("无法选择此战役，当前进度保持不变。")
 		return
 	sim.reset(42, requested)
+	_ui_revision += 1
+	_build_preview_key.clear()
+	_production_readout_key.clear()
 	selected_mission_id = String(sim.mission_id)
 	pending_mission_id = ""
 	guide.reset(guide_enabled)
@@ -656,6 +697,9 @@ func load_campaign(slot: String = "manual") -> bool:
 	# Every metadata field and the complete simulation have been validated before
 	# touching the live run. Simulation.load_state is itself transactional.
 	if not sim.load_state(data): return false
+	_ui_revision += 1
+	_build_preview_key.clear()
+	_production_readout_key.clear()
 	selected_mission_id = String(sim.mission_id)
 	pending_mission_id = ""
 	guide = restored_guide

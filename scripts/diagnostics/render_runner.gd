@@ -11,6 +11,8 @@ const CANONICAL_FIXTURE_SHA256: String = "95c49eaeba97a500cd95e0ad12a78d59b06103
 const TRACKED_SOURCES: Array[String] = [
 	"res://project.godot", "res://main.tscn", "res://scripts/main.gd",
 	"res://scripts/campaign_simulation.gd", "res://scripts/campaign_catalog.gd",
+	"res://scripts/construction_rules.gd", "res://scripts/actor_atlas.gd", "res://scripts/actor_canvas.gd",
+	"res://scripts/cartoon_canvas.gd", "res://scripts/terrain_cache.gd", "res://scripts/decoration_cache.gd",
 	"res://scripts/campaign_save_store.gd", "res://scripts/world_view.gd", "res://scripts/hud.gd",
 	"res://scripts/campaign_guide.gd", "res://scripts/diagnostics/render_runner.gd",
 	"res://assets/buildings-atlas.png", "res://assets/fonts/NotoSansCJK-Regular.ttc",

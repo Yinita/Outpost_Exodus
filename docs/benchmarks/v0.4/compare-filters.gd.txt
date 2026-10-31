@@ -1,0 +1,21 @@
+extends "res://tests/benchmark_campaign.gd"
+var variant_path: String = ""
+func _make_busy_scene() -> Dictionary:
+	var setup: Dictionary = super._make_busy_scene()
+	if variant_path.is_empty(): return setup
+	var loaded: Variant = load(variant_path).new()
+	assert(loaded.load_state(setup.sim.save_state()))
+	setup.sim = loaded
+	return setup
+func _run() -> void:
+	warmup = 120
+	samples = 600
+	var results: Dictionary = {}
+	for variant: String in ["baseline", "filter", "filter", "baseline"]:
+		variant_path = "res://work/body-perf-v04/" + variant + "_simulation.gd"
+		var measured: Dictionary = _measure_run(0)
+		results[variant + str(results.size())] = measured
+		print("VARIANT_RESULT ", variant, " ", JSON.stringify(measured.tick_ms))
+	var output: FileAccess = FileAccess.open("res://work/body-perf-v04/filters.json", FileAccess.WRITE)
+	output.store_string(JSON.stringify({"results":results, "errors":errors}, "\t"))
+	quit(0 if errors.is_empty() else 1)

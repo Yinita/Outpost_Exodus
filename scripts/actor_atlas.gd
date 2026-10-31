@@ -1,10 +1,12 @@
 extends "res://scripts/actor_canvas.gd"
 ## Render this canvas once in a transparent SubViewport of ATLAS_SIZE.
-## Regions retain the original body dimensions; no live decorations are baked.
+## Bodies and four ground-overlay variants share the existing texture. Selection
+## chooses a region live; positions, facing, bob, health and labels stay in World.
 
 const FRAME_COUNT: int = 8
 const CELL_SIZE: Vector2i = Vector2i(96, 96)
 const ORIGIN: Vector2 = Vector2(48.0, 64.0)
+const OVERLAY_ORIGIN: Vector2 = Vector2(48.0, 48.0)
 const ROW_COUNT: int = 16
 const ATLAS_SIZE: Vector2i = Vector2i(CELL_SIZE.x * FRAME_COUNT, CELL_SIZE.y * ROW_COUNT)
 const KIND_ROWS: Dictionary = {
@@ -50,7 +52,29 @@ static func destination() -> Rect2:
 	return Rect2(-ORIGIN, Vector2(CELL_SIZE))
 
 
+static func overlay_region(kind: String, selected: bool) -> Rect2:
+	# Idle rifle uses column zero only. Reuse columns 1–4 without growing the
+	# texture or adding another viewport; truck rings fit around the lower origin.
+	var column: int = 1 + (2 if kind == "truck" else 0) + (1 if selected else 0)
+	return Rect2(Vector2(column * CELL_SIZE.x, 0.0), Vector2(CELL_SIZE))
+
+
+static func overlay_destination(position: Vector2) -> Rect2:
+	return Rect2(position - OVERLAY_ORIGIN, Vector2(CELL_SIZE))
+
+
 func _draw() -> void:
+	for truck: bool in [false, true]:
+		for selected: bool in [false, true]:
+			var cell: Rect2 = overlay_region("truck" if truck else "rifle", selected)
+			draw_set_transform(cell.position + OVERLAY_ORIGIN)
+			_oval(Vector2(2.0, 9.0), Vector2(29.0, 11.0) if truck else Vector2(13.0, 5.0), Color(0.18, 0.22, 0.20, 0.30))
+			if selected:
+				# Match World's ten five-point antialiased arcs exactly at bake time.
+				for segment: int in range(10):
+					var start: float = float(segment) * TAU / 10.0
+					draw_arc(Vector2(0.0, 4.0), 33.0 if truck else 17.0, start, start + TAU / 10.0 * 0.64, 5, Color(CYAN, 0.95), 2.5, true)
+				_oval(Vector2(0.0, 4.0), Vector2(15.0, 6.0), Color(CYAN, 0.13))
 	for kind_value: Variant in KIND_ROWS:
 		var kind: String = str(kind_value)
 		var cargo_variants: int = 2 if kind == "worker" or kind == "truck" else 1

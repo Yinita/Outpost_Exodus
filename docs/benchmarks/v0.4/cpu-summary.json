@@ -1,0 +1,108 @@
+{
+  "baseline_sha256": "0cdc7a386506672c6375de5ea82aa554eff4ff558403811ca3b6d3e1510f3dd0",
+  "candidate_sha256": "e3805466ca05072bbf93744f405ff2d5612948c7713b2970583610f9469b2a8b",
+  "fixture_sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a",
+  "baseline": {
+    "samples": 1200,
+    "mean_ms": 12.790209999999998,
+    "p50_ms": 12.429,
+    "p95_ms": 15.495,
+    "p99_ms": 18.186,
+    "max_ms": 22.468
+  },
+  "candidate": {
+    "samples": 1200,
+    "mean_ms": 11.128515833333333,
+    "p50_ms": 10.804,
+    "p95_ms": 13.536,
+    "p99_ms": 16.344,
+    "max_ms": 20.135
+  },
+  "errors": [],
+  "method": "One process, four non-overlapping canonical runs in baseline/candidate/candidate/baseline order; each 120 warmup + 600 timed ticks, unchanged benchmark workload inspections and periodic saves. Godot 4.7.2 official Linux; headless CPU only; render processes stopped. Full-state equality and regression results separate.",
+  "reduction_percent": {
+    "mean_ms": 12.991922467783294,
+    "p50_ms": 13.074261807064126,
+    "p95_ms": 12.64278799612778,
+    "p99_ms": 10.128670405806657
+  },
+  "equivalence": {
+    "baseline_sha256": "0cdc7a386506672c6375de5ea82aa554eff4ff558403811ca3b6d3e1510f3dd0",
+    "baseline_tick_ms": {
+      "max_ms": 22.504,
+      "mean_ms": 12.7615466666667,
+      "p50_ms": 12.393,
+      "p95_ms": 15.565,
+      "p99_ms": 18.049,
+      "samples": 600
+    },
+    "candidate_sha256": "e3805466ca05072bbf93744f405ff2d5612948c7713b2970583610f9469b2a8b",
+    "candidate_tick_ms": {
+      "max_ms": 20.328,
+      "mean_ms": 11.2455066666667,
+      "p50_ms": 10.913,
+      "p95_ms": 13.691,
+      "p99_ms": 16.625,
+      "samples": 600
+    },
+    "fixture_sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a",
+    "identical_encoded_state_ticks": 720,
+    "state_comparison": "Exact full save_state Variant equality plus exact full serialized encoded entry ordering on every tick.",
+    "tick_state_sequence_sha256": "c6c60ec9eb1cb60cd1c9e35ec800df469b145efe89b6da5d38d5795cfade9385",
+    "timed_ticks": 600,
+    "warmup_ticks": 120
+  },
+  "edge_equivalence": {
+    "candidate_sha256": "e3805466ca05072bbf93744f405ff2d5612948c7713b2970583610f9469b2a8b",
+    "comparisons": 89,
+    "failures": [],
+    "mutations": [
+      "newly dead friend yielded from cached neighborhood",
+      "reset/load after cached same/cross-bucket movement",
+      "kind/position edits and completed solid footprint before next tick",
+      "dense low-HP combat removes actors"
+    ],
+    "sequence_sha256": "38110e54a43708cc6361030301f24c6b4ce7eacf6b857deb9160f09a9a50cf1a"
+  },
+  "regressions": {
+    "campaign_checks": 170,
+    "campaign_failures": 0,
+    "navigation_combat_checks": 132,
+    "navigation_combat_failures": 0
+  },
+  "sources": {
+    "baseline": "0cdc7a386506672c6375de5ea82aa554eff4ff558403811ca3b6d3e1510f3dd0",
+    "hoists": "e777f658bf556476b696cf9e07f8864bf3ee4f508911f5c68b88aec366e7190e",
+    "metadata_map": "efaa593debeef63a0335ca431d2178bdd535b7ded6e86db101c55c773c2884a7",
+    "metadata": "4e796b3ea6ab3e3507bfee96ff0a379ab4dac0b8d87b16923144f19caf23e82c",
+    "array": "c0735eb4c07d4375c1b8042fce64322abff53bba65c4966c58bf837bae7497f8",
+    "filter": "e3805466ca05072bbf93744f405ff2d5612948c7713b2970583610f9469b2a8b",
+    "array_filter": "5274c9aacbe783ba0d4aabbab857829e81800d8b2c56643a815739790426ad90"
+  },
+  "trial_means_ms": {
+    "array": 12.2175233333333,
+    "baseline": 12.58006,
+    "hoists": 12.3998366666667,
+    "metadata": 13.5839883333333
+  },
+  "chosen_change": "Keep existing live Dictionary entries and spatial cache ordering. Reuse already computed Vector2 offsets for identical length calculations; apply existing conservative axis-distance rejection before live hp/state reads; hoist caller id/team/radius values locally.",
+  "rejected_changes": "Typed Body metadata sidecars slowed canonical CPU work by about 8%; array metadata sidecars gained about 3%, less than the simpler chosen change. Neither sidecar design retained.",
+  "preserved_behavior": "No state/rate/unit count/AI reductions. Mutable hp/state/position remain live reads. Yield keeps its existing lack of a health check, including moving a newly dead cached neighbor. No position mirrors or new persistent state.",
+  "unchanged_workload": {
+    "friendly_count_min_max": [
+      32,
+      32
+    ],
+    "enemy_count_min_max": [
+      100,
+      100
+    ],
+    "completed_ordered_buildings": 2,
+    "resource_hauling_cargo_actor_samples": 728,
+    "resource_parcels_delivered": 3,
+    "combat_effect_samples": 5670,
+    "nonempty_cargo_actor_samples": 1131,
+    "remaining_nearby_salvage": 99748.0
+  },
+  "workload_equal_all_four_runs": true
+}

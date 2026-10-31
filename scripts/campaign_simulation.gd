@@ -4,6 +4,7 @@ extends RefCounted
 
 const SAVE_VERSION: int = 1
 const CampaignCatalog = preload("res://scripts/campaign_catalog.gd")
+const ConstructionRules = preload("res://scripts/construction_rules.gd")
 const MISSION_SAVE_TAGS: Dictionary = {"canyon": "rift_escape_01", "delta": "wetland_escape_02", "ridge": "ridge_escape_03"}
 const BUILD_COSTS: Dictionary = {
 	"road": {"materials": 2.0},
@@ -748,14 +749,18 @@ func _set_unit_position(unit: Dictionary, position: Vector2) -> void:
 func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
 	var radius: float = _unit_radius(unit)
 	var broadphase_radius: float = radius + MAX_UNIT_RADIUS
+	var unit_id: int = int(unit["id"])
 	for other in _nearby_bodies(position):
-		if int(other["id"]) == int(unit["id"]) or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+		if int(other["id"]) == unit_id:
 			continue
-		var offset: Vector2 = position - Vector2(other["pos"])
+		var other_position: Vector2 = Vector2(other["pos"])
+		var offset: Vector2 = position - other_position
 		if absf(offset.x) > broadphase_radius or absf(offset.y) > broadphase_radius:
 			continue
+		if float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+			continue
 		var minimum: float = radius + _unit_radius(other) - 0.01
-		if position.distance_squared_to(Vector2(other["pos"])) < minimum * minimum:
+		if offset.length_squared() < minimum * minimum:
 			return false
 	return true
 
@@ -816,10 +821,12 @@ func _separate_bodies() -> void:
 			var team: String = str(unit["team"])
 			var unit_id: int = int(unit["id"])
 			for other in _nearby_bodies(Vector2(unit["pos"])):
-				if int(other["id"]) <= unit_id or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+				if int(other["id"]) <= unit_id:
 					continue
 				var offset: Vector2 = Vector2(unit["pos"]) - Vector2(other["pos"])
 				if absf(offset.x) > broadphase_radius or absf(offset.y) > broadphase_radius:
+					continue
+				if float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
 					continue
 				var other_radius: float = _unit_radius(other)
 				var minimum: float = radius + other_radius
@@ -1018,80 +1025,45 @@ func _deposit(camp: Dictionary, cargo: Dictionary) -> void:
 		camp[key] = float(camp.get(key, 0.0)) + float(cargo.get(key, 0.0))
 
 
+func query_build(kind: String, tile: Vector2i, refresh_navigation: bool = true) -> Dictionary:
+	return ConstructionRules.query_build(self, kind, tile, BUILD_COSTS, refresh_navigation)
+
+
+func can_build(kind: String, tile: Vector2i) -> bool:
+	return bool(query_build(kind, tile)["ok"])
+
+
 func build(kind: String, tile: Vector2i) -> bool:
-	if outcome != "playing" or not BUILD_COSTS.has(kind) or kind == "exit":
-		return false
-	_ensure_navigation_index(true)
-	if not _terrain_walkable(tile):
-		_message("不能在悬崖或地图边缘施工。")
-		return false
-	var position: Vector2 = Vector2(tile)
-	var camp: Dictionary = _nearest_camp(position)
-	if camp.is_empty():
-		return false
+	return bool(try_build(kind, tile)["ok"])
+
+
+func try_build(kind: String, tile: Vector2i) -> Dictionary:
+	# Re-query at commit time: a displayed preview never reserves resources.
+	var result: Dictionary = query_build(kind, tile)
+	if not bool(result["ok"]):
+		_message(str(result["message"]))
+		return result
+	var camp: Dictionary = get_camp(int(result["camp_id"]))
+	var costs: Dictionary = result["costs"]
+	_pay(camp, costs)
 	if kind == "road":
-		return _build_road(tile, camp)
-	for existing in buildings:
-		if float(existing["hp"]) > 0.0 and Vector2(existing["pos"]).distance_to(position) < 1.7:
-			_message("建筑之间需要留出通行与施工空间。")
-			return false
-	if position.x < pursuit_x + 1.0:
-		_message("该区域已被主尸潮淹没。")
-		return false
-	if Vector2(camp["pos"]).distance_to(position) > 13.0 and not _road_connected(Vector2(camp["pos"]), position):
-		_message("先将道路铺到施工点附近，再建立远方设施。")
-		return false
-	if _find_path(Vector2(camp["pos"]), position).is_empty():
-		_message("施工队无法到达这里；检查坡道和关口。")
-		return false
-	var costs: Dictionary = BUILD_COSTS[kind].duplicate(true)
-	if not _can_pay(camp, costs):
-		_message("附近营地缺少建造材料或补给。")
-		return false
-	_pay(camp, costs)
-	var building: Dictionary = _add_building(kind, position, int(camp["id"]), 0.0)
-	_add_job(kind, position, int(camp["id"]), int(building["id"]), costs)
-	_message("已设立工地：%s。工程师会领取材料并前往施工。" % _building_name(kind))
-	return true
+		var new_tiles: Array = result["road_tiles"]
+		for at in new_tiles:
+			roads[at] = {"progress": 0.0, "camp_id": int(camp["id"])}
+		var road_job: Dictionary = _add_job("road", Vector2(new_tiles[0]), int(camp["id"]), 0, costs)
+		road_job["road_tiles"] = new_tiles.duplicate()
+		road_job["road_cursor"] = 0
+		result["message"] = "已规划 %d 格道路，工人和工程师将逐段施工。" % new_tiles.size()
+	else:
+		var building: Dictionary = _add_building(kind, result["position"], int(camp["id"]), 0.0)
+		_add_job(kind, result["position"], int(camp["id"]), int(building["id"]), costs)
+		result["message"] = "已设立工地：%s。工程师会领取材料并前往施工。" % _building_name(kind)
+	_message(str(result["message"]))
+	return result
 
 
-func _build_road(tile: Vector2i, camp: Dictionary) -> bool:
-	if roads.has(tile):
-		return false
-	var start: Vector2 = Vector2(camp["pos"])
-	var best_distance: float = INF
-	for existing_tile in roads:
-		var data: Variant = roads[existing_tile]
-		var complete: bool = not data is Dictionary or float(data.get("progress", 1.0)) >= 1.0
-		if not complete:
-			continue
-		var test: float = Vector2(existing_tile).distance_squared_to(Vector2(tile))
-		if test < best_distance and _road_connected(Vector2(camp["pos"]), Vector2(existing_tile)):
-			start = Vector2(existing_tile)
-			best_distance = test
-	var path: Array = _find_path(start, Vector2(tile), "road")
-	if path.is_empty():
-		_message("道路无法跨越悬崖；请利用坡道或现有桥面。")
-		return false
-	var new_tiles: Array[Vector2i] = []
-	for waypoint in path:
-		var at: Vector2i = Vector2i(Vector2(waypoint).round())
-		if not roads.has(at):
-			new_tiles.append(at)
-	if new_tiles.is_empty():
-		return false
-	var costs: Dictionary = {"materials": float(new_tiles.size()) * 2.0}
-	if not _can_pay(camp, costs):
-		_message("这段道路需要 %d 建材；可先铺较短一段。" % int(costs["materials"]))
-		return false
-	_pay(camp, costs)
-	for at in new_tiles:
-		roads[at] = {"progress": 0.0, "camp_id": int(camp["id"])}
-	var road_job: Dictionary = _add_job("road", Vector2(new_tiles[0]), int(camp["id"]), 0, costs)
-	road_job["road_tiles"] = new_tiles
-	road_job["road_cursor"] = 0
-	_message("已规划 %d 格道路，工人和工程师将逐段施工。" % new_tiles.size())
-	return true
+func get_production_status(camp_id: int) -> Dictionary:
+	return ConstructionRules.get_production_status(self, camp_id)
 
 
 func _add_job(kind: String, position: Vector2, source_id: int, building_id: int, costs: Dictionary) -> Dictionary:
@@ -2209,18 +2181,20 @@ func _improves_existing_overlap(unit: Dictionary, destination: Vector2) -> bool:
 		neighbors.append_array(_nearby_bodies(destination))
 	for other in neighbors:
 		var identifier: int = int(other["id"])
-		if identifier == unit_id or (not same_bucket and seen.has(identifier)) or float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+		if identifier == unit_id or (not same_bucket and seen.has(identifier)):
 			continue
-		if not same_bucket:
-			seen[identifier] = true
 		var other_position: Vector2 = Vector2(other["pos"])
 		var old_offset: Vector2 = origin - other_position
 		var new_offset: Vector2 = destination - other_position
 		if (absf(old_offset.x) > broadphase_radius or absf(old_offset.y) > broadphase_radius) and (absf(new_offset.x) > broadphase_radius or absf(new_offset.y) > broadphase_radius):
 			continue
+		if float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+			continue
+		if not same_bucket:
+			seen[identifier] = true
 		var minimum: float = radius + _unit_radius(other) - 0.01
-		var previous: float = maxf(0.0, minimum - origin.distance_to(other_position))
-		var next: float = maxf(0.0, minimum - destination.distance_to(other_position))
+		var previous: float = maxf(0.0, minimum - old_offset.length())
+		var next: float = maxf(0.0, minimum - new_offset.length())
 		if next > previous + EPSILON:
 			return false
 		old_penetration += previous
@@ -2231,14 +2205,18 @@ func _improves_existing_overlap(unit: Dictionary, destination: Vector2) -> bool:
 func _yield_idle_friend(mover: Dictionary, destination: Vector2, direction: Vector2, travel: float) -> bool:
 	var priority: int = _movement_priority(mover)
 	var side: Vector2 = Vector2(-direction.y, direction.x)
+	var mover_id: int = int(mover["id"])
+	var team: String = str(mover["team"])
+	var radius: float = _unit_radius(mover)
 	for other in _nearby_bodies(destination):
-		if int(other["id"]) == int(mover["id"]) or str(other["team"]) != str(mover["team"]) or _movement_priority(other) >= priority:
+		if int(other["id"]) == mover_id or str(other["team"]) != team or _movement_priority(other) >= priority:
 			continue
-		if destination.distance_to(Vector2(other["pos"])) >= _unit_radius(mover) + _unit_radius(other) + 0.03:
+		var other_radius: float = _unit_radius(other)
+		if destination.distance_to(Vector2(other["pos"])) >= radius + other_radius + 0.03:
 			continue
 		for yield_direction in [side, -side, direction, -direction]:
 			var displaced: Vector2 = Vector2(other["pos"]) + Vector2(yield_direction) * maxf(0.08, travel * 1.25)
-			if _within_pursuit_front(other, displaced) and _static_motion_clear(Vector2(other["pos"]), displaced, _unit_radius(other), str(other["team"])) and (_body_is_clear(other, displaced) or _improves_existing_overlap(other, displaced)):
+			if _within_pursuit_front(other, displaced) and _static_motion_clear(Vector2(other["pos"]), displaced, other_radius, str(other["team"])) and (_body_is_clear(other, displaced) or _improves_existing_overlap(other, displaced)):
 				_set_unit_position(other, displaced)
 				return true
 	return false

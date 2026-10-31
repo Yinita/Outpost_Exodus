@@ -1,0 +1,45 @@
+{
+  "version": "0.4.0-dev",
+  "physical_script_lines": 8034,
+  "script_sha256": {
+    "scripts/actor_atlas.gd": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+    "scripts/actor_canvas.gd": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+    "scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+    "scripts/campaign_guide.gd": "c883ad89733b7fbed34b254e99adbb2f038d12e466b79004259144d60d40f215",
+    "scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+    "scripts/campaign_simulation.gd": "4ca16f4393b6e76e8c4ff560553ae68d665d43ee7d7d1e784a49242771c544d5",
+    "scripts/cartoon_canvas.gd": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+    "scripts/construction_rules.gd": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701",
+    "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+    "scripts/diagnostics/render_runner.gd": "cc37c50e8ac030e858e3cef9ae203b7ed0b2608d8e5ab69bdd517d107d8e9ac6",
+    "scripts/hud.gd": "e1318572dc42a650e8fc5c775ffd00e02645f1f57e558e297b0a007ae5b8d145",
+    "scripts/main.gd": "5b2dddd42ec26ac0777a845a198244a3f61aafd6189b093b3ff4faa0a47528ad",
+    "scripts/terrain_cache.gd": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+    "scripts/world_view.gd": "0490ac39cc5e19e97cb58824403e29a94049dec889eebf817d92188e7eeada67"
+  },
+  "verified_this_iteration": {
+    "campaign": 170,
+    "navigation": 132,
+    "construction_feedback": 187,
+    "construction_ui": 31,
+    "actor_overlays": 34,
+    "render_cache": 23,
+    "guide_full_canyon": 102,
+    "delta_full_route": 116,
+    "ridge_full_route": 116,
+    "rendered_ui": 124,
+    "preferences": 286,
+    "selection": 114,
+    "engine_input": 48,
+    "diagnostic_preflight": 40,
+    "complete_state_pairs_with_queries": 727,
+    "movement_edge_pairs": 89
+  },
+  "open_gates": [
+    "fresh human playability",
+    "stable60fps/minimumhardware",
+    "Windows execution/clean machines",
+    "final art audio/accessibility",
+    "Steam store/depot/build review"
+  ]
+}

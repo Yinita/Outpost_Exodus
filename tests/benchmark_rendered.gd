@@ -15,6 +15,8 @@ const PIXELS: Vector2i = Vector2i(1920, 1080)
 const TRACKED_SOURCES: Array[String] = [
 	"res://project.godot", "res://main.tscn", "res://scripts/main.gd",
 	"res://scripts/campaign_simulation.gd", "res://scripts/world_view.gd",
+	"res://scripts/construction_rules.gd", "res://scripts/actor_atlas.gd", "res://scripts/actor_canvas.gd",
+	"res://scripts/cartoon_canvas.gd", "res://scripts/terrain_cache.gd", "res://scripts/decoration_cache.gd",
 	"res://scripts/hud.gd", "res://scripts/campaign_guide.gd",
 	"res://tests/benchmark_campaign.gd", "res://tests/benchmark_rendered.gd",
 	"res://assets/buildings-atlas.png", "res://assets/fonts/NotoSansCJK-Regular.ttc",

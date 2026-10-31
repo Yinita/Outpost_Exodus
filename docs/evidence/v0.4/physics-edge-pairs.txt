@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+EDGE_PAIRS {"candidate_sha256":"e3805466ca05072bbf93744f405ff2d5612948c7713b2970583610f9469b2a8b","comparisons":89,"failures":[],"mutations":["newly dead friend yielded from cached neighborhood","reset/load after cached same/cross-bucket movement","kind/position edits and completed solid footprint before next tick","dense low-HP combat removes actors"],"sequence_sha256":"38110e54a43708cc6361030301f24c6b4ce7eacf6b857deb9160f09a9a50cf1a"}

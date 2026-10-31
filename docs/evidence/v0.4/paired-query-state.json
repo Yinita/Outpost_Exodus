@@ -1,0 +1,13 @@
+{
+	"baseline_sha256": "0cdc7a386506672c6375de5ea82aa554eff4ff558403811ca3b6d3e1510f3dd0",
+	"candidate_sha256": "4ca16f4393b6e76e8c4ff560553ae68d665d43ee7d7d1e784a49242771c544d5",
+	"canonical_ticks": 720,
+	"comparisons": 727,
+	"failures": [],
+	"fixture_sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a",
+	"helper_sha256": "6ed8718ab6bb8e113538b118e2d6b2c62defe027c7a92692de6ab1e21bd8d32b",
+	"interleaved_query_operations": 2996,
+	"method": "Exact full save_state Variant equality and serialized encoded-entry order after seven real accepted orders and every canonical tick; preview/status queries only interleaved on candidate. No timing measurement.",
+	"successful_legacy_order_comparisons": 7,
+	"tick_state_sequence_sha256": "c6c60ec9eb1cb60cd1c9e35ec800df469b145efe89b6da5d38d5795cfade9385"
+}

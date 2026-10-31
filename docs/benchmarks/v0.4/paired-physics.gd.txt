@@ -1,0 +1,70 @@
+extends "res://tests/benchmark_campaign.gd"
+## Full encoded-state regression: canonical fixture, 120 warmup + 600 timed ticks.
+## Compare both Variant equality (exact floats) and serialized entry order every tick.
+func _run() -> void:
+	var fixture: Dictionary = _make_busy_scene()
+	assert(errors.is_empty())
+	var state: Dictionary = fixture.sim.save_state()
+	var old_sim: Variant = load("res://work/body-perf-v04/baseline_simulation.gd").new()
+	var new_sim: Variant = load("res://work/body-perf-v04/filter_simulation.gd").new()
+	assert(old_sim.load_state(state))
+	assert(new_sim.load_state(state))
+	# A newly added actor kind must keep the collision rejection bound valid.
+	for kind: String in new_sim.UNIT_RADII:
+		assert(float(new_sim.UNIT_RADII[kind]) <= new_sim.MAX_UNIT_RADIUS)
+	var old_ticks: Array = []
+	var new_ticks: Array = []
+	var state_hash: HashingContext = HashingContext.new()
+	assert(state_hash.start(HashingContext.HASH_SHA256) == OK)
+	for step: int in range(720):
+		var old_elapsed: int
+		var new_elapsed: int
+		if step % 2 == 0:
+			old_elapsed = _time_tick(old_sim)
+			new_elapsed = _time_tick(new_sim)
+		else:
+			new_elapsed = _time_tick(new_sim)
+			old_elapsed = _time_tick(old_sim)
+		if step >= 120:
+			old_ticks.append(old_elapsed)
+			new_ticks.append(new_elapsed)
+		var old_state: Dictionary = old_sim.save_state()
+		var new_state: Dictionary = new_sim.save_state()
+		var old_text: String = JSON.stringify(old_state)
+		var new_text: String = JSON.stringify(new_state)
+		if old_state != new_state or old_text != new_text:
+			for pair: Array in [["old", old_text], ["new", new_text]]:
+				var file: FileAccess = FileAccess.open("res://work/body-perf-v04/mismatch-" + pair[0] + ".json", FileAccess.WRITE)
+				file.store_string(pair[1])
+			printerr("STATE_MISMATCH ", step + 1)
+			quit(1)
+			return
+		state_hash.update(old_text.to_utf8_buffer())
+		var friendly: int = 0
+		var enemy: int = 0
+		for unit: Dictionary in new_sim.units:
+			if unit.team == "friendly": friendly += 1
+			else: enemy += 1
+		assert(friendly == 32 and enemy == 100 and new_sim.outcome == "playing")
+	var report: Dictionary = {
+		"identical_encoded_state_ticks": 720,
+		"warmup_ticks": 120, "timed_ticks": 600,
+		"state_comparison": "Exact full save_state Variant equality plus exact full serialized encoded entry ordering on every tick.",
+		"tick_state_sequence_sha256": state_hash.finish().hex_encode(),
+		"baseline_sha256": FileAccess.get_sha256("res://work/body-perf-v04/baseline_simulation.gd"),
+		"candidate_sha256": FileAccess.get_sha256("res://work/body-perf-v04/filter_simulation.gd"),
+		"fixture_sha256": FileAccess.get_sha256("res://tests/benchmark_campaign.gd"),
+		"baseline_tick_ms": _stats(old_ticks), "candidate_tick_ms": _stats(new_ticks),
+		"baseline_tick_usec": old_ticks, "candidate_tick_usec": new_ticks,
+	}
+	var output: FileAccess = FileAccess.open("res://work/body-perf-v04/paired-state.json", FileAccess.WRITE)
+	output.store_string(JSON.stringify(report, "\t"))
+	report.erase("baseline_tick_usec")
+	report.erase("candidate_tick_usec")
+	print("PAIRED_REPORT ", JSON.stringify(report))
+	quit()
+
+func _time_tick(sim: Variant) -> int:
+	var started: int = Time.get_ticks_usec()
+	sim.tick(STEP)
+	return Time.get_ticks_usec() - started

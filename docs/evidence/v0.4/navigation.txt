@@ -1,0 +1,20 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS _test_group_arrival_and_spacing
+PASS _test_separation_respects_cliffs
+PASS _test_crowded_pursuit_front
+PASS _test_bridge_traffic_and_logistics
+EVAC_DELIVERY count=1 time=21.4 received_total=180.0 pos=(18.21202, 29.0)
+EVAC_DELIVERY count=2 time=56.2000000000005 received_total=360.0 pos=(18.21202, 29.0)
+EVAC_DELIVERY count=3 time=90.9999999999991 received_total=540.0 pos=(18.21202, 29.0)
+EVAC_MULTI_TRIP deliveries=3 time=90.9999999999991 pos=(18.21202, 29.0) target=(4.0, 29.0) path_index=1 pathlen=14 source_distance=14.2471590042114 destination_distance=2.0486261844635 stage=returning
+PASS _test_balanced_evacuation_loading
+RECORDED_RETURN_START pos=(27.18848, 20.0001) target=(26.0, 22.0) index=25.0/28 wait=327.400000000006 stage=returning
+RECORDED_RETURN_AFTER time=1275.09999999993 loaded=true pos=(26.07253, 21.91961) target=(54.0, 22.0) index=1/30 wait=0.0 source_distance=1.08282053470612 destination_distance=27.9483642578125 stage=outbound cargo={ "materials": 180.0 }
+PASS _test_recorded_return_trip
+PASS _test_packing_save_continuation
+PASS _test_rifle_obstruction
+PASS _test_high_ground_canyon_fire
+PASS _test_melee_cannot_bite_through_cliff
+PASS _test_congested_save_continuation
+Navigation/combat checks: 132; failures: 0
