@@ -9,6 +9,7 @@ const SaveStore = preload("res://scripts/campaign_save_store.gd")
 const GameAudio = preload("res://scripts/game_audio.gd")
 const CampReadout = preload("res://scripts/camp_readout.gd")
 const ConstructionRules = preload("res://scripts/construction_rules.gd")
+const CommandTruckReadout = preload("res://scripts/command_truck_readout.gd")
 const TILE: float = 48.0
 const MIN_CAMERA_ZOOM: float = 0.35
 const MAX_CAMERA_ZOOM: float = 1.6
@@ -560,6 +561,18 @@ func _focus_selection() -> void:
 	for id: int in selected_ids: center += Vector2(sim.get_unit(id).get("pos", Vector2.ZERO))
 	camera.position = center / selected_ids.size() * TILE
 
+func focus_main_truck() -> bool:
+	# Revalidate the live identity even if a previous frame drew an enabled button.
+	if not started or not menu.is_empty(): return false
+	var readout: Dictionary = CommandTruckReadout.status(sim)
+	if not bool(readout.enabled): return false
+	var unit: Dictionary = sim.get_unit(int(readout.unit_id))
+	_cancel_pointer_modes()
+	pan_active = false
+	selected_ids = [int(unit.id)]
+	camera.position = Vector2(unit.pos) * TILE
+	return true
+
 func focus_camp(id: int) -> void:
 	var camp: Dictionary = sim.get_camp(id)
 	if camp.is_empty(): return
@@ -729,6 +742,7 @@ func ui_action(action: String) -> void:
 		current_tab = action.trim_prefix("tab:")
 		_cancel_pointer_modes()
 	elif action == "cancel_build": _cancel_pointer_modes()
+	elif action == "select_command_truck": focus_main_truck()
 	elif action == "close_project":
 		selected_project_id = 0
 		construction_readout = {}

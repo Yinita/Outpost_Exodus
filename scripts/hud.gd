@@ -3,6 +3,7 @@ extends Control
 const Catalog = preload("res://scripts/campaign_catalog.gd")
 const Cartoon = preload("res://scripts/cartoon_canvas.gd")
 const WorldView = preload("res://scripts/world_view.gd")
+const CommandTruckReadout = preload("res://scripts/command_truck_readout.gd")
 
 const INK: Color = Color("1b292e")
 const PANEL: Color = Color("22363c")
@@ -122,10 +123,12 @@ func _draw_top(screen: Vector2, summary: Dictionary) -> void:
 
 func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 	_panel(Rect2(18, 82, 300, 222), Color(PANEL, 0.95), Color("52716d"))
-	_text(Vector2(34, 111), "%02d  %s" % [Catalog.ids().find(String(main.sim.mission_id)) + 1, String(main.sim.mission_name)], 22, PAPER, 268)
+	var phase_text: String = {"preparation": "整备", "advance": "推进", "evacuation": "撤守"}.get(main.sim.phase, "推进")
+	_text(Vector2(34, 111), "%02d  %s · %s" % [Catalog.ids().find(String(main.sim.mission_id)) + 1, String(main.sim.mission_name), phase_text], 22, PAPER, 268)
 	_text(Vector2(34, 139), "指挥车 + 至少4人抵达撤离站", 14, MUTED)
-	var phase_text: Dictionary = {"preparation": "整备 · 小队开路", "advance": "推进 · 建立补给线", "evacuation": "撤守 · 争取最后时间"}
-	_text(Vector2(34, 171), phase_text.get(main.sim.phase, "推进战役"), 18, TEAL)
+	var command: Dictionary = CommandTruckReadout.status(main.sim)
+	var critical: bool = command.code == "critical"
+	_button(_command_truck_rect(), String(command.label), "select_command_truck", String(command.tooltip), main.selected_ids == [command.unit_id] and not critical, critical, bool(command.enabled) and main.started and main.menu.is_empty())
 	var progress: float = float(summary.get("exit_progress", main.sim.exit_progress))
 	_text(Vector2(34, 202), "出口工程", 15, MUTED)
 	_bar(Rect2(34, 214, 266, 10), progress, TEAL)
@@ -147,6 +150,9 @@ func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 	_text(Vector2(33, selection_top + (17 if short else 28)), selection_text, 13 if short else 15, GOLD if targeting else PAPER)
 	var selection_hint: String = "右键 / Esc 取消当前指令" if targeting else "%s 攻击 · %s 切队 · Ctrl+编队键保存" % [main.binding_label("attack_move"), main.binding_label("next_squad")]
 	_text(Vector2(33, selection_top + (34 if short else 51)), selection_hint, 10 if short else 12, MUTED)
+
+func _command_truck_rect() -> Rect2:
+	return Rect2(34, 153, 266, 31)
 
 func _draw_camp_cards(screen: Vector2) -> void:
 	var y: float = 82

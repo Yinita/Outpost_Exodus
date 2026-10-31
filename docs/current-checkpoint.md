@@ -1,37 +1,31 @@
 # 当前开发检查点
 
-**0.15.0-dev精确Linux包技术验收已接受**。验收对象是冻结源码`6bf0fe78e9d627fb88a4d3216c66a759feba0fb1`、tree `3b881ee726da2b9d6ccee7236deae31d42a8d488`对应的实际下载包，本地tag `v0.15.0-dev`指向该提交。本次仅更新文档，不重建或重标记已接受包，也不为文档升版。
+**当前源码为0.16.0-dev候选，尚无0.16导出包或整关验收。** 基于`35c9476c…`加入常驻指挥车状态/选择入口；旧0.15精确包仍冻结于`6bf0fe78e9d627fb88a4d3216c66a759feba0fb1`、tree `3b881ee726da2b9d6ccee7236deae31d42a8d488`。两者分开记录，不继承技术验收。
 
-## 本版实际包与技术证据
+## 本轮源码功能与实际检查
 
-同一解压Linux包、同一Main连续完成Canyon/Delta/Ridge/Canyon/Delta/Ridge/Canyon七场。native PID为1947852，Main instance ID为32161924451。**游戏报告墙钟3906.965935秒**；launcher独立观测的native进程生命周期为**3909.00728546601秒**，两种口径分别保留，不互相替代。
+目标面板保留“指挥车+至少4人抵达”、工程进度/费用、后方压力与帮助行，在原阶段行显示主车生命和完好/受损/危急/摧毁/缺失状态；整备/推进/撤守并入关卡标题。点击明确“选择并定位指挥车；保持现有任务”，只选择真实主车并移动镜头，清除未下达的界面指令模式，不改变营地、编队、暂停、速度、运输订单、路径、货物、资源或模拟时钟。
 
-native、launcher、supervisor均有实际退出0，33项独立自动存档检查33/0，最终严格collector实际退出0。逐关任务身份、真实费用/运输/供能/出口、载货盘上续接、完整状态与时钟，以及七场和全局帧端点/时间/直方图守恒均通过原严格检查。该接受来自本版精确包，没有继承0.14。
+状态是纯当前值读取，没有“遇袭”历史推断、计时器、缓存、随机数、音效或新存档字段。23个主要可重绑按键保持不变；没有增加主车快捷键。失效/死亡/非友方卡车身份及无效坐标禁用，旧热点也会重新校验。
 
-- [完整接受记录](../../outpost-exodus-0.15.0-dev-release-evidence.json)，SHA256 `a9fc2c281fec0e8896af582fffb3c95e3b7d100e5eee22af67dc8121b2f23158`。
-- [真实收集过程](../../outpost-exodus-0.15.0-dev-collection-process.json)，SHA256 `de52cb86c14f5fb1b5d9b8f626fb79ab7cb93b96d5851d724f9131baae357576`。
-- [本版checksums](../../outpost-exodus-0.15.0-dev-checksums.json)绑定source/Linux/Windows三ZIP；Windows导出与结构检查没有转化为Windows执行结论。
+- 新增headless **113/0**，覆盖多车精确身份、生命阈值、失效记录、真实移动/撤营载货订单、完整编码Sim/RNG不变、选择语义、盘上读回及新战役身份刷新；实际退出0。
+- 新增source GUI最终 **64/0**，在私有显示`:92`、软件Mesa和静音环境检查真实输入、不同尺寸/缩放、危急文本/红框、无穿透与失效禁用；native和监管工具实际退出0。仅最终收尾日志无ERROR/Leaked，不推成普遍无泄漏或性能接受。
+- 既有暂停绑定 **16/0**、工地检查 **88/0**，各用fresh隔离XDG、headless实际退出0。未在本轮重跑全部旧测试或战役。
 
-`steam_ready=false`、`performance_acceptance=not_assessed`。控制场景正常/战略两缩放各3600帧加120预热、实际整关分阶段帧记录均已保留；帧算术、均值或小时完成不能证明稳定60FPS、最低硬件或普遍无泄漏。
+[root源码UI归档](../../source-ui-v016-command-evidence-v01/index.json)保留v01测试前置条件错误63/1、v02虽64/0但测试清理警告及v03调用真实退出路径后的64/0；原图、失败和日志不改写。上述功能测试运行于升版前元数据，3个runtime脚本字节随后保持不变；0.16版本元数据尚未启动或导出。不是0.16原生下载包、真人、音频、最低配置或物理帧率证据。
 
-五张未编辑1920×1080原生游戏图保留在外部`outpost-exodus-0.15.0-dev-steam-gallery/`，原始输出在`-native-soak-evidence/`。root已逐张查看全部五图；这不是美术、商店或权利审批，也不是human试玩。
+## 旧0.15精确包接受范围
 
-## 源码阶段与实际UI观察
+冻结6bf对应的实际Linux包、同一Main完成Canyon/Delta/Ridge/Canyon/Delta/Ridge/Canyon七场。游戏报告墙钟 **3906.965935秒**；launcher独立观测native进程 **3909.00728546601秒**，两种口径不混用。native/launcher/supervisor、自动存档33/0与严格collector均实际退出0。
 
-接收营阶段独立候选`4d1b81ae…`有819项headless与38项受控source GUI证据；同一反例旧Guide116/33预期失败、修复后116/0。最初camp-readout隔离错误176/1及正确重跑189/0、GUI v01/v02探针差异均保留在[接收营归档](benchmarks/v0.15/withdrawal-receiver/index.json)。这些是该阶段证据，不标成后续源码全量重跑。
+[原接受记录](../../outpost-exodus-0.15.0-dev-release-evidence.json)，SHA256 `a9fc2c281fec0e8896af582fffb3c95e3b7d100e5eee22af67dc8121b2f23158`；[真实收集过程](../../outpost-exodus-0.15.0-dev-collection-process.json)，SHA256 `de52cb86c14f5fb1b5d9b8f626fb79ab7cb93b96d5851d724f9131baae357576`。[原checksums](../../outpost-exodus-0.15.0-dev-checksums.json)绑定source/Linux/Windows三ZIP；原tag、包、代码统计、历史和素材台账pins不改写。
 
-本轮工地详情/悬停修复的最终inspection为88/0，source GUI v02为37/0，实际退出均0；旧版同test12/6预期失败、错误XDG前缀拒绝2、GUI v01虽35/0但读图发现遮挡的原件全部保留。[施工UI归档](../../source-ui-v015-construction-v01/index.json)说明v02运行于`a93f8bb…`加HUD差异、最终`c2611a7…`字节匹配的来源，未改原process。详情只读原job，不改费用、订单或模拟，不写入存档。
+0.15的[官方Runtime4启动/截图](../../linux-runtime-compat-v015-v01/index.json)、[两场知情AI包UI观察](../../native-ui-v015-v01/index.json)和五张原生图库均保留原范围，不是0.16证据。0.15[后期宏观AI观察](../../macro-ai-v015-private-v01/index.json)为受控真实存档起点、软件显示和静音，最终指挥车失守；未确认实现bug，也未接受撤退可用性或人类节奏。
 
-同一本版实际包另完成[两场有界知情AI UI观察](../../native-ui-v015-v01/index.json)及[root目标复查](../../native-ui-v015-root-review-v01.json)：两场native与监督器均实际退出0，普通Canyon自然施工与受控接收营存档分开标注。原退出后截图bridge1、操作坐标误述及普通范围tooltip短暂遮挡保留；不称独立黑盒、人类或全部tooltip问题已解决。
+## 当前规模与剩余门槛
 
-0.14[黑盒AI原始观察](../../blackbox-ai-playtest-v014-v01/index.json)已结束：39次输入、8次观察截屏、679.594399秒操作跨度，未完成整关。两项确定施工UX缺口促成本版修复；教程步骤回退说法与原图不符，不列为确认bug。
+[0.16候选代码统计](benchmarks/v0.16/code-size.json)：18个玩法脚本8,829物理行；共80个自有代码文件26,172物理行、23,875非空行。沿用0.15分组，加入1个只读状态脚本与2个测试，逐文件记录SHA；排除UID/素材/场景/缓存/引擎/第三方及文档probe。统计不是包或完成度证明。
 
-## 分发与仍缺的门槛
+`steam_ready=false`、`performance_acceptance=not_assessed`。后续需在候选提交审查后导出精确0.16包并绑定实际原生验证；本轮没有导出、运行0.16包或创建collector。真人上手/听感/可读性/无障碍、原生Windows、干净机器/最低硬件、权利、真实Steam项目/安装/更新/审核仍待证据。旧15的Windows候选脚本和Linux解析也不等于Windows执行通过。
 
-[本版官方Steam Runtime4检查](../../linux-runtime-compat-v015-v01/index.json) SHA256 `68d3556097938fec01186fa8b84f6f797153c1b67e2f1b5b09572dda3dd75745`：实际包在官方Runtime4环境完成OS身份、headless启动与rendered截图，真实前台过程退出0，payload未变。Runtime归档来源引用旧原件；这不是SDK编译、Steam客户端/overlay、Runtime内整关、Deck或最低硬件验收。
-
-当前77个自有代码文件25,629物理行、23,380非空行；17个玩法脚本8,781物理行。21个runtime脚本逐项SHA均匹配15冻结6bf，见[完整代码清单](benchmarks/v0.15/code-size.json)。本轮文档准备没有运行引擎或测试。
-
-素材台账历史source pins不改写；当前差异与通知绑定见[内容调查草稿](../../steam-content-survey-v015-draft-v01/index.json)和[本版包通知核对](../../steam-content-survey-v015-package-binding-v01.json)，均未提交或批准。真人上手/听感/无障碍、原生Windows、干净机器/最低硬件、最终权利及真实Steam项目/安装/审核仍待实际证据。离线Windows检查材料或未来Linux解析不能记作Windows执行通过。
-
-冻结6bf的五份原候选文档逐字保留在[0.15历史快照](history/v0.15-source-snapshots/index.json)，其中旧“待验证”仅描述导出前阶段；0.14快照及所有旧证据不变。
+冻结6bf原候选文档见[既有0.15历史快照](history/v0.15-source-snapshots/index.json)；0.14及其他旧记录均不改动。本轮版本与文档准备没有运行引擎。
