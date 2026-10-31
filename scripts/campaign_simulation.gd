@@ -796,7 +796,7 @@ func _set_unit_position(unit: Dictionary, position: Vector2) -> void:
 			_spatial_neighborhoods.erase(next_bucket + offset)
 
 
-func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
+func _first_body_blocker(unit: Dictionary, position: Vector2) -> Dictionary:
 	var radius: float = _unit_radius(unit)
 	var broadphase_radius: float = radius + MAX_UNIT_RADIUS
 	var unit_id: int = int(unit["id"])
@@ -811,8 +811,12 @@ func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
 			continue
 		var minimum: float = radius + _unit_radius(other) - 0.01
 		if offset.length_squared() < minimum * minimum:
-			return false
-	return true
+			return other
+	return {}
+
+
+func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
+	return _first_body_blocker(unit, position).is_empty()
 
 
 func _recover_static_positions() -> void:
@@ -2265,8 +2269,21 @@ func _try_body_move(unit: Dictionary, destination: Vector2) -> bool:
 		return false
 	if not _static_motion_clear(Vector2(unit["pos"]), destination, _unit_radius(unit), str(unit["team"])):
 		return false
-	if not _body_is_clear(unit, destination) and not _improves_existing_overlap(unit, destination):
-		return false
+	var blocker: Dictionary = _first_body_blocker(unit, destination)
+	if not blocker.is_empty():
+		# This live pair is part of the original overlap scan. Worsening it
+		# rejects the move independently of the ordered penetration sums.
+		var origin: Vector2 = Vector2(unit["pos"])
+		var other_position: Vector2 = Vector2(blocker["pos"])
+		var old_offset: Vector2 = origin - other_position
+		var new_offset: Vector2 = destination - other_position
+		var minimum: float = _unit_radius(unit) + _unit_radius(blocker) - 0.01
+		var previous: float = maxf(0.0, minimum - old_offset.length())
+		var next: float = maxf(0.0, minimum - new_offset.length())
+		if next > previous + EPSILON:
+			return false
+		if not _improves_existing_overlap(unit, destination):
+			return false
 	_set_unit_position(unit, destination)
 	return true
 
