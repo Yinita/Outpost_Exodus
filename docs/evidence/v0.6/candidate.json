@@ -357,7 +357,8 @@
     "focus-title-baseline-rejected.txt": "0498f87e73ccd98dc2b365c7672541d77939bd49e8d226e3ac78473f13393b2a",
     "focus-fixture-attempt1-rejected.txt": "fa4f9750293b9135bcfd16a397a30859e747e6511f21498a024c8a98bb1c87e5",
     "focus-fixture-attempt2-rejected.txt": "a326ab68a8163067a74448158d1fe8683baa24dc741dda60f03f07f651ea7fda",
-    "focus-fixture-attempt3-rejected.txt": "a326ab68a8163067a74448158d1fe8683baa24dc741dda60f03f07f651ea7fda"
+    "focus-fixture-attempt3-rejected.txt": "a326ab68a8163067a74448158d1fe8683baa24dc741dda60f03f07f651ea7fda",
+    "export-first-rejected.txt": "a89d5f6fa175a253bd2e26868ec356c54e7dcf2809a6095a8c414882d1614285"
   },
   "probe_source_sha256": {
     "focus-policy-baseline.gd.txt": "f87364ca0c115349c5ec05e4f3816bb90ab5a0a0794ec2a10f8746d373054e23",
@@ -409,5 +410,21 @@
     "native Windows and clean-machine full installation/play",
     "final license/asset acceptance",
     "Steam account/store/depot/build review and advertised features"
-  ]
+  ],
+  "capture_import_metadata_sha256": {
+    "docs/evidence/v0.6/pose-0.png.import": "049c783996d82a7d574eb84a19cd38d7e997a6b7f21da4141c82ad8945b9dd31",
+    "docs/evidence/v0.6/pose-100.png.import": "f82e0b3602b8b65faf6bff9356f884c9a20e16a9fc11ee2fc4370ae525231ae0",
+    "docs/evidence/v0.6/pose-50.png.import": "237ffb0d64bdf354fc0c9090b6c6c3c07f785621bfe63a6de1c0a91dc816e6dd",
+    "docs/evidence/v0.6/title-save-failed.png.import": "e1399b4e4b8cac4d3eba9e1007d66822e6f3f59eabf8db50fe06666c6eb6347b"
+  },
+  "post_snapshot_export_rejection": {
+    "rejected_commit": "4de0dc7fd55f10a9cdcf04109905197b669c535a",
+    "export_exit_code": 1,
+    "reason": "First editor import generated four untracked evidence PNG import metadata files; export guard correctly rejected the dirty tree. Metadata is now tracked. Runtime and test sources unchanged.",
+    "discarded_native_attempt": {
+      "isolation": "work/benchmarks/native-v06-full",
+      "exit_code": 143,
+      "reason": "Root mistakenly started diagnostics before inspecting export failure, then terminated it after authoritative process inspection. No report from this attempt is accepted. The final run uses a fresh native-v06-final isolation root."
+    }
+  }
 }

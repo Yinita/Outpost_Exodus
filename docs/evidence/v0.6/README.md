@@ -45,3 +45,7 @@ DISPLAY=:0 XDG_DATA_HOME="$PWD/work/focus-recovery-data" ./run.sh --script res:/
 ```
 
 Do not run correctness jobs concurrently with native performance timing. Final0.6 export performance remains pending separately under the protocol in docs/benchmarks/v0.6. Human usability/listening, final art/accessibility/localization/licenses, nativeWindows/clean installs, named minimum hardware/stable frame pacing and actual Steam review remain open.
+
+## Rejected first export
+
+`export-first-rejected.txt` records the clean-tree guard rejecting first export after the editor generated four evidence-PNG import metadata files. These metadata files are now tracked. The premature native diagnostic attempt was terminated with143 and is not accepted; the fresh final measurement uses `native-v06-final`. Runtime and test sources did not change. The exact final binary/commit binding remains in the external release evidence.

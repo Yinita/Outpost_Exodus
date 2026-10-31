@@ -1,0 +1,372 @@
+VERIFIED_TEMPLATE linux_release.x86_64 d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63
+VERIFIED_TEMPLATE windows_release_x86_64.exe d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (4 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | pose-0.png[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | pose-50.png[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | pose-100.png[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | title-save-failed.png[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (4 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mreimport[22m | pose-0.png[39m[0m
+[  20% ] [90m[1mreimport[22m | pose-50.png[39m[0m
+[  40% ] [90m[1mreimport[22m | pose-100.png[39m[0m
+[  60% ] [90m[1mreimport[22m | title-save-failed.png[39m[0m
+[  80% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (4 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1msavepack[22m | Started Packing (102 steps)[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/canyon_ambient.wav-9d1ec17f00866a1c10d8eee392566f65.sample[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://assets/audio/canyon_ambient.wav.import[39m[0m
+[   3% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_build.wav-c17301eae1aa4a77beaafe4519654c4d.sample[39m[0m
+[   3% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_build.wav.import[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_confirm.wav-ca52ac6b1cee1244748502d2be2bb05a.sample[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_confirm.wav.import[39m[0m
+[   9% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_impact.wav-40a79849531e019baa840386a7ebe599.sample[39m[0m
+[   9% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_impact.wav.import[39m[0m
+[  12% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_loot.wav-c28cca41d52085bb026c26959b360c08.sample[39m[0m
+[  12% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_loot.wav.import[39m[0m
+[  14% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_reject.wav-b68d64e03ab2ee9e552f92def9dc66ca.sample[39m[0m
+[  14% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_reject.wav.import[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_shot_a.wav-3fca00e93268becfb4df6ba83f89918a.sample[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_shot_a.wav.import[39m[0m
+[  20% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_shot_b.wav-d667ce0f18c47757057b67081e35ab9b.sample[39m[0m
+[  20% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_shot_b.wav.import[39m[0m
+[  23% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_warning.wav-b4a192c5585fefaa45f4aee5d934624d.sample[39m[0m
+[  23% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_warning.wav.import[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/NotoSansCJK-Regular.ttc-bf6a5134ec173401ff9bd69115e437ec.fontdata[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://assets/fonts/NotoSansCJK-Regular.ttc.import[39m[0m
+[  28% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-32.png-520af68794eb23bcdbe19535677d3458.ctex[39m[0m
+[  28% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-32.png.import[39m[0m
+[  31% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-64.png-a883bb9f049a76194d553fa8f18b290d.ctex[39m[0m
+[  31% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-64.png.import[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-128.png-d0d31299f3821bc5fa3d46ce4d3bc9bc.ctex[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-128.png.import[39m[0m
+[  36% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-256.png-624d131faf8cea4dc9493755a01cd33d.ctex[39m[0m
+[  36% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-256.png.import[39m[0m
+[  38% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.ico[39m[0m
+[  41% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon.png-8b4c9f75af6598eeda96e5618e71ae5a.ctex[39m[0m
+[  41% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.png.import[39m[0m
+[  44% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon.svg-9f0e39bd9d463ba94427f801df6dc94c.ctex[39m[0m
+[  44% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.svg.import[39m[0m
+[  47% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/buildings-atlas.png-30f45c7e961a0e0b7f15bb9fe672271c.ctex[39m[0m
+[  47% ] [90m[1msavepack[22m | Storing File: res://assets/buildings-atlas.png.import[39m[0m
+[  50% ] [90m[1msavepack[22m | Storing File: res://.godot/exported/133200997/export-3070c538c03ee49b7677ff960a3f5195-main.scn[39m[0m
+[  52% ] [90m[1msavepack[22m | Storing File: res://scripts/terrain_cache.gdc[39m[0m
+[  55% ] [90m[1msavepack[22m | Storing File: res://scripts/render_motion.gdc[39m[0m
+[  58% ] [90m[1msavepack[22m | Storing File: res://scripts/recruitment_rules.gdc[39m[0m
+[  61% ] [90m[1msavepack[22m | Storing File: res://scripts/world_view.gdc[39m[0m
+[  63% ] [90m[1msavepack[22m | Storing File: res://scripts/main.gdc[39m[0m
+[  66% ] [90m[1msavepack[22m | Storing File: res://scripts/construction_rules.gdc[39m[0m
+[  68% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_guide.gdc[39m[0m
+[  71% ] [90m[1msavepack[22m | Storing File: res://scripts/cartoon_canvas.gdc[39m[0m
+[  74% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_save_store.gdc[39m[0m
+[  76% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_simulation.gdc[39m[0m
+[  79% ] [90m[1msavepack[22m | Storing File: res://scripts/hud.gdc[39m[0m
+[  82% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_canvas.gdc[39m[0m
+[  85% ] [90m[1msavepack[22m | Storing File: res://scripts/diagnostics/render_runner.gdc[39m[0m
+[  87% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_atlas.gdc[39m[0m
+[  90% ] [90m[1msavepack[22m | Storing File: res://scripts/decoration_cache.gdc[39m[0m
+[  93% ] [90m[1msavepack[22m | Storing File: res://scripts/game_audio.gdc[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_catalog.gdc[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://main.tscn.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/terrain_cache.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/render_motion.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/recruitment_rules.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/world_view.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/main.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/construction_rules.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_guide.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/cartoon_canvas.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_save_store.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_simulation.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/hud.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_canvas.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/diagnostics/render_runner.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_atlas.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/decoration_cache.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/game_audio.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_catalog.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://.godot/global_script_class_cache.cfg[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.svg[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://.godot/uid_cache.bin[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://project.binary[39m[0m
+[92m[ DONE ][39m [1msavepack[22m
+[0m
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1msavepack[22m | Started Packing (102 steps)[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/canyon_ambient.wav-9d1ec17f00866a1c10d8eee392566f65.sample[39m[0m
+[   1% ] [90m[1msavepack[22m | Storing File: res://assets/audio/canyon_ambient.wav.import[39m[0m
+[   3% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_build.wav-c17301eae1aa4a77beaafe4519654c4d.sample[39m[0m
+[   3% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_build.wav.import[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_confirm.wav-ca52ac6b1cee1244748502d2be2bb05a.sample[39m[0m
+[   6% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_confirm.wav.import[39m[0m
+[   9% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_impact.wav-40a79849531e019baa840386a7ebe599.sample[39m[0m
+[   9% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_impact.wav.import[39m[0m
+[  12% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_loot.wav-c28cca41d52085bb026c26959b360c08.sample[39m[0m
+[  12% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_loot.wav.import[39m[0m
+[  14% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_reject.wav-b68d64e03ab2ee9e552f92def9dc66ca.sample[39m[0m
+[  14% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_reject.wav.import[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_shot_a.wav-3fca00e93268becfb4df6ba83f89918a.sample[39m[0m
+[  17% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_shot_a.wav.import[39m[0m
+[  20% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_shot_b.wav-d667ce0f18c47757057b67081e35ab9b.sample[39m[0m
+[  20% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_shot_b.wav.import[39m[0m
+[  23% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/sfx_warning.wav-b4a192c5585fefaa45f4aee5d934624d.sample[39m[0m
+[  23% ] [90m[1msavepack[22m | Storing File: res://assets/audio/sfx_warning.wav.import[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/NotoSansCJK-Regular.ttc-bf6a5134ec173401ff9bd69115e437ec.fontdata[39m[0m
+[  26% ] [90m[1msavepack[22m | Storing File: res://assets/fonts/NotoSansCJK-Regular.ttc.import[39m[0m
+[  28% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-32.png-520af68794eb23bcdbe19535677d3458.ctex[39m[0m
+[  28% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-32.png.import[39m[0m
+[  31% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-64.png-a883bb9f049a76194d553fa8f18b290d.ctex[39m[0m
+[  31% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-64.png.import[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-128.png-d0d31299f3821bc5fa3d46ce4d3bc9bc.ctex[39m[0m
+[  33% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-128.png.import[39m[0m
+[  36% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon-256.png-624d131faf8cea4dc9493755a01cd33d.ctex[39m[0m
+[  36% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon-256.png.import[39m[0m
+[  38% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.ico[39m[0m
+[  41% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon.png-8b4c9f75af6598eeda96e5618e71ae5a.ctex[39m[0m
+[  41% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.png.import[39m[0m
+[  44% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/icon.svg-9f0e39bd9d463ba94427f801df6dc94c.ctex[39m[0m
+[  44% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.svg.import[39m[0m
+[  47% ] [90m[1msavepack[22m | Storing File: res://.godot/imported/buildings-atlas.png-30f45c7e961a0e0b7f15bb9fe672271c.ctex[39m[0m
+[  47% ] [90m[1msavepack[22m | Storing File: res://assets/buildings-atlas.png.import[39m[0m
+[  50% ] [90m[1msavepack[22m | Storing File: res://.godot/exported/133200997/export-3070c538c03ee49b7677ff960a3f5195-main.scn[39m[0m
+[  52% ] [90m[1msavepack[22m | Storing File: res://scripts/terrain_cache.gdc[39m[0m
+[  55% ] [90m[1msavepack[22m | Storing File: res://scripts/render_motion.gdc[39m[0m
+[  58% ] [90m[1msavepack[22m | Storing File: res://scripts/recruitment_rules.gdc[39m[0m
+[  61% ] [90m[1msavepack[22m | Storing File: res://scripts/world_view.gdc[39m[0m
+[  63% ] [90m[1msavepack[22m | Storing File: res://scripts/main.gdc[39m[0m
+[  66% ] [90m[1msavepack[22m | Storing File: res://scripts/construction_rules.gdc[39m[0m
+[  68% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_guide.gdc[39m[0m
+[  71% ] [90m[1msavepack[22m | Storing File: res://scripts/cartoon_canvas.gdc[39m[0m
+[  74% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_save_store.gdc[39m[0m
+[  76% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_simulation.gdc[39m[0m
+[  79% ] [90m[1msavepack[22m | Storing File: res://scripts/hud.gdc[39m[0m
+[  82% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_canvas.gdc[39m[0m
+[  85% ] [90m[1msavepack[22m | Storing File: res://scripts/diagnostics/render_runner.gdc[39m[0m
+[  87% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_atlas.gdc[39m[0m
+[  90% ] [90m[1msavepack[22m | Storing File: res://scripts/decoration_cache.gdc[39m[0m
+[  93% ] [90m[1msavepack[22m | Storing File: res://scripts/game_audio.gdc[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_catalog.gdc[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://main.tscn.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/terrain_cache.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/render_motion.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/recruitment_rules.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/world_view.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/main.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/construction_rules.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_guide.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/cartoon_canvas.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_save_store.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_simulation.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/hud.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_canvas.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/diagnostics/render_runner.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/actor_atlas.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/decoration_cache.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/game_audio.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://scripts/campaign_catalog.gd.remap[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://.godot/global_script_class_cache.cfg[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://assets/identity/icon.svg[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://.godot/uid_cache.bin[39m[0m
+[  96% ] [90m[1msavepack[22m | Storing File: res://project.binary[39m[0m
+[92m[ DONE ][39m [1msavepack[22m
+[0m
+{
+  "verified": true,
+  "icons": [
+    {
+      "dimension": 32,
+      "png_source": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/assets/identity/icon-32.png",
+      "sha256": "27f2e4289f9fe4528b62da600be71385439bfa3ba46e12eb0b196e4d465a4bec"
+    },
+    {
+      "dimension": 64,
+      "png_source": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/assets/identity/icon-64.png",
+      "sha256": "faa9854878494b2f1b75a826abde3eb8c8a8c49908bd5aa08ec9111745aee7e3"
+    },
+    {
+      "dimension": 128,
+      "png_source": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/assets/identity/icon-128.png",
+      "sha256": "ba1ea20f732c8300b58866a5d32b40ed9af4ac26a55626e87dff2b8d2093731e"
+    },
+    {
+      "dimension": 256,
+      "png_source": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/assets/identity/icon-256.png",
+      "sha256": "72acb354c54ecdfe46d39f6b9923010b9c5c62d8c23bf51b73dd5305c3c5be52"
+    }
+  ],
+  "version_strings": {
+    "FileDescription": "Outpost Exodus",
+    "FileVersion": "0.6.0.0",
+    "ProductName": "Outpost Exodus",
+    "ProductVersion": "0.6.0-dev"
+  },
+  "file_version_numeric": "0.6.0.0",
+  "product_version_numeric": "0.6.0.0",
+  "manifest_sha256": [
+    "a5afce46ab0f79f53ad3f1f16d3975f026ff01e3681b0241aa52548e7c820bd1"
+  ],
+  "text_sha256": "181603d9d067e5dffc92acfee7a7a3887691c923865b78ac88635a142cb6b776",
+  "entrypoint_rva": 5232,
+  "subsystem": 2,
+  "non_resource_sections": [
+    {
+      "name": ".text",
+      "rva": 4096,
+      "virtual_size": 83290800,
+      "raw_size": 83291136,
+      "characteristics": 1610612768,
+      "sha256": "181603d9d067e5dffc92acfee7a7a3887691c923865b78ac88635a142cb6b776"
+    },
+    {
+      "name": ".data",
+      "rva": 83296256,
+      "virtual_size": 984192,
+      "raw_size": 984576,
+      "characteristics": 3221225536,
+      "sha256": "3d4d46a6fa86fffdcb368f87506a8a915ab091c8c677d49e1058cad9338f6ad5"
+    },
+    {
+      "name": ".rdata",
+      "rva": 84283392,
+      "virtual_size": 20375768,
+      "raw_size": 20376064,
+      "characteristics": 1073741888,
+      "sha256": "e2cae493f1bc84d760c20f2accd25886b1d4835deb8c163f3ad4fd3306075870"
+    },
+    {
+      "name": "pck",
+      "rva": 104660992,
+      "virtual_size": 8,
+      "raw_size": 512,
+      "characteristics": 1073741888,
+      "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+    },
+    {
+      "name": ".pdata",
+      "rva": 104665088,
+      "virtual_size": 1967652,
+      "raw_size": 1968128,
+      "characteristics": 1073741888,
+      "sha256": "dd3fc3eb98d63155fba00c811454137aee8d3f03f50d38d067027e6baac1b4af"
+    },
+    {
+      "name": ".xdata",
+      "rva": 106635264,
+      "virtual_size": 2073320,
+      "raw_size": 2073600,
+      "characteristics": 1073741888,
+      "sha256": "e588cc9740d51ec1f2355f4f3aa06f5367a969619ddf8e1c64d09bd2123412cd"
+    },
+    {
+      "name": ".bss",
+      "rva": 108711936,
+      "virtual_size": 1549952,
+      "raw_size": 0,
+      "characteristics": 3221225600,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": ".edata",
+      "rva": 110264320,
+      "virtual_size": 180,
+      "raw_size": 512,
+      "characteristics": 1073741888,
+      "sha256": "a452e9de3d5b3593b2bc7f6acbecb5ff54c74aecb506a63d1de78a87f9cd9c57"
+    },
+    {
+      "name": ".idata",
+      "rva": 110268416,
+      "virtual_size": 27896,
+      "raw_size": 28160,
+      "characteristics": 1073741888,
+      "sha256": "d05eacbbfd798ed9db1f4eeadddb59dcf0a765b43b6e95812539bba9d5165e15"
+    },
+    {
+      "name": ".tls",
+      "rva": 110297088,
+      "virtual_size": 16,
+      "raw_size": 512,
+      "characteristics": 3221225536,
+      "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+    },
+    {
+      "name": ".reloc",
+      "rva": 110448640,
+      "virtual_size": 399864,
+      "raw_size": 399872,
+      "characteristics": 1107296320,
+      "sha256": "6214546b98e25473397c7e38d29a76de231d711ddf67a63a1233adb6607936c5"
+    }
+  ],
+  "import_libraries": 35,
+  "imports_sha256": "a275d43e947e7c699baa5556d8795a9a301ae2d955950f65ce6cf8d4f196818e",
+  "preserved": [
+    "all non-resource section bytes, addresses and flags",
+    ".text bytes and address",
+    "entrypoint",
+    "subsystem",
+    "image base",
+    "DLL characteristics",
+    "imports and delay imports",
+    "manifest and other resources",
+    "non-resource data directories",
+    "overlay"
+  ],
+  "authenticode_signed": false,
+  "native_windows_execution_tested": false,
+  "input": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/windows-release/outpost-exodus.exe",
+  "output": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/windows-release/outpost-exodus.exe",
+  "input_sha256": "d34d36f3be1a6c49c56525ae86469b92e4f417ddf0b43cf00dd80c385c4b0562",
+  "output_sha256": "089d595a234b7a8c106e011f7b38fb4651379b27aa46d8079523c1307233f14b",
+  "lief": "0.17.6-08dc3b7f",
+  "pefile": "2024.8.26"
+}
+Source changed during export; discard these artifacts and export a clean candidate again.
