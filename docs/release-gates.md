@@ -1,31 +1,30 @@
 # 发布门槛
 
-目标是完成高度可玩的《逐营突围》并达到Steam发布标准。当前 **0.15.0-dev — SOURCE CANDIDATE**；最近接受包为0.14，`steam_ready=false`、`performance_acceptance=not_assessed`。源项目、精确包、人工与平台验收分别记录。
+目标仍是高度可玩的完整游戏并达到Steam发布标准。**0.15.0-dev精确Linux包技术验收已接受**，冻结source `6bf0fe78…` / 本地tag `v0.15.0-dev`；`steam_ready=false`、`performance_acceptance=not_assessed`。本次文档更新不更改版本、运行代码或已接受包。
 
-| 要求 | 当前证据与状态 |
+| 要求 | 当前证据与边界 |
 | --- | --- |
-| 真实推进、付费建设/出口、供能、追兵、撤营、封关 | 0.14精确Linux包七场三图、3898.808814秒技术验收通过。0.15尚未新导出。 |
-| 实际运输、载货盘上存读档、主备与失败保护 | 0.14完整技术证据通过。0.15接收营阶段有819项源码与38项受控GUI证据，不作为后续全部源码的重跑结论。 |
-| 可理解的施工放置与工地详情 | 当前源码inspection88/0、受控GUI v02 37/0实际退出0；HUD悬停中性提示、点击查看真实job，紧凑通知遮挡原图和修正均保留。不是新包/真人通过。 |
-| 当前新包三关与一小时稳定性 | 0.15未完成；不能继承0.14已接受包。 |
-| 小地图、编队、快捷键与营地操作 | 功能已有阶段回归；营地和工地摘要读取实际状态。人类实际使用仍待验。 |
-| 帧时、最低配置、稳定60FPS | 尚未接受。严格帧算术通过、控制场景均值或源码优化不等于性能门槛通过。 |
-| Linux分发兼容 | 0.14同包在官方Steam Runtime4容器启动/截图子进程0；原wrapper marker错误1和独立复核0分开保留。无Steam客户端/Deck/物理干净机器结论。 |
-| 原生Windows与干净机器 | 待验；PE结构、Linux容器与导出不等于Windows执行。 |
-| 陌生玩家与早微操/晚宏观节奏 | 待人类试玩。0.14黑盒AI已结束：39输入、8观察截屏、679.594399秒操作跨度，未完成整关；不能标human或0.15通过。 |
-| 人工听感、辨识度与无障碍 | 最终人工验收待完成。 |
-| 美术、字体、音频、名称与分发权利 | 来源台账/通知已有记录，最终权利与自有分发条款待确认。 |
-| 商店展示与真实游戏截图 | 0.14有五张未编辑实机图库；宣传插画和受控source UI证据分别标注，均不意味着提交或权利批准。 |
-| Steam项目、上传、审核与发行 | 只有离线准备材料；没有已确认AppID/Depot、客户端安装/overlay验证或审核通过。 |
+| 真实推进、付费建设/出口、供能、追兵、撤营、封关 | 本版实际Linux包同Main完成七场三图，游戏报告3906.965935秒，严格技术验收通过。 |
+| 任务身份、载货盘上存读档、主备与失败保护 | 逐关完整状态/时钟/经济/盘上续接及独立auto33/0通过，native/launcher/supervisor/collector有真实退出0。 |
+| 三图与一小时技术长测 | Canyon/Delta/Ridge/Canyon/Delta/Ridge/Canyon七场，游戏与launcher两种真实墙钟均≥3600；逐关及全局帧守恒通过。不是继承0.14。 |
+| 接收营与施工UI | receiver阶段819/38和本轮inspection88/0、source GUI37/0分别记录；精确包另有普通Canyon及受控receiver两场知情AI观察，无新增目标阻塞。 |
+| 帧时、最低配置、稳定60FPS | 性能接受未评定。保留真实路线阶段帧与独立控制场景原始间隔；算术/均值/完成长测不能单独关闭此门槛。 |
+| Linux分发兼容 | 本版官方Runtime4完成实际OS身份/启动/截图，退出0、payload不变；无Steam客户端、Deck、SDK编译或物理干净机器结论。 |
+| 原生Windows与干净机器 | 待验。已导出并核对ZIP、图标/版本及PE结构；离线检查脚本、Linux解析或容器不作为Windows运行证据。 |
+| 陌生玩家与早微操/晚宏观节奏 | 待人类试玩。旧14黑盒AI与新15知情AI观察范围分开，不等于human或全面可玩性接受。 |
+| 人工听感、辨识度与无障碍 | 最终人工验收待完成，截图操作没有听音结论。 |
+| 美术、字体、音频、名称与分发权利 | 来源/通知有记录；历史source pins不改写，当前内容调查差异外部保留；最终权利与自有分发条款待确认。 |
+| 商店展示与真实游戏截图 | 本版五张未编辑1920×1080原生图已全部查看；未作美术/商店/rights审批，未提交。 |
+| Steam项目、上传、审核与发行 | 只有离线准备材料；AppID/Depot、真实客户端安装/更新/overlay及审核仍待实际完成。 |
 
-## 精确新包技术验收
+## 已接受对象与后续变更
 
-本轮确定的两项施工UX缺口已修复；保留反馈与修复证据后，再决定冻结源码并导出，绑定提交、模板、EXE/PCK及ZIP。实际包完成smoke、控制场景测量、权限/字体通知/来源核对，再用普通Main的0.05模拟步、正常引擎时间、真实费用和界面3倍速度完成载货存读档与路线。不得减少单位或另写宽松胜负路径。
+[完整接受记录](../../outpost-exodus-0.15.0-dev-release-evidence.json)与[实际收集退出](../../outpost-exodus-0.15.0-dev-collection-process.json)绑定冻结6bf及精确ZIP。游戏报告墙钟3906.965935秒；launcher观察native进程3909.00728546601秒，两种口径不混用。当前文档提交不是新的游戏包，也不自动扩展既有验收。
 
-三图/小时必须来自该新包：同一Main七场、实际墙钟至少3600秒、真实PID/start ticks/argv/wait退出、逐关及全局帧端点/时间/直方图守恒。失败原样保留，不补帧、不修成功报告、不放宽检查器。0.15当前尚无这些新包记录。
+以后运行代码或payload改变，需要重新绑定提交、模板、EXE/PCK和ZIP，并使用fresh隔离完成必要原生验证。保留正常Main、0.05模拟步、真实费用/部队/运输与原严格checker；失败不补帧、不改成功报告、不放宽门槛。
 
 ## 人工与平台验收
 
-试玩需记录首次理解、真实操作、预期/结果、困惑与停止原因，特别观察拥堵、供能、撤收和多处调度。AI控制器观察、自动路线与受控点击均不替代human结果。Windows、干净机器、最低配置、人工听音与无障碍分别记录实际环境与结论。
+试玩需记录首次理解、真实操作、预期/结果、困惑与停止原因，特别观察拥堵、供能、撤收和多处调度。AI观察、自动路线和受控点击分别标注；Windows、干净机器、最低配置、人工听音与无障碍各自记录实际环境。
 
-[当前检查点](current-checkpoint.md)链接0.14完整接受/收集过程与Runtime原件；[接收营阶段](benchmarks/v0.15/withdrawal-receiver/index.json)、[本轮施工UI](../../source-ui-v015-construction-v01/index.json)与[旧包黑盒AI](../../blackbox-ai-playtest-v014-v01/index.json)分别限定范围。教程回退说法被保留原图否定，不列为确认bug。官方参考：[Steam审核](https://partner.steamgames.com/doc/store/review_process)、[商店图](https://partner.steamgames.com/doc/store/assets/standard)、[内容调查](https://partner.steamgames.com/doc/gettingstarted/contentsurvey)。历史措辞见[0.14源码快照](history/v0.14-source-snapshots/index.json)。
+[当前检查点](current-checkpoint.md)集中链接新包、UI、Runtime和源码阶段原件。[内容调查草稿](../../steam-content-survey-v015-draft-v01/index.json)及[包通知绑定](../../steam-content-survey-v015-package-binding-v01.json)仍待owner审阅；教程回退读图错误不列为确认bug。官方参考：[Steam审核](https://partner.steamgames.com/doc/store/review_process)、[商店图](https://partner.steamgames.com/doc/store/assets/standard)、[内容调查](https://partner.steamgames.com/doc/gettingstarted/contentsurvey)。冻结前原文见[0.15源码快照](history/v0.15-source-snapshots/index.json)。

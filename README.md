@@ -2,9 +2,9 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前为 **0.15.0-dev — SOURCE CANDIDATE**：已合入真实接收营提示、HUD放置悬停和可点击工地详情修复，尚无本版新导出、原生整关、FPS或小时验收。最近接受的开发包是 **0.14.0-dev**，冻结源码 `cb82c335…`；同一实际解压Linux包、同一Main连续完成七场三图，游戏记录墙钟 **3898.808814秒**。该包仍为 `steam_ready=false`、`performance_acceptance=not_assessed`。
+当前 **0.15.0-dev精确Linux包的技术验收已接受**：冻结源码 `6bf0fe78…`，本地tag `v0.15.0-dev`；同一实际解压包、同一Main连续完成七场三图，游戏报告墙钟 **3906.965935秒**。native、launcher、supervisor、33项独立自动存档检查及最终collector均有实际退出0。该结论限定于精确包的技术验证，仍为 `steam_ready=false`、`performance_acceptance=not_assessed`。
 
-当前源码与旧包证据分开记录，详见[检查点](docs/current-checkpoint.md)和[发布门槛](docs/release-gates.md)。
+本版包含真实接收营提示、HUD放置悬停和可点击工地详情修复。源码阶段检查、实际包UI观察、整关长测与尚缺的人类/平台验收分别记录，详见[检查点](docs/current-checkpoint.md)和[发布门槛](docs/release-gates.md)。
 
 ## 运行
 
@@ -62,14 +62,16 @@ Home已向A撤收后，新建附近B不再让Guide把B误称为这趟接收营�
 
 本轮新增工地详情：点击未完工建筑查看真实进度、供料营、指定人员和取料/送料/到场阶段，可关闭且不写入存档。鼠标留在建设卡或其他HUD区域时显示“移到地图选择施工位置”，进入地图再查询真实计划。最终headless检查 **88/0**、受控source GUI v02 **37/0**，均实际退出0；紧凑界面的通知和关闭提示遮挡原图及修正记录见[施工UI归档](../source-ui-v015-construction-v01/index.json)。这些是源码功能与受控输入证据，不是本版原生整关、性能或真人试玩。
 
-0.14黑盒AI观察已结束：39次输入、8次观察截屏、操作跨度679.594399秒，未完成整关，也没有人类或音频结论。[原始观察](../blackbox-ai-playtest-v014-v01/index.json)确认了上述两项施工UX缺口；所谓教程步骤回退被原图否定，不列为已证实bug。0.14精确包的原生七场和官方Steam Runtime4有限启动/截图证据见[旧包及Runtime范围](docs/current-checkpoint.md)，不继承为0.15通过。
+0.14[黑盒AI原始观察](../blackbox-ai-playtest-v014-v01/index.json)确认了两项施工UX缺口；所谓教程步骤回退被原图否定，不列为已证实bug。本版实际下载包另有[两场有界UI观察](../native-ui-v015-v01/index.json)，其中接收营场景明确使用受控存档；两场native与监督器实际退出0，属于知情AI操作，不是human或独立黑盒学习。
+
+本版[完整接受记录](../outpost-exodus-0.15.0-dev-release-evidence.json)及[真实收集过程](../outpost-exodus-0.15.0-dev-collection-process.json)来自本版精确包，没有继承0.14结论。官方[Steam Runtime4启动/截图检查](../linux-runtime-compat-v015-v01/index.json)也已实际退出0；不代表Steam客户端、Windows、Deck或最低配置通过。五张未编辑实机图库已由root查看，未作美术、商店或权利审批。
 
 ## 开发与素材
 
 采用 Godot 4 + 带类型的 GDScript，模拟、显示与命令输入分开。玩法、界面、输入、绘制及音频共17个脚本、**8,781物理行**；含测试、诊断和工具共77个自有代码文件、**25,629物理行**。统计含注释空行，不含引擎、第三方库、素材或场景，见[逐文件清单](docs/benchmarks/v0.15/code-size.json)。
 
-建筑图集由图像生成工具制作，角色/地形与部分声音采用程序绘制或生成，Noto 字体附带 OFL 通知。具体来源与待确认事项见[素材台账](docs/asset-inventory.json)。自有代码与美术的最终分发条款仍待确定。
+建筑图集由图像生成工具制作，角色/地形与部分声音采用程序绘制或生成，Noto 字体附带 OFL 通知。具体来源与待确认事项见[素材台账](docs/asset-inventory.json)；其中旧source pins保留为历史，当前差异见[内容调查草稿](../steam-content-survey-v015-draft-v01/index.json)及[本版包通知绑定](../steam-content-survey-v015-package-binding-v01.json)。自有代码与美术的最终分发条款仍待确定。
 
 已建立本地 Git，尚未创建或推送 GitHub 远程仓库。可先用私有仓库开发，代码/场景/关卡/测试纳入 Git，大体积美术源文件使用 Git LFS。`.godot/`、`work/`、构建和本机存档不入库；`docs/.gdignore` 避免把文档截图当游戏资源导入。
 
-开发、验证与打包方式见[开发计划](docs/development-plan.md)及[验证计划](docs/validation-plan.md)。0.14源码阶段五份文档逐字保留在[历史快照](docs/history/v0.14-source-snapshots/index.json)，其中的“待验证”仅描述当时状态；不改写旧包原始证据。
+开发、验证与打包方式见[开发计划](docs/development-plan.md)及[验证计划](docs/validation-plan.md)。冻结6bf的五份源码候选文档逐字保留在[0.15历史快照](docs/history/v0.15-source-snapshots/index.json)，其中的“待验证”描述导出前阶段；0.14快照与所有原始包证据保持原样。

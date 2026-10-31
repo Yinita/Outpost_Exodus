@@ -1,0 +1,48 @@
+{
+  "version": "0.15.0-dev",
+  "source_commit": "6bf0fe78e9d627fb88a4d3216c66a759feba0fb1",
+  "source_tree": "3b881ee726da2b9d6ccee7236deae31d42a8d488",
+  "scope": "Byte-identical five documents from the immutable source of the accepted0.15 Linux package. Current documentation records later native acceptance separately; these historical candidate texts are not rewritten.",
+  "files": [
+    {
+      "original_path": "README.md",
+      "archive": "README.md",
+      "source_commit": "6bf0fe78e9d627fb88a4d3216c66a759feba0fb1",
+      "bytes": 6047,
+      "sha256": "ccf09e8a84a1c5482a7c9a7665d0a932b729ed07bd80047d6de91a2a49a884e7",
+      "scope": "Verbatim frozen0.15 source-candidate text before exact-package acceptance. Pending statements describe that historical stage; raw bytes remain unchanged."
+    },
+    {
+      "original_path": "docs/current-checkpoint.md",
+      "archive": "current-checkpoint.md",
+      "source_commit": "6bf0fe78e9d627fb88a4d3216c66a759feba0fb1",
+      "bytes": 4863,
+      "sha256": "312f7fee5ae509bbb10f6f1e9fbd288f1def8968a89ed4faedbf103f31ec5438",
+      "scope": "Verbatim frozen0.15 source-candidate text before exact-package acceptance. Pending statements describe that historical stage; raw bytes remain unchanged."
+    },
+    {
+      "original_path": "docs/release-gates.md",
+      "archive": "release-gates.md",
+      "source_commit": "6bf0fe78e9d627fb88a4d3216c66a759feba0fb1",
+      "bytes": 4107,
+      "sha256": "d7127a672172122a8d0a529c1ec7eccbc14f886aa005f4697dc30053baa5480b",
+      "scope": "Verbatim frozen0.15 source-candidate text before exact-package acceptance. Pending statements describe that historical stage; raw bytes remain unchanged."
+    },
+    {
+      "original_path": "docs/validation-plan.md",
+      "archive": "validation-plan.md",
+      "source_commit": "6bf0fe78e9d627fb88a4d3216c66a759feba0fb1",
+      "bytes": 4957,
+      "sha256": "9e1f26ec1fea995d75f85bf3d5d0da622a6eb3dd24064cc7cca6df8cb41d54fe",
+      "scope": "Verbatim frozen0.15 source-candidate text before exact-package acceptance. Pending statements describe that historical stage; raw bytes remain unchanged."
+    },
+    {
+      "original_path": "docs/development-plan.md",
+      "archive": "development-plan.md",
+      "source_commit": "6bf0fe78e9d627fb88a4d3216c66a759feba0fb1",
+      "bytes": 3757,
+      "sha256": "5a4c1bb1250178431b7e38864ad61c99792f07b11a44144981430c17830a7914",
+      "scope": "Verbatim frozen0.15 source-candidate text before exact-package acceptance. Pending statements describe that historical stage; raw bytes remain unchanged."
+    }
+  ]
+}
