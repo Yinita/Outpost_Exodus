@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS _test_first_save_and_rotation
+PASS _test_corrupt_primary_preserves_backup
+PASS _test_rejected_validation_is_untouched
+PASS _test_quiet_bounded_reads
+PASS _test_nonreplaceable_destinations
+PASS _test_staging_permission_failure
+PASS _test_partial_stage_and_late_replace_failure
+PASS _test_independent_paths
+Save-store checks: 134; failures: 0

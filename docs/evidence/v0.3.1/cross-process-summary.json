@@ -1,0 +1,21 @@
+{
+	"checks": 90,
+	"children": {
+		"reader": {
+			"checks": 29.0,
+			"failures": [],
+			"phase": "reader",
+			"pid": 732998.0,
+			"run": "732781-117479"
+		},
+		"writer": {
+			"checks": 45.0,
+			"failures": [],
+			"phase": "writer",
+			"pid": 732819.0,
+			"run": "732781-117479"
+		}
+	},
+	"coordinator_failures": [],
+	"run": "732781-117479"
+}

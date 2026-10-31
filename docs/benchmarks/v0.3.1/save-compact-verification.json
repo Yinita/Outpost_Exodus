@@ -1,0 +1,25 @@
+{
+  "tracked_change": "JSON.stringify indent only: tab to empty string, sorted keys and full precision remain true",
+  "godot_benchmark_checks": "Both run-b and run-c completed zero errors using actual Main schema validation, exact full-precision decoded value equality, first/rotated backup bytes and BOM/CRLF legacy preservation",
+  "independent_python_decoded_semantic_equality": true,
+  "independent_python_legacy_bom_crlf_backup_exact_bytes": true,
+  "legacy_primary_bytes": 427323,
+  "legacy_backup_sha256": "f2bf367cdc5166cf20587429a171ce917bdd97d2bdd90bd38f456f0c00a163d8",
+  "pretty_primary_sha256": "f1c7a1c5b7b811716c4fe2a571282fe736a16d2762ed3986ed85fb7f9ad267f9",
+  "compact_primary_sha256": "c91789b8e1806ab868a9609cbd91d8b745d33328b4223ca4fd89a7b6f2c46152",
+  "save_store_suite": {
+    "checks": 134,
+    "failures": 0,
+    "exit_code": 0
+  },
+  "cross_process_suite": {
+    "checks": 90,
+    "coordinator_failures": 0,
+    "writer_failures": 0,
+    "reader_failures": 0,
+    "writer_pid": 732819,
+    "reader_pid": 732998,
+    "exit_code": 0
+  },
+  "limitations": "Headless development-runtime buffered I/O timings; not native frame pacing or fsync/power-loss evidence."
+}

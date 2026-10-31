@@ -5,7 +5,7 @@
     "scripts/actor_canvas.gd": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
     "scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
     "scripts/campaign_guide.gd": "c883ad89733b7fbed34b254e99adbb2f038d12e466b79004259144d60d40f215",
-    "scripts/campaign_save_store.gd": "f26708434ac96871f89795f402748a6a39330e49390c2bf574e359c86ac5ecf1",
+    "scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
     "scripts/campaign_simulation.gd": "0cdc7a386506672c6375de5ea82aa554eff4ff558403811ca3b6d3e1510f3dd0",
     "scripts/cartoon_canvas.gd": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
     "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
@@ -29,7 +29,9 @@
     "preferences_recovery": 286,
     "campaign_selection": 114,
     "render_cache": 23,
-    "cartoon_primitives": 5
+    "cartoon_primitives": 5,
+    "file_store": 134,
+    "cross_process": 90
   },
   "not_verified": [
     "fresh-human playability",

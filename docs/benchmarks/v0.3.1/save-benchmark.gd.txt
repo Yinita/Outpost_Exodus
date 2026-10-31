@@ -1,0 +1,132 @@
+extends "res://tests/benchmark_campaign.gd"
+## Ignored local benchmark: actual Main schema validator, canonical busy simulation.
+## No rendering; all generated saves remain below the fresh BENCH_ISOLATION_ROOT.
+
+const Main = preload("res://scripts/main.gd")
+const TRIALS: int = 12
+const WRITES: int = 6
+const FIXTURE_TICKS: int = 420
+var report_root: String = ""
+var schema_owner: Node2D
+var schema_validator: Callable
+var payload: Dictionary = {}
+var primary_reference: Dictionary = {}
+var trials: Array = []
+
+func _run() -> void:
+	report_root = OS.get_environment("BENCH_ISOLATION_ROOT").simplify_path()
+	var allowed: String = ProjectSettings.globalize_path("res://work/save-perf-v031").simplify_path()
+	if not report_root.begins_with(allowed + "/") or not DirAccess.get_files_at(report_root).is_empty():
+		printerr("Benchmark requires a fresh isolated child of work/save-perf-v031")
+		quit(2)
+		return
+	for name: String in ["XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"]:
+		if not OS.get_environment(name).begins_with(report_root + "/"):
+			printerr("Benchmark XDG paths must be isolated: ", name)
+			quit(2)
+			return
+	if DirAccess.make_dir_recursive_absolute(report_root) != OK:
+		quit(2)
+		return
+	var fixture: Dictionary = _make_busy_scene()
+	var sim: Variant = fixture.sim
+	for tick: int in range(FIXTURE_TICKS): sim.tick(STEP)
+	payload = sim.save_state()
+	payload["ui"] = {}
+	schema_owner = Main.new()
+	schema_validator = Callable(schema_owner, "_validate_save_payload")
+	_must(schema_validator.call(payload), "actual schema accepts canonical busy payload")
+	var friendly: int = 0
+	var enemies: int = 0
+	for actor: Dictionary in sim.units:
+		if actor.team == "friendly": friendly += 1
+		else: enemies += 1
+	_must(friendly == 32 and enemies == 100, "canonical busy population remains 32/100")
+	var pretty: PackedByteArray = JSON.stringify(payload, "\t", true, true).to_utf8_buffer()
+	var compact: PackedByteArray = JSON.stringify(payload, "", true, true).to_utf8_buffer()
+	primary_reference = JSON.parse_string(pretty.get_string_from_utf8())
+	_must(_exact_equal(primary_reference, JSON.parse_string(compact.get_string_from_utf8())), "pretty and compact decoded values are exactly equal")
+	_must(schema_validator.call(primary_reference), "actual schema accepts exactly compared decoded payload")
+	var source_paths: Dictionary = {
+		"pretty": "res://work/save-perf-v031/baseline_store.gd",
+		"compact": "res://scripts/campaign_save_store.gd",
+	}
+	for trial: int in range(TRIALS):
+		var order: Array = ["pretty", "compact"] if trial % 2 == 0 else ["compact", "pretty"]
+		for variant: String in order:
+			trials.append(_trial(variant, trial, source_paths[variant]))
+	_migration_check(source_paths.compact, pretty)
+	var summaries: Dictionary = {}
+	for variant: String in ["pretty", "compact"]:
+		var first: Array = []
+		var second: Array = []
+		var repeated: Array = []
+		var steady: Array = []
+		for result: Dictionary in trials:
+			if result.variant != variant: continue
+			first.append(result.write_usec[0])
+			second.append(result.write_usec[1])
+			for index: int in range(1, WRITES): repeated.append(result.write_usec[index])
+			for index: int in range(2, WRITES): steady.append(result.write_usec[index])
+		summaries[variant] = {"first_write": _stats(first), "second_write": _stats(second), "all_repeated_writes": _stats(repeated), "third_to_sixth": _stats(steady)}
+	var report: Dictionary = {
+		"recorded_utc": Time.get_datetime_string_from_system(true, true) + "Z",
+		"runtime": Engine.get_version_info(), "display_server": DisplayServer.get_name(),
+		"fixture_ticks": FIXTURE_TICKS, "fixed_step": STEP, "friendly": friendly, "enemies": enemies,
+		"method": "12 paired trials; AB/BA alternate; each uses fresh isolated slot and 6 same-payload writes; timed store.write includes actual Main._validate_save_payload at every unchanged validation point; integrity checks outside timing. Buffered file flush/rename, not fsync or rendered frame evidence.",
+		"sizes": {"pretty_bytes": pretty.size(), "compact_bytes": compact.size()},
+		"baseline_sha256": FileAccess.get_sha256(source_paths.pretty),
+		"compact_sha256": FileAccess.get_sha256(source_paths.compact),
+		"simulation_sha256": FileAccess.get_sha256("res://scripts/campaign_simulation.gd"),
+		"summaries": summaries, "trials": trials, "errors": errors,
+	}
+	var out: FileAccess = FileAccess.open(report_root.path_join("report.json"), FileAccess.WRITE)
+	out.store_string(JSON.stringify(report, "\t", true, true))
+	out.close()
+	print("SAVE_PERF_SIZES ", JSON.stringify(report.sizes))
+	print("SAVE_PERF_SUMMARIES ", JSON.stringify(summaries))
+	print("SAVE_PERF_ERRORS ", JSON.stringify(errors))
+	print("SAVE_PERF_REPORT ", report_root.path_join("report.json"))
+	schema_owner.free()
+	quit(0 if errors.is_empty() else 1)
+
+func _trial(variant: String, trial: int, source: String) -> Dictionary:
+	var store: RefCounted = load(source).new()
+	var path: String = report_root.path_join("%02d-%s.json" % [trial, variant])
+	var times: Array = []
+	var previous: PackedByteArray = PackedByteArray()
+	for index: int in range(WRITES):
+		var started: int = Time.get_ticks_usec()
+		var result: Error = store.write(path, payload, schema_validator)
+		times.append(Time.get_ticks_usec() - started)
+		_must(result == OK, "%s trial%d write%d succeeds" % [variant, trial, index])
+		var current: PackedByteArray = FileAccess.get_file_as_bytes(path)
+		var backup: PackedByteArray = FileAccess.get_file_as_bytes(path + ".bak")
+		_must(backup == (current if index == 0 else previous), "backup preserves exact expected old primary bytes")
+		_must(_exact_equal(primary_reference, JSON.parse_string(current.get_string_from_utf8())), "primary exact decoded semantic equality")
+		_must(_exact_equal(primary_reference, JSON.parse_string(backup.get_string_from_utf8())), "backup exact decoded semantic equality")
+		var decoded: Dictionary = store.read(path)
+		_must(decoded.ok and schema_validator.call(decoded.data), "actual schema accepts written primary")
+		previous = current
+	return {"variant": variant, "trial": trial, "write_usec": times}
+
+func _migration_check(source: String, pretty: PackedByteArray) -> void:
+	var path: String = report_root.path_join("legacy-migration.json")
+	var legacy: PackedByteArray = ("\ufeff\r\n" + pretty.get_string_from_utf8().replace("\n", "\r\n") + "\r\n").to_utf8_buffer()
+	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+	file.store_buffer(legacy)
+	file.close()
+	file = FileAccess.open(path + ".bak", FileAccess.WRITE)
+	file.store_buffer(pretty)
+	file.close()
+	var store: RefCounted = load(source).new()
+	_must(store.write(path, payload, schema_validator) == OK, "compact store accepts legacy pretty BOM/CRLF primary and backup")
+	_must(FileAccess.get_file_as_bytes(path + ".bak") == legacy, "compact rotation preserves every legacy BOM/CRLF/UTF8 byte")
+	_must(_exact_equal(primary_reference, JSON.parse_string(FileAccess.get_file_as_bytes(path).get_string_from_utf8())), "migrated compact primary remains semantically exact")
+
+func _exact_equal(left: Variant, right: Variant) -> bool:
+	# Compare decoder results exactly, including every full-precision float.
+	return JSON.stringify(left, "", true, true) == JSON.stringify(right, "", true, true)
+
+func _must(condition: bool, message: String) -> void:
+	if not condition: errors.append(message)

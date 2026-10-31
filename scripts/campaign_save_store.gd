@@ -22,7 +22,7 @@ func write(path: String, data: Dictionary, validator: Callable) -> Error:
 		return ERR_INVALID_PARAMETER
 	if not _validate(data, validator):
 		return ERR_INVALID_DATA
-	var serialized: String = JSON.stringify(data, "\t", true, true)
+	var serialized: String = JSON.stringify(data, "", true, true)
 	var new_bytes: PackedByteArray = serialized.to_utf8_buffer()
 	if new_bytes.size() > MAX_SAVE_BYTES:
 		return ERR_INVALID_DATA
