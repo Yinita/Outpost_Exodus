@@ -1,0 +1,26 @@
+extends SceneTree
+func _initialize() -> void:
+	call_deferred("_run")
+func _run() -> void:
+	var app: Node2D = load("res://scripts/main.gd").new()
+	root.add_child(app)
+	app.set_process(false)
+	AudioServer.set_bus_mute(0, true)
+	app.start_campaign()
+	var runner: Node = load("res://scripts/diagnostics/campaign_runner.gd").new()
+	runner.app = app
+	runner.report = {"events": [], "save_reload": {}}
+	var observations: Array = []
+	for step: int in range(600):
+		app._process(0.05)
+		if step % 23 != 0: continue
+		var ok: bool = runner.save_and_reload("numeric_probe")
+		observations.append({"time":app.sim.time,"passed":ok})
+	print("SAVE_ORACLE_PROBE ",JSON.stringify({"observations":observations,"errors":runner.failures}))
+	runner.free()
+	app._release_audio()
+	var end: int = Time.get_ticks_usec() + 120000
+	while Time.get_ticks_usec() < end: await process_frame
+	app.queue_free()
+	await process_frame
+	quit()

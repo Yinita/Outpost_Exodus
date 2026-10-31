@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+TERMINAL_FIXTURE outcome=victory time=1587.750 last_step=0.05
+TERMINAL_FIXTURE outcome=defeat time=1624.500 last_step=0.05
+TERMINAL_GUIDE_SOURCE simulation_before=1e381e2fa0031c9ba67920caa1cbb5252eaf23052f827d99b9f9152e555851f7 simulation_after=1e381e2fa0031c9ba67920caa1cbb5252eaf23052f827d99b9f9152e555851f7 main_before=c73a7676ddda6e76111af6ff6e80d71313641bfb8b691f707693f6199a1ca798 main_after=c73a7676ddda6e76111af6ff6e80d71313641bfb8b691f707693f6199a1ca798
+Terminal guide checks: 28; failures: 5; display=headless
+ - victory guidance refresh occurs exactly once on terminal frame
+ - victory terminal title is current immediately for visible
+ - victory completion flag is truthful for visible
+ - defeat guidance refresh occurs exactly once on terminal frame
+ - defeat terminal title is current immediately for visible

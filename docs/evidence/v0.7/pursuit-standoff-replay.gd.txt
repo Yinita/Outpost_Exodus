@@ -1,0 +1,37 @@
+extends SceneTree
+func _initialize() -> void:
+	var source: String = "res://scripts/campaign_simulation.gd"
+	var label: String = "candidate"
+	for arg: String in OS.get_cmdline_user_args():
+		if arg == "--baseline":
+			source = "res://work/pursuit-standoff-baseline.gd"
+			label = "baseline"
+	var sim: RefCounted = load(source).new()
+	var path: String = "res://work/native-campaign-v061-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-save.json"
+	assert(sim.load_state(JSON.parse_string(FileAccess.get_file_as_string(path))))
+	var original: Dictionary = {}
+	for unit: Dictionary in sim.units:
+		if unit.get("pursuer", false): original[int(unit.id)] = Vector2(unit.pos)
+	var start_hp: float = float(sim._get_building(int(sim.chokes[0].building_id)).hp)
+	var records: Array = []
+	for step: int in range(720):
+		sim.tick(0.05)
+		if step % 120 != 119: continue
+		var moved: int = 0
+		var paths: int = 0
+		var sieging: int = 0
+		var furthest: float = 0.0
+		for id: int in original:
+			var unit: Dictionary = sim.get_unit(id)
+			if unit.is_empty(): continue
+			if Vector2(unit.pos).distance_to(original[id]) > 0.2: moved += 1
+			if not Array(unit.get("path", [])).is_empty(): paths += 1
+			if unit.get("state", "") == "sieging": sieging += 1
+			furthest = maxf(furthest, Vector2(unit.pos).x)
+		records.append({"time":sim.time,"original_moved":moved,"original_with_paths":paths,"original_sieging":sieging,"furthest_original_x":furthest,"barrier_hp":sim._get_building(int(sim.chokes[0].building_id)).hp})
+	var result: Dictionary = {"source":source,"source_sha256":FileAccess.get_sha256(source),"actual_snapshot_sha256":FileAccess.get_sha256(path),"start_time":911.8,"start_barrier_hp":start_hp,"original_count":original.size(),"records":records,"outcome":sim.outcome}
+	var file: FileAccess = FileAccess.open("res://work/pursuit-standoff-"+label+".json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(result,"\t",true,true))
+	file.close()
+	print("PURSUIT_REPLAY ",JSON.stringify(result))
+	quit()

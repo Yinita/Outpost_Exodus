@@ -1,0 +1,14 @@
+{
+  "success": true,
+  "file": "assets/fonts/NotoSansCJK-Regular.ttc",
+  "file_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+  "font_data_unchanged": true,
+  "faces": 10,
+  "notice_sha256": "8b639404a2f2fc480c4803f5a456cef6068f03c72ea323aab65a170f7a0d5cd9",
+  "notice_bytes": 5585,
+  "full_upstream_license_present": true,
+  "upstream_license_sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+  "upstream_license_url": "https://raw.githubusercontent.com/notofonts/noto-cjk/Sans2.004/LICENSE",
+  "verified_date": "2026-10-31",
+  "scope": "Embedded copyright/name/version values and exact complete tagged upstream OFL verified. Font bytes unchanged. No blanket project-license or legal sign-off."
+}

@@ -25,6 +25,8 @@ func _run() -> void:
 		_test_high_ground_canyon_fire,
 		_test_melee_cannot_bite_through_cliff,
 		_test_congested_save_continuation,
+		_test_distant_sealed_barrier,
+		_test_barrier_fallback_reachability,
 	]
 	if OS.get_cmdline_user_args().has("--loading-only"):
 		cases = [_test_balanced_evacuation_loading]
@@ -32,6 +34,8 @@ func _run() -> void:
 		cases = [_test_recorded_return_trip]
 	if OS.get_cmdline_user_args().has("--packing-save-only"):
 		cases = [_test_packing_save_continuation]
+	if OS.get_cmdline_user_args().has("--barrier-only"):
+		cases = [_test_distant_sealed_barrier, _test_barrier_fallback_reachability]
 	for test_case: Callable in cases:
 		var before: int = failures.size()
 		test_case.call()
@@ -45,6 +49,101 @@ func _check(condition: bool, label: String) -> void:
 	checks += 1
 	if not condition:
 		failures.append(label)
+
+
+func _barrier_fixture(bypass: bool = false, unreachable_approach: bool = false) -> Variant:
+	var sim: Variant = _base()
+	sim.get_camp(1).pos = Vector2(30, 20)
+	sim.buildings[0].pos = Vector2(30, 20)
+	for y: int in range(40):
+		for x: int in range(20, 23):
+			sim.terrain[y][x] = 0 if (y >= 19 and y <= 21) or (bypass and y == 24) else -1
+		if unreachable_approach: sim.terrain[y][18] = -1
+	var index: int = 0
+	for unit: Dictionary in sim.units:
+		unit.pos = Vector2(26, 20) if int(unit.id) == 10 else Vector2(30 + index, 24)
+		unit.target = unit.pos
+		index += 1
+	sim.pursuit_x = 18.5
+	sim.chokes = [{"name": "Test rear bridge", "pos": Vector2(22, 20), "sealed": false, "pending": false, "building_id": 0, "delay_remaining": 0.0}]
+	var enemy: Dictionary = _unit(500, "zombie", Vector2(13.9, 20), "enemy")
+	enemy.pursuer = true
+	enemy.range = 0.85
+	enemy.damage = 12.0
+	sim.units.append(enemy)
+	_check(sim.seal_choke(0), "controlled bridge uses real paid sealing with every survivor already east")
+	_check(sim.load_state(JSON.parse_string(JSON.stringify(sim.save_state()))), "controlled distant-barrier layout is a valid saved campaign")
+	return sim
+
+
+func _test_distant_sealed_barrier() -> void:
+	var sim: Variant = _barrier_fixture()
+	var origin: Vector2 = sim.get_unit(500).pos
+	var barrier_id: int = int(sim.chokes[0].building_id)
+	var hp: float = 0.0
+	for building: Dictionary in sim.buildings:
+		if int(building.id) == barrier_id: hp = float(building.hp)
+	_advance(sim, 24.0)
+	var unit: Dictionary = sim.get_unit(500)
+	var remaining: float = hp
+	for building: Dictionary in sim.buildings:
+		if int(building.id) == barrier_id: remaining = float(building.hp)
+	_check(Vector2(unit.pos).distance_to(origin) > 6.0 and float(unit.pos.x) > 20.0, "pursuer outside close barrier range approaches the reachable western face")
+	_check(remaining < hp and bool(sim.chokes[0].sealed), "real melee damages sealed barrier without abstract wave damage before pursuit start")
+	_check(float(unit.pos.x) <= 21.5 and sim.pursuit_x == 18.5, "barrier approach keeps body collision and the configured pursuit-front limit")
+	_check(float(sim.get_unit(10).hp) == 1000.0, "pursuer cannot attack the command truck through the sealed bridge")
+	var resumed: Variant = Simulation.new()
+	_check(resumed.load_state(JSON.parse_string(JSON.stringify(sim.save_state(), "", true, true))), "active barrier approach and attack survive real encoded save/load")
+	var same: bool = true
+	for step: int in range(80):
+		sim.tick(STEP)
+		resumed.tick(STEP)
+		var equal: bool = _barrier_saved_equivalent(sim.save_state(), resumed.save_state())
+		if same and not equal:
+			for record: Array in [["original", sim], ["resumed", resumed]]:
+				var file: FileAccess = FileAccess.open("res://work/barrier-continuation-" + str(record[0]) + ".json", FileAccess.WRITE)
+				file.store_string(_exact_saved_state(record[1]))
+				file.close()
+		same = same and equal
+	_check(same, "barrier continuation preserves every state field (double roundtrip ULPs only) and exact RNG on subsequent steps")
+
+
+func _exact_saved_state(sim: Variant) -> String:
+	return JSON.stringify(JSON.parse_string(JSON.stringify(sim.save_state(), "", true, true)), "", true, true)
+
+
+func _barrier_saved_equivalent(left: Variant, right: Variant) -> bool:
+	# JSON double parsing can move time by one ULP (24.050000000000207 vs
+	# 24.05000000000021). Retain all fields/effects/messages and exact RNG text.
+	if (left is int or left is float) and (right is int or right is float):
+		return absf(float(left) - float(right)) <= maxf(0.000000000001, maxf(absf(float(left)), absf(float(right))) * 0.000000000000002)
+	if left is Dictionary and right is Dictionary:
+		if left.size() != right.size(): return false
+		for key: Variant in left:
+			if not right.has(key) or not _barrier_saved_equivalent(left[key], right[key]): return false
+		return true
+	if left is Array and right is Array:
+		if left.size() != right.size(): return false
+		for index: int in range(left.size()):
+			if not _barrier_saved_equivalent(left[index], right[index]): return false
+		return true
+	return left == right
+
+
+func _test_barrier_fallback_reachability() -> void:
+	var bypass: Variant = _barrier_fixture(true)
+	_advance(bypass, 0.4)
+	var unit: Dictionary = bypass.get_unit(500)
+	_check(Vector2(unit.target).distance_to(Vector2(26, 20)) < 0.2, "reachable distant victim keeps its original target when a legal bypass exists")
+	var uses_bypass: bool = false
+	for point: Vector2 in unit.path:
+		if point.y == 24.0: uses_bypass = true
+	_check(uses_bypass, "initial reachable route uses the open alternate bridge")
+	var isolated: Variant = _barrier_fixture(false, true)
+	var original: Vector2 = isolated.get_unit(500).pos
+	_advance(isolated, 2.0)
+	_check(Vector2(isolated.get_unit(500).pos).is_equal_approx(original), "unreachable barrier approach does not teleport a pursuer across another canyon")
+	_check(Array(isolated.get_unit(500).path).is_empty(), "unreachable fallback is left empty instead of advertising a false route")
 
 func _unit(id_value: int, kind: String, position: Vector2, team: String = "friendly") -> Dictionary:
 	var hostile: bool = team == "enemy"

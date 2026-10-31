@@ -871,6 +871,11 @@ func _set_target(unit: Dictionary, destination: Vector2) -> void:
 				best_distance = distance
 	unit["target"] = Vector2(tile)
 	unit["path"] = _find_path(Vector2(unit["pos"]), Vector2(tile), team)
+	if team == "enemy" and Array(unit["path"]).is_empty():
+		var approach: Dictionary = _reachable_barrier_approach(unit, destination)
+		if not approach.is_empty():
+			unit["target"] = approach["target"]
+			unit["path"] = approach["path"]
 	if str(unit.get("order", "")) == "idle" and unit.has("formation_slot"):
 		if Array(unit["path"]).is_empty():
 			unit.erase("formation_anchor")
@@ -881,6 +886,34 @@ func _set_target(unit: Dictionary, destination: Vector2) -> void:
 	unit["path_index"] = 0
 	unit["repath"] = 1.0
 	unit["nav_wait"] = 0.0
+
+
+func _reachable_barrier_approach(unit: Dictionary, destination: Vector2) -> Dictionary:
+	# An unreachable survivor/camp across a sealed bridge is still a pursuit
+	# goal. Approach its reachable western face even outside close attack sense.
+	# Existing reachable routes, melee range and pursuit-front limits stay intact.
+	var origin: Vector2 = unit["pos"]
+	var component: int = int(_walk_components.get(_nearest_tile(origin, "enemy"), -1))
+	if component < 0: return {}
+	var goal: Vector2i = Vector2i(-1, -1)
+	var best: float = INF
+	for choke: Dictionary in chokes:
+		if not bool(choke.get("sealed", false)): continue
+		var barrier: Dictionary = _get_building(int(choke.get("building_id", 0)))
+		if barrier.is_empty() or float(barrier["hp"]) <= 0.0: continue
+		var at: Vector2 = barrier["pos"]
+		if origin.x >= at.x or destination.x <= at.x: continue
+		var span: int = int(barrier.get("span", 0))
+		for offset: int in range(-span, span + 1):
+			var candidate: Vector2i = Vector2i(at.round()) + Vector2i(-1, offset)
+			if int(_walk_components.get(candidate, -2)) != component or not _body_position_valid(Vector2(candidate), _unit_radius(unit), "enemy"): continue
+			var distance: float = origin.distance_squared_to(Vector2(candidate))
+			if distance < best:
+				best = distance
+				goal = candidate
+	if goal.x < 0: return {}
+	var path: Array = _find_path(origin, Vector2(goal), "enemy")
+	return {"target": Vector2(goal), "path": path} if not path.is_empty() else {}
 
 
 func command_move(ids: Array, target: Vector2, attack_move: bool = false) -> void:

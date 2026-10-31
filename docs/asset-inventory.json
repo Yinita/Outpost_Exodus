@@ -1,0 +1,877 @@
+{
+  "schema_version": 1,
+  "status": "WORKTREE_INVENTORY_AND_DISCLOSURE_DRAFT_NOT_RIGHTS_OR_RELEASE_SIGNOFF",
+  "snapshot": {
+    "recorded_utc": "2026-10-31T04:50:44.377867+00:00",
+    "base_commit": "3f8a135d24df1114583e1da9e01695704aaaac07",
+    "working_tree_dirty": true,
+    "scope": "Current source asset bytes, retained production inputs and player-facing script categories. Hashes must be refreshed at source freeze, then checked against the actual final export."
+  },
+  "steam_policy_reference": {
+    "url": "https://partner.steamgames.com/doc/gettingstarted/contentsurvey",
+    "checked_date": "2026-10-31",
+    "draft": "docs/steam-content-survey-draft.md"
+  },
+  "ai_usage_summary": {
+    "pregenerated_image_confirmed": true,
+    "pregenerated_model_output_family_ids": [
+      "building_atlas"
+    ],
+    "additional_ai_assisted_authoring_family_ids": [
+      "procedural_visuals",
+      "identity",
+      "ambient_music",
+      "sound_effects",
+      "player_facing_text"
+    ],
+    "live_generated_model_service": "NOT_DETECTED_IN_REVIEWED_SOURCE",
+    "ordinary_game_AI_or_procedural_drawing_is_not_model_inference": true,
+    "submission_status": "NOT_SUBMITTED",
+    "owner_review": "PENDING"
+  },
+  "families": [
+    {
+      "id": "building_atlas",
+      "player_consumed_content": true,
+      "content": "Nine fixed cartoon building sprites, including camp/command, generator, workshop, barracks, tower, barricade, resource facilities and exit.",
+      "creation_method": "Development-time bitmap generation using the built-in image_gen tool, according to the retained project prompt/provenance.",
+      "ai_generation_status": "CONFIRMED_PREGENERATED_IMAGE",
+      "assets": [
+        {
+          "path": "assets/buildings-atlas.png",
+          "status": "PRESENT",
+          "bytes": 1794578,
+          "sha256": "64b3410843505cbed18438f839b8e49d7242c1c3dbd944369a9a95a35906afc3",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/buildings-atlas.png.import",
+            "status": "PRESENT",
+            "bytes": 956,
+            "sha256": "8551be1b93728492dbc19eeae539fe421731be7827e5e086bc558260ce9cd773",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        }
+      ],
+      "retained_inputs": [
+        {
+          "path": "assets/buildings-atlas-prompt.txt",
+          "status": "PRESENT",
+          "bytes": 2044,
+          "sha256": "35db6b5382c06aa2b69af3a0964063b2b450f28bf4e4437afb4577665795b06e",
+          "role": "retained_source_or_generation_input"
+        }
+      ],
+      "generation_record": {
+        "tool": "image_gen",
+        "model_id": null,
+        "job_id": null,
+        "generated_at": null,
+        "raw_generation_response": null,
+        "unknown_fields_status": "UNKNOWN_NOT_RETAINED",
+        "reference_description": "Retained prompt describes prior cartoon wasteland concept art created in this task as a style reference.",
+        "reference_binary": null,
+        "reference_sha256": null,
+        "reference_generation_record": null,
+        "reference_record_status": "UNKNOWN_BINARY_AND_EXACT_INPUT_IDENTITY_NOT_RETAINED",
+        "evidence_limit": "Prompt/provenance are retained textual records, not a model execution receipt or proof of all source rights."
+      },
+      "runtime_use": "world_view.gd loads fixed atlas regions; no runtime image-model call.",
+      "rights": {
+        "project_distribution_terms": "PENDING_OWNER_DECISION",
+        "shipping_rights_signoff": "NOT_COMPLETED"
+      },
+      "review": [
+        "Confirm final visual output and reference/source rights before public submission.",
+        "Recover missing generation/reference records if available; keep unrecoverable fields unknown."
+      ]
+    },
+    {
+      "id": "procedural_visuals",
+      "player_consumed_content": true,
+      "content": "Terrain/cliffs/roads, survivor and zombie bodies, eight walking poses, cargo/selection/health overlays, UI, effects and runtime scenery caches.",
+      "creation_method": "AI-assisted project drawing code; pre-authored vector geometry rendered by Godot. Runtime atlases/caches derive from that code.",
+      "ai_generation_status": "AI_ASSISTED_CONTENT_AUTHORING_METHOD_REVIEW_REQUIRED",
+      "image_model_generation": "NOT_USED_BY_REVIEWED_RUNTIME_RENDERER",
+      "assets": [],
+      "retained_inputs": [
+        {
+          "path": "scripts/cartoon_canvas.gd",
+          "status": "PRESENT",
+          "bytes": 10547,
+          "sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/actor_canvas.gd",
+          "status": "PRESENT",
+          "bytes": 7302,
+          "sha256": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/actor_atlas.gd",
+          "status": "PRESENT",
+          "bytes": 4176,
+          "sha256": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/terrain_cache.gd",
+          "status": "PRESENT",
+          "bytes": 428,
+          "sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/decoration_cache.gd",
+          "status": "PRESENT",
+          "bytes": 229,
+          "sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/world_view.gd",
+          "status": "PRESENT",
+          "bytes": 46430,
+          "sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/hud.gd",
+          "status": "PRESENT",
+          "bytes": 50204,
+          "sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+          "role": "retained_source_or_generation_input"
+        }
+      ],
+      "generated_artifacts": [
+        {
+          "kind": "runtime_GPU_atlases_and_caches",
+          "file_sha256": null,
+          "status": "IN_MEMORY_NOT_A_RETAINED_STATIC_ASSET"
+        }
+      ],
+      "runtime_use": "Deterministic/procedural rendering and ordinary game state; no generative-model inference identified.",
+      "rights": {
+        "project_distribution_terms": "PENDING_OWNER_DECISION",
+        "shipping_rights_signoff": "NOT_COMPLETED"
+      },
+      "review": [
+        "Describe the AI-assisted authoring workflow accurately rather than claiming unrecorded per-shape human authorship."
+      ]
+    },
+    {
+      "id": "identity",
+      "player_consumed_content": true,
+      "content": "Application icon and PNG/ICO variants used by the game and native build resources.",
+      "creation_method": "Original SVG geometry authored in the AI-assisted project, rasterized by Godot via tools/render_icon.gd; ICO/PE resource layers assembled by project tooling.",
+      "ai_generation_status": "AI_ASSISTED_CODE_AUTHORED_VECTOR_ART",
+      "assets": [
+        {
+          "path": "assets/identity/icon.svg",
+          "status": "PRESENT",
+          "bytes": 3266,
+          "sha256": "22122b35647f834ec71870bced822f0d7471cb0f72be903824ee41fe79b11266",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/identity/icon.svg.import",
+            "status": "PRESENT",
+            "bytes": 1028,
+            "sha256": "31e7518ade877bd5e44cb9a707ea8e9644acef4aca3d7b3b1ae37a23594d3a2b",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/identity/icon.png",
+          "status": "PRESENT",
+          "bytes": 56237,
+          "sha256": "f776515a341ded7ae5bd2bbc38cf91a5ff682a132d15f3a61ef3c2215e46d98e",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/identity/icon.png.import",
+            "status": "PRESENT",
+            "bytes": 931,
+            "sha256": "2d1f2db1370d7c23cafa186c831a588826c521735c71f141d99451cab1b9acab",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/identity/icon-256.png",
+          "status": "PRESENT",
+          "bytes": 26464,
+          "sha256": "72acb354c54ecdfe46d39f6b9923010b9c5c62d8c23bf51b73dd5305c3c5be52",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/identity/icon-256.png.import",
+            "status": "PRESENT",
+            "bytes": 944,
+            "sha256": "840613618109f1749b8bdb8cc8eac41a221cfcaef70c9d80d2637c05a5ffc9c2",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/identity/icon-128.png",
+          "status": "PRESENT",
+          "bytes": 9660,
+          "sha256": "ba1ea20f732c8300b58866a5d32b40ed9af4ac26a55626e87dff2b8d2093731e",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/identity/icon-128.png.import",
+            "status": "PRESENT",
+            "bytes": 944,
+            "sha256": "425c65ed978237da19d0aba150a7dd04d63c449f53725a7fd05c57ab81d8bc69",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/identity/icon-64.png",
+          "status": "PRESENT",
+          "bytes": 3678,
+          "sha256": "faa9854878494b2f1b75a826abde3eb8c8a8c49908bd5aa08ec9111745aee7e3",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/identity/icon-64.png.import",
+            "status": "PRESENT",
+            "bytes": 941,
+            "sha256": "bc6083d1e2bacb617206cdc863f8985d8a7552716f646516f584180c7d983bea",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/identity/icon-32.png",
+          "status": "PRESENT",
+          "bytes": 1308,
+          "sha256": "27f2e4289f9fe4528b62da600be71385439bfa3ba46e12eb0b196e4d465a4bec",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/identity/icon-32.png.import",
+            "status": "PRESENT",
+            "bytes": 941,
+            "sha256": "0386836203e20a3ef292888df6aa29e26ebc2f4690cb6b0da56977dd30741434",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/identity/icon.ico",
+          "status": "PRESENT",
+          "bytes": 41180,
+          "sha256": "31d28b1e0f941d9cb583f5f13261b83047041a4e0629fe5028398e0122f6531b",
+          "role": "player_consumed_asset_source"
+        }
+      ],
+      "retained_inputs": [
+        {
+          "path": "tools/render_icon.gd",
+          "status": "PRESENT",
+          "bytes": 2710,
+          "sha256": "d34b25f6cf8ed466c121ecffdfa304d24def929979d2c15d5b77629fe182ebc2",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "tools/patch_windows_resources.py",
+          "status": "PRESENT",
+          "bytes": 16511,
+          "sha256": "64ccbbe97b0235d4f37c1e3c086a9c7ea308fba4afc3f25e3a7f34fea099e255",
+          "role": "retained_source_or_generation_input"
+        }
+      ],
+      "runtime_use": "Fixed SVG/imported textures and OS icon resources; no runtime model call.",
+      "rights": {
+        "project_distribution_terms": "PENDING_OWNER_DECISION",
+        "shipping_rights_signoff": "NOT_COMPLETED"
+      },
+      "review": [
+        "Retain SVG and derivative-generation inputs with the source."
+      ]
+    },
+    {
+      "id": "ambient_music",
+      "player_consumed_content": true,
+      "content": "24-second mono22,050Hz PCM16 travel ambience loop.",
+      "creation_method": "AI-assisted Python implementation of deterministic mathematical synthesis: sparse plucked notes, low drone and seeded filtered noise; explicit little-endian PCM and read-only --check preserve the existing WAV; no external recording declared by the generator.",
+      "ai_generation_status": "AI_ASSISTED_SYNTHESIS_CODE_FIXED_AUDIO_OUTPUT",
+      "audio_model_generation": "NO_AUDIO_MODEL_SERVICE_IN_GENERATOR",
+      "assets": [
+        {
+          "path": "assets/audio/canyon_ambient.wav",
+          "status": "PRESENT",
+          "bytes": 1058444,
+          "sha256": "4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/canyon_ambient.wav.import",
+            "status": "PRESENT",
+            "bytes": 513,
+            "sha256": "5073e240227e607d6a4cb3543999b37de785f73c300d52064dbe66f18ca08737",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        }
+      ],
+      "retained_inputs": [
+        {
+          "path": "tools/generate_audio.py",
+          "status": "PRESENT",
+          "bytes": 3191,
+          "sha256": "a14ad2676a77df67afd4a304e52d4d9444d52cc2994e1627e60c755e0b936e32",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/game_audio.gd",
+          "status": "PRESENT",
+          "bytes": 7153,
+          "sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/main.gd",
+          "status": "PRESENT",
+          "bytes": 48368,
+          "sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+          "role": "retained_source_or_generation_input"
+        }
+      ],
+      "runtime_use": "Fixed imported WAV playback; music looping uses decoded sample frames.",
+      "rights": {
+        "project_distribution_terms": "PENDING_OWNER_DECISION",
+        "shipping_rights_signoff": "NOT_COMPLETED"
+      },
+      "review": [
+        "Human listening/final mix acceptance remains open."
+      ]
+    },
+    {
+      "id": "sound_effects",
+      "player_consumed_content": true,
+      "content": "Eight fixed clips: two shots, impact, loot, confirmation, rejection, build completion and warning.",
+      "creation_method": "AI-assisted original standard-library Python synthesis with independent fixed seeds; explicit PCM generation and byte-check tooling retained.",
+      "ai_generation_status": "AI_ASSISTED_SYNTHESIS_CODE_FIXED_AUDIO_OUTPUT",
+      "audio_model_generation": "NO_AUDIO_MODEL_SERVICE_IN_GENERATOR",
+      "assets": [
+        {
+          "path": "assets/audio/sfx_shot_a.wav",
+          "status": "PRESENT",
+          "bytes": 6438,
+          "sha256": "67420ad0bc3a66fa5369867bd9685b555ac1a6ca0011739704676847703d4fba",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_shot_a.wav.import",
+            "status": "PRESENT",
+            "bytes": 500,
+            "sha256": "7744e18f00d3846ee32209862caee27b06eb9bae8c5b65775857074f0cb6161d",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/audio/sfx_shot_b.wav",
+          "status": "PRESENT",
+          "bytes": 7320,
+          "sha256": "c3f780271090f978d14b85df9bb5cd4c0bd2a6325969150feda72a6064f0405f",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_shot_b.wav.import",
+            "status": "PRESENT",
+            "bytes": 501,
+            "sha256": "ba1d6d939d23a43144bc724cbe58a2d4b835da7e627c7f22ffbb0f78c9d73f42",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/audio/sfx_impact.wav",
+          "status": "PRESENT",
+          "bytes": 7100,
+          "sha256": "49fcb7bf0d03229f8fc1a04454412f910869936420899e09b594b64c77e89661",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_impact.wav.import",
+            "status": "PRESENT",
+            "bytes": 501,
+            "sha256": "4f645c054e2c1fece79f308bbd2547b6e1f433856c78545473267eb3a8f6346f",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/audio/sfx_loot.wav",
+          "status": "PRESENT",
+          "bytes": 15038,
+          "sha256": "8d7e64549b23991d6851884619571e1dafb5b4d49429d79f5a565e545908e91c",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_loot.wav.import",
+            "status": "PRESENT",
+            "bytes": 495,
+            "sha256": "06010df927e368a614cd01e2a9f4a0e0ac3502e0c704adad7d92a043429e9cf0",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/audio/sfx_confirm.wav",
+          "status": "PRESENT",
+          "bytes": 5336,
+          "sha256": "65cdda9a1997f596b40ed1fb021ed081701f0f98343d82b1d3181d290f544091",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_confirm.wav.import",
+            "status": "PRESENT",
+            "bytes": 504,
+            "sha256": "98f1c69ea208ae7445bc07379a30524b4829f9314848bfc0b5ef97997fdd5a4e",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/audio/sfx_reject.wav",
+          "status": "PRESENT",
+          "bytes": 8864,
+          "sha256": "aba491d27649b3513e0603a5daba29f256dc4536bfc9f3ec450c330c7a5cf436",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_reject.wav.import",
+            "status": "PRESENT",
+            "bytes": 500,
+            "sha256": "94f514aba0b0c5391245985ae4a584751aac61e42489f61e3dccfd4c86f6c38b",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/audio/sfx_build.wav",
+          "status": "PRESENT",
+          "bytes": 13274,
+          "sha256": "1e8ef2be5057c330760bf84c4a320fe7b611b973cfc63190f3f8af9f72763977",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_build.wav.import",
+            "status": "PRESENT",
+            "bytes": 498,
+            "sha256": "9b7ef88e850050387cfef327147b9787110e8a2264f48e11cb7cdc4b5c34f244",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        },
+        {
+          "path": "assets/audio/sfx_warning.wav",
+          "status": "PRESENT",
+          "bytes": 25622,
+          "sha256": "0fed177282618be9a9665ceca50c450e393f05339d4b45cfb3a086e6f7e9cd54",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/audio/sfx_warning.wav.import",
+            "status": "PRESENT",
+            "bytes": 504,
+            "sha256": "fe53d758dda5e2f21d4e6e3d8b447df68d2a412d4d875375579cf6df2cad7691",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        }
+      ],
+      "retained_inputs": [
+        {
+          "path": "tools/generate_sfx.py",
+          "status": "PRESENT",
+          "bytes": 6026,
+          "sha256": "b374e2284388b716151b3d5d54010684084038fb531b0de15ff0ddcfb4d12555",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/game_audio.gd",
+          "status": "PRESENT",
+          "bytes": 7153,
+          "sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+          "role": "retained_source_or_generation_input"
+        }
+      ],
+      "runtime_use": "Fixed preloaded streams in bounded six-world/two-UI playback pools; no model inference.",
+      "rights": {
+        "project_distribution_terms": "PENDING_OWNER_DECISION",
+        "shipping_rights_signoff": "NOT_COMPLETED"
+      },
+      "review": [
+        "Human listening/final mix acceptance remains open."
+      ]
+    },
+    {
+      "id": "player_facing_text",
+      "player_consumed_content": true,
+      "content": "Chinese UI labels, mission names/objectives, tutorial guidance, unit/building names, notifications and feedback. Current player copy is embedded in the listed project/GDScript files.",
+      "creation_method": "Pre-authored text in an AI-assisted development workflow; per-string AI generation and human-edit history was not retained.",
+      "ai_generation_status": "AI_ASSISTED_PREAUTHORED_TEXT_REVIEW_REQUIRED",
+      "assets": [],
+      "retained_inputs": [
+        {
+          "path": "project.godot",
+          "status": "PRESENT",
+          "bytes": 983,
+          "sha256": "34587ca98581f1a5569130efa8c9461f018576e4ef82a2afa64e7442680a5096",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/main.gd",
+          "status": "PRESENT",
+          "bytes": 48368,
+          "sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/hud.gd",
+          "status": "PRESENT",
+          "bytes": 50204,
+          "sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/campaign_catalog.gd",
+          "status": "PRESENT",
+          "bytes": 29019,
+          "sha256": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/campaign_guide.gd",
+          "status": "PRESENT",
+          "bytes": 36060,
+          "sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/campaign_simulation.gd",
+          "status": "PRESENT",
+          "bytes": 119096,
+          "sha256": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/construction_rules.gd",
+          "status": "PRESENT",
+          "bytes": 11076,
+          "sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/recruitment_rules.gd",
+          "status": "PRESENT",
+          "bytes": 9607,
+          "sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190",
+          "role": "retained_source_or_generation_input"
+        }
+      ],
+      "generation_record": {
+        "per_string_author": null,
+        "model_id": null,
+        "generated_at": null,
+        "status": "UNKNOWN_GRANULAR_HISTORY_NOT_RETAINED"
+      },
+      "runtime_use": "Fixed strings and formatting with live game values; no runtime text generation service identified.",
+      "rights": {
+        "project_distribution_terms": "PENDING_OWNER_DECISION",
+        "shipping_rights_signoff": "NOT_COMPLETED"
+      },
+      "review": [
+        "Review final player copy and disclosure description; do not label it independently verified human-only writing."
+      ]
+    },
+    {
+      "id": "font",
+      "player_consumed_content": true,
+      "content": "Noto Sans CJK Regular TTC used for Chinese interface and labels.",
+      "creation_method": "Imported third-party font, not generated by this project.",
+      "ai_generation_status": "THIRD_PARTY_PREEXISTING_FONT_NO_PROJECT_AI_GENERATION_EVIDENCE",
+      "assets": [
+        {
+          "path": "assets/fonts/NotoSansCJK-Regular.ttc",
+          "status": "PRESENT",
+          "bytes": 19484784,
+          "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+          "role": "player_consumed_asset_source",
+          "godot_import_descriptor": {
+            "path": "assets/fonts/NotoSansCJK-Regular.ttc.import",
+            "status": "PRESENT",
+            "bytes": 795,
+            "sha256": "c2749b78dcd861edbb6c517aa65623d794e16e02269ee537d06bfca6fda332f7",
+            "role": "import_settings_not_authorship_evidence"
+          }
+        }
+      ],
+      "notice": {
+        "path": "assets/fonts/NOTICE.txt",
+        "status": "PRESENT",
+        "bytes": 5585,
+        "sha256": "8b639404a2f2fc480c4803f5a456cef6068f03c72ea323aab65a170f7a0d5cd9",
+        "role": "external_font_notice_copied_into_native_packages"
+      },
+      "embedded_identity": {
+        "font_version": "2.004",
+        "face_count": 10,
+        "copyright": "© 2014-2021 Adobe (http://www.adobe.com/).",
+        "license": "SIL Open Font License1.1",
+        "evidence": "Current font SHA matches the embedded-name/metadata audit."
+      },
+      "upstream_reference": "https://github.com/notofonts/noto-cjk/releases/tag/Sans2.004",
+      "license_reference": "https://raw.githubusercontent.com/notofonts/noto-cjk/Sans2.004/LICENSE",
+      "runtime_use": "Godot imported font data; font source bytes retained separately.",
+      "rights": {
+        "applicable_third_party_license": "SIL Open Font License1.1",
+        "notice_source_status": "FONT_SPECIFIC_ADOBE_CREDIT_AND_COMPLETE_TAGGED_UPSTREAM_OFL_VERIFIED",
+        "notice_final_package_verification": "PENDING_CURRENT_EXPORT",
+        "shipping_rights_signoff": "NOT_COMPLETED"
+      },
+      "review": [
+        "Font-specific external notice is maintained by the parallel font audit; verify its final copy in each native package."
+      ]
+    }
+  ],
+  "third_party_runtime_notices": [
+    {
+      "path": "licenses/GODOT-LICENSE.txt",
+      "status": "PRESENT",
+      "bytes": 1149,
+      "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
+      "role": "Godot license sidecar"
+    },
+    {
+      "path": "licenses/GODOT-COPYRIGHT.txt",
+      "status": "PRESENT",
+      "bytes": 100108,
+      "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d",
+      "role": "Godot third-party copyright sidecar"
+    }
+  ],
+  "development_only_records": [
+    {
+      "path": "assets/buildings-atlas-prompt.txt",
+      "status": "PRESENT",
+      "bytes": 2044,
+      "sha256": "35db6b5382c06aa2b69af3a0964063b2b450f28bf4e4437afb4577665795b06e",
+      "role": "retained_prompt_excluded_from_game_export"
+    }
+  ],
+  "pack_reference": {
+    "last_frozen_linux_export_identity": {
+      "source_commit": "3f8a135d24df1114583e1da9e01695704aaaac07",
+      "pck_sha256": "2ee4ac4b1b8c0516eb1d45b10ca3cfd1464df701d2bdeb04919c2c6a20efcfd3",
+      "status": "EXISTING_EXPORT_IDENTITY_NOT_NEW_WORKTREE_ACCEPTANCE"
+    },
+    "prior_directory_audit": {
+      "source_commit": "2a00c7e97ff7954b0756bc49445866d92aec6b07",
+      "pck_sha256": "904bfaa6f2a644bf598a0e0592746de370294cc307ad76a239b49d6237920694",
+      "entries": 79,
+      "asset_related_entries": 36,
+      "all_file_md5_valid": true,
+      "recorded_asset_pack_paths": [
+        ".godot/imported/NotoSansCJK-Regular.ttc-bf6a5134ec173401ff9bd69115e437ec.fontdata",
+        ".godot/imported/buildings-atlas.png-30f45c7e961a0e0b7f15bb9fe672271c.ctex",
+        ".godot/imported/canyon_ambient.wav-9d1ec17f00866a1c10d8eee392566f65.sample",
+        ".godot/imported/icon-128.png-d0d31299f3821bc5fa3d46ce4d3bc9bc.ctex",
+        ".godot/imported/icon-256.png-624d131faf8cea4dc9493755a01cd33d.ctex",
+        ".godot/imported/icon-32.png-520af68794eb23bcdbe19535677d3458.ctex",
+        ".godot/imported/icon-64.png-a883bb9f049a76194d553fa8f18b290d.ctex",
+        ".godot/imported/icon.png-8b4c9f75af6598eeda96e5618e71ae5a.ctex",
+        ".godot/imported/icon.svg-9f0e39bd9d463ba94427f801df6dc94c.ctex",
+        ".godot/imported/sfx_build.wav-c17301eae1aa4a77beaafe4519654c4d.sample",
+        ".godot/imported/sfx_confirm.wav-ca52ac6b1cee1244748502d2be2bb05a.sample",
+        ".godot/imported/sfx_impact.wav-40a79849531e019baa840386a7ebe599.sample",
+        ".godot/imported/sfx_loot.wav-c28cca41d52085bb026c26959b360c08.sample",
+        ".godot/imported/sfx_reject.wav-b68d64e03ab2ee9e552f92def9dc66ca.sample",
+        ".godot/imported/sfx_shot_a.wav-3fca00e93268becfb4df6ba83f89918a.sample",
+        ".godot/imported/sfx_shot_b.wav-d667ce0f18c47757057b67081e35ab9b.sample",
+        ".godot/imported/sfx_warning.wav-b4a192c5585fefaa45f4aee5d934624d.sample",
+        "assets/audio/canyon_ambient.wav.import",
+        "assets/audio/sfx_build.wav.import",
+        "assets/audio/sfx_confirm.wav.import",
+        "assets/audio/sfx_impact.wav.import",
+        "assets/audio/sfx_loot.wav.import",
+        "assets/audio/sfx_reject.wav.import",
+        "assets/audio/sfx_shot_a.wav.import",
+        "assets/audio/sfx_shot_b.wav.import",
+        "assets/audio/sfx_warning.wav.import",
+        "assets/buildings-atlas.png.import",
+        "assets/fonts/NotoSansCJK-Regular.ttc.import",
+        "assets/identity/icon-128.png.import",
+        "assets/identity/icon-256.png.import",
+        "assets/identity/icon-32.png.import",
+        "assets/identity/icon-64.png.import",
+        "assets/identity/icon.ico",
+        "assets/identity/icon.png.import",
+        "assets/identity/icon.svg",
+        "assets/identity/icon.svg.import"
+      ],
+      "scope": "Historical2a00 package audit; not relabeled as the forthcoming changed-worktree export."
+    }
+  },
+  "runtime_service_review": {
+    "method": "Static review of all scripts/**/*.gd plus the retained asset/package audit. No network-traffic capture performed.",
+    "reviewed_scripts": [
+      {
+        "path": "scripts/actor_atlas.gd",
+        "status": "PRESENT",
+        "bytes": 4176,
+        "sha256": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/actor_canvas.gd",
+        "status": "PRESENT",
+        "bytes": 7302,
+        "sha256": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/campaign_catalog.gd",
+        "status": "PRESENT",
+        "bytes": 29019,
+        "sha256": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/campaign_guide.gd",
+        "status": "PRESENT",
+        "bytes": 36060,
+        "sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/campaign_save_store.gd",
+        "status": "PRESENT",
+        "bytes": 8319,
+        "sha256": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/campaign_simulation.gd",
+        "status": "PRESENT",
+        "bytes": 119096,
+        "sha256": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/cartoon_canvas.gd",
+        "status": "PRESENT",
+        "bytes": 10547,
+        "sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/construction_rules.gd",
+        "status": "PRESENT",
+        "bytes": 11076,
+        "sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/decoration_cache.gd",
+        "status": "PRESENT",
+        "bytes": 229,
+        "sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/diagnostics/campaign_route.gd",
+        "status": "PRESENT",
+        "bytes": 18804,
+        "sha256": "f12b5abd49c9274a94be3d62be95124005347f914050097fe7ede724650d1432",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/diagnostics/campaign_runner.gd",
+        "status": "PRESENT",
+        "bytes": 21048,
+        "sha256": "46cefd1eaf2d7cbeca0fb74284f9a1d8f6d8de1052bd4798733d543b827fbb29",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/diagnostics/render_runner.gd",
+        "status": "PRESENT",
+        "bytes": 38093,
+        "sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/game_audio.gd",
+        "status": "PRESENT",
+        "bytes": 7153,
+        "sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/hud.gd",
+        "status": "PRESENT",
+        "bytes": 50204,
+        "sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/main.gd",
+        "status": "PRESENT",
+        "bytes": 48368,
+        "sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/recruitment_rules.gd",
+        "status": "PRESENT",
+        "bytes": 9607,
+        "sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/render_motion.gd",
+        "status": "PRESENT",
+        "bytes": 2406,
+        "sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/terrain_cache.gd",
+        "status": "PRESENT",
+        "bytes": 428,
+        "sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/world_view.gd",
+        "status": "PRESENT",
+        "bytes": 46430,
+        "sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda",
+        "role": "retained_source_or_generation_input"
+      }
+    ],
+    "network_or_external_process_api_pattern_matches": [],
+    "source_documentation_URLs_are_not_service_calls": true,
+    "limits": "No runtime generative model/service integration was identified. This is bounded source-review evidence, not a guarantee about future changes."
+  },
+  "unresolved_records": [
+    {
+      "id": "atlas_generation_receipt",
+      "fields": [
+        "model_id",
+        "job_id",
+        "generated_at",
+        "raw_generation_response"
+      ],
+      "status": "UNKNOWN_NOT_RETAINED"
+    },
+    {
+      "id": "atlas_reference_binary",
+      "fields": [
+        "reference_binary",
+        "reference_sha256",
+        "exact_generation_input_identity"
+      ],
+      "status": "UNKNOWN_NOT_RETAINED"
+    },
+    {
+      "id": "text_granular_authorship",
+      "fields": [
+        "per_string_author",
+        "per_string_model",
+        "per_string_edit_history"
+      ],
+      "status": "UNKNOWN_NOT_RETAINED"
+    },
+    {
+      "id": "project_distribution_terms",
+      "status": "PENDING_OWNER_DECISION",
+      "scope": "Code and project-created art/text/sound; does not replace third-party licenses."
+    },
+    {
+      "id": "final_submission_review",
+      "status": "PENDING_OWNER_AND_ACTUAL_STEAMWORKS_FORM",
+      "scope": "Final content, rights, visibility, store materials and disclosure answers."
+    }
+  ]
+}

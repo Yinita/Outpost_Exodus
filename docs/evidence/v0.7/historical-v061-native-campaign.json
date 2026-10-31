@@ -1,0 +1,2479 @@
+{
+	"automatic_saves": {
+		"backup": {
+			"exists": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json.bak",
+			"schema_valid": true,
+			"sha256": "506cd6e923f9d752eb6a4ded2dd14a9f050b71551d9d9be547a1a028f44ea33f",
+			"simulation_time": 1316.84999999935
+		},
+		"observed_file_changes": 10,
+		"primary": {
+			"exists": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+			"schema_valid": true,
+			"sha256": "fdf2aa722949c1ed8a14dd8ec7528a11d37d27b72836256797e38f7922270d0e",
+			"simulation_time": 1451.8499999992273
+		}
+	},
+	"binaries_after": {
+		"adjacent_pck": {
+			"available": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-unpacked-corrected/outpost-exodus-linux/outpost-exodus.pck",
+			"sha256": "2ee4ac4b1b8c0516eb1d45b10ca3cfd1464df701d2bdeb04919c2c6a20efcfd3"
+		},
+		"executable": {
+			"available": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-unpacked-corrected/outpost-exodus-linux/outpost-exodus.x86_64",
+			"sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+		}
+	},
+	"binaries_before": {
+		"adjacent_pck": {
+			"available": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-unpacked-corrected/outpost-exodus-linux/outpost-exodus.pck",
+			"sha256": "2ee4ac4b1b8c0516eb1d45b10ca3cfd1464df701d2bdeb04919c2c6a20efcfd3"
+		},
+		"executable": {
+			"available": true,
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-unpacked-corrected/outpost-exodus-linux/outpost-exodus.x86_64",
+			"sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+		}
+	},
+	"binaries_changed": false,
+	"captures": [
+		{
+			"label": "opening",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/output/opening.png",
+			"sha256": "d7b3748d9e5df7064a003b4f528f26350909212a8445caff593e12535997d8eb",
+			"simulation_time": 0.05
+		},
+		{
+			"label": "middle_infrastructure",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/output/middle_infrastructure.png",
+			"sha256": "36c32c62533c22f6a7ef14c0f4e218be86468e4bdd3b1bd2ae1c0ac45b8614d1",
+			"simulation_time": 325.20000000003967
+		},
+		{
+			"label": "withdrawal_after_disk_load",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/output/withdrawal_after_disk_load.png",
+			"sha256": "69a9e49aeba26ead3791a1070beaadff6e70afe4fe0cf3d7ffe75dcebf34aaa1",
+			"simulation_time": 911.7499999997185
+		},
+		{
+			"label": "completed_powered_exit",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/output/completed_powered_exit.png",
+			"sha256": "aecdbd5737a39fa9bbc45f9de0b2aa8dd21467eb96d7424a29c41c8cf9b792a7",
+			"simulation_time": 1574.0499999991162
+		},
+		{
+			"label": "victory",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/output/victory.png",
+			"sha256": "8d5ab048e2e1ae58dbc1dd7bee42bc65227645064af9858788c7fafc5689b15d",
+			"simulation_time": 1580.2999999991105
+		}
+	],
+	"checks": 53,
+	"complete_campaign_evidence": true,
+	"display_server": "X11",
+	"engine_command_line": {
+		"arguments": [
+			"/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-unpacked-corrected/outpost-exodus-linux/outpost-exodus.x86_64",
+			"--",
+			"--campaign-validation",
+			"--mission=canyon",
+			"--max-seconds=900"
+		],
+		"available": true,
+		"source": "/proc/self/cmdline"
+	},
+	"errors": [],
+	"events": [
+		{
+			"event": "campaign_started",
+			"initial_state_sha256": "561d92d6d9c06f724cd0a3987e797209052b7f3cf0666e2d61b952bf55c416a6",
+			"main_tick_count": 0,
+			"mission": "canyon",
+			"simulation_time": 0.0,
+			"speed": 3.0,
+			"wall_seconds": 0.467544
+		},
+		{
+			"camp_id": 1,
+			"event": "production_materials",
+			"main_tick_count": 0,
+			"simulation_time": 0.0,
+			"wall_seconds": 0.467726
+		},
+		{
+			"event": "opening",
+			"home_id": 1,
+			"main_tick_count": 0,
+			"simulation_time": 0.0,
+			"wall_seconds": 0.467836
+		},
+		{
+			"army_ids": [
+				6,
+				7,
+				8
+			],
+			"event": "clear_highway",
+			"main_tick_count": 1,
+			"simulation_time": 0.05,
+			"target": [
+				25.0,
+				20.0
+			],
+			"wall_seconds": 0.532689
+		},
+		{
+			"event": "wait_started",
+			"label": "clear_highway",
+			"main_tick_count": 1,
+			"simulation_deadline": 45.05,
+			"simulation_time": 0.05,
+			"wall_seconds": 0.532806
+		},
+		{
+			"event": "wait_complete",
+			"label": "clear_highway",
+			"main_tick_count": 801,
+			"simulation_time": 40.04999999999986,
+			"wall_seconds": 13.814709
+		},
+		{
+			"event": "wait_started",
+			"label": "highway actually captured",
+			"main_tick_count": 801,
+			"simulation_deadline": 100.04999999999987,
+			"simulation_time": 40.04999999999986,
+			"wall_seconds": 13.814873
+		},
+		{
+			"event": "wait_complete",
+			"label": "highway actually captured",
+			"main_tick_count": 801,
+			"simulation_time": 40.04999999999986,
+			"wall_seconds": 13.830568
+		},
+		{
+			"event": "highway_captured",
+			"main_tick_count": 801,
+			"simulation_time": 40.04999999999986,
+			"wall_seconds": 13.830632
+		},
+		{
+			"costs": {
+				"materials": 16.0
+			},
+			"event": "home_to_middle_road_ordered",
+			"kind": "road",
+			"main_tick_count": 801,
+			"simulation_time": 40.04999999999986,
+			"source_camp_id": 1,
+			"tile": [
+				26,
+				21
+			],
+			"wall_seconds": 13.835093
+		},
+		{
+			"event": "wait_started",
+			"label": "home_to_middle_road minimum construction window",
+			"main_tick_count": 801,
+			"simulation_deadline": 85.04999999999987,
+			"simulation_time": 40.04999999999986,
+			"wall_seconds": 13.835165
+		},
+		{
+			"event": "wait_complete",
+			"label": "home_to_middle_road minimum construction window",
+			"main_tick_count": 1601,
+			"simulation_time": 80.0499999999976,
+			"wall_seconds": 27.171077
+		},
+		{
+			"event": "wait_started",
+			"label": "home_to_middle_road actual completion",
+			"main_tick_count": 1601,
+			"simulation_deadline": 200.0499999999976,
+			"simulation_time": 80.0499999999976,
+			"wall_seconds": 27.171306
+		},
+		{
+			"event": "wait_complete",
+			"label": "home_to_middle_road actual completion",
+			"main_tick_count": 1601,
+			"simulation_time": 80.0499999999976,
+			"wall_seconds": 27.186562
+		},
+		{
+			"event": "home_to_middle_road_complete",
+			"main_tick_count": 1601,
+			"simulation_time": 80.0499999999976,
+			"wall_seconds": 27.186665
+		},
+		{
+			"costs": {
+				"materials": 50.0,
+				"supplies": 10.0
+			},
+			"event": "middle_camp_ordered",
+			"kind": "camp",
+			"main_tick_count": 1601,
+			"simulation_time": 80.0499999999976,
+			"source_camp_id": 1,
+			"tile": [
+				26,
+				23
+			],
+			"wall_seconds": 27.189471
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_camp minimum construction window",
+			"main_tick_count": 1601,
+			"simulation_deadline": 130.0499999999976,
+			"simulation_time": 80.0499999999976,
+			"wall_seconds": 27.189537
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_camp minimum construction window",
+			"main_tick_count": 2501,
+			"simulation_time": 125.04999999999504,
+			"wall_seconds": 42.16086
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_camp actual completion",
+			"main_tick_count": 2501,
+			"simulation_deadline": 245.04999999999504,
+			"simulation_time": 125.04999999999504,
+			"wall_seconds": 42.161015
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_camp actual completion",
+			"main_tick_count": 2501,
+			"simulation_time": 125.04999999999504,
+			"wall_seconds": 42.206939
+		},
+		{
+			"event": "middle_camp_complete",
+			"main_tick_count": 2501,
+			"simulation_time": 125.04999999999504,
+			"wall_seconds": 42.207107
+		},
+		{
+			"event": "wait_started",
+			"label": "home convoy and every friendly cross west gate",
+			"main_tick_count": 2501,
+			"simulation_deadline": 325.04999999999507,
+			"simulation_time": 125.04999999999504,
+			"wall_seconds": 42.207722
+		},
+		{
+			"count": 1,
+			"destination": 46,
+			"event": "actual_delivery",
+			"main_tick_count": 2857,
+			"origin": 1,
+			"simulation_time": 142.84999999999823,
+			"wall_seconds": 48.081163
+		},
+		{
+			"count": 2,
+			"destination": 46,
+			"event": "actual_delivery",
+			"main_tick_count": 3412,
+			"origin": 1,
+			"simulation_time": 170.60000000000454,
+			"wall_seconds": 57.336068
+		},
+		{
+			"count": 3,
+			"destination": 46,
+			"event": "actual_delivery",
+			"main_tick_count": 3992,
+			"origin": 1,
+			"simulation_time": 199.60000000001114,
+			"wall_seconds": 67.009048
+		},
+		{
+			"event": "wait_complete",
+			"label": "home convoy and every friendly cross west gate",
+			"main_tick_count": 4003,
+			"simulation_time": 200.15000000001126,
+			"wall_seconds": 67.205705
+		},
+		{
+			"event": "home_evacuated_and_west_sealed",
+			"home_deliveries": 3,
+			"main_tick_count": 4003,
+			"simulation_time": 200.15000000001126,
+			"wall_seconds": 67.20589
+		},
+		{
+			"costs": {
+				"materials": 12.0
+			},
+			"event": "middle_local_road_ordered",
+			"kind": "road",
+			"main_tick_count": 4003,
+			"simulation_time": 200.15000000001126,
+			"source_camp_id": 46,
+			"tile": [
+				29,
+				24
+			],
+			"wall_seconds": 67.257752
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_local_road minimum construction window",
+			"main_tick_count": 4003,
+			"simulation_deadline": 235.15000000001126,
+			"simulation_time": 200.15000000001126,
+			"wall_seconds": 67.257863
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_local_road minimum construction window",
+			"main_tick_count": 4603,
+			"simulation_time": 230.15000000001808,
+			"wall_seconds": 77.193683
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_local_road actual completion",
+			"main_tick_count": 4603,
+			"simulation_deadline": 350.15000000001805,
+			"simulation_time": 230.15000000001808,
+			"wall_seconds": 77.193895
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_local_road actual completion",
+			"main_tick_count": 4603,
+			"simulation_time": 230.15000000001808,
+			"wall_seconds": 77.209419
+		},
+		{
+			"event": "middle_local_road_complete",
+			"main_tick_count": 4603,
+			"simulation_time": 230.15000000001808,
+			"wall_seconds": 77.209526
+		},
+		{
+			"costs": {
+				"fuel": 5.0,
+				"materials": 30.0
+			},
+			"event": "middle_generator_ordered",
+			"kind": "generator",
+			"main_tick_count": 4603,
+			"simulation_time": 230.15000000001808,
+			"source_camp_id": 46,
+			"tile": [
+				28,
+				22
+			],
+			"wall_seconds": 77.211829
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_generator minimum construction window",
+			"main_tick_count": 4603,
+			"simulation_deadline": 265.15000000001805,
+			"simulation_time": 230.15000000001808,
+			"wall_seconds": 77.211893
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_generator minimum construction window",
+			"main_tick_count": 5203,
+			"simulation_time": 260.1500000000249,
+			"wall_seconds": 87.198738
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_generator actual completion",
+			"main_tick_count": 5203,
+			"simulation_deadline": 380.1500000000249,
+			"simulation_time": 260.1500000000249,
+			"wall_seconds": 87.198928
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_generator actual completion",
+			"main_tick_count": 5203,
+			"simulation_time": 260.1500000000249,
+			"wall_seconds": 87.214268
+		},
+		{
+			"event": "middle_generator_complete",
+			"main_tick_count": 5203,
+			"simulation_time": 260.1500000000249,
+			"wall_seconds": 87.214366
+		},
+		{
+			"costs": {
+				"materials": 40.0
+			},
+			"event": "middle_workshop_ordered",
+			"kind": "workshop",
+			"main_tick_count": 5203,
+			"simulation_time": 260.1500000000249,
+			"source_camp_id": 46,
+			"tile": [
+				30,
+				24
+			],
+			"wall_seconds": 87.216972
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_workshop minimum construction window",
+			"main_tick_count": 5203,
+			"simulation_deadline": 300.1500000000249,
+			"simulation_time": 260.1500000000249,
+			"wall_seconds": 87.217067
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_workshop minimum construction window",
+			"main_tick_count": 5903,
+			"simulation_time": 295.15000000003283,
+			"wall_seconds": 98.853666
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_workshop actual completion",
+			"main_tick_count": 5903,
+			"simulation_deadline": 415.15000000003283,
+			"simulation_time": 295.15000000003283,
+			"wall_seconds": 98.853828
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_workshop actual completion",
+			"main_tick_count": 5903,
+			"simulation_time": 295.15000000003283,
+			"wall_seconds": 98.8691
+		},
+		{
+			"event": "middle_workshop_complete",
+			"main_tick_count": 5903,
+			"simulation_time": 295.15000000003283,
+			"wall_seconds": 98.869178
+		},
+		{
+			"costs": {
+				"materials": 35.0,
+				"supplies": 5.0
+			},
+			"event": "middle_defense_ordered",
+			"kind": "tower",
+			"main_tick_count": 5903,
+			"simulation_time": 295.15000000003283,
+			"source_camp_id": 46,
+			"tile": [
+				25,
+				20
+			],
+			"wall_seconds": 98.871486
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_defense minimum construction window",
+			"main_tick_count": 5903,
+			"simulation_deadline": 330.15000000003283,
+			"simulation_time": 295.15000000003283,
+			"wall_seconds": 98.871596
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_defense minimum construction window",
+			"main_tick_count": 6503,
+			"simulation_time": 325.15000000003965,
+			"wall_seconds": 108.858264
+		},
+		{
+			"event": "wait_started",
+			"label": "middle_defense actual completion",
+			"main_tick_count": 6503,
+			"simulation_deadline": 445.15000000003965,
+			"simulation_time": 325.15000000003965,
+			"wall_seconds": 108.858428
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle_defense actual completion",
+			"main_tick_count": 6503,
+			"simulation_time": 325.15000000003965,
+			"wall_seconds": 108.873684
+		},
+		{
+			"event": "middle_defense_complete",
+			"main_tick_count": 6503,
+			"simulation_time": 325.15000000003965,
+			"wall_seconds": 108.873759
+		},
+		{
+			"event": "wait_started",
+			"label": "middle production has real local power",
+			"main_tick_count": 6503,
+			"simulation_deadline": 355.15000000003965,
+			"simulation_time": 325.15000000003965,
+			"wall_seconds": 108.873805
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle production has real local power",
+			"main_tick_count": 6503,
+			"simulation_time": 325.15000000003965,
+			"wall_seconds": 108.873847
+		},
+		{
+			"camp_id": 46,
+			"event": "production_materials",
+			"main_tick_count": 6503,
+			"simulation_time": 325.15000000003965,
+			"wall_seconds": 108.873902
+		},
+		{
+			"army_ids": [
+				6,
+				7,
+				8
+			],
+			"event": "clear_materials_branch",
+			"main_tick_count": 6504,
+			"simulation_time": 325.20000000003967,
+			"target": [
+				35.0,
+				10.0
+			],
+			"wall_seconds": 108.933294
+		},
+		{
+			"event": "wait_started",
+			"label": "clear_materials_branch",
+			"main_tick_count": 6504,
+			"simulation_deadline": 380.20000000003967,
+			"simulation_time": 325.20000000003967,
+			"wall_seconds": 108.93341
+		},
+		{
+			"event": "wait_complete",
+			"label": "clear_materials_branch",
+			"main_tick_count": 7504,
+			"simulation_time": 375.20000000005103,
+			"wall_seconds": 125.532684
+		},
+		{
+			"event": "wait_started",
+			"label": "quarry branch actually captured",
+			"main_tick_count": 7504,
+			"simulation_deadline": 435.20000000005103,
+			"simulation_time": 375.20000000005103,
+			"wall_seconds": 125.532852
+		},
+		{
+			"event": "wait_complete",
+			"label": "quarry branch actually captured",
+			"main_tick_count": 7504,
+			"simulation_time": 375.20000000005103,
+			"wall_seconds": 125.548463
+		},
+		{
+			"costs": {
+				"materials": 34.0
+			},
+			"event": "quarry_road_ordered",
+			"kind": "road",
+			"main_tick_count": 7504,
+			"simulation_time": 375.20000000005103,
+			"source_camp_id": 46,
+			"tile": [
+				35,
+				10
+			],
+			"wall_seconds": 125.554876
+		},
+		{
+			"event": "wait_started",
+			"label": "quarry_road minimum construction window",
+			"main_tick_count": 7504,
+			"simulation_deadline": 450.20000000005103,
+			"simulation_time": 375.20000000005103,
+			"wall_seconds": 125.554978
+		},
+		{
+			"event": "wait_complete",
+			"label": "quarry_road minimum construction window",
+			"main_tick_count": 8904,
+			"simulation_time": 445.20000000006695,
+			"wall_seconds": 148.87715
+		},
+		{
+			"event": "wait_started",
+			"label": "quarry_road actual completion",
+			"main_tick_count": 8904,
+			"simulation_deadline": 565.2000000000669,
+			"simulation_time": 445.20000000006695,
+			"wall_seconds": 148.877293
+		},
+		{
+			"event": "wait_complete",
+			"label": "quarry_road actual completion",
+			"main_tick_count": 8904,
+			"simulation_time": 445.20000000006695,
+			"wall_seconds": 148.877364
+		},
+		{
+			"event": "quarry_road_complete",
+			"main_tick_count": 8904,
+			"simulation_time": 445.20000000006695,
+			"wall_seconds": 148.877404
+		},
+		{
+			"army_ids": [
+				6,
+				7,
+				8
+			],
+			"event": "clear_fuel_branch",
+			"main_tick_count": 8904,
+			"simulation_time": 445.20000000006695,
+			"target": [
+				35.0,
+				31.0
+			],
+			"wall_seconds": 148.881409
+		},
+		{
+			"event": "wait_started",
+			"label": "clear_fuel_branch",
+			"main_tick_count": 8904,
+			"simulation_deadline": 500.20000000006695,
+			"simulation_time": 445.20000000006695,
+			"wall_seconds": 148.881496
+		},
+		{
+			"event": "wait_complete",
+			"label": "clear_fuel_branch",
+			"main_tick_count": 9906,
+			"simulation_time": 495.30000000007834,
+			"wall_seconds": 165.586763
+		},
+		{
+			"event": "wait_started",
+			"label": "fuel branch actually captured",
+			"main_tick_count": 9906,
+			"simulation_deadline": 555.3000000000784,
+			"simulation_time": 495.30000000007834,
+			"wall_seconds": 165.586911
+		},
+		{
+			"event": "wait_complete",
+			"label": "fuel branch actually captured",
+			"main_tick_count": 9906,
+			"simulation_time": 495.30000000007834,
+			"wall_seconds": 165.602273
+		},
+		{
+			"costs": {
+				"materials": 26.0
+			},
+			"event": "fuel_road_ordered",
+			"kind": "road",
+			"main_tick_count": 9906,
+			"simulation_time": 495.30000000007834,
+			"source_camp_id": 46,
+			"tile": [
+				35,
+				31
+			],
+			"wall_seconds": 165.609244
+		},
+		{
+			"event": "wait_started",
+			"label": "fuel_road minimum construction window",
+			"main_tick_count": 9906,
+			"simulation_deadline": 570.3000000000784,
+			"simulation_time": 495.30000000007834,
+			"wall_seconds": 165.609317
+		},
+		{
+			"event": "wait_complete",
+			"label": "fuel_road minimum construction window",
+			"main_tick_count": 11306,
+			"simulation_time": 565.3000000000336,
+			"wall_seconds": 188.911903
+		},
+		{
+			"event": "wait_started",
+			"label": "fuel_road actual completion",
+			"main_tick_count": 11306,
+			"simulation_deadline": 685.3000000000336,
+			"simulation_time": 565.3000000000336,
+			"wall_seconds": 188.912076
+		},
+		{
+			"event": "wait_complete",
+			"label": "fuel_road actual completion",
+			"main_tick_count": 11306,
+			"simulation_time": 565.3000000000336,
+			"wall_seconds": 188.927657
+		},
+		{
+			"event": "fuel_road_complete",
+			"main_tick_count": 11306,
+			"simulation_time": 565.3000000000336,
+			"wall_seconds": 188.927725
+		},
+		{
+			"event": "wait_started",
+			"label": "accumulate physically hauled branch stocks",
+			"main_tick_count": 11306,
+			"simulation_deadline": 670.3000000000336,
+			"simulation_time": 565.3000000000336,
+			"wall_seconds": 188.927787
+		},
+		{
+			"event": "wait_complete",
+			"label": "accumulate physically hauled branch stocks",
+			"main_tick_count": 13306,
+			"simulation_time": 665.2999999999427,
+			"wall_seconds": 222.243949
+		},
+		{
+			"event": "both_resource_branches_connected",
+			"main_tick_count": 13306,
+			"simulation_time": 665.2999999999427,
+			"wall_seconds": 222.248922
+		},
+		{
+			"army_ids": [
+				6,
+				7,
+				8
+			],
+			"event": "clear_forward_cache",
+			"main_tick_count": 13306,
+			"simulation_time": 665.2999999999427,
+			"target": [
+				53.0,
+				21.0
+			],
+			"wall_seconds": 222.256476
+		},
+		{
+			"event": "wait_started",
+			"label": "clear_forward_cache",
+			"main_tick_count": 13306,
+			"simulation_deadline": 730.2999999999427,
+			"simulation_time": 665.2999999999427,
+			"wall_seconds": 222.256565
+		},
+		{
+			"event": "wait_complete",
+			"label": "clear_forward_cache",
+			"main_tick_count": 14506,
+			"simulation_time": 725.2999999998881,
+			"wall_seconds": 242.291005
+		},
+		{
+			"event": "wait_started",
+			"label": "forward cache actually captured",
+			"main_tick_count": 14506,
+			"simulation_deadline": 785.2999999998881,
+			"simulation_time": 725.2999999998881,
+			"wall_seconds": 242.291165
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward cache actually captured",
+			"main_tick_count": 14506,
+			"simulation_time": 725.2999999998881,
+			"wall_seconds": 242.306626
+		},
+		{
+			"costs": {
+				"materials": 38.0
+			},
+			"event": "forward_road_ordered",
+			"kind": "road",
+			"main_tick_count": 14506,
+			"simulation_time": 725.2999999998881,
+			"source_camp_id": 46,
+			"tile": [
+				53,
+				22
+			],
+			"wall_seconds": 242.314886
+		},
+		{
+			"event": "wait_started",
+			"label": "forward_road minimum construction window",
+			"main_tick_count": 14506,
+			"simulation_deadline": 820.2999999998881,
+			"simulation_time": 725.2999999998881,
+			"wall_seconds": 242.314991
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward_road minimum construction window",
+			"main_tick_count": 16306,
+			"simulation_time": 815.2999999998062,
+			"wall_seconds": 272.233687
+		},
+		{
+			"event": "wait_started",
+			"label": "forward_road actual completion",
+			"main_tick_count": 16306,
+			"simulation_deadline": 935.2999999998062,
+			"simulation_time": 815.2999999998062,
+			"wall_seconds": 272.233837
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward_road actual completion",
+			"main_tick_count": 16306,
+			"simulation_time": 815.2999999998062,
+			"wall_seconds": 272.249317
+		},
+		{
+			"event": "forward_road_complete",
+			"main_tick_count": 16306,
+			"simulation_time": 815.2999999998062,
+			"wall_seconds": 272.249408
+		},
+		{
+			"costs": {
+				"materials": 50.0,
+				"supplies": 10.0
+			},
+			"event": "forward_camp_ordered",
+			"kind": "camp",
+			"main_tick_count": 16306,
+			"simulation_time": 815.2999999998062,
+			"source_camp_id": 46,
+			"tile": [
+				54,
+				23
+			],
+			"wall_seconds": 272.252398
+		},
+		{
+			"event": "wait_started",
+			"label": "forward_camp minimum construction window",
+			"main_tick_count": 16306,
+			"simulation_deadline": 910.2999999998062,
+			"simulation_time": 815.2999999998062,
+			"wall_seconds": 272.25248
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward_camp minimum construction window",
+			"main_tick_count": 18106,
+			"simulation_time": 905.2999999997244,
+			"wall_seconds": 302.247908
+		},
+		{
+			"event": "wait_started",
+			"label": "forward_camp actual completion",
+			"main_tick_count": 18106,
+			"simulation_deadline": 1025.2999999997244,
+			"simulation_time": 905.2999999997244,
+			"wall_seconds": 302.248085
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward_camp actual completion",
+			"main_tick_count": 18106,
+			"simulation_time": 905.2999999997244,
+			"wall_seconds": 302.263383
+		},
+		{
+			"event": "forward_camp_complete",
+			"main_tick_count": 18106,
+			"simulation_time": 905.2999999997244,
+			"wall_seconds": 302.26352
+		},
+		{
+			"event": "wait_started",
+			"label": "middle withdrawal carries an actual outbound parcel",
+			"main_tick_count": 18106,
+			"simulation_deadline": 1065.2999999997244,
+			"simulation_time": 905.2999999997244,
+			"wall_seconds": 302.270971
+		},
+		{
+			"event": "wait_complete",
+			"label": "middle withdrawal carries an actual outbound parcel",
+			"main_tick_count": 18234,
+			"simulation_time": 911.6999999997186,
+			"wall_seconds": 304.365533
+		},
+		{
+			"destination_id": 210,
+			"event": "loaded_middle_withdrawal",
+			"main_tick_count": 18234,
+			"origin_id": 46,
+			"simulation_time": 911.6999999997186,
+			"wall_seconds": 304.365692
+		},
+		{
+			"disk_schema_valid": true,
+			"event": "actual_disk_roundtrip",
+			"file_sha256": "d5e73af4e1c320795e61063996b642e9e131060b92afa74bddb4409447f98c67",
+			"full_simulation_equal": true,
+			"full_ui_equal": true,
+			"label": "loaded_middle_withdrawal",
+			"load_success": true,
+			"main_tick_count": 18234,
+			"read_only_guide_refreshed_before_save": true,
+			"simulation_sha256": "51dc623bfa435512e9340fce6622bbe65999dfc8110303681fd4c49e4207af86",
+			"simulation_time": 911.6999999997186,
+			"success": true,
+			"wall_seconds": 304.482114,
+			"write_success": true
+		},
+		{
+			"event": "wait_started",
+			"label": "three real middle deliveries and viable forward inventory",
+			"main_tick_count": 18235,
+			"simulation_deadline": 1271.7499999997185,
+			"simulation_time": 911.7499999997185,
+			"wall_seconds": 304.571513
+		},
+		{
+			"count": 1,
+			"destination": 210,
+			"event": "actual_delivery",
+			"main_tick_count": 18473,
+			"origin": 46,
+			"simulation_time": 923.6499999997077,
+			"wall_seconds": 308.388281
+		},
+		{
+			"count": 2,
+			"destination": 210,
+			"event": "actual_delivery",
+			"main_tick_count": 19055,
+			"origin": 46,
+			"simulation_time": 952.7499999996812,
+			"wall_seconds": 318.092327
+		},
+		{
+			"count": 3,
+			"destination": 210,
+			"event": "actual_delivery",
+			"main_tick_count": 19637,
+			"origin": 46,
+			"simulation_time": 981.8499999996548,
+			"wall_seconds": 327.796639
+		},
+		{
+			"count": 4,
+			"destination": 210,
+			"event": "actual_delivery",
+			"main_tick_count": 20219,
+			"origin": 46,
+			"simulation_time": 1010.9499999996283,
+			"wall_seconds": 337.501462
+		},
+		{
+			"event": "wait_complete",
+			"label": "three real middle deliveries and viable forward inventory",
+			"main_tick_count": 20219,
+			"simulation_time": 1010.9499999996283,
+			"wall_seconds": 337.513802
+		},
+		{
+			"event": "middle_deliberately_abandoned",
+			"main_tick_count": 20219,
+			"middle_deliveries": 4,
+			"simulation_time": 1010.9499999996283,
+			"stock_left": {
+				"crude": 84.00000000006355,
+				"fuel": 43.93655000001983,
+				"materials": 0.0,
+				"salvage": 0.0,
+				"supplies": 67.16000000000359
+			},
+			"wall_seconds": 337.533391
+		},
+		{
+			"event": "wait_started",
+			"label": "last loaded truck reaches forward camp",
+			"main_tick_count": 20219,
+			"simulation_deadline": 1080.9499999996283,
+			"simulation_time": 1010.9499999996283,
+			"wall_seconds": 337.533498
+		},
+		{
+			"event": "wait_complete",
+			"label": "last loaded truck reaches forward camp",
+			"main_tick_count": 20221,
+			"simulation_time": 1011.0499999996282,
+			"wall_seconds": 337.551926
+		},
+		{
+			"event": "wait_started",
+			"label": "forward arrival and relocation buffer",
+			"main_tick_count": 20221,
+			"simulation_deadline": 1051.0499999996282,
+			"simulation_time": 1011.0499999996282,
+			"wall_seconds": 337.552044
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward arrival and relocation buffer",
+			"main_tick_count": 20921,
+			"simulation_time": 1046.0499999995964,
+			"wall_seconds": 349.219187
+		},
+		{
+			"costs": {
+				"materials": 10.0
+			},
+			"event": "front_local_road_ordered",
+			"kind": "road",
+			"main_tick_count": 20921,
+			"simulation_time": 1046.0499999995964,
+			"source_camp_id": 210,
+			"tile": [
+				57,
+				23
+			],
+			"wall_seconds": 349.229494
+		},
+		{
+			"event": "wait_started",
+			"label": "front_local_road minimum construction window",
+			"main_tick_count": 20921,
+			"simulation_deadline": 1076.0499999995964,
+			"simulation_time": 1046.0499999995964,
+			"wall_seconds": 349.234894
+		},
+		{
+			"event": "wait_complete",
+			"label": "front_local_road minimum construction window",
+			"main_tick_count": 21421,
+			"simulation_time": 1071.0499999995736,
+			"wall_seconds": 357.539785
+		},
+		{
+			"event": "wait_started",
+			"label": "front_local_road actual completion",
+			"main_tick_count": 21421,
+			"simulation_deadline": 1191.0499999995736,
+			"simulation_time": 1071.0499999995736,
+			"wall_seconds": 357.539967
+		},
+		{
+			"event": "wait_complete",
+			"label": "front_local_road actual completion",
+			"main_tick_count": 21421,
+			"simulation_time": 1071.0499999995736,
+			"wall_seconds": 357.555508
+		},
+		{
+			"event": "front_local_road_complete",
+			"main_tick_count": 21421,
+			"simulation_time": 1071.0499999995736,
+			"wall_seconds": 357.555581
+		},
+		{
+			"costs": {
+				"fuel": 5.0,
+				"materials": 30.0
+			},
+			"event": "front_generator_ordered",
+			"kind": "generator",
+			"main_tick_count": 21421,
+			"simulation_time": 1071.0499999995736,
+			"source_camp_id": 210,
+			"tile": [
+				56,
+				21
+			],
+			"wall_seconds": 357.558143
+		},
+		{
+			"event": "wait_started",
+			"label": "front_generator minimum construction window",
+			"main_tick_count": 21421,
+			"simulation_deadline": 1106.0499999995736,
+			"simulation_time": 1071.0499999995736,
+			"wall_seconds": 357.558232
+		},
+		{
+			"event": "wait_complete",
+			"label": "front_generator minimum construction window",
+			"main_tick_count": 22021,
+			"simulation_time": 1101.0499999995463,
+			"wall_seconds": 367.544345
+		},
+		{
+			"event": "wait_started",
+			"label": "front_generator actual completion",
+			"main_tick_count": 22021,
+			"simulation_deadline": 1221.0499999995463,
+			"simulation_time": 1101.0499999995463,
+			"wall_seconds": 367.544511
+		},
+		{
+			"event": "wait_complete",
+			"label": "front_generator actual completion",
+			"main_tick_count": 22021,
+			"simulation_time": 1101.0499999995463,
+			"wall_seconds": 367.55982
+		},
+		{
+			"event": "front_generator_complete",
+			"main_tick_count": 22021,
+			"simulation_time": 1101.0499999995463,
+			"wall_seconds": 367.559873
+		},
+		{
+			"costs": {
+				"materials": 40.0
+			},
+			"event": "front_workshop_ordered",
+			"kind": "workshop",
+			"main_tick_count": 22021,
+			"simulation_time": 1101.0499999995463,
+			"source_camp_id": 210,
+			"tile": [
+				57,
+				25
+			],
+			"wall_seconds": 367.562214
+		},
+		{
+			"event": "wait_started",
+			"label": "front_workshop minimum construction window",
+			"main_tick_count": 22021,
+			"simulation_deadline": 1146.0499999995463,
+			"simulation_time": 1101.0499999995463,
+			"wall_seconds": 367.562309
+		},
+		{
+			"event": "wait_complete",
+			"label": "front_workshop minimum construction window",
+			"main_tick_count": 22821,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.867155
+		},
+		{
+			"event": "wait_started",
+			"label": "front_workshop actual completion",
+			"main_tick_count": 22821,
+			"simulation_deadline": 1261.04999999951,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.867312
+		},
+		{
+			"event": "wait_complete",
+			"label": "front_workshop actual completion",
+			"main_tick_count": 22821,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.881041
+		},
+		{
+			"event": "front_workshop_complete",
+			"main_tick_count": 22821,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.881148
+		},
+		{
+			"event": "wait_started",
+			"label": "forward workshop actually powered",
+			"main_tick_count": 22821,
+			"simulation_deadline": 1171.04999999951,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.8812
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward workshop actually powered",
+			"main_tick_count": 22821,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.88125
+		},
+		{
+			"camp_id": 210,
+			"event": "production_fuel",
+			"main_tick_count": 22821,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.881308
+		},
+		{
+			"event": "wait_started",
+			"label": "transported crude is refined into exit fuel reserve",
+			"main_tick_count": 22821,
+			"simulation_deadline": 1281.04999999951,
+			"simulation_time": 1141.04999999951,
+			"wall_seconds": 380.881349
+		},
+		{
+			"event": "wait_complete",
+			"label": "transported crude is refined into exit fuel reserve",
+			"main_tick_count": 23382,
+			"simulation_time": 1169.0999999994845,
+			"wall_seconds": 390.21583
+		},
+		{
+			"camp_id": 210,
+			"event": "production_supplies",
+			"main_tick_count": 23382,
+			"simulation_time": 1169.0999999994845,
+			"wall_seconds": 390.216014
+		},
+		{
+			"event": "wait_started",
+			"label": "forward workshop produces real exit rations",
+			"main_tick_count": 23382,
+			"simulation_deadline": 1319.0999999994845,
+			"simulation_time": 1169.0999999994845,
+			"wall_seconds": 390.231276
+		},
+		{
+			"event": "wait_complete",
+			"label": "forward workshop produces real exit rations",
+			"main_tick_count": 24597,
+			"simulation_time": 1229.8499999994292,
+			"wall_seconds": 410.47625
+		},
+		{
+			"camp_id": 210,
+			"event": "production_idle",
+			"main_tick_count": 24597,
+			"simulation_time": 1229.8499999994292,
+			"wall_seconds": 410.476428
+		},
+		{
+			"camp": {
+				"crude": 177.7674999999371,
+				"energy": 100.0,
+				"evac_target_id": 0.0,
+				"evac_truck_id": 0.0,
+				"fuel": 80.8515499999994,
+				"id": 210.0,
+				"last_shortage": -100.0,
+				"materials": 314.4400000000396,
+				"name": "前进营地 2",
+				"pack_progress": 0.0,
+				"pos": "(54.0, 23.0)",
+				"power": 8.0,
+				"power_capacity": 12.0,
+				"power_used": 4.0,
+				"priority": "production",
+				"recipe": "idle",
+				"recruit_queue": [],
+				"recruit_status": "idle",
+				"salvage": 39.56000000002394,
+				"state": "active",
+				"supplies": 80.03000000000564
+			},
+			"event": "forward_exit_reserves",
+			"main_tick_count": 24597,
+			"simulation_time": 1229.8499999994292,
+			"wall_seconds": 410.493884
+		},
+		{
+			"army_ids": [
+				6,
+				7,
+				8
+			],
+			"event": "clear_exit_approach",
+			"main_tick_count": 24597,
+			"simulation_time": 1229.8499999994292,
+			"target": [
+				68.0,
+				20.0
+			],
+			"wall_seconds": 410.497882
+		},
+		{
+			"event": "wait_started",
+			"label": "clear_exit_approach",
+			"main_tick_count": 24597,
+			"simulation_deadline": 1299.8499999994292,
+			"simulation_time": 1229.8499999994292,
+			"wall_seconds": 410.497976
+		},
+		{
+			"event": "wait_complete",
+			"label": "clear_exit_approach",
+			"main_tick_count": 25897,
+			"simulation_time": 1294.84999999937,
+			"wall_seconds": 432.136149
+		},
+		{
+			"costs": {
+				"materials": 26.0
+			},
+			"event": "exit_power_road_ordered",
+			"kind": "road",
+			"main_tick_count": 25897,
+			"simulation_time": 1294.84999999937,
+			"source_camp_id": 210,
+			"tile": [
+				68,
+				22
+			],
+			"wall_seconds": 432.150034
+		},
+		{
+			"event": "wait_started",
+			"label": "exit_power_road minimum construction window",
+			"main_tick_count": 25897,
+			"simulation_deadline": 1389.84999999937,
+			"simulation_time": 1294.84999999937,
+			"wall_seconds": 432.151602
+		},
+		{
+			"event": "wait_complete",
+			"label": "exit_power_road minimum construction window",
+			"main_tick_count": 27697,
+			"simulation_time": 1384.8499999992882,
+			"wall_seconds": 462.13516
+		},
+		{
+			"event": "wait_started",
+			"label": "exit_power_road actual completion",
+			"main_tick_count": 27697,
+			"simulation_deadline": 1504.8499999992882,
+			"simulation_time": 1384.8499999992882,
+			"wall_seconds": 462.135324
+		},
+		{
+			"event": "wait_complete",
+			"label": "exit_power_road actual completion",
+			"main_tick_count": 27697,
+			"simulation_time": 1384.8499999992882,
+			"wall_seconds": 462.150885
+		},
+		{
+			"event": "exit_power_road_complete",
+			"main_tick_count": 27697,
+			"simulation_time": 1384.8499999992882,
+			"wall_seconds": 462.150958
+		},
+		{
+			"costs": {
+				"fuel": 5.0,
+				"materials": 30.0
+			},
+			"event": "exit_local_generator_ordered",
+			"kind": "generator",
+			"main_tick_count": 27697,
+			"simulation_time": 1384.8499999992882,
+			"source_camp_id": 210,
+			"tile": [
+				68,
+				22
+			],
+			"wall_seconds": 462.153721
+		},
+		{
+			"event": "wait_started",
+			"label": "exit_local_generator minimum construction window",
+			"main_tick_count": 27697,
+			"simulation_deadline": 1434.8499999992882,
+			"simulation_time": 1384.8499999992882,
+			"wall_seconds": 462.153855
+		},
+		{
+			"event": "wait_complete",
+			"label": "exit_local_generator minimum construction window",
+			"main_tick_count": 28597,
+			"simulation_time": 1429.8499999992473,
+			"wall_seconds": 477.138556
+		},
+		{
+			"event": "wait_started",
+			"label": "exit_local_generator actual completion",
+			"main_tick_count": 28597,
+			"simulation_deadline": 1549.8499999992473,
+			"simulation_time": 1429.8499999992473,
+			"wall_seconds": 477.13872
+		},
+		{
+			"event": "wait_complete",
+			"label": "exit_local_generator actual completion",
+			"main_tick_count": 28597,
+			"simulation_time": 1429.8499999992473,
+			"wall_seconds": 477.138966
+		},
+		{
+			"event": "exit_local_generator_complete",
+			"main_tick_count": 28597,
+			"simulation_time": 1429.8499999992473,
+			"wall_seconds": 477.13901
+		},
+		{
+			"army_ids": [
+				6,
+				7,
+				8
+			],
+			"event": "capture_exit_site",
+			"main_tick_count": 28597,
+			"simulation_time": 1429.8499999992473,
+			"target": [
+				72.0,
+				19.0
+			],
+			"wall_seconds": 477.141706
+		},
+		{
+			"event": "wait_started",
+			"label": "capture_exit_site",
+			"main_tick_count": 28597,
+			"simulation_deadline": 1469.8499999992473,
+			"simulation_time": 1429.8499999992473,
+			"wall_seconds": 477.141771
+		},
+		{
+			"event": "wait_complete",
+			"label": "capture_exit_site",
+			"main_tick_count": 29297,
+			"simulation_time": 1464.8499999992155,
+			"wall_seconds": 488.834913
+		},
+		{
+			"costs": {
+				"materials": 12.0
+			},
+			"event": "exit_construction_road_ordered",
+			"kind": "road",
+			"main_tick_count": 29297,
+			"simulation_time": 1464.8499999992155,
+			"source_camp_id": 210,
+			"tile": [
+				72,
+				19
+			],
+			"wall_seconds": 488.8517
+		},
+		{
+			"event": "wait_started",
+			"label": "exit_construction_road minimum construction window",
+			"main_tick_count": 29297,
+			"simulation_deadline": 1529.8499999992155,
+			"simulation_time": 1464.8499999992155,
+			"wall_seconds": 488.851792
+		},
+		{
+			"event": "wait_complete",
+			"label": "exit_construction_road minimum construction window",
+			"main_tick_count": 30497,
+			"simulation_time": 1524.849999999161,
+			"wall_seconds": 508.802018
+		},
+		{
+			"event": "wait_started",
+			"label": "exit_construction_road actual completion",
+			"main_tick_count": 30497,
+			"simulation_deadline": 1644.849999999161,
+			"simulation_time": 1524.849999999161,
+			"wall_seconds": 508.802165
+		},
+		{
+			"event": "wait_complete",
+			"label": "exit_construction_road actual completion",
+			"main_tick_count": 30497,
+			"simulation_time": 1524.849999999161,
+			"wall_seconds": 508.817746
+		},
+		{
+			"event": "exit_construction_road_complete",
+			"main_tick_count": 30497,
+			"simulation_time": 1524.849999999161,
+			"wall_seconds": 508.817827
+		},
+		{
+			"event": "wait_started",
+			"label": "funded powered exit actually completes",
+			"main_tick_count": 30497,
+			"simulation_deadline": 1704.849999999161,
+			"simulation_time": 1524.849999999161,
+			"wall_seconds": 508.81793
+		},
+		{
+			"event": "wait_complete",
+			"label": "funded powered exit actually completes",
+			"main_tick_count": 31480,
+			"simulation_time": 1573.9999999991162,
+			"wall_seconds": 525.212075
+		},
+		{
+			"event": "exit_funded_and_complete",
+			"funded_job": {
+				"building_id": 19,
+				"costs": {
+					"fuel": 45.0,
+					"materials": 140.0,
+					"supplies": 30.0
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 286,
+				"source_camp_id": 210
+			},
+			"main_tick_count": 31480,
+			"simulation_time": 1573.9999999991162,
+			"wall_seconds": 525.215762
+		},
+		{
+			"event": "wait_started",
+			"label": "command truck and four survivors actually reach exit",
+			"main_tick_count": 31481,
+			"simulation_deadline": 1664.0499999991162,
+			"simulation_time": 1574.0499999991162,
+			"wall_seconds": 525.271559
+		},
+		{
+			"event": "wait_complete",
+			"label": "command truck and four survivors actually reach exit",
+			"main_tick_count": 31606,
+			"simulation_time": 1580.2999999991105,
+			"wall_seconds": 527.30132
+		},
+		{
+			"evacuated": 5,
+			"event": "actual_victory",
+			"main_tick_count": 31606,
+			"simulation_time": 1580.2999999991105,
+			"wall_seconds": 527.301477
+		}
+	],
+	"final": {
+		"evacuated": 5,
+		"exit_powered": true,
+		"exit_progress": 1.0,
+		"outcome": "victory",
+		"summary": {
+			"crude": 177.7674999999371,
+			"evacuated": 5,
+			"exit_progress": 1.0,
+			"fuel": 17.92905000001116,
+			"materials": 106.44000000003962,
+			"outcome": "victory",
+			"people": 7,
+			"phase": "evacuation",
+			"power": 14.0,
+			"power_capacity": 24.0,
+			"pursuit_eta": 536.5142857139401,
+			"salvage": 39.56000000002394,
+			"supplies": 20.21000000000559,
+			"time": 1580.2999999991105,
+			"zombies": 100
+		},
+		"truck_distance": 4.961505889892578,
+		"truck_state": "evacuated"
+	},
+	"gpu_adapter": "NVIDIA GeForce RTX 5060",
+	"main_loop": {
+		"fixed_step_seconds": 0.05,
+		"invalid_time_steps": 0,
+		"observed_frames": 26854,
+		"observed_sim_seconds": 1580.2999999991105,
+		"observed_ticks": 31606,
+		"raw_main_ticks": 31606,
+		"terminal_noop_ticks": 0
+	},
+	"max_fps": 0,
+	"native_export_proof": true,
+	"os": "Linux",
+	"prepare_only": false,
+	"recorded_utc": "2026-10-31 04:00:52Z",
+	"rendering_method": "gl_compatibility",
+	"route": {
+		"abandoned_stock": {
+			"crude": 84.00000000006355,
+			"fuel": 43.93655000001983,
+			"materials": 0.0,
+			"salvage": 0.0,
+			"supplies": 67.16000000000359
+		},
+		"actual_camp_count": 3,
+		"both_resource_sites_captured": true,
+		"deliberate_abandonment": true,
+		"evacuated": 5,
+		"exit_powered_at_victory": true,
+		"final_summary": {
+			"crude": 177.7674999999371,
+			"evacuated": 5,
+			"exit_progress": 1.0,
+			"fuel": 17.92905000001116,
+			"materials": 106.44000000003962,
+			"outcome": "victory",
+			"people": 7,
+			"phase": "evacuation",
+			"power": 14.0,
+			"power_capacity": 24.0,
+			"pursuit_eta": 536.5142857139401,
+			"salvage": 39.56000000002394,
+			"supplies": 20.21000000000559,
+			"time": 1580.2999999991105,
+			"zombies": 100
+		},
+		"funded_exit_job": {
+			"building_id": 19,
+			"costs": {
+				"fuel": 45.0,
+				"materials": 140.0,
+				"supplies": 30.0
+			},
+			"delivered": true,
+			"done": true,
+			"funded": true,
+			"id": 286,
+			"source_camp_id": 210
+		},
+		"home_deliveries": 3,
+		"loaded_withdrawal_reloaded": true,
+		"middle_deliveries": 4,
+		"milestones": [
+			{
+				"camp_id": 1,
+				"label": "production_materials",
+				"simulation_time": 0.0
+			},
+			{
+				"home_id": 1,
+				"label": "opening",
+				"simulation_time": 0.0
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_highway",
+				"simulation_time": 0.05,
+				"target": [
+					25.0,
+					20.0
+				]
+			},
+			{
+				"label": "highway_captured",
+				"simulation_time": 40.04999999999986
+			},
+			{
+				"costs": {
+					"materials": 16.0
+				},
+				"kind": "road",
+				"label": "home_to_middle_road_ordered",
+				"simulation_time": 40.04999999999986,
+				"source_camp_id": 1,
+				"tile": [
+					26,
+					21
+				]
+			},
+			{
+				"label": "home_to_middle_road_complete",
+				"simulation_time": 80.0499999999976
+			},
+			{
+				"costs": {
+					"materials": 50.0,
+					"supplies": 10.0
+				},
+				"kind": "camp",
+				"label": "middle_camp_ordered",
+				"simulation_time": 80.0499999999976,
+				"source_camp_id": 1,
+				"tile": [
+					26,
+					23
+				]
+			},
+			{
+				"label": "middle_camp_complete",
+				"simulation_time": 125.04999999999504
+			},
+			{
+				"home_deliveries": 3,
+				"label": "home_evacuated_and_west_sealed",
+				"simulation_time": 200.15000000001126
+			},
+			{
+				"costs": {
+					"materials": 12.0
+				},
+				"kind": "road",
+				"label": "middle_local_road_ordered",
+				"simulation_time": 200.15000000001126,
+				"source_camp_id": 46,
+				"tile": [
+					29,
+					24
+				]
+			},
+			{
+				"label": "middle_local_road_complete",
+				"simulation_time": 230.15000000001808
+			},
+			{
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"label": "middle_generator_ordered",
+				"simulation_time": 230.15000000001808,
+				"source_camp_id": 46,
+				"tile": [
+					28,
+					22
+				]
+			},
+			{
+				"label": "middle_generator_complete",
+				"simulation_time": 260.1500000000249
+			},
+			{
+				"costs": {
+					"materials": 40.0
+				},
+				"kind": "workshop",
+				"label": "middle_workshop_ordered",
+				"simulation_time": 260.1500000000249,
+				"source_camp_id": 46,
+				"tile": [
+					30,
+					24
+				]
+			},
+			{
+				"label": "middle_workshop_complete",
+				"simulation_time": 295.15000000003283
+			},
+			{
+				"costs": {
+					"materials": 35.0,
+					"supplies": 5.0
+				},
+				"kind": "tower",
+				"label": "middle_defense_ordered",
+				"simulation_time": 295.15000000003283,
+				"source_camp_id": 46,
+				"tile": [
+					25,
+					20
+				]
+			},
+			{
+				"label": "middle_defense_complete",
+				"simulation_time": 325.15000000003965
+			},
+			{
+				"camp_id": 46,
+				"label": "production_materials",
+				"simulation_time": 325.15000000003965
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_materials_branch",
+				"simulation_time": 325.20000000003967,
+				"target": [
+					35.0,
+					10.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 34.0
+				},
+				"kind": "road",
+				"label": "quarry_road_ordered",
+				"simulation_time": 375.20000000005103,
+				"source_camp_id": 46,
+				"tile": [
+					35,
+					10
+				]
+			},
+			{
+				"label": "quarry_road_complete",
+				"simulation_time": 445.20000000006695
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_fuel_branch",
+				"simulation_time": 445.20000000006695,
+				"target": [
+					35.0,
+					31.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 26.0
+				},
+				"kind": "road",
+				"label": "fuel_road_ordered",
+				"simulation_time": 495.30000000007834,
+				"source_camp_id": 46,
+				"tile": [
+					35,
+					31
+				]
+			},
+			{
+				"label": "fuel_road_complete",
+				"simulation_time": 565.3000000000336
+			},
+			{
+				"label": "both_resource_branches_connected",
+				"simulation_time": 665.2999999999427
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_forward_cache",
+				"simulation_time": 665.2999999999427,
+				"target": [
+					53.0,
+					21.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 38.0
+				},
+				"kind": "road",
+				"label": "forward_road_ordered",
+				"simulation_time": 725.2999999998881,
+				"source_camp_id": 46,
+				"tile": [
+					53,
+					22
+				]
+			},
+			{
+				"label": "forward_road_complete",
+				"simulation_time": 815.2999999998062
+			},
+			{
+				"costs": {
+					"materials": 50.0,
+					"supplies": 10.0
+				},
+				"kind": "camp",
+				"label": "forward_camp_ordered",
+				"simulation_time": 815.2999999998062,
+				"source_camp_id": 46,
+				"tile": [
+					54,
+					23
+				]
+			},
+			{
+				"label": "forward_camp_complete",
+				"simulation_time": 905.2999999997244
+			},
+			{
+				"destination_id": 210,
+				"label": "loaded_middle_withdrawal",
+				"origin_id": 46,
+				"simulation_time": 911.6999999997186
+			},
+			{
+				"label": "middle_deliberately_abandoned",
+				"middle_deliveries": 4,
+				"simulation_time": 1010.9499999996283,
+				"stock_left": {
+					"crude": 84.00000000006355,
+					"fuel": 43.93655000001983,
+					"materials": 0.0,
+					"salvage": 0.0,
+					"supplies": 67.16000000000359
+				}
+			},
+			{
+				"costs": {
+					"materials": 10.0
+				},
+				"kind": "road",
+				"label": "front_local_road_ordered",
+				"simulation_time": 1046.0499999995964,
+				"source_camp_id": 210,
+				"tile": [
+					57,
+					23
+				]
+			},
+			{
+				"label": "front_local_road_complete",
+				"simulation_time": 1071.0499999995736
+			},
+			{
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"label": "front_generator_ordered",
+				"simulation_time": 1071.0499999995736,
+				"source_camp_id": 210,
+				"tile": [
+					56,
+					21
+				]
+			},
+			{
+				"label": "front_generator_complete",
+				"simulation_time": 1101.0499999995463
+			},
+			{
+				"costs": {
+					"materials": 40.0
+				},
+				"kind": "workshop",
+				"label": "front_workshop_ordered",
+				"simulation_time": 1101.0499999995463,
+				"source_camp_id": 210,
+				"tile": [
+					57,
+					25
+				]
+			},
+			{
+				"label": "front_workshop_complete",
+				"simulation_time": 1141.04999999951
+			},
+			{
+				"camp_id": 210,
+				"label": "production_fuel",
+				"simulation_time": 1141.04999999951
+			},
+			{
+				"camp_id": 210,
+				"label": "production_supplies",
+				"simulation_time": 1169.0999999994845
+			},
+			{
+				"camp_id": 210,
+				"label": "production_idle",
+				"simulation_time": 1229.8499999994292
+			},
+			{
+				"camp": {
+					"crude": 177.7674999999371,
+					"energy": 100.0,
+					"evac_target_id": 0.0,
+					"evac_truck_id": 0.0,
+					"fuel": 80.8515499999994,
+					"id": 210.0,
+					"last_shortage": -100.0,
+					"materials": 314.4400000000396,
+					"name": "前进营地 2",
+					"pack_progress": 0.0,
+					"pos": "(54.0, 23.0)",
+					"power": 8.0,
+					"power_capacity": 12.0,
+					"power_used": 4.0,
+					"priority": "production",
+					"recipe": "idle",
+					"recruit_queue": [],
+					"recruit_status": "idle",
+					"salvage": 39.56000000002394,
+					"state": "active",
+					"supplies": 80.03000000000564
+				},
+				"label": "forward_exit_reserves",
+				"simulation_time": 1229.8499999994292
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_exit_approach",
+				"simulation_time": 1229.8499999994292,
+				"target": [
+					68.0,
+					20.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 26.0
+				},
+				"kind": "road",
+				"label": "exit_power_road_ordered",
+				"simulation_time": 1294.84999999937,
+				"source_camp_id": 210,
+				"tile": [
+					68,
+					22
+				]
+			},
+			{
+				"label": "exit_power_road_complete",
+				"simulation_time": 1384.8499999992882
+			},
+			{
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"label": "exit_local_generator_ordered",
+				"simulation_time": 1384.8499999992882,
+				"source_camp_id": 210,
+				"tile": [
+					68,
+					22
+				]
+			},
+			{
+				"label": "exit_local_generator_complete",
+				"simulation_time": 1429.8499999992473
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "capture_exit_site",
+				"simulation_time": 1429.8499999992473,
+				"target": [
+					72.0,
+					19.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 12.0
+				},
+				"kind": "road",
+				"label": "exit_construction_road_ordered",
+				"simulation_time": 1464.8499999992155,
+				"source_camp_id": 210,
+				"tile": [
+					72,
+					19
+				]
+			},
+			{
+				"label": "exit_construction_road_complete",
+				"simulation_time": 1524.849999999161
+			},
+			{
+				"funded_job": {
+					"building_id": 19,
+					"costs": {
+						"fuel": 45.0,
+						"materials": 140.0,
+						"supplies": 30.0
+					},
+					"delivered": true,
+					"done": true,
+					"funded": true,
+					"id": 286,
+					"source_camp_id": 210
+				},
+				"label": "exit_funded_and_complete",
+				"simulation_time": 1573.9999999991162
+			},
+			{
+				"evacuated": 5,
+				"label": "actual_victory",
+				"simulation_time": 1580.2999999991105
+			}
+		],
+		"mission_id": "canyon",
+		"simulated_seconds": 1580.2999999991105,
+		"success": true,
+		"west_gate_was_sealed": true
+	},
+	"runtime": {
+		"build": "official",
+		"hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+		"hex": 263938,
+		"major": 4,
+		"minor": 7,
+		"patch": 2,
+		"status": "stable",
+		"string": "4.7.2-stable (official)",
+		"timestamp": 0
+	},
+	"save_reload": {
+		"disk_schema_valid": true,
+		"file_sha256": "d5e73af4e1c320795e61063996b642e9e131060b92afa74bddb4409447f98c67",
+		"full_simulation_equal": true,
+		"full_ui_equal": true,
+		"label": "loaded_middle_withdrawal",
+		"load_success": true,
+		"read_only_guide_refreshed_before_save": true,
+		"simulation_sha256": "51dc623bfa435512e9340fce6622bbe65999dfc8110303681fd4c49e4207af86",
+		"simulation_time": 911.6999999997186,
+		"success": true,
+		"write_success": true
+	},
+	"schema_version": 1,
+	"scope": "Public-command automated Canyon route through actual Main20Hz fixed simulation, renderer and file save/load. No direct simulation step/state injection; standard3x UI speed. Not physical-mouse, human-playability, Windows, clean-machine or FPS evidence.",
+	"sources_after": {
+		"res://assets/audio/canyon_ambient.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_build.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_confirm.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_impact.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_loot.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_reject.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_shot_a.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_shot_b.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_warning.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/buildings-atlas.png": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/fonts/NotoSansCJK-Regular.ttc": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://main.tscn": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://project.godot": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/actor_atlas.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/actor_canvas.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_catalog.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_guide.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_save_store.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_simulation.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/cartoon_canvas.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/construction_rules.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/decoration_cache.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/diagnostics/campaign_route.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/diagnostics/campaign_runner.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/diagnostics/render_runner.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/game_audio.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/hud.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/main.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/recruitment_rules.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/render_motion.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/terrain_cache.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/world_view.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		}
+	},
+	"sources_before": {
+		"res://assets/audio/canyon_ambient.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_build.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_confirm.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_impact.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_loot.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_reject.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_shot_a.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_shot_b.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/audio/sfx_warning.wav": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/buildings-atlas.png": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://assets/fonts/NotoSansCJK-Regular.ttc": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://main.tscn": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://project.godot": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/actor_atlas.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/actor_canvas.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_catalog.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_guide.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_save_store.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/campaign_simulation.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/cartoon_canvas.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/construction_rules.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/decoration_cache.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/diagnostics/campaign_route.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/diagnostics/campaign_runner.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/diagnostics/render_runner.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/game_audio.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/hud.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/main.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/recruitment_rules.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/render_motion.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/terrain_cache.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		},
+		"res://scripts/world_view.gd": {
+			"sha256": null,
+			"status": "compiled/imported"
+		}
+	},
+	"sources_changed": false,
+	"startup_focus": {
+		"elapsed_ms": 250.418,
+		"ready": true,
+		"required_stable_frames": 12,
+		"samples": [
+			{
+				"focused": true,
+				"frame": 0,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 1,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 2,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 3,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 4,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 5,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 6,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 7,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 8,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 9,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 10,
+				"suspended": false
+			},
+			{
+				"focused": true,
+				"frame": 11,
+				"suspended": false
+			}
+		],
+		"stable_frames": 12
+	},
+	"time_scale": 1.0,
+	"user_data_dir": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full-corrected/data/godot/app_userdata/逐营突围 · Outpost Exodus",
+	"wall_elapsed_seconds": 527.600095
+}

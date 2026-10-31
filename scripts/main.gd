@@ -187,6 +187,7 @@ func _process(delta: float) -> void:
 	feedback_left = maxf(0.0, feedback_left - delta)
 	if is_instance_valid(game_audio):
 		game_audio.set_gameplay_active(started and menu.is_empty() and not _window_suspended and not sim.paused and sim.outcome == "playing", sim)
+	var terminal_guide_refresh: bool = false
 	if started and menu.is_empty() and not _window_suspended:
 		_move_camera(delta)
 		accumulator += minf(delta, 0.2) * speed
@@ -205,10 +206,11 @@ func _process(delta: float) -> void:
 			save_campaign(false)
 		if sim.outcome != "playing":
 			menu = sim.outcome
+			terminal_guide_refresh = true
 	world.motion.prepare_frame(sim, accumulator, started and menu.is_empty() and not _window_suspended and not sim.paused and sim.outcome == "playing")
 	selected_ids = selected_ids.filter(func(id: int) -> bool: return not sim.get_unit(id).is_empty() and float(sim.get_unit(id).get("hp", 0.0)) > 0.0)
 	guide_clock += delta
-	if started and guide_clock >= 0.25:
+	if started and (terminal_guide_refresh or guide_clock >= 0.25):
 		guide_clock = 0.0
 		guide.update(sim, selected_ids, selected_camp)
 		if feedback_left <= 0.0 and not sim.messages.is_empty() and String(sim.messages.back()) != last_sim_message:

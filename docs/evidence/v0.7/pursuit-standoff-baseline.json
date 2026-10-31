@@ -1,0 +1,59 @@
+{
+	"actual_snapshot_sha256": "e82ca40c5f4c2fd11c6b714950efcef1aa87e7edb899e0dbf69b127ff3dc8cd2",
+	"original_count": 91,
+	"outcome": "playing",
+	"records": [
+		{
+			"barrier_hp": 4848.400000000702,
+			"furthest_original_x": 17.584890365600586,
+			"original_moved": 6,
+			"original_sieging": 7,
+			"original_with_paths": 6,
+			"time": 917.7999999997129
+		},
+		{
+			"barrier_hp": 4782.400000000745,
+			"furthest_original_x": 19.463895797729492,
+			"original_moved": 5,
+			"original_sieging": 7,
+			"original_with_paths": 5,
+			"time": 923.7999999997074
+		},
+		{
+			"barrier_hp": 4668.400000000789,
+			"furthest_original_x": 19.7756290435791,
+			"original_moved": 3,
+			"original_sieging": 10,
+			"original_with_paths": 3,
+			"time": 929.799999999702
+		},
+		{
+			"barrier_hp": 4548.400000000833,
+			"furthest_original_x": 19.877933502197266,
+			"original_moved": 1,
+			"original_sieging": 8,
+			"original_with_paths": 1,
+			"time": 935.7999999996965
+		},
+		{
+			"barrier_hp": 4434.400000000876,
+			"furthest_original_x": 19.903358459472656,
+			"original_moved": 1,
+			"original_sieging": 8,
+			"original_with_paths": 1,
+			"time": 941.7999999996911
+		},
+		{
+			"barrier_hp": 4284.40000000092,
+			"furthest_original_x": 19.941471099853516,
+			"original_moved": 1,
+			"original_sieging": 8,
+			"original_with_paths": 1,
+			"time": 947.7999999996856
+		}
+	],
+	"source": "res://work/pursuit-standoff-baseline.gd",
+	"source_sha256": "1e381e2fa0031c9ba67920caa1cbb5252eaf23052f827d99b9f9152e555851f7",
+	"start_barrier_hp": 4920.400000000658,
+	"start_time": 911.8
+}

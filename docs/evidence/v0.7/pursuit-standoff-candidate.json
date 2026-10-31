@@ -1,0 +1,59 @@
+{
+	"actual_snapshot_sha256": "e82ca40c5f4c2fd11c6b714950efcef1aa87e7edb899e0dbf69b127ff3dc8cd2",
+	"original_count": 91,
+	"outcome": "playing",
+	"records": [
+		{
+			"barrier_hp": 4848.400000000702,
+			"furthest_original_x": 17.533010482788086,
+			"original_moved": 79,
+			"original_sieging": 7,
+			"original_with_paths": 91,
+			"time": 917.7999999997129
+		},
+		{
+			"barrier_hp": 4776.400000000745,
+			"furthest_original_x": 19.655227661132813,
+			"original_moved": 90,
+			"original_sieging": 8,
+			"original_with_paths": 90,
+			"time": 923.7999999997074
+		},
+		{
+			"barrier_hp": 4632.400000000789,
+			"furthest_original_x": 20.219039916992188,
+			"original_moved": 90,
+			"original_sieging": 10,
+			"original_with_paths": 90,
+			"time": 929.799999999702
+		},
+		{
+			"barrier_hp": 4458.400000000833,
+			"furthest_original_x": 20.219478607177734,
+			"original_moved": 87,
+			"original_sieging": 10,
+			"original_with_paths": 87,
+			"time": 935.7999999996965
+		},
+		{
+			"barrier_hp": 4296.400000000876,
+			"furthest_original_x": 20.219478607177734,
+			"original_moved": 84,
+			"original_sieging": 8,
+			"original_with_paths": 84,
+			"time": 941.7999999996911
+		},
+		{
+			"barrier_hp": 4128.40000000092,
+			"furthest_original_x": 20.219478607177734,
+			"original_moved": 81,
+			"original_sieging": 7,
+			"original_with_paths": 81,
+			"time": 947.7999999996856
+		}
+	],
+	"source": "res://scripts/campaign_simulation.gd",
+	"source_sha256": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2",
+	"start_barrier_hp": 4920.400000000658,
+	"start_time": 911.8
+}

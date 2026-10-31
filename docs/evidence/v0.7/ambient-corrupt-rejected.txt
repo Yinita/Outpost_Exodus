@@ -1,0 +1,1 @@
+MISMATCH /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/font-audio-provenance/ambient-generator-89qxlxkv/corrupt.wav; expected_sha256=4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769; actual_sha256=cdf8727322f643dffe4fbbccbe48ab4f5941053603e027b6bde42f95df91677c; no files written

@@ -1,0 +1,69 @@
+from pathlib import Path
+import hashlib
+import importlib.util
+import io
+import json
+import subprocess
+import sys
+import tempfile
+import wave
+
+root = Path.cwd()
+out = root / 'work/font-audio-provenance'
+target = root / 'assets/audio/canyon_ambient.wav'
+font = root / 'assets/fonts/NotoSansCJK-Regular.ttc'
+expected_sha = '4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769'
+
+def fingerprint(path):
+    stat = path.stat()
+    return {'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+            'bytes': stat.st_size, 'mtime_ns': stat.st_mtime_ns, 'inode': stat.st_ino}
+
+before = fingerprint(target)
+font_before = fingerprint(font)
+spec = importlib.util.spec_from_file_location('ambient_generator', root / 'tools/generate_audio.py')
+module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(module)
+assert fingerprint(target) == before
+rendered = module.render_wav()
+assert hashlib.sha256(rendered).hexdigest() == expected_sha
+assert rendered == target.read_bytes()
+assert module.render_wav() == rendered
+with wave.open(io.BytesIO(rendered), 'rb') as wav:
+    assert (wav.getnchannels(),wav.getsampwidth(),wav.getframerate(),wav.getnframes()) == (1,2,22050,529200)
+    assert wav.readframes(wav.getnframes()) == module.synthesize_pcm()
+results = []
+
+def run(label, arguments, expected):
+    p = subprocess.run([sys.executable, 'tools/generate_audio.py', *arguments],
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=30)
+    (out / (label + '.log')).write_text(p.stdout)
+    assert p.returncode == expected, (label,p.returncode,p.stdout)
+    results.append({'case':label,'exit_code':p.returncode,'stdout':p.stdout.strip()})
+
+run('ambient-check-final', ['--check'], 0)
+assert fingerprint(target) == before
+with tempfile.TemporaryDirectory(prefix='ambient-generator-', dir=out) as temporary:
+    temporary = Path(temporary)
+    missing = temporary / 'missing-parent/missing.wav'
+    run('ambient-missing-check', ['--check','--output',str(missing)], 1)
+    assert not missing.exists() and not missing.parent.exists()
+    corrupt = temporary / 'corrupt.wav'
+    content = bytearray(rendered); content[-1] ^= 1
+    corrupt.write_bytes(content)
+    corrupt_before = fingerprint(corrupt)
+    run('ambient-corrupt-check', ['--check','--output',str(corrupt)], 1)
+    assert fingerprint(corrupt) == corrupt_before
+    generated = temporary / 'new-parent/generated.wav'
+    run('ambient-generate-temporary', ['--output',str(generated)], 0)
+    assert generated.read_bytes() == rendered
+    assert (out / 'ambient-generate-temporary.log').read_text().strip() == 'generated.wav 529200 samples'
+assert fingerprint(target) == before
+assert fingerprint(font) == font_before
+summary = {'success':True,'scope':'No playback or shipping asset writes. In-memory reproduction, actual CLI check success/failure, temporary output generation and import safety. Explicit LE encoding inspected; no big-endian hardware run or human listening claim.',
+           'canonical_asset_before':before,'canonical_asset_after':fingerprint(target),
+           'font_before':font_before,'font_after':fingerprint(font),
+           'wav':{'frames':529200,'duration_seconds':24,'rate':22050,'channels':1,'sample_width':2,'sha256':expected_sha},
+           'repeat_render_identical':True,'import_did_not_write':True,'cases':results}
+(out / 'generator-verification.json').write_text(json.dumps(summary,indent=2)+'\n')
+print(json.dumps({'success':True,'cases':len(results),'wav_sha256':expected_sha,'asset_metadata_unchanged':True}))

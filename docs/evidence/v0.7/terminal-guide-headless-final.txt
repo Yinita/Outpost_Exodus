@@ -1,0 +1,6 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+TERMINAL_FIXTURE outcome=victory time=1587.750 last_step=0.05
+TERMINAL_FIXTURE outcome=defeat time=1624.500 last_step=0.05
+TERMINAL_GUIDE_SOURCE simulation_before=329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2 simulation_after=329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2 main_before=889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0 main_after=889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0
+Terminal guide checks: 76; failures: 0; display=headless
