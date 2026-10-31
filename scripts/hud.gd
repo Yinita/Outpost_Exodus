@@ -328,8 +328,8 @@ func _draw_menu(screen: Vector2) -> void:
 	var subtitle: String = "向前建设，向后撤守。选择路线，把幸存者带到出口。"
 	if main.menu == "victory": subtitle = "突围成功 · 指挥车与 %d 名幸存者抵达出口。" % main.sim.evacuated
 	elif main.menu == "defeat": subtitle = String(main.sim.messages.back()) if not main.sim.messages.is_empty() else "战役失败，可读取存档或重新开始。"
-	elif main.menu == "pause": subtitle = "战役已暂停 · 调整计划后继续推进。"
-	_text(panel.position + Vector2(48, 176), subtitle, 18, MUTED)
+	elif main.menu == "pause": subtitle = String(main.menu_notice) if not main.menu_notice.is_empty() else "战役已暂停 · 调整计划后继续推进。"
+	_text(panel.position + Vector2(48, 176), subtitle, 18, GOLD if main.menu == "pause" and not main.menu_notice.is_empty() else MUTED, panel.size.x - 96)
 	var chosen: Dictionary = Catalog.mission(String(main.selected_mission_id))
 	var primary: Array = ["继续战役", "resume"] if main.menu == "pause" else ["开始「%s」" % String(chosen.get("name", "战役")) if main.menu == "title" else "重新开始战役", "new"]
 	_button(Rect2(panel.position + Vector2(48, 211), Vector2(panel.size.x - 96, 46)), primary[0], primary[1], "")

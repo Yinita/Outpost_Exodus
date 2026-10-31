@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FOCUS_BASELINE {"dragging":true,"menu":"","pan_active":true,"sim_time_after":0.1,"sim_time_before":0.0,"world_audio_active":true}
+TITLE_BASELINE {"auto_target_is_directory":true,"menu":"title","started":false,"unsaved_time":0.1}
+TITLE_NEW_BASELINE {"menu":"","previous_unsaved_time":0.1,"sim_time":0.0,"started":true}

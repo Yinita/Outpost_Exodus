@@ -5,6 +5,7 @@ extends "res://scripts/actor_canvas.gd"
 const DecorationCache = preload("res://scripts/decoration_cache.gd")
 const ActorAtlas = preload("res://scripts/actor_atlas.gd")
 const TerrainCache = preload("res://scripts/terrain_cache.gd")
+const RenderMotion = preload("res://scripts/render_motion.gd")
 
 const BUILDING_ATLAS_PATH: String = "res://assets/buildings-atlas.png"
 const BUILDING_REGIONS: Dictionary = {
@@ -46,6 +47,15 @@ var _actor_viewport: SubViewport
 var _terrain_viewport: SubViewport
 var _terrain_surface: Node2D
 var _terrain_signature: int = -1
+var motion: RefCounted = RenderMotion.new()
+
+
+func render_unit_position(unit: Dictionary) -> Vector2:
+	return motion.position(unit)
+
+
+func render_time() -> float:
+	return motion.time(sim)
 
 
 func _ready() -> void:
@@ -155,7 +165,7 @@ func _draw() -> void:
 	var units: Array = sim.units
 	for value: Variant in units:
 		var unit: Dictionary = value
-		var draw_position: Vector2 = unit.get("pos", Vector2.ZERO)
+		var draw_position: Vector2 = render_unit_position(unit)
 		if _position_visible(draw_position, bounds, 2):
 			draw_items.append({"entity": unit, "kind": "unit", "y": draw_position.y})
 	draw_items.sort_custom(_sort_draw_items)
@@ -395,7 +405,7 @@ func _draw_logistics() -> void:
 		var path: Array = path_value
 		if path.is_empty():
 			continue
-		var points: PackedVector2Array = PackedVector2Array([tile_to_world(unit.get("pos", Vector2.ZERO))])
+		var points: PackedVector2Array = PackedVector2Array([tile_to_world(render_unit_position(unit))])
 		for point_value: Variant in path:
 			if point_value is Vector2 or point_value is Vector2i:
 				points.append(tile_to_world(Vector2(point_value)))
@@ -537,7 +547,7 @@ func _draw_building_sprite(kind: String, powered: bool, abandoned: bool, progres
 		var units: Array = sim.units
 		for value: Variant in units:
 			var unit: Dictionary = value
-			if selected_ids.has(int(unit.get("id", -1))) and footprint.has_point(tile_to_world(unit.get("pos", Vector2.ZERO))):
+			if selected_ids.has(int(unit.get("id", -1))) and footprint.has_point(tile_to_world(render_unit_position(unit))):
 				tint.a *= 0.60
 				break
 	draw_texture_rect_region(building_atlas, destination, source, tint)
@@ -747,7 +757,7 @@ func _draw_scaffolding(progress: float, visual_size: Vector2) -> void:
 
 
 func _draw_unit(unit: Dictionary) -> void:
-	var draw_position: Vector2 = unit.get("pos", Vector2.ZERO)
+	var draw_position: Vector2 = render_unit_position(unit)
 	var p: Vector2 = tile_to_world(draw_position)
 	var kind: String = String(unit.get("kind", "rifle"))
 	var team: String = String(unit.get("team", "friendly"))
@@ -755,18 +765,19 @@ func _draw_unit(unit: Dictionary) -> void:
 	var target: Vector2 = unit.get("target", draw_position)
 	var id_value: int = int(unit.get("id", 0))
 	var moving: bool = draw_position.distance_squared_to(target) > 0.05 and String(unit.get("state", "idle")) != "idle"
-	var bob: float = sin(float(sim.time) * (13.0 if kind == "runner" else 8.0) + float(id_value)) * 1.5 if moving else 0.0
+	var actor_time: float = render_time()
+	var bob: float = sin(actor_time * (13.0 if kind == "runner" else 8.0) + float(id_value)) * 1.5 if moving else 0.0
 	var facing: float = -1.0 if target.x < draw_position.x - 0.05 else 1.0
 	if team == "enemy" and absf(target.x - draw_position.x) < 0.05:
 		facing = -1.0
 	_draw_actor_overlays(p, kind, selected)
 	draw_set_transform(p + Vector2(0.0, bob), 0.0, Vector2(facing, 1.0))
 	var carrying: bool = _cargo_amount(unit.get("cargo", unit.get("cargo_amount", 0.0))) > 0.0
-	var region: Rect2 = ActorAtlas.region(kind, moving, carrying, ActorAtlas.frame(kind, moving, float(sim.time), id_value))
+	var region: Rect2 = ActorAtlas.region(kind, moving, carrying, ActorAtlas.frame(kind, moving, actor_time, id_value))
 	if cache_actors and _actor_viewport != null and region.has_area():
 		draw_texture_rect_region(_actor_viewport.get_texture(), ActorAtlas.destination(), region)
 	else:
-		_actor_time = float(sim.time)
+		_actor_time = actor_time
 		if kind == "truck":
 			_draw_truck(unit)
 		elif team == "enemy":

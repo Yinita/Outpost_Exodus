@@ -1,0 +1,18 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+PASS _test_native_focus_loss
+PASS _test_tactical_pause_and_menus
+PASS _test_native_minimize
+PASS _test_failed_title_save
+Focus/title recovery checks: 62; failures: 10; native exits=3 enters=2
+ - native second window generates real main-window focus exit
+ - focus loss suspends running campaign behind visible pause menu
+ - focus exit cancels held mouse gestures immediately
+ - focus releases camera action without changing any key mappings
+ - focus exit retires world sound immediately
+ - background frame advances neither simulation nor autosave clock
+ - held key cannot move camera in background
+ - background keys and world mouse cannot resume, save, alter orders or consume the pause notice
+ - returning focus does not resume combat automatically
+ - explicit Continue resumes actual simulation without phantom held camera movement

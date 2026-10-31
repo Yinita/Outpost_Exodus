@@ -1,0 +1,33 @@
+extends SceneTree
+const Sim = preload("res://scripts/campaign_simulation.gd")
+const Motion = preload("res://scripts/render_motion.gd")
+func _initialize() -> void:
+ var s = Sim.new()
+ var twin = Sim.new()
+ s.reset(42)
+ twin.reset(42)
+ var m = Motion.new()
+ m.reset(s)
+ var u: Dictionary = s.units[0]
+ s.command_move([int(u.id)], Vector2(18,22), false)
+ twin.command_move([int(u.id)], Vector2(18,22), false)
+ var saw_motion := false
+ for step: int in range(20):
+  var before: Vector2 = u.pos
+  m.before_step(s)
+  s.tick(0.05)
+  m.after_step(s)
+  twin.tick(0.05)
+  var after: Vector2 = u.pos
+  saw_motion = saw_motion or not before.is_equal_approx(after)
+  m.prepare_frame(s,0.025,true)
+  assert(m.position(u).is_equal_approx(before.lerp(after,0.5)))
+  assert(JSON.stringify(s.save_state()) == JSON.stringify(twin.save_state()))
+ assert(saw_motion)
+ m.prepare_frame(s,0.025,false)
+ assert(m.position(u) == u.pos)
+ s.reset(42,"ridge")
+ m.prepare_frame(s,0.025,true)
+ assert(m.position(s.units[0]) == s.units[0].pos)
+ print("MOTION_REVIEW_PROBE_OK 20realsteps read-only midpoint pause+missionreset")
+ quit()

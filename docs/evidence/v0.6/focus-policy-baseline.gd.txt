@@ -1,0 +1,32 @@
+extends SceneTree
+func _initialize() -> void:
+	call_deferred("_run")
+func _run() -> void:
+	var app: Node = load("res://scripts/main.gd").new()
+	root.add_child(app)
+	app.set_process(false)
+	app.start_campaign("canyon")
+	app.pan_active = true
+	app.dragging = true
+	var time_before: float = app.sim.time
+	root.focus_exited.emit()
+	app._process(0.1)
+	print("FOCUS_BASELINE ", JSON.stringify({"menu": app.menu, "sim_time_before":time_before,"sim_time_after":app.sim.time,"pan_active":app.pan_active,"dragging":app.dragging,"world_audio_active":app.game_audio.gameplay_active}))
+	app.menu = "pause"
+	DirAccess.make_dir_recursive_absolute(OS.get_user_data_dir())
+	var path: String = ProjectSettings.globalize_path(app.AUTOSAVE_PATH)
+	var block_error: Error = DirAccess.make_dir_absolute(path)
+	if block_error != OK: push_error("Cannot block isolated save target"); quit(2); return
+	var unsaved_time: float = app.sim.time
+	app.ui_action("title")
+	print("TITLE_BASELINE ",JSON.stringify({"menu":app.menu,"started":app.started,"unsaved_time":unsaved_time,"auto_target_is_directory":DirAccess.dir_exists_absolute(path)}))
+	app.ui_action("new")
+	print("TITLE_NEW_BASELINE ",JSON.stringify({"menu":app.menu,"started":app.started,"sim_time":app.sim.time,"previous_unsaved_time":unsaved_time}))
+	app.set_process(false)
+	app.set_process_unhandled_input(false)
+	app._release_audio()
+	var deadline: int = Time.get_ticks_usec()+120000
+	while Time.get_ticks_usec()<deadline: await process_frame
+	app.free()
+	DirAccess.remove_absolute(path)
+	quit()

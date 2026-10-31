@@ -1,0 +1,16 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+ERROR: Can't change "force_native" while a window is displayed. Consider hiding window before changing this value.
+   at: set_force_native (scene/main/window.cpp:1462)
+   GDScript backtrace (most recent call first):
+       [0] _test_native_focus_loss (res://tests/test_focus_recovery.gd:77)
+       [1] _key (res://tests/test_focus_recovery.gd:261)
+       [2] _frames (res://tests/test_focus_recovery.gd:252)
+PASS _test_native_focus_loss
+PASS _test_tactical_pause_and_menus
+PASS _test_native_minimize
+PASS _test_failed_title_save
+Focus/title recovery checks: 62; failures: 2; native exits=2 enters=2
+ - native second window generates real main-window focus exit
+ - successful title transition saves the exact live simulation

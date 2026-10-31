@@ -1,0 +1,46 @@
+extends SceneTree
+func _initialize() -> void:
+	call_deferred("_run")
+func _run() -> void:
+	var Sim = load("res://scripts/campaign_simulation.gd")
+	var Guide = load("res://scripts/campaign_guide.gd")
+	var sim: Variant = Sim.new()
+	sim.reset(42)
+	var guide: Variant = Guide.new()
+	var ids: Array = []
+	var casualty: int = -1
+	for u: Dictionary in sim.units:
+		if u.team == "friendly" and u.kind in ["rifle", "engineer"]:
+			if casualty < 0 and u.kind == "rifle":
+				casualty = int(u.id)
+				u.hp = 0.0
+			else: ids.append(int(u.id))
+	sim.tick(0.05)
+	guide.reset()
+	guide.update(sim, ids, int(sim.camps[0].id))
+	print("CASUALTY_GUIDE ", JSON.stringify({"outcome": sim.outcome, "selected_living_fighters":ids.size(), "casualty":casualty, "hint":guide.get_hint()}))
+	var app: Variant = load("res://scripts/main.gd").new()
+	app.sim = Sim.new()
+	app.sim.reset(42)
+	app.camera = Camera2D.new()
+	app.camera.zoom = Vector2.ONE
+	app.add_child(app.camera)
+	app.world = load("res://scripts/world_view.gd").new()
+	app.world.sim = app.sim
+	app.add_child(app.world)
+	app._setup_inputs()
+	app.started = true
+	app.menu = "pause"
+	app.selected_camp = int(app.sim.camps[0].id)
+	app.sim.tick(0.1)
+	var path: String = ProjectSettings.globalize_path(app.AUTOSAVE_PATH)
+	assert(not FileAccess.file_exists(path) and not DirAccess.dir_exists_absolute(path))
+	assert(DirAccess.make_dir_recursive_absolute(path) == OK)
+	var explicit_save: bool = app.save_campaign(false)
+	app.ui_action("title")
+	print("TITLE_SAVE_FAILURE ", JSON.stringify({"real_save_return":explicit_save, "started_after_title": app.started, "menu_after_title": app.menu, "live_time_after_title":app.sim.time, "feedback": app.feedback}))
+	app.ui_action("new")
+	print("TITLE_NEW_AFTER_FAILURE ",JSON.stringify({"started":app.started, "menu":app.menu, "sim_time":app.sim.time}))
+	assert(DirAccess.remove_absolute(path) == OK)
+	app.free()
+	quit()

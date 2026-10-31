@@ -22,7 +22,7 @@ func _run() -> void:
 		printerr("Guide suite cannot run: simulation or guide failed to compile")
 		quit(1)
 		return
-	var cases: Array[Callable] = [_test_read_only_observation, _test_persistence_and_bad_states]
+	var cases: Array[Callable] = [_test_read_only_observation, _test_persistence_and_bad_states, _test_opening_casualties, _test_combat_recovery_guidance]
 	if OS.get_cmdline_user_args().has("--quick"):
 		print("SKIP full mission in explicitly requested --quick run")
 	else:
@@ -195,6 +195,112 @@ func _test_persistence_and_bad_states() -> void:
 	restored.observe("show")
 	restored.update(sim)
 	_check(bool(restored.get_hint()["visible"]) and _step(restored) == 1, "loaded hidden guide can resume against unchanged real simulation")
+
+
+func _casualty_fixture(mission: String, survivors: int) -> Variant:
+	# Focused valid-state fixture, not a claim about a human combat strategy.
+	var sim: Variant = Simulation.new()
+	sim.reset(42, mission)
+	var count: int = 0
+	for unit: Dictionary in sim.units:
+		if unit["team"] == "friendly" and unit["kind"] in ["rifle", "engineer"]:
+			if count >= survivors: unit["hp"] = 0.0
+			count += 1
+	# Zero fighters can still be a live campaign after training extra workers.
+	if survivors == 0:
+		var camp: Dictionary = sim.camps[0]
+		sim._add_unit("worker", "friendly", Vector2(camp["pos"]) + Vector2(-2, 2), int(camp["id"]), 0)
+	sim._check_outcome()
+	return sim
+
+
+func _test_opening_casualties() -> void:
+	for mission: String in ["canyon", "delta", "ridge"]:
+		for survivors: int in [0, 1, 3, 4]:
+			var label: String = "%s/%d fighters: " % [mission, survivors]
+			var sim: Variant = _casualty_fixture(mission, survivors)
+			var guide: Variant = Guide.new()
+			guide.reset()
+			var home: Dictionary = sim.camps[0]
+			var highway: Vector2 = sim.mission_data["guide"]["landmarks"]["highway"]
+			_check(sim.outcome == "playing", label + "fixture retains four living survivors and a command truck")
+			var nonfighters: Array = []
+			var selected: Array = []
+			for unit: Dictionary in sim.units:
+				# Include stale dead IDs, enemy IDs and nonfighters deliberately.
+				selected.append(int(unit["id"]))
+				if unit["kind"] not in ["rifle", "engineer"] or float(unit["hp"]) <= 0.0:
+					nonfighters.append(int(unit["id"]))
+			var before: String = JSON.stringify(sim.save_state())
+			guide.update(sim, nonfighters, int(home["id"]))
+			var hint: Dictionary = guide.get_hint()
+			if survivors > 0:
+				_check(String(hint["title"]) == "带%d人清理公路补给" % survivors, label + "selection count follows living combat personnel")
+				_check(Vector2(hint["target"]) != highway, label + "dead, enemy and nonfighter selections cannot satisfy squad selection")
+				if survivors == 4:
+					_check(String(hint["text"]).begins_with("先框选3名步枪兵和1名工程师"), label + "original starting squad instruction remains")
+				guide.update(sim, selected, int(home["id"]))
+				_check(Vector2(guide.get_hint()["target"]).distance_to(highway) < 0.01, label + "all living fighters reveal the real resource target despite casualties")
+			else:
+				_check(String(hint["title"]) == "先恢复战斗力量" and String(hint["text"]).contains("军营"), label + "zero fighters explain actual missing training facility")
+				_check(not String(hint["text"]).contains("先框选3名"), label + "zero fighters never request a nonexistent squad")
+			_check(JSON.stringify(sim.save_state()) == before, label + "guidance leaves full authoritative state and RNG unchanged")
+			var restored_sim: Variant = Simulation.new()
+			var decoded: Variant = JSON.parse_string(before)
+			_check(restored_sim.load_state(decoded), label + "casualty fixture remains an accepted real simulation save")
+			var restored_guide: Variant = Guide.new()
+			_check(restored_guide.load_state(JSON.parse_string(JSON.stringify(guide.save_state()))), label + "guide schema retains valid JSON save continuation")
+			restored_guide.update(restored_sim, selected, int(home["id"]))
+			_check(restored_guide.get_hint()["title"] == guide.get_hint()["title"] and restored_guide.get_hint()["target"] == guide.get_hint()["target"], label + "loaded casualty guidance matches live guidance")
+	# Recruiting a larger army must not require selecting every combat unit.
+	var larger: Variant = _new_sim()
+	var first_four: Array = _fighters(larger, true)
+	larger._add_unit("rifle", "friendly", Vector2(14, 21), int(larger.camps[0]["id"]), 2)
+	var larger_guide: Variant = Guide.new()
+	larger_guide.update(larger, first_four)
+	_check(Vector2(larger_guide.get_hint()["target"]).distance_to(Vector2(25, 20)) < 0.01, "a trained larger army can use the original four-person opening squad")
+	# Continue a casualty fixture through real movement, combat and capture.
+	var opening: Variant = _casualty_fixture("canyon", 3)
+	var opening_guide: Variant = Guide.new()
+	opening.command_move(_fighters(opening), Vector2(25, 20), true)
+	for tick: int in range(900):
+		if bool(opening.sites[0]["captured"]) or opening.outcome != "playing": break
+		opening.tick(0.1)
+	_check(bool(opening.sites[0]["captured"]) and opening.outcome == "playing", "three surviving rifles actually clear and capture the opening cache")
+	opening_guide.update(opening)
+	_check(_step(opening_guide) == 2, "actual casualty opening capture advances to construction even with no selection")
+
+
+func _test_combat_recovery_guidance() -> void:
+	var sim: Variant = _casualty_fixture("canyon", 0)
+	var camp: Dictionary = sim.camps[0]
+	var id: int = int(camp["id"])
+	var guide: Variant = Guide.new()
+	guide.update(sim)
+	_check(String(guide.get_hint()["text"]).contains(String(sim.query_recruit(id, "rifle")["message"])), "zero-fighter blocker comes from current actual recruit admission")
+	# Finished, locally connected and powered barracks makes recovery possible.
+	sim._add_building("barracks", Vector2(camp["pos"]) + Vector2(5, 1), id, 1.0)
+	sim._update_power(0.0)
+	_check(bool(sim.query_recruit(id, "rifle")["ok"]), "recovery fixture has an actually admissible recruit order")
+	var before: String = JSON.stringify(sim.save_state())
+	guide.update(sim)
+	_check(String(guide.get_hint()["title"]) == "先补充战斗人员" and String(guide.get_hint()["text"]).contains("安排训练"), "ready facilities offer actionable training instead of defeat or a nonexistent squad")
+	_check(JSON.stringify(sim.save_state()) == before, "ready recovery guidance reserves no costs and issues no orders")
+	_check(bool(sim.recruit(id, "rifle")), "actual recruitment queues a future combat unit")
+	before = JSON.stringify(sim.save_state())
+	guide.update(sim)
+	_check(String(guide.get_hint()["title"]) == "等待战斗人员训练", "a pending combat recruit is identified without proposing a duplicate")
+	_check(JSON.stringify(sim.save_state()) == before, "queued recovery observation does not advance training")
+	camp["fuel"] = 0.0
+	sim._update_power(0.0)
+	guide.update(sim)
+	_check(String(guide.get_hint()["text"]).contains("成品燃料"), "blocked combat queue explains its actual power failure")
+	camp["recruit_queue"] = []
+	guide.update(sim)
+	_check(String(guide.get_hint()["title"]) == "先恢复战斗力量" and String(guide.get_hint()["text"]).contains("成品燃料"), "unfunded power recovery does not promise immediately available recruitment")
+	camp["state"] = "packing"
+	guide.update(sim)
+	_check(String(guide.get_hint()["title"]) == "检查可用驻点与战斗力量", "zero active camps offer conditional recovery instead of nonexistent recruitment")
 
 
 func _test_actual_mission_progression() -> void:

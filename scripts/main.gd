@@ -72,6 +72,8 @@ var capture_frames: int = 0
 var tick_count: int = 0
 var closing: bool = false
 var exit_return_menu: String = ""
+var menu_notice: String = ""
+var _window_suspended: bool = false
 var feedback: String = ""
 var feedback_left: float = 0.0
 var sound_player: AudioStreamPlayer
@@ -110,6 +112,7 @@ func _ready() -> void:
 	selected_camp = int(sim.camps[0].id)
 	world = WorldView.new()
 	world.sim = sim
+	world.motion.reset(sim)
 	world.world_font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
 	add_child(world)
 	camera = Camera2D.new()
@@ -129,6 +132,8 @@ func _ready() -> void:
 	_apply_display_settings()
 	get_tree().auto_accept_quit = false
 	get_window().close_requested.connect(_on_close_requested)
+	get_window().focus_exited.connect(_on_window_focus_exited)
+	get_window().focus_entered.connect(_on_window_focus_entered)
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture="):
 			capture_path = arg.trim_prefix("--capture=")
@@ -160,16 +165,21 @@ func _setup_inputs() -> void:
 		InputMap.action_add_event(action, key)
 
 func _process(delta: float) -> void:
+	# Some window managers minimize without a preceding focus-exit signal.
+	if DisplayServer.get_name() != "headless" and get_window().mode == Window.MODE_MINIMIZED and not _window_suspended:
+		_on_window_focus_exited()
 	if menu == "settings": settings_page = clampi(settings_page, 0, (command_names.size() - 1) / settings_binding_page_size())
 	feedback_left = maxf(0.0, feedback_left - delta)
 	if is_instance_valid(game_audio):
-		game_audio.set_gameplay_active(started and menu.is_empty() and not sim.paused and sim.outcome == "playing", sim)
-	if started and menu.is_empty():
+		game_audio.set_gameplay_active(started and menu.is_empty() and not _window_suspended and not sim.paused and sim.outcome == "playing", sim)
+	if started and menu.is_empty() and not _window_suspended:
 		_move_camera(delta)
 		accumulator += minf(delta, 0.2) * speed
 		var steps: int = 0
 		while accumulator >= 0.05 and steps < 12:
+			world.motion.before_step(sim)
 			sim.tick(0.05)
+			world.motion.after_step(sim)
 			if is_instance_valid(game_audio): game_audio.observe_sim(sim, camera.position / TILE)
 			accumulator -= 0.05
 			steps += 1
@@ -180,6 +190,7 @@ func _process(delta: float) -> void:
 			save_campaign(false)
 		if sim.outcome != "playing":
 			menu = sim.outcome
+	world.motion.prepare_frame(sim, accumulator, started and menu.is_empty() and not _window_suspended and not sim.paused and sim.outcome == "playing")
 	selected_ids = selected_ids.filter(func(id: int) -> bool: return not sim.get_unit(id).is_empty() and float(sim.get_unit(id).get("hp", 0.0)) > 0.0)
 	guide_clock += delta
 	if started and guide_clock >= 0.25:
@@ -277,6 +288,7 @@ func _place_build(tile: Vector2i) -> Dictionary:
 	return result
 
 func _unhandled_input(event: InputEvent) -> void:
+	if _window_suspended: return
 	if menu == "exit_save_failed":
 		if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
 			ui_action("exit_cancel")
@@ -383,7 +395,7 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 	var distance: float = 0.85
 	for unit: Dictionary in sim.units:
 		if unit.get("team", "") != "friendly" or float(unit.get("hp", 0.0)) <= 0: continue
-		var p: Vector2 = unit.get("pos", Vector2.ZERO)
+		var p: Vector2 = world.render_unit_position(unit)
 		if click:
 			var d: float = p.distance_to(point / TILE)
 			if d < distance: closest = unit; distance = d
@@ -392,7 +404,7 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 	if not closest.is_empty():
 		if same_kind:
 			for u: Dictionary in sim.units:
-				var visible_position: Vector2 = get_canvas_transform() * (Vector2(u.get("pos", Vector2.ZERO)) * TILE)
+				var visible_position: Vector2 = get_canvas_transform() * (world.render_unit_position(u) * TILE)
 				if u.get("team") == "friendly" and u.get("kind") == closest.get("kind") and float(u.get("hp",0)) > 0 and get_viewport_rect().has_point(visible_position):
 					if not selected_ids.has(u.id): selected_ids.append(u.id)
 		elif not selected_ids.has(closest.id): selected_ids.append(closest.id)
@@ -519,7 +531,8 @@ func ui_action(action: String) -> void:
 		elif action == "exit_discard": _quit_cleanly()
 		return
 	_ui_revision += 1
-	if not action.begins_with("recruit:") and not action.begins_with("task:") and not action.begins_with("seal:") and action != "evacuate":
+	menu_notice = ""
+	if not action.begins_with("recruit:") and not action.begins_with("task:") and not action.begins_with("seal:") and action not in ["evacuate", "title"]:
 		_play_tone(500.0, 0.04, 0.18)
 	if action == "new":
 		if started and sim.outcome == "playing":
@@ -555,7 +568,12 @@ func ui_action(action: String) -> void:
 		pending_mission_id = ""
 		menu = ""
 	elif action == "title":
-		if started and sim.outcome == "playing": save_campaign(false)
+		if started and sim.outcome == "playing" and not save_campaign(false):
+			menu_notice = "自动保存失败，未返回标题。请检查存储空间后重试。"
+			_notify(menu_notice)
+			_play_sfx("reject")
+			return
+		_play_sfx("confirm")
 		started = false
 		pending_mission_id = ""
 		menu = "title"
@@ -685,6 +703,7 @@ func start_campaign(mission_id: String = "") -> void:
 		_notify("无法选择此战役，当前进度保持不变。")
 		return
 	sim.reset(42, requested)
+	world.motion.reset(sim)
 	if is_instance_valid(game_audio): game_audio.prime(sim)
 	_ui_revision += 1
 	_build_preview_key.clear()
@@ -804,6 +823,7 @@ func load_campaign(slot: String = "manual") -> bool:
 	# Every metadata field and the complete simulation have been validated before
 	# touching the live run. Simulation.load_state is itself transactional.
 	if not sim.load_state(data): return false
+	world.motion.reset(sim)
 	if is_instance_valid(game_audio): game_audio.prime(sim)
 	_ui_revision += 1
 	_build_preview_key.clear()
@@ -996,6 +1016,31 @@ func guide_text(text: String) -> String:
 	var names: Dictionary = {"pause":"pause_game", "build":"build_menu", "orders":"orders_menu", "production":"production_menu", "train":"train_menu"}
 	for key: String in names: result = result.replace("{" + key + "}", binding_label(names[key]))
 	return result
+
+func _release_camera_actions() -> void:
+	# Retire held actions without altering physical key mappings or saved settings.
+	for action: String in ["camera_up", "camera_down", "camera_left", "camera_right"]:
+		Input.action_release(action)
+
+func _on_window_focus_exited() -> void:
+	_window_suspended = true
+	_release_camera_actions()
+	dragging = false
+	selection_double_click = false
+	pan_active = false
+	if started and sim.outcome == "playing" and menu.is_empty():
+		menu = "pause"
+		menu_notice = "已切出游戏，战役暂停。请点击继续战役。"
+	if is_instance_valid(game_audio): game_audio.set_gameplay_active(false, sim)
+	if is_instance_valid(world): world.drag_selecting = false
+	if is_instance_valid(hud):
+		hud.hotspots.clear()
+		hud.queue_redraw()
+
+func _on_window_focus_entered() -> void:
+	_window_suspended = false
+	_release_camera_actions()
+	# Keep existing menus and tactical pause; returning focus never resumes combat.
 
 func _on_close_requested() -> void:
 	if closing or menu == "exit_save_failed": return

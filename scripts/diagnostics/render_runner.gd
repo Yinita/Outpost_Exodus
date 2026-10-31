@@ -13,6 +13,7 @@ const TRACKED_SOURCES: Array[String] = [
 	"res://scripts/campaign_simulation.gd", "res://scripts/campaign_catalog.gd",
 	"res://scripts/construction_rules.gd", "res://scripts/actor_atlas.gd", "res://scripts/actor_canvas.gd",
 	"res://scripts/recruitment_rules.gd", "res://scripts/game_audio.gd",
+	"res://scripts/render_motion.gd",
 	"res://scripts/cartoon_canvas.gd", "res://scripts/terrain_cache.gd", "res://scripts/decoration_cache.gd",
 	"res://scripts/campaign_save_store.gd", "res://scripts/world_view.gd", "res://scripts/hud.gd",
 	"res://scripts/campaign_guide.gd", "res://scripts/diagnostics/render_runner.gd",

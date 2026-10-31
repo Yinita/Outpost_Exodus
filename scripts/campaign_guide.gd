@@ -93,16 +93,28 @@ func update(sim: Variant, selected_ids: Array = [], selected_camp: int = 0) -> v
 	var highway_position: Vector2 = highway.get("pos", _landmark("highway"))
 	if not bool(highway.get("captured", false)):
 		var selected_fighters: int = 0
+		var living_fighters: int = 0
+		var living_rifles: int = 0
+		var living_engineers: int = 0
 		var first_fighter: Vector2 = home.get("pos", _landmark("home"))
 		var units: Array = sim.units
 		for value: Variant in units:
 			var unit: Dictionary = value
 			if String(unit.get("team", "")) == "friendly" and ["rifle", "engineer"].has(String(unit.get("kind", ""))) and float(unit.get("hp", 0.0)) > 0.0:
+				living_fighters += 1
+				if String(unit["kind"]) == "rifle": living_rifles += 1
+				else: living_engineers += 1
 				first_fighter = unit.get("pos", first_fighter)
 				if selected_ids.has(int(unit.get("id", -1))):
 					selected_fighters += 1
-		if selected_fighters < 4:
-			_set_hint(1, "带4人清理公路补给", "先框选3名步枪兵和1名工程师，用{orders}选择清剿，再点公路补给点。可用{pause}观察地形；清掉守卫后留人在附近，完成占领再修路。", first_fighter)
+		if living_fighters == 0:
+			_combat_recovery_hint(sim, camps)
+			return
+		# Keep the opening squad size after training, but never demand lost units.
+		var required_fighters: int = mini(4, living_fighters)
+		if selected_fighters < required_fighters:
+			var selection: String = "先框选3名步枪兵和1名工程师，" if living_rifles == 3 and living_engineers == 1 else "当前有%d名可战斗人员，先选中%d名步枪兵或工程师，" % [living_fighters, required_fighters]
+			_set_hint(1, "带%d人清理公路补给" % required_fighters, selection + "用{orders}选择清剿，再点公路补给点。可用{pause}观察地形；清掉守卫后留人在附近，完成占领再修路。", first_fighter)
 		else:
 			_set_hint(1, "清理西关东侧的公路补给", "用{orders}选择清剿并指定公路补给点，或下达攻击移动。清掉守卫并留人在附近占领；工程师可随队，战斗中可用{pause}调整。", highway_position)
 		return
@@ -125,6 +137,32 @@ func update(sim: Variant, selected_ids: Array = [], selected_camp: int = 0) -> v
 		_set_hint(3, "等待中营实际建成", "中营工地已存在。工程师要领取、运送材料并完成施工；完工前不会出现可用库存，也不要重复建造。", camp_project.get("pos", camp_site))
 	else:
 		_set_hint(3, "在关口东侧建立中营", "用{build}在已连通的公路附近建营地，定位点只是建议位置。新营建成时库存为零，下一步先从旧营运输物资，再考虑发电与工坊。", camp_site)
+
+
+func _combat_recovery_hint(sim: Variant, camps: Array[Dictionary]) -> void:
+	# Read actual admission/queue state; a worker or truck cannot clear guards.
+	var fallback_camp: Dictionary = {}
+	var fallback_plan: Dictionary = {}
+	for camp: Dictionary in camps:
+		if String(camp.get("state", "")) != "active": continue
+		var target: Vector2 = camp.get("pos", UNKNOWN_TARGET)
+		for entry: Dictionary in camp.get("recruit_queue", []):
+			if String(entry.get("kind", "")) in ["rifle", "engineer"]:
+				var status: Dictionary = sim.get_training_status(int(camp["id"]))
+				_set_hint(1, "等待战斗人员训练", "目前没有存活的步枪兵或工程师，本营已有战斗人员排队训练。打开{train}检查队列；" + String(status.get("detail", "检查本营训练设施与供能。")) + "人员完成训练后再清理公路补给。", target)
+				return
+		for kind: String in ["rifle", "engineer"]:
+			var plan: Dictionary = sim.query_recruit(int(camp["id"]), kind)
+			if bool(plan.get("ok", false)):
+				_set_hint(1, "先补充战斗人员", "目前没有存活的步枪兵或工程师，工人和车辆不能清理守卫。选中此营，打开{train}安排训练。" + String(plan["message"]) + "人员完成训练后再推进。", target)
+				return
+			if fallback_camp.is_empty():
+				fallback_camp = camp
+				fallback_plan = plan
+	if not fallback_camp.is_empty():
+		_set_hint(1, "先恢复战斗力量", "目前没有存活的步枪兵或工程师。选中此营，打开{train}检查训练条件：" + String(fallback_plan.get("message", "检查本营军营、供能与资源。")) + "先恢复条件再训练；若本轮已无法恢复，可读取存档或重新开始。", fallback_camp.get("pos", UNKNOWN_TARGET))
+	else:
+		_set_hint(1, "检查可用驻点与战斗力量", "目前没有存活的步枪兵或工程师，也没有可招募的运作营地。检查撤收队伍与其他驻点；若本轮已无法恢复，可读取存档或重新开始。", UNKNOWN_TARGET)
 
 
 func _middle_hint(sim: Variant, home: Dictionary, middle: Dictionary, selected_camp: int) -> void:

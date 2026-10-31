@@ -1,0 +1,5 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+CASUALTY_GUIDE {"casualty":6,"hint":{"action":"focus","complete":false,"dismissed":false,"enabled":true,"label":"定位提示目标","step":1,"target":"(10.0, 21.0)","text":"先框选3名步枪兵和1名工程师，用{orders}选择清剿，再点公路补给点。可用{pause}观察地形；清掉守卫后留人在附近，完成占领再修路。","title":"带4人清理公路补给","total":11,"visible":true},"outcome":"playing","selected_living_fighters":3}
+TITLE_SAVE_FAILURE {"feedback":"自动保存失败，请检查存储空间；手动存档未被覆盖。","live_time_after_title":0.1,"menu_after_title":"title","real_save_return":false,"started_after_title":false}
+TITLE_NEW_AFTER_FAILURE {"menu":"","sim_time":0.0,"started":true}
