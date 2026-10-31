@@ -1,14 +1,14 @@
 {
   "version": "0.15.0-dev",
   "state": "SOURCE_CANDIDATE",
-  "basis_commit": "0f8dd42d8754bbc4c8574639b836069bf85c8e8b",
+  "basis_commit": "c2611a7fed51117a6ce482f941430bfb9eb05d54",
   "scope": "Own physical lines include comments/blanks; nonblank retains comments. Engine/third-party libraries/assets/scenes/caches/binaries/UIDs/evidence probe text excluded. Source count is not completion or playability evidence.",
   "selection": "Complete git-tracked own .gd/.py/.sh code set, retaining v0.14 classification; docs/probe text, .uid, assets, scenes, caches, engine and third-party code excluded.",
   "groups": {
     "gameplay": {
       "files": 17,
-      "physical_lines": 8648,
-      "nonblank_lines": 7874,
+      "physical_lines": 8781,
+      "nonblank_lines": 7999,
       "entries": {
         "scripts/actor_atlas.gd": {
           "physical_lines": 98,
@@ -51,9 +51,9 @@
           "sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533"
         },
         "scripts/construction_rules.gd": {
-          "physical_lines": 207,
-          "nonblank_lines": 184,
-          "sha256": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068"
+          "physical_lines": 258,
+          "nonblank_lines": 233,
+          "sha256": "3b87822fd06efbeebe83c3d8b059389e958346037b3915076385a08942d997d2"
         },
         "scripts/decoration_cache.gd": {
           "physical_lines": 5,
@@ -66,14 +66,14 @@
           "sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612"
         },
         "scripts/hud.gd": {
-          "physical_lines": 793,
-          "nonblank_lines": 752,
-          "sha256": "982c2f03507e351044ccc11ccf3f0ecb95f613df71a3c152be6923b36bffff8b"
+          "physical_lines": 835,
+          "nonblank_lines": 789,
+          "sha256": "10daac186c9e0f31e938d8f00f63c5fad0a2951942e13e3cbebe3a6bdd6190ee"
         },
         "scripts/main.gd": {
-          "physical_lines": 1135,
-          "nonblank_lines": 1083,
-          "sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb"
+          "physical_lines": 1175,
+          "nonblank_lines": 1122,
+          "sha256": "a1277ffbc1b438ff960a3d1f980998d8fd7f9a7f4c2a27558f53ad83fcb4904f"
         },
         "scripts/recruitment_rules.gd": {
           "physical_lines": 180,
@@ -125,9 +125,9 @@
       }
     },
     "tests_and_benchmarks": {
-      "files": 42,
-      "physical_lines": 11727,
-      "nonblank_lines": 10719,
+      "files": 43,
+      "physical_lines": 12012,
+      "nonblank_lines": 10988,
       "entries": {
         "tests/benchmark_campaign.gd": {
           "physical_lines": 326,
@@ -208,6 +208,11 @@
           "physical_lines": 325,
           "nonblank_lines": 290,
           "sha256": "24f2cf61baf88f5dab40e890b57d072670bd219bf0715672a005963016e030b5"
+        },
+        "tests/test_construction_inspection.gd": {
+          "physical_lines": 285,
+          "nonblank_lines": 269,
+          "sha256": "9b9aa5464868ba1affe15a705e78787b92a17961a2317779e2cb43c8beccbd29"
         },
         "tests/test_construction_ui.gd": {
           "physical_lines": 161,
@@ -429,19 +434,31 @@
     }
   },
   "total": {
-    "files": 76,
-    "physical_lines": 25211,
-    "nonblank_lines": 22986
+    "files": 77,
+    "physical_lines": 25629,
+    "nonblank_lines": 23380
   },
   "runtime_hash_verification": {
     "runtime_files": 21,
-    "preparation_start_commit": "0f8dd42d8754bbc4c8574639b836069bf85c8e8b",
+    "preparation_start_commit": "c2611a7fed51117a6ce482f941430bfb9eb05d54",
     "all_runtime_code_unchanged_during_metadata_preparation": true,
     "accepted_v014_source_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
-    "only_runtime_difference_vs_accepted_v014": {
+    "runtime_differences_vs_accepted_v014": {
       "scripts/campaign_guide.gd": {
         "before": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
         "current": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d"
+      },
+      "scripts/construction_rules.gd": {
+        "before": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+        "current": "3b87822fd06efbeebe83c3d8b059389e958346037b3915076385a08942d997d2"
+      },
+      "scripts/hud.gd": {
+        "before": "982c2f03507e351044ccc11ccf3f0ecb95f613df71a3c152be6923b36bffff8b",
+        "current": "10daac186c9e0f31e938d8f00f63c5fad0a2951942e13e3cbebe3a6bdd6190ee"
+      },
+      "scripts/main.gd": {
+        "before": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+        "current": "a1277ffbc1b438ff960a3d1f980998d8fd7f9a7f4c2a27558f53ad83fcb4904f"
       }
     },
     "entries": {
@@ -494,57 +511,15 @@
         "matches_accepted_v014": true
       },
       "scripts/construction_rules.gd": {
-        "current_sha256": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+        "current_sha256": "3b87822fd06efbeebe83c3d8b059389e958346037b3915076385a08942d997d2",
         "matches_preparation_start_commit": true,
         "accepted_v014_sha256": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
-        "matches_accepted_v014": true
+        "matches_accepted_v014": false
       },
       "scripts/decoration_cache.gd": {
         "current_sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
         "matches_preparation_start_commit": true,
         "accepted_v014_sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
-        "matches_accepted_v014": true
-      },
-      "scripts/game_audio.gd": {
-        "current_sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
-        "matches_preparation_start_commit": true,
-        "accepted_v014_sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
-        "matches_accepted_v014": true
-      },
-      "scripts/hud.gd": {
-        "current_sha256": "982c2f03507e351044ccc11ccf3f0ecb95f613df71a3c152be6923b36bffff8b",
-        "matches_preparation_start_commit": true,
-        "accepted_v014_sha256": "982c2f03507e351044ccc11ccf3f0ecb95f613df71a3c152be6923b36bffff8b",
-        "matches_accepted_v014": true
-      },
-      "scripts/main.gd": {
-        "current_sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
-        "matches_preparation_start_commit": true,
-        "accepted_v014_sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
-        "matches_accepted_v014": true
-      },
-      "scripts/recruitment_rules.gd": {
-        "current_sha256": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
-        "matches_preparation_start_commit": true,
-        "accepted_v014_sha256": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
-        "matches_accepted_v014": true
-      },
-      "scripts/render_motion.gd": {
-        "current_sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
-        "matches_preparation_start_commit": true,
-        "accepted_v014_sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
-        "matches_accepted_v014": true
-      },
-      "scripts/terrain_cache.gd": {
-        "current_sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
-        "matches_preparation_start_commit": true,
-        "accepted_v014_sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
-        "matches_accepted_v014": true
-      },
-      "scripts/world_view.gd": {
-        "current_sha256": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098",
-        "matches_preparation_start_commit": true,
-        "accepted_v014_sha256": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098",
         "matches_accepted_v014": true
       },
       "scripts/diagnostics/campaign_route.gd": {
@@ -569,6 +544,48 @@
         "current_sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c",
         "matches_preparation_start_commit": true,
         "accepted_v014_sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c",
+        "matches_accepted_v014": true
+      },
+      "scripts/game_audio.gd": {
+        "current_sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+        "matches_preparation_start_commit": true,
+        "accepted_v014_sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+        "matches_accepted_v014": true
+      },
+      "scripts/hud.gd": {
+        "current_sha256": "10daac186c9e0f31e938d8f00f63c5fad0a2951942e13e3cbebe3a6bdd6190ee",
+        "matches_preparation_start_commit": true,
+        "accepted_v014_sha256": "982c2f03507e351044ccc11ccf3f0ecb95f613df71a3c152be6923b36bffff8b",
+        "matches_accepted_v014": false
+      },
+      "scripts/main.gd": {
+        "current_sha256": "a1277ffbc1b438ff960a3d1f980998d8fd7f9a7f4c2a27558f53ad83fcb4904f",
+        "matches_preparation_start_commit": true,
+        "accepted_v014_sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+        "matches_accepted_v014": false
+      },
+      "scripts/recruitment_rules.gd": {
+        "current_sha256": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
+        "matches_preparation_start_commit": true,
+        "accepted_v014_sha256": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
+        "matches_accepted_v014": true
+      },
+      "scripts/render_motion.gd": {
+        "current_sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+        "matches_preparation_start_commit": true,
+        "accepted_v014_sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+        "matches_accepted_v014": true
+      },
+      "scripts/terrain_cache.gd": {
+        "current_sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+        "matches_preparation_start_commit": true,
+        "accepted_v014_sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+        "matches_accepted_v014": true
+      },
+      "scripts/world_view.gd": {
+        "current_sha256": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098",
+        "matches_preparation_start_commit": true,
+        "accepted_v014_sha256": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098",
         "matches_accepted_v014": true
       }
     }
