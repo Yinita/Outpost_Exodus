@@ -1,0 +1,31 @@
+{
+  "recorded_utc": "2026-10-31T03:46:02.531055+00:00",
+  "status": "REJECTED full native campaign validation; not a complete-campaign pass",
+  "scope": "Exact original2a00 source/Linux/Windows archives plus actual failed run preserved before same-version artifacts can be overwritten. The identified failure is a validator decoding error at funded exit; full route must be rerun after correction.",
+  "source_commit": "2a00c7e97ff7954b0756bc49445866d92aec6b07",
+  "artifacts": {
+    "outpost-exodus-source-0.6.1-dev.zip": {
+      "sha256": "663dd4b67b31d2ddaaec4b38b96db0044b141f9434d63b75c03aadf3d5c98ab5",
+      "bytes": 20866997
+    },
+    "outpost-exodus-linux-0.6.1-dev.zip": {
+      "sha256": "7ac4804a92ca87d0f5bb6fd58c5a2911ba3285c0ee36ebd7ef59a7469078f063",
+      "bytes": 46945137
+    },
+    "outpost-exodus-windows-0.6.1-dev.zip": {
+      "sha256": "a569570a04e22cf600b21b5df97af5084ffb285d7b7011fe6c1a64226f914165",
+      "bytes": 56481085
+    }
+  },
+  "original_manifest_sha256": "1bf9597af9dad051c7152696830886c09410f1c1066e9593ce9482ff4eebd281",
+  "failed_report_sha256": "2ac34a61e15dbf0e034d2bb3900d9fdd92add6c5150bb41d9f089202ddf63b49",
+  "failed_wrapper_sha256": "4e87559fb022dc295dd097c21dc69846f4458b6f87ce3434615801edc25492a7",
+  "failed_final_state_sha256": "94f0b5e4c623cc23af1c47c637792b05d8d999c9c89d8e3965035754c0080e4a",
+  "failed_log_sha256": "cf4ce1c7989d90db3298f4f88fc9b7e0d1c6c07040f635b5419624bddef956f6",
+  "actual_tested_build_dir": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-unpacked/outpost-exodus-linux",
+  "errors": [
+    "actual funded exit job records140materials45fuel30supplies",
+    "full route and loaded withdrawal completed",
+    "truthful powered exit and truck/survivor victory"
+  ]
+}

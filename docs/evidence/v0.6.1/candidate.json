@@ -91,18 +91,18 @@
     },
     "diagnostics": {
       "files": 3,
-      "physical_lines": 1380,
-      "nonblank_lines": 1250,
+      "physical_lines": 1413,
+      "nonblank_lines": 1277,
       "entries": {
         "scripts/diagnostics/campaign_route.gd": {
-          "physical_lines": 295,
-          "nonblank_lines": 252,
-          "sha256": "1cba36f17f105bdc4a7a402f8b4d3aa7fbe80e86aa379ad12774aade58931ef2"
+          "physical_lines": 328,
+          "nonblank_lines": 279,
+          "sha256": "f12b5abd49c9274a94be3d62be95124005347f914050097fe7ede724650d1432"
         },
         "scripts/diagnostics/campaign_runner.gd": {
           "physical_lines": 390,
           "nonblank_lines": 341,
-          "sha256": "8cbe73bb34433f876a7c30544d25a779c0f2f36a48ee38c839cb91f8026cbe5c"
+          "sha256": "46cefd1eaf2d7cbeca0fb74284f9a1d8f6d8de1052bd4798733d543b827fbb29"
         },
         "scripts/diagnostics/render_runner.gd": {
           "physical_lines": 695,
@@ -112,9 +112,9 @@
       }
     },
     "tests_and_benchmarks": {
-      "files": 30,
-      "physical_lines": 9320,
-      "nonblank_lines": 8577,
+      "files": 31,
+      "physical_lines": 9465,
+      "nonblank_lines": 8698,
       "entries": {
         "tests/benchmark_campaign.gd": {
           "physical_lines": 326,
@@ -150,6 +150,11 @@
           "physical_lines": 196,
           "nonblank_lines": 173,
           "sha256": "8fdcc185b5f0f311e322eb6df60cfa8c3773674ac5b9a055be3f87d39f6d402b"
+        },
+        "tests/test_campaign_record.gd": {
+          "physical_lines": 145,
+          "nonblank_lines": 121,
+          "sha256": "9e64ddd4b1b8a04425685c81b4ab1138689dc7965bde0b5529530c2a82a570c7"
         },
         "tests/test_campaign_selection.gd": {
           "physical_lines": 276,
@@ -345,7 +350,177 @@
       }
     }
   },
-  "all_own_source_physical_lines": 20337,
+  "all_own_source_physical_lines": 20515,
+  "test_fixture_sha256": {
+    "tests/fixtures/evacuation-return-blocked.json": "729245741c7458967e26a2ecf1f6c03c94c623d113a8e5e40c2f8a2227991ef0",
+    "tests/fixtures/native-exit-funded.json": "94f0b5e4c623cc23af1c47c637792b05d8d999c9c89d8e3965035754c0080e4a",
+    "tests/fixtures/native-exit-funded.provenance.json": "6c141bc6969880d3c2d9846678db9341740a5e63336f579ebc75dcb1ca6170f7"
+  },
+  "known_rejected_native_campaign": {
+    "status": "REJECTED full-campaign validation; successful prefix is not victory/full evidence",
+    "source_commit": "2a00c7e97ff7954b0756bc49445866d92aec6b07",
+    "tested_build_dir": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-unpacked/outpost-exodus-linux",
+    "archive_snapshot": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.6.1-dev-2a00c7e-native-verifier",
+    "preserved_manifest": "native-full-2a00-rejection-manifest.json",
+    "game_report_sha256": "2ac34a61e15dbf0e034d2bb3900d9fdd92add6c5150bb41d9f089202ddf63b49",
+    "native_returncode": 1,
+    "game_wall_seconds": 525.582397,
+    "simulation_seconds": 1574.149999999116,
+    "main_loop": {
+      "fixed_step_seconds": 0.05,
+      "invalid_time_steps": 0,
+      "observed_frames": 26920,
+      "observed_sim_seconds": 1574.149999999116,
+      "observed_ticks": 31483,
+      "raw_main_ticks": 31483,
+      "terminal_noop_ticks": 0
+    },
+    "loaded_withdrawal": {
+      "disk_schema_valid": true,
+      "file_sha256": "e82ca40c5f4c2fd11c6b714950efcef1aa87e7edb899e0dbf69b127ff3dc8cd2",
+      "full_simulation_equal": true,
+      "full_ui_equal": true,
+      "label": "loaded_middle_withdrawal",
+      "load_success": true,
+      "read_only_guide_refreshed_before_save": true,
+      "simulation_sha256": "9e08c54aec558ab880e83ccfcb5468de90020aafee1bf558789c9838524f6ce3",
+      "simulation_time": 911.7999999997184,
+      "success": true,
+      "write_success": true
+    },
+    "automatic_saves": {
+      "observed_file_changes": 10,
+      "decoded_slots": [
+        {
+          "slot": "primary",
+          "sha256": "f7dfde94f9c3894385b750167a94dea864563dcfbe49cceec4d55f90c2ec18cf",
+          "recorded_schema_valid": true,
+          "original_report_time": null,
+          "decoded_actual_time": 1451.9999999992272
+        },
+        {
+          "slot": "backup",
+          "sha256": "590b3babe7ff7d8c7ad12b97982f665636ceec532338c9f3f81ef149502e5977",
+          "recorded_schema_valid": true,
+          "original_report_time": null,
+          "decoded_actual_time": 1316.94999999935
+        }
+      ]
+    },
+    "historical_prefix_deliveries": [
+      {
+        "count": 1,
+        "destination": 46,
+        "event": "actual_delivery",
+        "main_tick_count": 2857,
+        "origin": 1,
+        "simulation_time": 142.84999999999823,
+        "wall_seconds": 48.071644
+      },
+      {
+        "count": 2,
+        "destination": 46,
+        "event": "actual_delivery",
+        "main_tick_count": 3412,
+        "origin": 1,
+        "simulation_time": 170.60000000000454,
+        "wall_seconds": 57.327209
+      },
+      {
+        "count": 3,
+        "destination": 46,
+        "event": "actual_delivery",
+        "main_tick_count": 3992,
+        "origin": 1,
+        "simulation_time": 199.60000000001114,
+        "wall_seconds": 66.999042
+      },
+      {
+        "count": 1,
+        "destination": 210,
+        "event": "actual_delivery",
+        "main_tick_count": 18475,
+        "origin": 46,
+        "simulation_time": 923.7499999997075,
+        "wall_seconds": 308.445065
+      },
+      {
+        "count": 2,
+        "destination": 210,
+        "event": "actual_delivery",
+        "main_tick_count": 19057,
+        "origin": 46,
+        "simulation_time": 952.849999999681,
+        "wall_seconds": 318.154064
+      },
+      {
+        "count": 3,
+        "destination": 210,
+        "event": "actual_delivery",
+        "main_tick_count": 19639,
+        "origin": 46,
+        "simulation_time": 981.9499999996546,
+        "wall_seconds": 327.854077
+      },
+      {
+        "count": 4,
+        "destination": 210,
+        "event": "actual_delivery",
+        "main_tick_count": 20221,
+        "origin": 46,
+        "simulation_time": 1011.0499999996281,
+        "wall_seconds": 337.558973
+      }
+    ],
+    "actual_encoded_exit_jobs": [
+      {
+        "id": 286,
+        "kind": "exit",
+        "building_id": 19,
+        "source_camp_id": 210,
+        "funded": true,
+        "picked_up": true,
+        "delivered": true,
+        "done": true,
+        "costs": {
+          "materials": 140.0,
+          "fuel": 45.0,
+          "supplies": 30.0
+        }
+      }
+    ],
+    "final": {
+      "evacuated": 0,
+      "exit_powered": true,
+      "exit_progress": 1.0,
+      "outcome": "playing",
+      "summary": {
+        "crude": 177.79999999993697,
+        "evacuated": 0,
+        "exit_progress": 1.0,
+        "fuel": 18.20875000001088,
+        "materials": 106.52000000003972,
+        "outcome": "playing",
+        "people": 7,
+        "phase": "evacuation",
+        "power": 14.0,
+        "power_capacity": 24.0,
+        "pursuit_eta": 542.6642857139445,
+        "salvage": 39.48000000002394,
+        "supplies": 21.022500000005582,
+        "time": 1574.149999999116,
+        "zombies": 100
+      },
+      "truck_distance": 17.11724281311035,
+      "truck_state": "idle"
+    },
+    "errors": [
+      "actual funded exit job records140materials45fuel30supplies",
+      "full route and loaded withdrawal completed",
+      "truthful powered exit and truck/survivor victory"
+    ],
+    "diagnosis": "The route queried the encoded public save payload as a raw Dictionary, so it falsely reported missing actual exit payment and stopped before the final move order. The saved exit job is funded/delivered/done with140materials45fuel30supplies. Automatic slot time summaries have the same encoded-shape bug; their files/schema were valid. Correcting diagnostic decoding does not change campaign rules. A fresh whole native run is required; this prefix is not relabeled accepted."
+  },
   "configuration_sha256": {
     "project.godot": "97e32c5cd943d6fbff681c54611d919cbe4a10649a9dc306b140ae8bb01f84fa",
     "main.tscn": "adf348911449e73f956fabed42b487d062ad633b7577a4c6d07018f59498341c",
@@ -365,6 +540,8 @@
   "raw_text_sha256": {
     "campaign-preflight-parcels.txt": "5b1f1f9754a1be633ecf099a3764b1caff05b895989e0da4625f82dde20a18b6",
     "campaign-preflight.txt": "bc68e26e67ec80c425ebe4bcc3a7d29ea2ef6a66aca192703a3aecc61ec9dd12",
+    "campaign-record-final.txt": "7b8872d5fbc2f3e5fd12aa0c67c08b213dbdc724791371e1970b912ba0ff416c",
+    "candidate-corrected-import.txt": "bd175cdf7c9db6376ff16d7e39ebc7f084e899ed5358467e834bf6e8bdbe9165",
     "candidate-final-import.txt": "0ce7f15b789bf9a60441a1db5ad2cb13bb3f8016f3f19b53127f066a6d9b1159",
     "candidate-import.txt": "0ce7f15b789bf9a60441a1db5ad2cb13bb3f8016f3f19b53127f066a6d9b1159",
     "editor-prepare-earlier.txt": "70b9a2d0c15c714e264b629fe165db4f0d14f0e1a0036858880bfc0cb32d8153",
@@ -379,6 +556,7 @@
     "engine-time-scale-rejected.txt": "fadc264e04b5d61a6a73b804e01d2acba5c7fc3ea3c8b01107ccc3dd4956d022",
     "external-native-script-probe.gd.txt": "47d0ca89459db16f19e10c27ae67532d4855a8cdd6662da11c72a87bf6f6e8a5",
     "external-native-script-probe.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-full-2a00-rejected.txt": "cf4ce1c7989d90db3298f4f88fc9b7e0d1c6c07040f635b5419624bddef956f6",
     "native-release-help.txt": "a3662ddef4c374681611b6c61c8ec6f48d6d350abb884785043466415db9986e",
     "route-compile.txt": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e",
     "runner-compile.txt": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e",
@@ -390,15 +568,33 @@
     "startup-source-unknown_mission.txt": "14441cb479084a97a7baabd12ce1d2b6aadd09812eb58fbc85d5b9937286ce43"
   },
   "record_json_sha256": {
+    "campaign-record-fixture-provenance.json": "6c141bc6969880d3c2d9846678db9341740a5e63336f579ebc75dcb1ca6170f7",
     "editor-prepare-earlier.json": "7b7275634eafa34fcdd0ffeaec50ff52aa95ade35841632e9799833382cd7735",
     "editor-prepare-final.json": "e154c113b0a8ec3bc7240104d74d460cee743068d5dd72039af9e0a68d276b7e",
     "engine-negative-summary.json": "4359ae8098002ccbeed951062ed6a3923523a71db682ba964f7980906db4255d",
     "external-script-capability.json": "8e877eec77ef1012172801079bbec6e53e62c6d298ab8194c2d2c305f690dc00",
+    "native-full-2a00-failure-analysis.json": "a6686850660b0c984cf6b2a0517f58052d5d18601ae6b66f7479c62922697f7a",
+    "native-full-2a00-final-state-rejected.json": "94f0b5e4c623cc23af1c47c637792b05d8d999c9c89d8e3965035754c0080e4a",
+    "native-full-2a00-game-report-rejected.json": "2ac34a61e15dbf0e034d2bb3900d9fdd92add6c5150bb41d9f089202ddf63b49",
+    "native-full-2a00-original-checksums.json": "1bf9597af9dad051c7152696830886c09410f1c1066e9593ce9482ff4eebd281",
+    "native-full-2a00-rejection-manifest.json": "c216bc175020faacc33e7142ed3383306608993d087c807b2c684626f11d0a7f",
+    "native-full-2a00-tested-build-info.json": "0c3a0869553ad71198c63d4bc81881dcc92e9104ab3e8affa3b2f97aaea52073",
+    "native-full-2a00-verifier-rejected.json": "4e87559fb022dc295dd097c21dc69846f4458b6f87ce3434615801edc25492a7",
     "startup-refusal-baseline.json": "cf9f7e5ece1802946744223d969326ba2e676008f13465f2b3ba884f9901a32a",
     "startup-rejection-source-final.json": "e02ce0c1e53fa73524b70ab2b15b200ffec0fd3610c837179cdb5fc7d3d33d1a",
     "wrapper-checks.json": "75d0d2478ac5ce9481bc2c92f045fdd3ce6891b7f80c0a7abd48a329d97e7ffa"
   },
   "verified_this_iteration": {
+    "campaign_record_actual_fixture": {
+      "checks": 94,
+      "failures": 0,
+      "corrupted_copy_cases": 16,
+      "fixture_sha256": "94f0b5e4c623cc23af1c47c637792b05d8d999c9c89d8e3965035754c0080e4a",
+      "scope": "Read-only source diagnostic extraction/validation against the unchanged actual failed native final save; no full native victory claim.",
+      "test_source_sha256": "9e64ddd4b1b8a04425685c81b4ab1138689dc7965bde0b5529530c2a82a570c7",
+      "route_source_sha256": "f12b5abd49c9274a94be3d62be95124005347f914050097fe7ede724650d1432",
+      "runner_source_sha256": "46cefd1eaf2d7cbeca0fb74284f9a1d8f6d8de1052bd4798733d543b827fbb29"
+    },
     "static_preflight": {
       "checks": 73,
       "failures": 0,
@@ -409,7 +605,7 @@
       "checks": 3,
       "failures": 0,
       "runner_sha256": "1418742d27abbeefd031a318c08927147a361cc83839551bc644dd01cd7c9998",
-      "scope": "Negative actual engine flags rejected before static preflight; headless only, no campaign; runner source hash belongs to the recorded guard snapshot before later observer/prepare additions, not silently relabeled as the final whole runner.",
+      "scope": "Negative actual engine flags rejected before static preflight; headless only, no campaign; runner hash belongs to the recorded guard snapshot before later observer/prepare/record additions, not the final whole runner.",
       "records": [
         {
           "case": "fixed-fps",
@@ -461,12 +657,18 @@
       "cases": 3,
       "passed_checks": 15,
       "scope": "Actual Main source startup processes for campaign/render missing isolation and unknown mission; each expected exit2, no script/error/leak output or player files, unchanged source before/after. Native-build mode remains pending.",
-      "original_report": "startup-rejection-source-final.json"
+      "original_report": "startup-rejection-source-final.json",
+      "source_binding": {
+        "differences_from_corrected_candidate": [
+          "scripts/diagnostics/campaign_runner.gd"
+        ],
+        "scope": "The original three actual-Main source rejections retain unchanged-before/after proof for their stage. Later diagnostic record decoding changed the runner; new packed rejection checks remain pending the corrected export."
+      }
     },
     "engine_input_final": {
       "checks": 48,
       "failures": 0,
-      "scope": "Actual engine-event dispatch on pre-startup-refusal-fix Main; not relabeled exact final Main. Wrong-XDG preliminary refusal is separate."
+      "scope": "Actual engine-event dispatch on pre-startup-refusal-fix Main; original record retained, not relabeled exact corrected Main. Wrong-XDG preliminary refusal is separate."
     },
     "editor_prepare_final": {
       "native_export_proof": false,
@@ -498,9 +700,11 @@
       "source_binding": {
         "differences_from_frozen_candidate": [
           "project.godot",
+          "scripts/diagnostics/campaign_route.gd",
+          "scripts/diagnostics/campaign_runner.gd",
           "scripts/main.gd"
         ],
-        "scope": "Original source/configuration hashes are retained. Editor prepare predates the narrow Main startup-refusal fix and documentation version metadata update; it is not relabeled exact final Main or native evidence."
+        "scope": "Original source/configuration binding is retained. This editor prepare predates the Main startup-refusal and later diagnostic-record corrections and the documentation version update. Not relabeled exact final runtime/native/full-campaign evidence."
       }
     },
     "wrapper_gating_and_filesystem_checks": {
@@ -552,7 +756,7 @@
   },
   "native_campaign_evidence": {
     "status": "pending matching clean committed export and complete native run",
-    "expected_isolation": "work/native-campaign-v061-full",
+    "expected_isolation": "work/native-campaign-v061-full-corrected",
     "final_game_report": "output/campaign-validation.json",
     "independent_launcher_report": "verification.json",
     "progress_only": "output/campaign-progress.json",
@@ -560,7 +764,7 @@
   },
   "native_performance": {
     "status": "pending separately after exact-payload full campaign",
-    "expected_isolation": "work/benchmarks/native-v061-full",
+    "expected_isolation": "work/benchmarks/native-v061-corrected",
     "required_warmup_per_zoom": 120,
     "required_measured_frames_per_zoom": 3600,
     "historical_fps_reused": false

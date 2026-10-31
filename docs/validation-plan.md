@@ -293,7 +293,7 @@ Run the wrapper after a clean committed export, from a source checkout that cont
 ```bash
 DISPLAY=:0 python3 tools/run_native_campaign.py \
   --build-dir "$PWD/builds/linux-release" \
-  --isolation-root "$PWD/work/native-campaign-v061-full" \
+  --isolation-root "$PWD/work/native-campaign-v061-full-corrected" \
   --max-seconds 900
 ```
 
@@ -304,3 +304,7 @@ Use a different fresh root for `--prepare-only`. The launcher verifies source-co
 A subsequent actual Main negative startup probe exposed processing before world initialization after a queued diagnostic refusal. Main now disables processing/input before quitting for validation rejection or unknown mission. The original nil-access baseline and clean fixed expected-exit2 output remain separate. Editor-prepare and48input records before this narrow negative-path fix are not claimed as exact final-Main evidence.
 
 The final actual-Main source startup regression runs three isolated cases: campaign validation without its dedicated root, render validation without its root, and an unknown mission. All15checks pass, each process returns expected exit2 with the intended marker, and no script/error/leak output, settings/saves or source drift occurs. The Python test can target a native build after export; that mode is not claimed by the source result.
+
+The first actual unpacked0.6.1 run at2a00 is a retained failed full-campaign attempt, not a completed route. It advances31483normal0.05second Main ticks/1574.15simulation seconds without clock discrepancies, preserves a real loaded-withdrawal disk checkpoint at911.8seconds, observes3home/4middle deliveries and ten valid automatic-file changes, then stops at a finished powered exit. Diagnostic extraction incorrectly interpreted the tagged public save Dictionary, so the paid-job assertion failed before final movement. The final state isplaying, evacuated0, truck17.117tiles from exit. Its exact original report, wrapper, process log, encoded final state and package identities are retained under0.6.1 evidence and the outer rejected snapshot.
+
+The original encoded job is funded/delivered/done with140materials/45fuel/30supplies; actual automatic-save times decode1452.0 and1316.95, while their old report summaries were null. The corrected source record suite passes94checks against the byte-identical real final-state fixture, verifies observation leaves complete simulation/RNG unchanged, and rejects16corrupted copies. This proves the diagnostic correction against actual data, not native victory. The entire native route must be rerun from a fresh exported/unpacked payload, with a fresh frame report for that payload; acceptance requirements remain unchanged.

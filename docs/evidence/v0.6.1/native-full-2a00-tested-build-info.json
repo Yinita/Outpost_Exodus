@@ -1,0 +1,22 @@
+{
+  "project": "逐营突围 / Outpost Exodus",
+  "version": "0.6.1-dev",
+  "source_commit": "2a00c7e97ff7954b0756bc49445866d92aec6b07",
+  "source_tree": "7af48dddf2e8dba9825335cc07ef4640fc265283",
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "platform": "linux x86_64 official release template",
+  "development_build": true,
+  "steam_ready": false,
+  "native_launch_verified_here": true,
+  "native_render_measured_here": true,
+  "performance_measurement_is_not_minimum_hardware_or_60fps_acceptance": true,
+  "validation": "See source docs/validation-plan.md and docs/current-checkpoint.md for exact evidence and limits.",
+  "sha256": {
+    "outpost-exodus.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+    "outpost-exodus.pck": "904bfaa6f2a644bf598a0e0592746de370294cc307ad76a239b49d6237920694",
+    "FONT-NOTICE.txt": "5bb218343ded506b258d86186d460fc47d9b6b28f0e642cf32676c396b7df763",
+    "GODOT-LICENSE.txt": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
+    "GODOT-COPYRIGHT.txt": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d",
+    "native-render-measurement.json": "b39753aac4ec3a2a9e5eb68dc4853e2e918b37aab7a52d8c038a5db2a393095a"
+  }
+}

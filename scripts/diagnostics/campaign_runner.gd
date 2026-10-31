@@ -318,7 +318,7 @@ func _write_progress() -> void:
 func _slot(path: String) -> Dictionary:
 	var read: Dictionary = app.save_store.read(path)
 	return {"path": ProjectSettings.globalize_path(path), "exists": FileAccess.file_exists(path), "schema_valid": bool(read.get("ok", false)) and app._validate_save_payload(read.get("data", {})),
-		"sha256": FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "", "simulation_time": read.get("data", {}).get("payload", {}).get("time", null)}
+		"sha256": FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "", "simulation_time": CampaignRoute.serialized_dictionary(read.get("data", {}).get("payload")).get("time", null)}
 
 
 func _finish() -> void:

@@ -21,10 +21,10 @@ The final editor-capable prepare probe reached20 actual Main ticks/one simulatio
 | campaign-preflight.txt | 60 checks/0 failures | Earlier pre-observer static guard run, retained historically |
 | engine-negative-summary.json and engine-*-rejected.txt | Three expected exit 2 rejections | Actual fixed FPS/time-scale/disabled-render engine arguments before `--`, headless only |
 | wrapper-checks.json | 38 report gates +9 filesystem guards,0 failures | Synthetic verifier/disposable filesystem checks, not native execution |
-| editor-prepare-final.json/.txt | 20 Main ticks/1 simulation second; real disk roundtrip equal | Editor prepare before startup-refusal fix, native/full flags false; no loaded withdrawal |
+| editor-prepare-final.json/.txt | 20 Main ticks/1 simulation second; real disk roundtrip equal | Editor prepare before startup-refusal and diagnostic-record fixes, native/full flags false; no loaded withdrawal |
 | engine-input-final.txt | 48 checks/0 failures | Existing engine-event dispatch before startup-refusal fix |
 | engine-input-isolation-refused.txt | Expected exit2 refusal | Preliminary wrong test XDG path, not a product failure |
-| candidate-final-import.txt | Exit0 | Import/UID generation before the narrow Main startup-refusal fix |
+| candidate-final-import.txt | Exit0 | Import/UID generation before the narrow Main startup-refusal and diagnostic-record fixes |
 | startup-rejection-source-final.json and startup-source-*.txt | 3 actual Main source cases,15 checks pass; all expected exit2 | Campaign/render missing-isolation and unknown-mission exits; no script errors/leaks, player files or source drift |
 | editor-prepare-earlier.json/.txt | 20Main ticks/1 simulation second | Earlier editor-capable prepare snapshot, native/full flags false |
 | runner-compile.txt / route-compile.txt / candidate-import.txt | Exit0 compilation/import snapshots | Syntax/import evidence at the recorded stage; final native route still pending |
@@ -44,18 +44,30 @@ After clean commit/export:
 ```bash
 DISPLAY=:0 python3 tools/run_native_campaign.py \
   --build-dir "$PWD/builds/linux-release" \
-  --isolation-root "$PWD/work/native-campaign-v061-full" \
+  --isolation-root "$PWD/work/native-campaign-v061-full-corrected" \
   --max-seconds 900
 ```
 
 The wrapper refuses nonempty or unsafe isolation roots rather than deleting runs. Progress is written to `output/campaign-progress.json`, final game proof to `output/campaign-validation.json`, and independent launcher verdict to `verification.json`. Exact full-campaign and native performance reports accompany their actual payload separately after this candidate snapshot. Human playability/listening, full physical input, nativeWindows/clean installs, final art/accessibility/license acceptance, minimum hardware/stable frame pacing and Steam review remain open.
 
-The pre-startup-fix editor prepare report retains actual raw engine arguments, stable focus observations and source hashes. Its real disk continuation is an initial-state prepare check, not the loaded outbound withdrawal required by full native acceptance. The preliminary input-suite invocation used the wrong XDG directory and was refused before testing; the corrected invocation passes48checks and is kept separately.
+The pre-startup/record-fix editor prepare report retains actual raw engine arguments, stable focus observations and source hashes. Its real disk continuation is an initial-state prepare check, not the loaded outbound withdrawal required by full native acceptance. The preliminary input-suite invocation used the wrong XDG directory and was refused before testing; the corrected invocation passes48checks and is kept separately.
 
-The editor prepare and48check input records predate the later Main startup-refusal fix; their original source/configuration binding is retained and they are not relabeled as exact final-runtime evidence. The negative engine-flag summary likewise retains its own earlier runner hash before later observer/prepare additions. Final native prepare/full checks must bind the actual exported payload.
+The editor prepare and48check input records predate the later Main startup-refusal and diagnostic-record fixes; their original source/configuration binding is retained and they are not relabeled as exact final-runtime evidence. The negative engine-flag summary likewise retains its own earlier runner hash before later observer/prepare additions. Final native prepare/full checks must bind the actual exported payload.
 
 ## Rejected startup-entry defect
 
 `startup-refusal-baseline-rejected.txt` is a real product startup defect, separate from a test fixture refusing an incorrect XDG directory: after the campaign guard correctly refused unsafe startup and queued exit2, Main still processed before its world existed and accessed nil `world.motion`. The correction disables processing/input before the queued quit. `startup-refusal-fixed.txt` records the actual Main negative entry returning expected exit2 without script/error/leak output. The original baseline remains rejected; focused source/packed startup cases are recorded separately as they complete. `startup-refusal-baseline.json` records the previously frozen Main hash and the limits of the retained source snapshot.
 
 The final source startup regression executes actual Main for missing campaign isolation, missing render isolation and unknown mission. All three return expected exit2 with the correct refusal marker, no script/error/leak output and no settings/save artifacts; source hashes remain unchanged before/after. The native-build option of this Python test has not yet run at this candidate snapshot.
+
+## Rejected actual packed full-campaign run at2a00
+
+The actual unpacked Linux ZIP at commit`2a00c7e97ff7954b0756bc49445866d92aec6b07` ran the real Main loop for1574.15simulation seconds/525.582397game-wall seconds, observing31483fixed0.05second ticks with no invalid timestep. It retained the real loaded-withdrawal disk checkpoint at911.8seconds with full simulation/RNG/UI equality, three home/four middle deliveries and ten valid automatic-file changes. The exit actually completed and remained powered.
+
+The complete run nevertheless failed: its route verifier read the public save's tagged encoded Dictionary as raw fields and falsely missed the paid exit job, stopping before the final move order. `native-full-2a00-final-state-rejected.json` retains actual job286/frontcamp210/building19, funded/delivered/done for140materials/45fuel/30supplies. Automatic primary/backup summary times were null for the same decoding reason; their actual saved times and hashes are decoded read-only in `native-full-2a00-failure-analysis.json`.
+
+At stop the game was still`playing`, evacuated0, with the command truck17.117tiles from the exit. Therefore neither a completed powered exit nor this successful prefix proves final victory or a complete native campaign. Original game report, independent wrapper report, process log, full final encoded state and package identities remain unchanged. All three original source/Linux/Windows ZIPs and the entire failed run are separately retained under outer`outputs/rejected/outpost-exodus-0.6.1-dev-2a00c7e-native-verifier/`, with original checksums. The corrected diagnostic decoder must be committed/exported and the entire route rerun in fresh isolation; no campaign rule or acceptance scope is weakened.
+
+The corrected diagnostic record checks load the unchanged actual failed final-state fixture and pass94checks/0failures. They recover the real paid exit job and saved time, reject16corrupted copies, and verify complete simulation/RNG is unchanged by observation. These are source-level record tests, not final native victory. The original fixture SHA is`94f0b5e4c623cc23af1c47c637792b05d8d999c9c89d8e3965035754c0080e4a`; its provenance is retained separately.
+
+`candidate-corrected-import.txt` records clean import/UID generation after the diagnostic record correction. The current actual-fixture94check result is source-level evidence for the corrected helpers. A new commit/export, full native frame/smoke/package checks, extraction and complete native route are still pending this refreshed candidate; neither the old2a00 full failure nor its earlier valid frame report is relabeled. Fresh roots are`native-v061-corrected` and`native-campaign-v061-full-corrected`, with a new unpacked directory.

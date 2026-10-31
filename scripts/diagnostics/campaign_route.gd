@@ -286,10 +286,43 @@ func _exit_powered() -> bool:
 func _exit_job_record(front_id: int) -> Dictionary:
 	# Public serialized state retains actual paid job records, including completed
 	# exit work. Reading it neither pays resources nor calls the power allocator.
-	var saved: Dictionary = _sim().save_state()
-	for job: Dictionary in Dictionary(saved.get("payload", {})).get("jobs", []):
-		if str(job.get("kind", "")) != "exit" or int(job.get("building_id", 0)) != int(_sim().exit_building_id) or int(job.get("source_camp_id", 0)) != front_id: continue
-		var costs: Dictionary = job.get("costs", {})
-		if bool(job.get("funded", false)) and is_equal_approx(float(costs.get("materials", 0.0)), 140.0) and is_equal_approx(float(costs.get("fuel", 0.0)), 45.0) and is_equal_approx(float(costs.get("supplies", 0.0)), 30.0):
-			return {"id": int(job.id), "building_id": int(job.building_id), "source_camp_id": front_id, "funded": true, "done": bool(job.get("done", false)), "costs": costs.duplicate(true)}
+	return extract_exit_job(_sim().save_state(), front_id, int(_sim().exit_building_id))
+
+
+static func serialized_dictionary(value: Variant) -> Dictionary:
+	# Version1 encodes Dictionary as tagged entries to preserve typed keys.
+	# Decode one string-field map only; nested values retain their encoded form.
+	if not value is Dictionary or value.get("$type") != "Dictionary" or not value.get("entries") is Array: return {}
+	var result: Dictionary = {}
+	for pair: Variant in value.entries:
+		if not pair is Array or pair.size() != 2 or not pair[0] is String or result.has(pair[0]): return {}
+		result[pair[0]] = pair[1]
+	return result
+
+
+static func extract_exit_job(saved: Dictionary, front_id: int, exit_id: int) -> Dictionary:
+	var payload: Dictionary = serialized_dictionary(saved.get("payload"))
+	var jobs: Variant = payload.get("jobs", [])
+	if not jobs is Array: return {}
+	for raw: Variant in jobs:
+		var job: Dictionary = serialized_dictionary(raw)
+		if job.get("kind") != "exit" or not _saved_id(job.get("building_id"), exit_id) or not _saved_id(job.get("source_camp_id"), front_id): continue
+		var complete: bool = true
+		for flag: String in ["funded", "delivered", "done"]:
+			if not job.get(flag) is bool or not bool(job[flag]): complete = false
+		if not complete: continue
+		var costs: Dictionary = serialized_dictionary(job.get("costs"))
+		if costs.size() != 3: continue
+		var exact: bool = true
+		for key: String in ["materials", "fuel", "supplies"]:
+			var value: Variant = costs.get(key)
+			var expected: float = float({"materials": 140.0, "fuel": 45.0, "supplies": 30.0}[key])
+			if not (value is int or value is float) or not is_finite(float(value)) or absf(float(value) - expected) > 0.000001: exact = false
+		var job_id: Variant = job.get("id")
+		if exact and (job_id is int or job_id is float) and is_finite(float(job_id)) and float(job_id) > 0.0 and float(job_id) == floorf(float(job_id)):
+			return {"id": int(job.id), "building_id": exit_id, "source_camp_id": front_id, "funded": true, "delivered": true, "done": true, "costs": costs.duplicate(true)}
 	return {}
+
+
+static func _saved_id(value: Variant, expected: int) -> bool:
+	return (value is int or value is float) and is_finite(float(value)) and float(value) > 0.0 and float(value) == float(expected)

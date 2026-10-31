@@ -1,0 +1,7 @@
+CAMPAIGN_VALIDATION_FAILURE actual funded exit job records140materials45fuel30supplies
+CAMPAIGN_VALIDATION_FAILURE full route and loaded withdrawal completed
+CAMPAIGN_VALIDATION_FAILURE truthful powered exit and truck/survivor victory
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+CAMPAIGN_VALIDATION_REPORT /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v061-full/output/campaign-validation.json complete=false errors=3

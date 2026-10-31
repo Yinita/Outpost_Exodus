@@ -7,17 +7,17 @@ First commit/export a clean candidate. Run the native frame measurement and star
 ```bash
 DISPLAY=:0 python3 tools/run_native_campaign.py \
   --build-dir "$PWD/builds/linux-release" \
-  --isolation-root "$PWD/work/native-campaign-v061-full" \
+  --isolation-root "$PWD/work/native-campaign-v061-full-corrected" \
   --max-seconds 900
 ```
 
 The independent native frame measurement uses:120 warmup plus3600 measured frames per zoom,max-seconds300, real32 friendly / 100 enemy busy fixture, actual completed deliveries/construction and valid forced saves. Do not run other correctness or performance jobs concurrently.
 
 ```bash
-BENCH_ISOLATION_ROOT="$PWD/work/benchmarks/native-v061-full" \
-XDG_DATA_HOME="$PWD/work/benchmarks/native-v061-full/data" \
-XDG_CONFIG_HOME="$PWD/work/benchmarks/native-v061-full/config" \
-XDG_CACHE_HOME="$PWD/work/benchmarks/native-v061-full/cache" \
+BENCH_ISOLATION_ROOT="$PWD/work/benchmarks/native-v061-corrected" \
+XDG_DATA_HOME="$PWD/work/benchmarks/native-v061-corrected/data" \
+XDG_CONFIG_HOME="$PWD/work/benchmarks/native-v061-corrected/config" \
+XDG_CACHE_HOME="$PWD/work/benchmarks/native-v061-corrected/cache" \
 DISPLAY=:0 ./builds/linux-release/outpost-exodus.x86_64 -- \
   --render-diagnostics --frames=3600 --warmup=120 --max-seconds=300
 ```
@@ -25,3 +25,9 @@ DISPLAY=:0 ./builds/linux-release/outpost-exodus.x86_64 -- \
 Bind final frame/soak reports to their unchanged executable/PCK hashes and source commit/tree, and re-read the ordinary automatic primary/rotated backup using the current schema. Preserve any failed attempt and diagnose it without weakening workload, clock or victory checks. No0.6.1 full-native or performance pass exists at this source-candidate snapshot. These checks do not close human playability/listening, Windows/clean-machine, minimum hardware/frame pacing, final asset/accessibility/license or Steam gates.
 
 Run full-campaign and frame jobs sequentially; the order above permits the complete route to exercise the actual packaged download. The EXE/PCK hashes must remain identical across export, measurement, packaging, extraction and route acceptance. Archive metadata/CRC and native executable permissions are separate installation checks.
+
+## Retained2a00 attempts before diagnostic record correction
+
+The original2a00 native frame report passed both3600frame workloads and real saves, with mean59.679/59.522FPS. It remains bound to that old payload and does not prove the corrected candidate's performance. Its actual unpacked full campaign then failed after1574.15simulation seconds: the verifier misread encoded saved dictionaries at the paid exit and stopped before final movement. The whole route is rejected, despite its genuine main-loop/checkpoint/transport prefix. All original packages/checksums and the full failed run remain in outer`outputs/rejected/outpost-exodus-0.6.1-dev-2a00c7e-native-verifier/`.
+
+After the pure diagnostic decoder correction, run new exact-payload frame/smoke/package checks and a whole fresh native campaign. Use fresh isolation paths such as`work/benchmarks/native-v061-corrected` and`work/native-campaign-v061-full-corrected`; never overwrite or relabel the rejected run.
