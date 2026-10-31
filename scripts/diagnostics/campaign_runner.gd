@@ -4,6 +4,7 @@ extends Node
 const RenderRunner = preload("res://scripts/diagnostics/render_runner.gd")
 const CampaignRoute = preload("res://scripts/diagnostics/campaign_route.gd")
 const Simulation = preload("res://scripts/campaign_simulation.gd")
+const FrameSampler = preload("res://scripts/diagnostics/frame_sampler.gd")
 const STEP_SECONDS: float = 0.05
 const SOAK_CYCLES: int = 7
 const SOAK_MINIMUM_WALL_SECONDS: int = 3600
@@ -17,6 +18,8 @@ var report: Dictionary = {}
 var checks: int = 0
 var output_dir: String = ""
 var phase: String = "starting"
+var frame_phase: String = "other"
+var _frame_sampler: RefCounted = FrameSampler.new()
 var _started_usec: int = 0
 var _deadline_usec: int = 0
 var _last_progress_usec: int = 0
@@ -121,6 +124,10 @@ func _ready() -> void:
 	call_deferred("_run")
 
 
+func _exit_tree() -> void:
+	_frame_sampler.stop()
+
+
 func _run() -> void:
 	# Freshness is validated once by Main, before settings or a campaign exist.
 	var config: Dictionary = parse_arguments(OS.get_cmdline_user_args())
@@ -135,6 +142,7 @@ func _run() -> void:
 		printerr("CAMPAIGN_VALIDATION_REFUSED output directory cannot be created")
 		get_tree().quit(2)
 		return
+	_frame_sampler.start(_frame_context)
 	if _soak_mode:
 		await _run_soak(config)
 		return
@@ -214,6 +222,8 @@ func soak_display_snapshot(captured_image_size: Vector2i = Vector2i.ZERO) -> Dic
 
 func _reset_cycle_observer() -> void:
 	_observing = false
+	frame_phase = "other"
+	_frame_sampler.begin_cycle()
 	report = {}
 	_cycle_sealed = false
 	_cycle_started_usec = Time.get_ticks_usec()
@@ -231,6 +241,22 @@ func _reset_cycle_observer() -> void:
 	_previous_transport = false
 	_deliveries.clear()
 	_auto_changes = 0
+
+
+func set_frame_phase(value: String) -> void:
+	# Fixed-key sampler bounds unknown phases into its explicit other bucket.
+	frame_phase = value
+
+
+func _frame_context() -> Dictionary:
+	var state: String = "active"
+	if not app.started: state = "not_started"
+	elif not app.menu.is_empty(): state = "menu"
+	elif str(app.sim.outcome) != "playing": state = "non_playing"
+	elif bool(app.sim.paused): state = "paused"
+	elif app._window_suspended or get_window().mode == Window.MODE_MINIMIZED or not get_window().has_focus(): state = "unfocused"
+	elif not _observing: state = "outside_cycle"
+	return {"state": state, "phase": frame_phase}
 
 
 func _begin_campaign_observation() -> bool:
@@ -449,6 +475,7 @@ func _observe_deliveries() -> void:
 
 
 func save_and_reload(label: String) -> bool:
+	var operation_start_usec: int = Time.get_ticks_usec()
 	var mission_before: Dictionary = _live_mission_identity()
 	var before_refresh: String = _normalized(app.sim.save_state())
 	# Main refreshes this derived read-only hint on load. Synchronize the saved
@@ -466,9 +493,12 @@ func save_and_reload(label: String) -> bool:
 	var mission_equal: bool = _mission_matches(mission_before, true) and _mission_matches(mission_on_disk, false, true) and _mission_matches(mission_after, true)
 	var simulation_equal: bool = loaded and simulation_before == _normalized(app.sim.save_state())
 	var ui_equal: bool = loaded and _normalized(before.ui) == _normalized(app._save_payload().ui)
+	var operation_end_usec: int = Time.get_ticks_usec()
 	var result: Dictionary = {"label": label, "write_success": wrote, "disk_schema_valid": disk_valid, "load_success": loaded,
 		"mission_before": mission_before, "mission_on_disk": mission_on_disk, "mission_after": mission_after, "mission_equal": mission_equal,
 		"read_only_guide_refreshed_before_save": true,
+		"observed_operation_span": {"start_usec": operation_start_usec, "end_usec": operation_end_usec, "elapsed_usec": operation_end_usec - operation_start_usec,
+			"scope": "Actual save/read/load and equality observation wall span. Frame sampler continues across it; no I/O pause is hidden or clock rebased."},
 		"full_simulation_equal": simulation_equal, "full_ui_equal": ui_equal, "simulation_sha256": simulation_before.sha256_text(),
 		"file_sha256": FileAccess.get_sha256(app.SAVE_PATH) if wrote else "", "simulation_time": float(app.sim.time),
 		"success": wrote and disk_valid and loaded and simulation_equal and ui_equal and mission_equal}
@@ -603,6 +633,7 @@ func _seal_cycle() -> void:
 		var stability: Dictionary = _stability_snapshot(label)
 		report["stability_after"] = stability
 		_soak_report.stability_samples.append(stability)
+	report["rendered_frame_timing"] = _frame_sampler.end_cycle()
 	report["checks"] = checks - _cycle_checks_start
 	report["errors"] = failures.duplicate()
 	report["wall_elapsed_seconds"] = float(Time.get_ticks_usec() - _cycle_started_usec) / 1000000.0
@@ -626,6 +657,7 @@ func _finish() -> void:
 	finished = true
 	_seal_cycle()
 	_observing = false
+	_frame_sampler.stop()
 	app.set_process(false)
 	app.set_process_unhandled_input(false)
 	if _soak_mode: _seal_soak()
@@ -634,6 +666,7 @@ func _finish() -> void:
 
 func _seal_soak() -> void:
 	var elapsed: float = float(Time.get_ticks_usec() - _started_usec) / 1000000.0
+	_soak_report["rendered_frame_timing"] = _frame_sampler.snapshot_global()
 	_soak_report["final_display"] = soak_display_snapshot()
 	check(_soak_report.final_display.ready, "soak finishes at actual1920x1080 client and rendered viewport at UI scale1")
 	check(_soak_report.cycles.size() == SOAK_CYCLES and _soak_report.transitions.size() == SOAK_CYCLES - 1, "same Main completes all seven real campaigns and six public restarts")
@@ -723,6 +756,10 @@ func _source_hashes() -> Dictionary:
 	var helper: Node = RenderRunner.new()
 	var result: Dictionary = helper._source_hashes()
 	helper.free()
+	# Also bind the new sampler explicitly when imported-script enumeration
+	# cannot expose its source text from a release PCK.
+	var path: String = "res://scripts/diagnostics/frame_sampler.gd"
+	result[path] = {"status": "source_available", "sha256": FileAccess.get_sha256(path)} if FileAccess.file_exists(path) else {"status": "compiled/imported", "sha256": null}
 	return result
 
 

@@ -59,6 +59,7 @@ func run(controller: Node2D, monitor: Node) -> Dictionary:
 	if not observer.check(points == route_config.landmarks, "route landmarks match the actual selected mission"):
 		return _failed()
 	var home_id: int = int(_sim().camps[0].id)
+	observer.set_frame_phase("opening")
 	_production(home_id, "materials")
 	_mark("opening", {"home_id": home_id})
 	if not await observer.capture("opening", route_config.opening_capture): return _failed()
@@ -75,6 +76,7 @@ func run(controller: Node2D, monitor: Node) -> Dictionary:
 		# Ridge's nearby southern cache otherwise crowds the depot approach.
 		_sim().command_task(_army_ids(), "guard", route_config.home_loading_guard)
 		if not await observer.advance(float(route_config.home_loading_guard_seconds), "guard Ridge home loading approach"): return _failed()
+	observer.set_frame_phase("home_transfer")
 	if not observer.check(_sim().evacuate_camp(home_id), "home evacuation command accepted"):
 		return _failed()
 	if not await observer.wait_for(func() -> bool: return _home_crossed(home_id), 200.0, "home convoy and every friendly cross west gate"):
@@ -83,6 +85,7 @@ func run(controller: Node2D, monitor: Node) -> Dictionary:
 	if not observer.check(west_gate_was_sealed and bool(_sim().chokes[0].sealed), "west choke is actually sealed after friendly crossing"):
 		return _failed()
 	_mark("home_evacuated_and_west_sealed", {"home_deliveries": observer.deliveries_from(home_id)})
+	observer.set_frame_phase("middle_economy")
 	if not await _build("road", Vector2i(points.middle_road), 30.0, "middle_local_road"): return _failed()
 	if not await _build("generator", Vector2i(route_config.middle_generator), 30.0, "middle_generator"): return _failed()
 	if not await _build("workshop", Vector2i(route_config.middle_workshop), 35.0, "middle_workshop"): return _failed()
@@ -117,6 +120,7 @@ func run(controller: Node2D, monitor: Node) -> Dictionary:
 	if reserve > 0.0 and _stock(middle_id, "materials") < reserve:
 		if not await observer.wait_for(func() -> bool: return _stock(middle_id, "materials") >= reserve, 120.0, "produce retreat funding before packing"):
 			return _failed()
+	observer.set_frame_phase("middle_withdrawal")
 	_sim().command_task(_army_ids(), "guard", route_config.middle_guard)
 	if not observer.check(_sim().evacuate_camp(middle_id), "middle evacuation command accepted"):
 		return _failed()
@@ -148,6 +152,7 @@ func run(controller: Node2D, monitor: Node) -> Dictionary:
 	_mark("middle_deliberately_abandoned", {"stock_left": abandoned_stock.duplicate(true), "middle_deliveries": observer.deliveries_from(middle_id)})
 	if not await observer.wait_for(func() -> bool: return _last_truck_arrived(front_id), 70.0, "last loaded truck reaches forward camp"):
 		return _failed()
+	observer.set_frame_phase("forward_rebuild")
 	if not await observer.advance(35.0, "forward arrival and relocation buffer"): return _failed()
 	if not await _build("road", Vector2i(points.front_road), 25.0, "front_local_road"): return _failed()
 	if not await _build("generator", Vector2i(route_config.front_generator), 30.0, "front_generator"): return _failed()
@@ -164,6 +169,7 @@ func run(controller: Node2D, monitor: Node) -> Dictionary:
 	_mark("forward_exit_reserves", {"camp": _sim().get_camp(front_id).duplicate(true)})
 	# Stop outside capture radius and finish nearby power before the automatic
 	# paid exit job can consume the actual140materials/45fuel/30supplies.
+	observer.set_frame_phase("exit_build")
 	if not await _clear(route_config.exit_approach, 65.0, "clear_exit_approach"): return _failed()
 	if not await _build("road", Vector2i(points.exit_power), 90.0, "exit_power_road"): return _failed()
 	if not await _build("generator", Vector2i(points.exit_power), 45.0, "exit_local_generator"): return _failed()
@@ -177,6 +183,7 @@ func run(controller: Node2D, monitor: Node) -> Dictionary:
 	if not observer.check(not funded_exit.is_empty(), "actual funded exit job records140materials45fuel30supplies"):
 		return _failed()
 	_mark("exit_funded_and_complete", {"funded_job": funded_exit.duplicate(true)})
+	observer.set_frame_phase("exit_arrival")
 	if not await observer.capture("completed_powered_exit", points.exit): return _failed()
 	var everyone: Array = []
 	for unit: Dictionary in _sim().units:
