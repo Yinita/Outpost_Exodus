@@ -105,11 +105,12 @@ var _spatial_neighborhoods: Dictionary = {}
 var _spatial_valid: bool = false
 var _movement_units: Array = []
 var _walk_components: Dictionary = {}
-# Same-time derived paths. Terrain/ramps stay public fixture-editable state, so
+# Derived static paths. Terrain/ramps stay public fixture-editable state, so
 # exact private snapshots guard hits even when their arrays are edited in place.
 var _path_query_cache: Dictionary = {}
 var _path_query_cache_count: int = 0
-var _path_query_cache_time: float = -INF
+var _path_query_fifo: Array[Array] = []
+var _path_query_fifo_cursor: int = 0
 var _path_query_map_size: Vector2i = Vector2i.ZERO
 var _path_query_terrain_snapshot: Array = []
 var _path_query_ramps_snapshot: Dictionary = {}
@@ -538,9 +539,8 @@ func _find_path(origin: Vector2, destination: Vector2, team: String = "friendly"
 	# Resolve endpoints first, preserving the original navigation-index reads.
 	# Do not force a navigation rebuild for direct terrain/ramps edits: the old
 	# algorithm observes those values alongside its existing component index.
-	if _path_query_cache_time != time or _path_query_map_size != map_size or _path_query_terrain_snapshot != terrain or _path_query_ramps_snapshot != ramps:
+	if _path_query_map_size != map_size or _path_query_terrain_snapshot != terrain or _path_query_ramps_snapshot != ramps:
 		_clear_path_query_cache()
-		_path_query_cache_time = time
 		_path_query_map_size = map_size
 		_path_query_terrain_snapshot = terrain.duplicate(true)
 		_path_query_ramps_snapshot = ramps.duplicate(true)
@@ -548,17 +548,25 @@ func _find_path(origin: Vector2, destination: Vector2, team: String = "friendly"
 	if _path_query_cache.has(team) and _path_query_cache[team].has(key):
 		return _path_query_cache[team][key].duplicate()
 	var path: Array = _find_path_uncached(start, finish, team)
-	if _path_query_cache_count < PATH_QUERY_CACHE_LIMIT:
-		if not _path_query_cache.has(team): _path_query_cache[team] = {}
-		_path_query_cache[team][key] = path.duplicate()
+	if _path_query_cache_count == PATH_QUERY_CACHE_LIMIT:
+		var oldest: Array = _path_query_fifo[_path_query_fifo_cursor]
+		_path_query_cache[oldest[0]].erase(oldest[1])
+		if _path_query_cache[oldest[0]].is_empty(): _path_query_cache.erase(oldest[0])
+		_path_query_fifo[_path_query_fifo_cursor] = [team, key]
+		_path_query_fifo_cursor = (_path_query_fifo_cursor + 1) % PATH_QUERY_CACHE_LIMIT
+	else:
+		_path_query_fifo.append([team, key])
 		_path_query_cache_count += 1
+	if not _path_query_cache.has(team): _path_query_cache[team] = {}
+	_path_query_cache[team][key] = path.duplicate()
 	return path
 
 
 func _clear_path_query_cache() -> void:
 	_path_query_cache.clear()
 	_path_query_cache_count = 0
-	_path_query_cache_time = -INF
+	_path_query_fifo.clear()
+	_path_query_fifo_cursor = 0
 	_path_query_terrain_snapshot = []
 	_path_query_ramps_snapshot = {}
 

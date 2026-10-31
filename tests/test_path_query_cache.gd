@@ -96,24 +96,24 @@ func _test_time_and_navigation_invalidation() -> void:
 	var sim: CountedSimulation = _flat()
 	var expected: Array = sim._find_path(Vector2(1, 2), Vector2(5, 2))
 	sim.time += 0.05
-	_check(sim._find_path(Vector2(1, 2), Vector2(5, 2)) == expected and sim.path_computations == 2, "a new simulation time cannot hit a previous-time query")
+	_check(sim._find_path(Vector2(1, 2), Vector2(5, 2)) == expected and sim.path_computations == 1, "new simulation time reuses an exactly unchanged static query")
 	sim.time = 0.0
 	sim._find_path(Vector2(1, 2), Vector2(5, 2))
-	_check(sim.path_computations == 3 and sim._path_query_cache_count == 1, "rewinding simulation time starts a fresh bounded scope")
+	_check(sim.path_computations == 1 and sim._path_query_cache_count == 1, "time rewind alone cannot change a static path")
 	sim._invalidate_navigation()
 	_check(sim._path_query_cache_count == 0, "explicit navigation invalidation drops path entries immediately")
 	sim._find_path(Vector2(1, 2), Vector2(5, 2))
 	sim._ensure_navigation_index(true)
 	_check(sim._path_query_cache_count == 0, "forced navigation rebuild drops path entries immediately")
 	sim._find_path(Vector2(1, 2), Vector2(5, 2))
-	_check(sim.path_computations == 5, "forced rebuild cannot reuse a preceding path")
+	_check(sim.path_computations == 3, "forced rebuild cannot reuse a preceding path")
 	sim.buildings.append(_building(Vector2(3, 4)))
 	sim._find_path(Vector2(1, 2), Vector2(5, 2))
-	_check(sim.path_computations == 6, "actual navigation rebuild from building-count change invalidates paths")
+	_check(sim.path_computations == 4, "actual navigation rebuild from building-count change invalidates paths")
 	sim.buildings[0].pos = Vector2(3, 2)
-	_check(sim._find_path(Vector2(1, 2), Vector2(5, 2)) == expected and sim.path_computations == 6, "cache does not secretly force old same-time stale-building geometry to rebuild")
-	sim._ensure_navigation_index(true)
-	_check(not sim._find_path(Vector2(1, 2), Vector2(5, 2)).has(Vector2(3, 2)), "geometry relocation is observed when original navigation rebuilds")
+	_check(sim._find_path(Vector2(1, 2), Vector2(5, 2)) == expected and sim.path_computations == 4, "cache does not secretly force old same-time stale-building geometry to rebuild")
+	sim.time += 0.05
+	_check(not sim._find_path(Vector2(1, 2), Vector2(5, 2)).has(Vector2(3, 2)) and sim.path_computations == 5, "new-time geometry relocation triggers original navigation rebuild before a cache hit")
 	sim.buildings[0].hp = 0.0
 	sim._invalidate_navigation()
 	_check(sim._find_path(Vector2(1, 2), Vector2(5, 2)) == expected, "lethal geometry invalidation restores the original unobstructed path")
@@ -136,6 +136,9 @@ func _test_in_place_terrain_ramps_and_map_size() -> void:
 	_check(sim.path_computations == 4, "same-valued outer terrain replacement still preserves original navigation-source rebuild")
 	sim.map_size = Vector2i(7, 6)
 	_check(sim._find_path(Vector2(1, 2), Vector2(5, 2)) == first and sim.path_computations == 5, "map-size changes invalidate queries without forcing navigation")
+	sim.time += 0.05
+	sim.terrain[2][3] = -1
+	_check(not sim._find_path(Vector2(1, 2), Vector2(5, 2)).has(Vector2(3, 2)) and sim.path_computations == 6, "new-time in-place terrain edit cannot reuse old static path")
 	var ramps: CountedSimulation = _flat(2, 1)
 	ramps.terrain[0][1] = 1
 	ramps.ramps = {Vector2i.ZERO: true, Vector2i(1, 0): true}
@@ -147,6 +150,15 @@ func _test_in_place_terrain_ramps_and_map_size() -> void:
 	_check(ramps._find_path(Vector2.ZERO, Vector2(1, 0)) == [Vector2(1, 0)] and ramps.path_computations == 3, "same-time ramp restoration is observed with old component state intact")
 	ramps.ramps[Vector2i(1, 0)] = false
 	_check(ramps._find_path(Vector2.ZERO, Vector2(1, 0)) == [Vector2(1, 0)], "ramp values do not change original has-key traversal semantics")
+	ramps.time += 0.05
+	ramps.ramps.erase(Vector2i(1, 0))
+	_check(ramps._find_path(Vector2.ZERO, Vector2(1, 0)).is_empty() and ramps.path_computations == 5, "new-time ramp edit invalidates a static query")
+	var disconnected: CountedSimulation = _flat(2, 1)
+	disconnected.terrain[0][1] = 1
+	_check(disconnected._find_path(Vector2.ZERO, Vector2(1, 0)).is_empty(), "initial unequal elevation has separate original components")
+	disconnected.ramps = {Vector2i.ZERO: true, Vector2i(1, 0): true}
+	disconnected.time += 0.05
+	_check(disconnected._find_path(Vector2.ZERO, Vector2(1, 0)).is_empty() and disconnected.path_computations == 2, "adding ramps does not force-repair the original stale disconnected component index")
 
 
 func _test_bound_and_save_lifecycle() -> void:
@@ -155,13 +167,21 @@ func _test_bound_and_save_lifecycle() -> void:
 		_check(sim._find_path(Vector2(1, 1), Vector2(5, 1), "team_%d" % index) == [Vector2(2, 1), Vector2(3, 1), Vector2(4, 1), Vector2(5, 1)], "cache capacity never changes uncached path behavior")
 	var entries: int = 0
 	for team: String in sim._path_query_cache: entries += Dictionary(sim._path_query_cache[team]).size()
-	_check(entries == Simulation.PATH_QUERY_CACHE_LIMIT and sim._path_query_cache_count == entries, "hard entry limit applies across all teams")
+	_check(entries == Simulation.PATH_QUERY_CACHE_LIMIT and sim._path_query_cache_count == entries and sim._path_query_fifo.size() == entries, "hard entry and FIFO limits apply across all teams")
+	_check(sim._path_query_cache.size() == entries and not sim._path_query_cache.has("team_0"), "FIFO removes empty team buckets instead of growing an outer history")
 	var calls: int = sim.path_computations
+	sim._find_path(Vector2(1, 1), Vector2(5, 1), "team_17")
+	_check(sim.path_computations == calls, "FIFO retains the oldest not-yet-evicted entry")
 	sim._find_path(Vector2(1, 1), Vector2(5, 1), "team_0")
-	_check(sim.path_computations == calls, "full cache retains an existing query without eviction")
+	_check(sim.path_computations == calls + 1 and not sim._path_query_cache.has("team_17") and sim._path_query_cache.has("team_0"), "a hit does not reorder FIFO and a later miss evicts the original oldest entry")
+	var copied: Array = sim._find_path(Vector2(1, 1), Vector2(5, 1), "team_0")
+	copied.clear()
+	_check(not sim._find_path(Vector2(1, 1), Vector2(5, 1), "team_0").is_empty(), "eviction and reinsertion keep independently owned path returns")
 	sim.time += 0.05
-	sim._find_path(Vector2(1, 1), Vector2(5, 1))
-	_check(sim._path_query_cache_count == 1 and sim._path_query_cache.size() == 1, "new time releases preceding entries and team dictionaries")
+	sim._find_path(Vector2(1, 1), Vector2(5, 1), "team_0")
+	_check(sim.path_computations == calls + 1 and sim._path_query_cache_count == entries, "new time preserves static entries while the total structure stays bounded")
+	sim._invalidate_navigation()
+	_check(sim._path_query_fifo.is_empty() and sim._path_query_fifo_cursor == 0 and sim._path_query_cache.is_empty(), "navigation invalidation clears the whole FIFO lifecycle")
 	var campaign: CountedSimulation = CountedSimulation.new()
 	_check(campaign.reset(42, "ridge"), "real campaign resets normally")
 	var before: String = JSON.stringify(campaign.save_state(), "", false, true)
