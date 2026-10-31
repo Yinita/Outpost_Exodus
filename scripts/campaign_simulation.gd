@@ -36,6 +36,7 @@ const UNIT_RADII: Dictionary = {"rifle": 0.28, "engineer": 0.28, "worker": 0.24,
 const HIGH_GROUND_RANGE_BONUS: float = 1.0
 # Conservative axis bound for rejecting distant neighbors before radius lookup.
 const MAX_UNIT_RADIUS: float = 0.46
+const PATH_QUERY_CACHE_LIMIT: int = 128
 
 var time: float = 0.0
 var phase: String = "preparation"
@@ -104,6 +105,14 @@ var _spatial_neighborhoods: Dictionary = {}
 var _spatial_valid: bool = false
 var _movement_units: Array = []
 var _walk_components: Dictionary = {}
+# Same-time derived paths. Terrain/ramps stay public fixture-editable state, so
+# exact private snapshots guard hits even when their arrays are edited in place.
+var _path_query_cache: Dictionary = {}
+var _path_query_cache_count: int = 0
+var _path_query_cache_time: float = -INF
+var _path_query_map_size: Vector2i = Vector2i.ZERO
+var _path_query_terrain_snapshot: Array = []
+var _path_query_ramps_snapshot: Dictionary = {}
 # Filled only for the unit-update loop, in original units order. Targets stay
 # live references so movement, deaths and nearest-target ties remain unchanged.
 var _target_units_by_team: Dictionary = {}
@@ -407,6 +416,7 @@ func _tile_blocked(tile: Vector2i, team: String) -> bool:
 
 
 func _invalidate_navigation() -> void:
+	_clear_path_query_cache()
 	_nav_cache_dirty = true
 	_nav_cache_time = -INF
 	_nav_cache_count = -1
@@ -430,6 +440,7 @@ func _ensure_navigation_index(force: bool = false) -> void:
 	if not force and not _nav_cache_dirty and same_sources and geometry_signature == _nav_geometry_signature:
 		_nav_cache_time = time
 		return
+	_clear_path_query_cache()
 	_nav_cache_time = time
 	_nav_cache_count = buildings.size()
 	_nav_cache_dirty = false
@@ -524,6 +535,35 @@ func _nearest_tile(position: Vector2, team: String = "friendly") -> Vector2i:
 func _find_path(origin: Vector2, destination: Vector2, team: String = "friendly") -> Array:
 	var start: Vector2i = _nearest_tile(origin, team)
 	var finish: Vector2i = _nearest_tile(destination, team)
+	# Resolve endpoints first, preserving the original navigation-index reads.
+	# Do not force a navigation rebuild for direct terrain/ramps edits: the old
+	# algorithm observes those values alongside its existing component index.
+	if _path_query_cache_time != time or _path_query_map_size != map_size or _path_query_terrain_snapshot != terrain or _path_query_ramps_snapshot != ramps:
+		_clear_path_query_cache()
+		_path_query_cache_time = time
+		_path_query_map_size = map_size
+		_path_query_terrain_snapshot = terrain.duplicate(true)
+		_path_query_ramps_snapshot = ramps.duplicate(true)
+	var key: Vector4i = Vector4i(start.x, start.y, finish.x, finish.y)
+	if _path_query_cache.has(team) and _path_query_cache[team].has(key):
+		return _path_query_cache[team][key].duplicate()
+	var path: Array = _find_path_uncached(start, finish, team)
+	if _path_query_cache_count < PATH_QUERY_CACHE_LIMIT:
+		if not _path_query_cache.has(team): _path_query_cache[team] = {}
+		_path_query_cache[team][key] = path.duplicate()
+		_path_query_cache_count += 1
+	return path
+
+
+func _clear_path_query_cache() -> void:
+	_path_query_cache.clear()
+	_path_query_cache_count = 0
+	_path_query_cache_time = -INF
+	_path_query_terrain_snapshot = []
+	_path_query_ramps_snapshot = {}
+
+
+func _find_path_uncached(start: Vector2i, finish: Vector2i, team: String) -> Array:
 	if start.x < 0 or finish.x < 0:
 		return []
 	if start == finish:
