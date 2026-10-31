@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "success": false,
+  "complete_campaign_evidence": false,
+  "performance_evidence": false,
+  "prepare_only": false,
+  "requested_mission_id": "delta",
+  "started_utc": "2026-10-31T06:05:19.823637+00:00",
+  "build_dir": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-unpacked/outpost-exodus-linux",
+  "isolation_root": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-delta-full",
+  "errors": [],
+  "timed_out": false,
+  "scope": "Native exported game's actual Main loop and public-command campaign route",
+  "not_verified": [
+    "fresh-player usability",
+    "mouse-driven full UI playthrough",
+    "minimum hardware or frame pacing",
+    "clean-machine installation",
+    "Windows execution",
+    "Steam integration/review"
+  ],
+  "binaries_before": {
+    "executable": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-unpacked/outpost-exodus-linux/outpost-exodus.x86_64",
+      "available": true,
+      "bytes": 73519416,
+      "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+    },
+    "adjacent_pck": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-unpacked/outpost-exodus-linux/outpost-exodus.pck",
+      "available": true,
+      "bytes": 18467432,
+      "sha256": "ffe5339bfaca985e701a588e2456a53a4cd71327b97d74a49014eec145693d62"
+    }
+  },
+  "export_metadata": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-unpacked/outpost-exodus-linux/build-info.json",
+    "sha256": "fc0b073d6f2b3d8056bcc25a7d50f8d4ca3b1573d512eaea5c5e9df0378b0846",
+    "source_commit": "d1c24ce113f276b785ffb90d54fd774716c4fee8",
+    "source_tree": "0d34e45ebe481807ee0e2befa1db114fc2c15385",
+    "format": "build-info.json"
+  },
+  "source_commit": "d1c24ce113f276b785ffb90d54fd774716c4fee8",
+  "argv": [
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-unpacked/outpost-exodus-linux/outpost-exodus.x86_64",
+    "--",
+    "--campaign-validation",
+    "--mission=delta",
+    "--max-seconds=900"
+  ],
+  "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-unpacked/outpost-exodus-linux",
+  "timeout_seconds": 920,
+  "isolated_environment": {
+    "CAMPAIGN_VALIDATION_ROOT": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-delta-full",
+    "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-delta-full/data",
+    "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-delta-full/config",
+    "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-delta-full/cache",
+    "DISPLAY": ":0"
+  },
+  "pid": 2934793,
+  "progress": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-campaign-v08-delta-full/output/campaign-progress.json",
+    "sha256": "e14f15916796171ab8390ffe74efb0711c98acf6f463c137a61bfd8f848bac4d",
+    "latest": {
+      "deliveries": {
+        "1": 3,
+        "46": 1
+      },
+      "errors": [],
+      "finished": false,
+      "last_event": {
+        "count": 1,
+        "destination": 173,
+        "event": "actual_delivery",
+        "main_tick_count": 19847,
+        "origin": 46,
+        "simulation_time": 992.3499999996452,
+        "wall_seconds": 331.320405
+      },
+      "main_tick_count": 20060,
+      "mission_id": "delta",
+      "observed_ticks": 20060,
+      "outcome": "playing",
+      "phase": "three real middle deliveries and viable forward inventory",
+      "requested_mission_id": "delta",
+      "simulation_time": 1002.9999999996355,
+      "wall_seconds": 334.875485
+    },
+    "observations": 88,
+    "last_observed_wall_seconds": 336.488
+  }
+}

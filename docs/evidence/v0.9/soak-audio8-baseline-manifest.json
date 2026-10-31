@@ -1,0 +1,26 @@
+{
+  "scripts/diagnostics/campaign_runner.gd": {
+    "retained_path": "work/soak-v09/audio-count8-baseline/campaign_runner.gd",
+    "sha256": "65dbba3e73913751c044b8b3b1acd040b1b366c2b6e5ec6440d6c44b0ef19ab0"
+  },
+  "tools/run_native_campaign.py": {
+    "retained_path": "work/soak-v09/audio-count8-baseline/run_native_campaign.py",
+    "sha256": "3f5e4958007d9db5f7a9e31ada906dde1367d453cc3bde37a012784bccedd1d6"
+  },
+  "tools/test_native_campaign_soak.py": {
+    "retained_path": "work/soak-v09/audio-count8-baseline/test_native_campaign_soak.py",
+    "sha256": "62968323dd6d576e688a2a2ee22c0983716d5209df848637e568016f9164f13b"
+  },
+  "work/soak-v09/python-unit.log": {
+    "retained_path": "work/soak-v09/audio-count8-baseline/python-unit.log",
+    "sha256": "d907ac07718fe4f6bf5fa7722782576c80cee93ff7e1a5e4ae9a7734d3fe39ee"
+  },
+  "work/soak-v09/runner-check-only.log": {
+    "retained_path": "work/soak-v09/audio-count8-baseline/runner-check-only.log",
+    "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+  },
+  "work/soak-v09/preflight.log": {
+    "retained_path": "work/soak-v09/audio-count8-baseline/preflight.log",
+    "sha256": "d733dc37491a1572cf8daf2127bd34561b61da96b7a5c6739c433f0e8b7681ca"
+  }
+}

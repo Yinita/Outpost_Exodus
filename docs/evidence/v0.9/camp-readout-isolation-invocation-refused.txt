@@ -1,0 +1,10 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS _test_read_only_and_detached_rows
+PASS _test_intent_and_setup
+PASS _test_actual_production_blockers
+PASS _test_admitted_training_and_priority
+PASS _test_real_packing_stages
+PASS _test_terminal_and_missing
+Camp readout checks: 104; failures: 1
+ - Main integration refuses non-isolated XDG_DATA_HOME

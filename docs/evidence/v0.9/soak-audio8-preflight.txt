@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SOAK_PREFLIGHT {"checks":21,"failures":[],"scope":"headless parser/observer/proc-reader unit checks only; no Main, route, native, GPU or elapsed-hour evidence"}

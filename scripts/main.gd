@@ -7,6 +7,7 @@ const Hud = preload("res://scripts/hud.gd")
 const Guide = preload("res://scripts/campaign_guide.gd")
 const SaveStore = preload("res://scripts/campaign_save_store.gd")
 const GameAudio = preload("res://scripts/game_audio.gd")
+const CampReadout = preload("res://scripts/camp_readout.gd")
 const TILE: float = 48.0
 const MIN_CAMERA_ZOOM: float = 0.35
 const MAX_CAMERA_ZOOM: float = 1.6
@@ -30,9 +31,12 @@ var build_preview: Dictionary = {}
 var production_readout: Dictionary = {}
 var recruit_plans: Dictionary = {}
 var training_readout: Dictionary = {}
+var camp_readouts: Dictionary = {}
 var _build_preview_key: Array = []
 var _production_readout_key: Array = []
 var _training_readout_key: Array = []
+var _camp_readout_key: Array = []
+var _camp_readout_clock: float = 0.0
 var _ui_revision: int = 0
 var attack_move: bool = false
 var pending_task: String = ""
@@ -220,6 +224,7 @@ func _process(delta: float) -> void:
 	world.hover_tile = world.world_to_tile(get_global_mouse_position())
 	world.build_kind = build_kind
 	_sync_camp_page()
+	_refresh_camp_readouts(delta)
 	_refresh_context_readouts()
 	world.build_preview = build_preview
 	world.drag_selecting = dragging
@@ -253,6 +258,25 @@ func _move_camera(delta: float) -> void:
 		if mouse.y > screen.y - 8: direction.y += 1.0
 	camera.position += direction.limit_length() * delta * 780.0 / camera.zoom.x
 	camera.position = camera.position.clamp(Vector2.ZERO, Vector2(sim.map_size) * TILE)
+
+func _refresh_camp_readouts(delta: float = 0.0, force: bool = false) -> void:
+	# All camps remain observable while another panel is open. These derived
+	# rows do not enter saves and never allocate power, train or move anything.
+	if not started:
+		camp_readouts.clear()
+		_camp_readout_key.clear()
+		_camp_readout_clock = 0.0
+		return
+	_camp_readout_clock += maxf(0.0, delta)
+	var key: Array = [sim, _ui_revision, sim.paused, menu, sim.camps.size()]
+	if not force and key == _camp_readout_key and _camp_readout_clock < 0.25: return
+	var updated: Dictionary = {}
+	for camp: Dictionary in sim.camps:
+		var id: int = int(camp.id)
+		updated[id] = CampReadout.status(sim, id)
+	camp_readouts = updated
+	_camp_readout_key = key
+	_camp_readout_clock = 0.0
 
 func _refresh_context_readouts() -> void:
 	# Preview computation may involve routing. Reuse it until a simulation step,
@@ -751,6 +775,7 @@ func start_campaign(mission_id: String = "") -> void:
 	camera.position = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
 	camera.zoom = Vector2.ONE * 1.05
 	_notify("%s · 前方清场扩张，后方尸潮将在整备期后抵达。%s 查看操作。" % [String(sim.mission_name), binding_label("help_menu")])
+	_refresh_camp_readouts(0.0, true)
 
 func _save_payload() -> Dictionary:
 	var state: Dictionary = sim.save_state()
@@ -878,6 +903,7 @@ func load_campaign(slot: String = "manual") -> bool:
 	speed = float(ui.get("speed", 1.0))
 	world.show_logistics = bool(ui.get("logistics", true))
 	world.show_ranges = bool(ui.get("ranges", false))
+	_refresh_camp_readouts(0.0, true)
 	_notify("已恢复有效备份；可手动保存修复主存档。" if slot == "backup" else ("自动存档已恢复。" if slot == "auto" else "战役已恢复。"))
 	return true
 

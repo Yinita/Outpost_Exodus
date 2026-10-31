@@ -1,0 +1,79 @@
+--- texture-metadata-baseline/campaign_runner.gd
++++ scripts/diagnostics/campaign_runner.gd
+@@ -193,14 +193,22 @@
+ 	app._save_settings()
+ 
+ 
+-func soak_display_snapshot() -> Dictionary:
++func soak_display_snapshot(captured_image_size: Vector2i = Vector2i.ZERO) -> Dictionary:
+ 	var window: Window = app.get_window()
+ 	var viewport: Viewport = app.get_viewport()
+-	var pixels: Vector2i = Vector2i(viewport.get_texture().get_size())
++	var texture: ViewportTexture = viewport.get_texture()
++	var reported: Vector2i = Vector2i(texture.get_size())
++	# ViewportTexture size metadata may retain a content-scale multiplier even
++	# when the actual rendered image is the requested size. Gate on image pixels.
++	var pixels: Vector2i = captured_image_size
++	if pixels == Vector2i.ZERO:
++		var rendered: Image = texture.get_image()
++		if rendered != null and not rendered.is_empty(): pixels = rendered.get_size()
+ 	var visible: Vector2i = Vector2i(viewport.get_visible_rect().size)
+ 	var ready: bool = window.size == SOAK_RESOLUTION and pixels == SOAK_RESOLUTION and is_equal_approx(app.ui_scale, SOAK_UI_SCALE) and is_equal_approx(window.content_scale_factor, SOAK_UI_SCALE) and window.mode == Window.MODE_WINDOWED
+ 	return {"requested_client_size": [SOAK_RESOLUTION.x, SOAK_RESOLUTION.y], "requested_ui_scale": SOAK_UI_SCALE,
+ 		"client_size": [window.size.x, window.size.y], "viewport_pixel_size": [pixels.x, pixels.y], "viewport_visible_size": [visible.x, visible.y],
++		"viewport_pixel_size_source": "viewport_texture_get_image", "texture_reported_size": [reported.x, reported.y],
+ 		"ui_scale": app.ui_scale, "window_content_scale_factor": window.content_scale_factor, "windowed": window.mode == Window.MODE_WINDOWED, "ready": ready}
+ 
+ 
+@@ -484,7 +492,7 @@
+ 	if ok:
+ 		var record: Dictionary = {"label": label, "path": path, "sha256": FileAccess.get_sha256(path), "simulation_time": app.sim.time}
+ 		if _soak_mode:
+-			record["display"] = soak_display_snapshot()
++			record["display"] = soak_display_snapshot(frame.get_size())
+ 			record["image_pixel_size"] = [frame.get_width(), frame.get_height()]
+ 			ok = check(record.display.ready and frame.get_size() == SOAK_RESOLUTION, "soak capture retains actual1920x1080 rendered pixels at UI scale1: " + label)
+ 		report.captures.append(record)
+--- texture-metadata-baseline/run_native_campaign.py
++++ tools/run_native_campaign.py
+@@ -426,8 +426,11 @@
+     if not isinstance(display, dict):
+         return [f"{label} has no actual soak display measurements"]
+     visible = display.get("viewport_visible_size")
++    reported = display.get("texture_reported_size")
+     if (display.get("requested_client_size") != SOAK_RESOLUTION or display.get("requested_ui_scale") != 1.0
+             or display.get("client_size") != SOAK_RESOLUTION or display.get("viewport_pixel_size") != SOAK_RESOLUTION
++            or display.get("viewport_pixel_size_source") != "viewport_texture_get_image"
++            or not isinstance(reported, list) or len(reported) != 2 or any(not whole(value, 1) for value in reported)
+             or not isinstance(visible, list) or len(visible) != 2 or any(not whole(value, 1) for value in visible)
+             or not close_number(display.get("ui_scale"), 1.0) or not close_number(display.get("window_content_scale_factor"), 1.0)
+             or display.get("windowed") is not True or display.get("ready") is not True):
+--- texture-metadata-baseline/test_native_campaign_soak.py
++++ tools/test_native_campaign_soak.py
+@@ -160,6 +160,7 @@
+     def display():
+         return {"requested_client_size":[1920,1080],"requested_ui_scale":1.0,
+                 "client_size":[1920,1080],"viewport_pixel_size":[1920,1080],"viewport_visible_size":[1600,900],
++                "viewport_pixel_size_source":"viewport_texture_get_image","texture_reported_size":[1920,1080],
+                 "ui_scale":1.0,"window_content_scale_factor":1.0,"windowed":True,"ready":True}
+ 
+     @staticmethod
+@@ -384,6 +385,18 @@
+                     capture["sha256"]=launcher.sha256(path)
+                 else: path.write_bytes(path.read_bytes()+b"altered")
+                 self.assertTrue(proof.validate())
++
++    def test_texture_metadata_is_diagnostic_while_actual_readback_and_png_stay_1080(self):
++        with tempfile.TemporaryDirectory() as temporary:
++            proof=SoakProof(Path(temporary)/"output")
++            for stage in ("startup_display","final_display"):
++                proof.report[stage]["texture_reported_size"]=[2304,1296]
++            for cycle in proof.cycle_reports:
++                for capture in cycle["captures"]:
++                    capture["display"]["texture_reported_size"]=[2304,1296]
++            self.assertEqual(proof.validate(),[])
++            proof.report["startup_display"]["viewport_pixel_size"]=[2304,1296]
++            self.assertTrue(proof.validate())
+ 
+ 
+ class ModeAndLaunchTests(unittest.TestCase):

@@ -1,0 +1,20 @@
+{
+	"actual_automatic_cycle": true,
+	"files": [
+		{
+			"camera_zoom": 0.3499999940395355,
+			"name": "campaign-autosave.json",
+			"schema_valid": true,
+			"sha256": "fa12f3d85ca4346f1d0acb85718a76c93c96a31d238584a804c4f5b21526cc0c",
+			"simulation_time": 44.99999999999958
+		},
+		{
+			"camera_zoom": 0.3499999940395355,
+			"name": "campaign-autosave.json.bak",
+			"schema_valid": true,
+			"sha256": "651c21aaab76b07f849f09adb4a2fe31b23db01e284a4bbdedccb555a5582525",
+			"simulation_time": 7.249999999999982
+		}
+	],
+	"scope": "Actual final native3600-frame strategic run: main autosave at45seconds rotated the forced frame300 checkpoint into backup. Both final files re-read and validated using unchanged current Main/Simulation schema in a separate headless process."
+}

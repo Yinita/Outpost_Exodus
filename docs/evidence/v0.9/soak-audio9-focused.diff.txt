@@ -1,0 +1,153 @@
+--- audio-count8-baseline/campaign_runner.gd
++++ scripts/diagnostics/campaign_runner.gd
+@@ -225,7 +225,7 @@
+ 		"minimum_wall_seconds": SOAK_MINIMUM_WALL_SECONDS, "planned_missions": soak_missions(_starting_mission_id),
+ 		"native_export_proof": not OS.has_feature("editor"), "one_hour_soak_evidence": false, "complete_campaign_evidence": false,
+ 		"process_id": OS.get_process_id(), "main_instance_id": str(app.get_instance_id()), "simulation_instance_id": str(app.sim.get_instance_id()),
+-		"world_instance_id": str(app.world.get_instance_id()), "hud_instance_id": str(app.hud.get_instance_id()), "audio_instance_id": str(app.game_audio.get_instance_id()),
++		"world_instance_id": str(app.world.get_instance_id()), "hud_instance_id": str(app.hud.get_instance_id()), "audio_instance_id": str(app.game_audio.get_instance_id()), "music_instance_id": str(app.music_player.get_instance_id()),
+ 		"engine_command_line": engine_arguments(), "binaries_before": _binary_hashes(), "sources_before": _source_hashes(),
+ 		"cycles": [], "transitions": [], "stability_samples": [],
+ 		"stability_scope": "Named measurements after the first complete route warms this same Main process. Memory/node/audio observations and bounded voice pools are recorded; this is not minimum-hardware, frame-pacing, human listening or universal no-leak proof."}
+@@ -617,6 +617,8 @@
+ 		"allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+ 		"gpu_memory_available": false, "gpu_memory_bytes": null, "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate."}
+ 	var audio: Node = app.game_audio
++	var music: AudioStreamPlayer = app.music_player
++	var music_id: String = str(music.get_instance_id())
+ 	var world_ids: Array[String] = []
+ 	var ui_ids: Array[String] = []
+ 	var active_ui: int = 0
+@@ -628,20 +630,21 @@
+ 	var objects: int = int(Performance.get_monitor(Performance.OBJECT_COUNT))
+ 	var snapshot: Dictionary = {"name": label, "cycle_index": _cycle_index, "mission_id": _requested_mission_id, "warmup_complete": app.sim.outcome == "victory" and bool(report.route.get("success", false)),
+ 		"wall_seconds": float(Time.get_ticks_usec() - _started_usec) / 1000000.0, "main_tick_count": int(app.tick_count), "memory": memory,
+-		"main_instance_id": str(app.get_instance_id()), "world_instance_id": str(app.world.get_instance_id()), "hud_instance_id": str(app.hud.get_instance_id()), "audio_instance_id": str(audio.get_instance_id()),
++		"main_instance_id": str(app.get_instance_id()), "world_instance_id": str(app.world.get_instance_id()), "hud_instance_id": str(app.hud.get_instance_id()), "audio_instance_id": str(audio.get_instance_id()), "music_instance_id": music_id,
+ 		"tree_node_count": get_tree().get_node_count(), "world_child_count": app.world.get_child_count(), "hud_child_count": app.hud.get_child_count(),
+ 		"audio_stream_player_count": app.find_children("*", "AudioStreamPlayer", true, false).size(),
+ 		"object_count_available": objects > 0, "object_count": objects if objects > 0 else null,
+ 		"orphan_node_count_available": OS.is_debug_build(), "orphan_node_count": Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT) if OS.is_debug_build() else null,
+ 		"monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+-		"audio": {"world_player_ids": world_ids, "ui_player_ids": ui_ids, "allocated_world_voices": world_ids.size(), "allocated_ui_voices": ui_ids.size(),
++		"audio": {"world_player_ids": world_ids, "ui_player_ids": ui_ids, "allocated_world_voices": world_ids.size(), "allocated_ui_voices": ui_ids.size(), "allocated_music_players": 1 if music.get_parent() == app else 0,
+ 			"active_world_voices": audio.active_world_voices(), "active_ui_voices": active_ui, "observed_updates": audio.observed_updates,
+ 			"play_counts": audio.play_counts.duplicate(true), "dropped": audio.dropped, "peak_world_voices": audio.peak_world_voices}}
+-	check(snapshot.audio_stream_player_count == audio.WORLD_VOICES + audio.UI_VOICES, "same Main has exactly the configured audio player nodes")
++	check(snapshot.audio.allocated_music_players == 1 and not music_id in world_ids and not music_id in ui_ids, "same Main retains one separate music player outside the effect voice pools")
++	check(snapshot.audio_stream_player_count == audio.WORLD_VOICES + audio.UI_VOICES + 1, "same Main has exactly the configured effect voices plus one music player")
+ 	if not _soak_report.stability_samples.is_empty():
+ 		var baseline: Dictionary = _soak_report.stability_samples[0]
+ 		check(world_ids == baseline.audio.world_player_ids and ui_ids == baseline.audio.ui_player_ids, "campaign restarts reuse the same allocated audio voices")
+-		for key: String in ["main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id", "tree_node_count", "world_child_count", "hud_child_count", "audio_stream_player_count"]:
++		for key: String in ["main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id", "music_instance_id", "tree_node_count", "world_child_count", "hud_child_count", "audio_stream_player_count"]:
+ 			check(snapshot[key] == baseline[key], "campaign restarts retain fixed node identity/count: " + key)
+ 	return snapshot
+ 
+--- audio-count8-baseline/run_native_campaign.py
++++ tools/run_native_campaign.py
+@@ -451,23 +451,26 @@
+         for key, flag in (("object_count", "object_count_available"), ("orphan_node_count", "orphan_node_count_available")):
+             if not ((sample.get(flag) is True and whole(sample.get(key))) or (sample.get(flag) is False and sample.get(key) is None)):
+                 errors.append(f"Stability sample {index} must label unavailable release object/orphan monitors")
+-        node_keys = ("main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id")
++        node_keys = ("main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id", "music_instance_id")
+         node_counts = ("tree_node_count", "world_child_count", "hud_child_count", "audio_stream_player_count")
+         if (any(not isinstance(sample.get(key), str) or not sample[key] for key in node_keys)
+                 or not whole(sample.get("tree_node_count"), 1) or any(not whole(sample.get(key)) for key in node_counts[1:])
+-                or sample.get("audio_stream_player_count") != 8):
+-            errors.append(f"Stability sample {index} lacks actual Main/world/HUD/audio node identity/count readings")
++                or sample.get("audio_stream_player_count") != 9):
++            errors.append(f"Stability sample {index} lacks actual Main/world/HUD/audio/music node identity/count readings")
+         nodes = tuple(sample.get(key) for key in (*node_keys, *node_counts))
+         if baseline_nodes is None: baseline_nodes = nodes
+-        elif nodes != baseline_nodes: errors.append("Main/world/HUD/audio instance or actual node counts changed after warmup")
++        elif nodes != baseline_nodes: errors.append("Main/world/HUD/audio/music instance or actual node counts changed after warmup")
+         audio = sample.get("audio", {})
+         if not isinstance(audio, dict): audio = {}
+         identifiers = (audio.get("world_player_ids"), audio.get("ui_player_ids"))
+         valid_ids = (isinstance(identifiers[0], list) and len(identifiers[0]) == 6
+                      and isinstance(identifiers[1], list) and len(identifiers[1]) == 2
+                      and all(isinstance(value, str) and value for group in identifiers for value in group)
+-                     and len(set(identifiers[0] + identifiers[1])) == 8)
++                     and len(set(identifiers[0] + identifiers[1])) == 8
++                     and isinstance(sample.get("music_instance_id"), str) and bool(sample["music_instance_id"])
++                     and sample["music_instance_id"] not in identifiers[0] + identifiers[1])
+         if (not valid_ids or audio.get("allocated_world_voices") != 6 or audio.get("allocated_ui_voices") != 2
++                or audio.get("allocated_music_players") != 1
+                 or not whole(audio.get("active_world_voices")) or audio.get("active_world_voices", 7) > 6
+                 or not whole(audio.get("active_ui_voices")) or audio.get("active_ui_voices", 3) > 2
+                 or not whole(audio.get("peak_world_voices")) or audio.get("peak_world_voices", 7) > 6
+@@ -651,8 +654,8 @@
+                 if actual.get("stability_after") != samples[index]:
+                     errors.append(f"Cycle {index+1} stability reading differs from the retained report")
+                 sample = samples[index]
+-                if isinstance(sample, dict) and any(sample.get(key) != report.get(key) for key in ("main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id")):
+-                    errors.append(f"Cycle {index+1} metric identities differ from the original same-process Main/world/HUD/audio")
++                if isinstance(sample, dict) and any(sample.get(key) != report.get(key) for key in ("main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id", "music_instance_id")):
++                    errors.append(f"Cycle {index+1} metric identities differ from the original same-process Main/world/HUD/audio/music")
+             first, last = samples[0], samples[-1]
+             if isinstance(first, dict) and isinstance(last, dict):
+                 try:
+--- audio-count8-baseline/test_native_campaign_soak.py
++++ tools/test_native_campaign_soak.py
+@@ -72,7 +72,7 @@
+             "minimum_wall_seconds": 3600, "native_export_proof": True, "one_hour_soak_evidence": True,
+             "complete_campaign_evidence": True, "errors": [], "process_id": self.process_id,
+             "main_instance_id": self.main_id, "simulation_instance_id": self.simulation_id,
+-            "world_instance_id": "10003", "hud_instance_id": "10004", "audio_instance_id": "10005",
++            "world_instance_id": "10003", "hud_instance_id": "10004", "audio_instance_id": "10005", "music_instance_id": "9",
+             "engine_command_line": {"available": True, "source": "/proc/self/cmdline", "arguments": self.arguments},
+             "binaries_before": deepcopy(self.before), "binaries_after": deepcopy(self.before),
+             "sources_before": self.sources, "sources_after": self.sources, "wall_elapsed_seconds": 3858.0,
+@@ -146,11 +146,11 @@
+                        "godot_static_available":True,"godot_static_bytes": 10000000,
+                        "godot_static_peak_available":True,"godot_static_peak_bytes": 12000000,
+                        "gpu_memory_available":False,"gpu_memory_bytes":None},
+-            "main_instance_id":"10001","world_instance_id":"10003","hud_instance_id":"10004","audio_instance_id":"10005",
+-            "tree_node_count": 20,"world_child_count":0,"hud_child_count":0,"audio_stream_player_count":8,
++            "main_instance_id":"10001","world_instance_id":"10003","hud_instance_id":"10004","audio_instance_id":"10005","music_instance_id":"9",
++            "tree_node_count": 20,"world_child_count":0,"hud_child_count":0,"audio_stream_player_count":9,
+             "object_count_available":True,"object_count": 500, "orphan_node_count_available":False,"orphan_node_count": None,
+             "audio": {"world_player_ids": [str(value) for value in range(1,7)], "ui_player_ids": ["7","8"],
+-                      "allocated_world_voices": 6, "allocated_ui_voices": 2, "active_world_voices": 0, "active_ui_voices": 0,
++                      "allocated_world_voices": 6, "allocated_ui_voices": 2, "allocated_music_players": 1, "active_world_voices": 0, "active_ui_voices": 0,
+                       "observed_updates": ticks, "dropped": index*10, "peak_world_voices": 6, "play_counts": {"shot":index*1000}}}
+ 
+     def flush(self):
+@@ -264,7 +264,8 @@
+                 self.assertTrue(proof.validate())
+ 
+     def test_metrics_are_named_post_warmup_and_voice_pool_reuse_is_proven(self):
+-        for key, value in (("name","single_sample"),("warmup_complete",False),("memory",{}),("tree_node_count",0)):
++        for key, value in (("name","single_sample"),("warmup_complete",False),("memory",{}),("tree_node_count",0),
++                           ("audio_stream_player_count",8),("music_instance_id",None),("music_instance_id","1")):
+             with self.subTest(key=key), tempfile.TemporaryDirectory() as temporary:
+                 proof = SoakProof(Path(temporary)/"output")
+                 proof.report["stability_samples"][3][key] = value
+@@ -272,6 +273,16 @@
+         with tempfile.TemporaryDirectory() as temporary:
+             proof = SoakProof(Path(temporary)/"output")
+             proof.report["stability_samples"][4]["audio"]["world_player_ids"][0] = "replacement"
++            self.assertTrue(proof.validate())
++        for count in (None,0,2):
++            with self.subTest(music_count=count), tempfile.TemporaryDirectory() as temporary:
++                proof = SoakProof(Path(temporary)/"output")
++                proof.report["stability_samples"][4]["audio"]["allocated_music_players"] = count
++                self.assertTrue(proof.validate())
++        with tempfile.TemporaryDirectory() as temporary:
++            proof = SoakProof(Path(temporary)/"output")
++            for sample in proof.report["stability_samples"]:
++                sample["music_instance_id"] = "replacement"
+             self.assertTrue(proof.validate())
+ 
+     def test_malformed_evidence_is_rejected_without_acceptance_or_traceback(self):
+@@ -317,7 +328,7 @@
+             self.assertTrue(proof.validate())
+ 
+     def test_fixed_scene_and_world_hud_node_counts_are_independently_enforced(self):
+-        for key in ("main_instance_id","world_instance_id","hud_instance_id","audio_instance_id","tree_node_count","world_child_count","hud_child_count","audio_stream_player_count"):
++        for key in ("main_instance_id","world_instance_id","hud_instance_id","audio_instance_id","music_instance_id","tree_node_count","world_child_count","hud_child_count","audio_stream_player_count"):
+             with self.subTest(key=key),tempfile.TemporaryDirectory() as temporary:
+                 proof=SoakProof(Path(temporary)/"output")
+                 original=proof.report["stability_samples"][4][key]

@@ -126,7 +126,7 @@ static func _builder_warning(sim: Variant) -> String:
 	return "暂无空闲工人或工程师；可先下单，待施工队空闲后施工。"
 
 
-static func get_production_status(sim: Variant, camp_id: int) -> Dictionary:
+static func get_production_status(sim: Variant, camp_id: int, include_pause: bool = true) -> Dictionary:
 	var camp: Dictionary = sim.get_camp(camp_id)
 	var result: Dictionary = {"code": "no_camp", "text": "未选择驻点", "detail": "选择一个驻点查看本地生产。", "working": 0, "total": 0, "recipe": str(camp.get("recipe", "idle"))}
 	if camp.is_empty():
@@ -144,8 +144,8 @@ static func get_production_status(sim: Variant, camp_id: int) -> Dictionary:
 				result["working"] = int(result["working"]) + 1
 	result["total"] = completed.size()
 	if str(camp["state"]) != "active":
-		return _status(result, "inactive", "驻点停止生产", "驻点正在撤收或已撤空，无法继续加工。")
-	if sim.paused:
+		return _status(result, "inactive", "驻点停止生产", "驻点正在撤收或已弃守，无法继续加工。")
+	if include_pause and sim.paused:
 		return _status(result, "paused", "战术暂停", "继续战役后，本地生产才会推进。")
 	var recipe: String = result["recipe"]
 	if recipe == "idle":

@@ -42,7 +42,7 @@ static func query_recruit(sim: Variant, camp_id: int, kind: String, recruit_cost
 	return result
 
 
-static func get_training_status(sim: Variant, camp_id: int) -> Dictionary:
+static func get_training_status(sim: Variant, camp_id: int, include_pause: bool = true) -> Dictionary:
 	var camp: Dictionary = sim.get_camp(camp_id)
 	var result: Dictionary = {"code": "no_camp", "text": "未选择驻点", "detail": "选择一个驻点查看本地训练队列。", "queue_size": 0, "progress": 0.0, "current_name": "", "remaining": 0.0}
 	if camp.is_empty():
@@ -63,7 +63,7 @@ static func get_training_status(sim: Variant, camp_id: int) -> Dictionary:
 	result["remaining"] = maxf(0.0, duration - elapsed)
 	if str(camp["state"]) != "active":
 		return _status(result, "inactive", "训练因撤收停止", "本营正在撤收或已停止运作；当前保留的队列不会继续训练。")
-	if sim.paused:
+	if include_pause and sim.paused:
 		return _status(result, "paused", "战术暂停", "继续战役后，本营队首训练才会推进。")
 	if not sim._training_power_available(camp, kind):
 		return _status(result, "waiting_power", "等待训练设施供能", str(_power_failure(sim, camp, kind)["message"]))

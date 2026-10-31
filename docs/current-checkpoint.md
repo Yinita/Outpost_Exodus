@@ -1,8 +1,40 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, **0.8.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
+Project: 逐营突围 / Outpost Exodus, **0.9.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
 
-## Current 0.8 work
+## Current 0.9 work
+
+Runtime, tests, tools and import are frozen for this pre-export source candidate. `CampReadout.status` observes local production, admitted training and actual packing stages; blocked admitted work takes priority over ordinary work, while missing/unfinished facilities and deliberate idle remain neutral setup/standby states. Cards retain actual inventory/power and show non-color symbols plus wrapped details. During tactical pause, the underlying cause remains visible with paused/“待续” wording. The two existing rules queries only add optional `include_pause=true`; ordinary callers keep their behavior, and summaries pass false without toggling live pause or advancing queues/power.
+
+Main keeps these derived rows outside saves and refreshes them after relevant public actions/start/load/pause or on the quarter-second presentation interval. Source integration/readout tests pass 117 checks, including unchanged full saved state/RNG and detached rows. The first wrong-XDG invocation retained 104 checks/one isolation failure; this is a corrected test invocation, separate from product failures. Root subsequently retained clean final-source construction 187/recruitment 219 logs, superseding the earlier tool-output-only stage reports.
+
+The original 0.8 actual-engine-input pager baseline records 23 checks/six failures. Disabled/blank pagination clicks could issue a world task or break targeting isolation. Focused candidate checks pass 23/0; an initial combined macro stage passes 291 and the added paused-shortage/detail case 18. The final combined macro suite passes 309 checks with clean exit 0; earlier stages retain their separate records. Final import exits 0 and generates normal metadata for the new readout script/test. Rendered UI passes 124, and root's assistant inspection covers 1600 and 1152/120% captures. Synthetic controlled UI captures are not gameplay acceptance, human playtests or store screenshots; PNGs stay outside source.
+
+The native diagnostic continuation now implements seven full route cycles in one actual Main process across all three missions, requiring at least 3,600 actual wall seconds without idle-padding. Per-cycle routes, disk/mission/UI truth, normal clock, original scene/voice identities and retained final states are independently checked by the launcher. Unsupported release monitors/GPU memory remain unavailable/null rather than zero. No 0.9 native run, hour or FPS pass has started or completed in this candidate snapshot.
+
+An independent audit found the first diagnostic incorrectly expected eight AudioStreamPlayer nodes: the actual scene also has a separate music player. Retained bad-eight source/logs remain rejected diagnostic baseline; the corrected expectation is nine total, six world plus two UI plus one music, with stable distinct identities. It does not enlarge the gameplay SFX pool. The earlier audio9 Python stage passes 26. A separate earlier source-rendered actual-Main lifecycle fixture passes 22 by loading retained 0.8 victory saves and exercising real title/select/new/restart/autosave actions; Main/world/HUD/audio/music identities persist. Its Main tick count stays unchanged: this is a controlled lifecycle check, not real routes, native export, one hour or human acceptance.
+
+Final display/lifecycle preflight passes 25 checks and final Python tests pass 28, with clean source compile. The soak requests an actual 1920×1080 window/UI scale1; client and captured Image/PNG pixels both meet that size. The old helper incorrectly used Texture size metadata (2304×1296) and produced a retained 25-check/one-failure false positive despite correct actual pixels. The corrected measurement reads actual image pixels, preserving the 1080 gate; logical/Texture metadata stay separate. This remains controlled source-rendered lifecycle/display evidence, not seven routes or an hour. Actual final counts are recorded in the development plan; inventory refresh precedes manifest. New-payload native/full-route/hour/frame acceptance remains pending. External store-copy/key-art drafts remain outside the game and unsubmitted. Human/Windows/minimum-hardware/rights/Steam gates remain open.
+
+## Accepted historical 0.8 native payload
+
+The actual same unpacked Linux payload at `d1c24ce113f276b785ffb90d54fd774716c4fee8` passed all three strict normal-clock campaigns:
+
+| Mission | Simulated seconds | Wall seconds | Actual 0.05-second Main ticks | Evacuees plus truck |
+| --- | ---: | ---: | ---: | ---: |
+| Canyon | 1580.40 | 527.721882 | 31,608 | 5 |
+| Delta | 1664.35 | 561.578633 | 33,287 | 7 |
+| Ridge | 1774.75 | 592.617775 | 35,495 | 6 |
+
+All three have zero invalid clock steps, full simulation/RNG/UI plus mission identity equality through real loaded-withdrawal disk continuation, three home/four middle deliveries, original paid exit costs and powered/completed exit with actual arrivals. Exact-payload busy means are 59.760686/59.619658 FPS with 120 warmup/3,600 measured frames per view, actual hauling/construction/saves and maximum frame intervals 67.456/80.865 ms. Smoke, automatic files, archive checks and finalization passed. These are bounded development-machine 0.8 results, not stable 60 FPS, minimum hardware, one-hour soak, Windows, human or Steam acceptance.
+
+The first outer Delta launcher ended with code 143 while its game process continued to victory. Its pending verifier and original records remain rejected/unaccepted; a fresh managed strict retry supplies the accepted Delta result above. The authoritative outer `outpost-exodus-0.8.0-dev-release-evidence.json` and unchanged historical report/verifier copies are retained under v0.9 evidence. Committed v0.8 candidate evidence remains its original pre-export snapshot.
+
+## Previous 0.8 pre-export source work
+
+This section preserves the pre-export candidate chronology. Its pending statements describe that earlier snapshot; the accepted `d1c24ce` payload above supplies the later 0.8 verdict.
+
+
 
 Runtime, tests and tools are frozen for this pre-export candidate. The campaign validator/launcher now supports Canyon, Delta and Ridge while requiring matching requested/process/live/controller/on-disk/route/final mission identity. It retains normal actual-Main clock checks, paid construction, both resources, real deliveries, loaded-withdrawal continuation, sealing, deliberate abandonment and actual powered-exit arrival. No current 0.8 exported full route or FPS pass is claimed by this source snapshot.
 
@@ -97,7 +129,7 @@ The following records preserve the pre-export candidate chronology and rejected 
 
 ## Evidence
 
-See docs/evidence/v0.8 for the current candidate boundary and unchanged accepted historical 0.7 reports, and docs/benchmarks/v0.8 for the new-payload/per-mission native protocol. The committed v0.7 evidence remains its original pre-export snapshot; the accepted outer release record supplies the later verdict. Earlier 0.6.1 and 0.6 records retain their identities and scopes. Earlier0.5 functional and export-protocol records remain under their original version directories. See docs/evidence/v0.4 and docs/benchmarks/v0.4 for the preceding gameplay-feedback/performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Historical recorded suite counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
+See docs/evidence/v0.9 for the new candidate boundary, original pager baseline and unchanged accepted historical 0.8 records; docs/benchmarks/v0.9 prepares new-payload and long-run validation. Committed v0.8 and v0.7 evidence remain their original pre-export snapshots; later outer release records supply acceptance without rewriting history. Earlier 0.6.1 and 0.6 records retain their identities and scopes. Earlier0.5 functional and export-protocol records remain under their original version directories. See docs/evidence/v0.4 and docs/benchmarks/v0.4 for the preceding gameplay-feedback/performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Historical recorded suite counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
 
 ## Still required
 

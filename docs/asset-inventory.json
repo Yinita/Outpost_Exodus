@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "WORKTREE_INVENTORY_AND_DISCLOSURE_DRAFT_NOT_RIGHTS_OR_RELEASE_SIGNOFF",
   "snapshot": {
-    "recorded_utc": "2026-10-31T05:58:37.685572+00:00",
-    "base_commit": "ede3c504f74843ca36dce6bff75d5d9107cb76da",
+    "recorded_utc": "2026-10-31T08:05:58.582526+00:00",
+    "base_commit": "d1c24ce113f276b785ffb90d54fd774716c4fee8",
     "working_tree_dirty": true,
     "scope": "Current source asset bytes, retained production inputs and player-facing script categories. Hashes must be refreshed at source freeze, then checked against the actual final export."
   },
@@ -139,8 +139,8 @@
         {
           "path": "scripts/hud.gd",
           "status": "PRESENT",
-          "bytes": 54147,
-          "sha256": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2",
+          "bytes": 55629,
+          "sha256": "98ac33cf983b128d2b487b81feac7cf96f4abd19a8b597a77c3df8165b015aee",
           "role": "retained_source_or_generation_input"
         }
       ],
@@ -325,8 +325,8 @@
         {
           "path": "scripts/main.gd",
           "status": "PRESENT",
-          "bytes": 48368,
-          "sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+          "bytes": 49385,
+          "sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
           "role": "retained_source_or_generation_input"
         }
       ],
@@ -497,21 +497,28 @@
           "path": "project.godot",
           "status": "PRESENT",
           "bytes": 983,
-          "sha256": "10134aaa52ce93d1cec72ab1302cedcdc9e0d364cc4b0518f7ed7829286cf0b0",
+          "sha256": "d35402b90560ef75585016e1e02992fc1016fe972462a53e36f72d15420fff3f",
           "role": "retained_source_or_generation_input"
         },
         {
           "path": "scripts/main.gd",
           "status": "PRESENT",
-          "bytes": 48368,
-          "sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+          "bytes": 49385,
+          "sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
           "role": "retained_source_or_generation_input"
         },
         {
           "path": "scripts/hud.gd",
           "status": "PRESENT",
-          "bytes": 54147,
-          "sha256": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2",
+          "bytes": 55629,
+          "sha256": "98ac33cf983b128d2b487b81feac7cf96f4abd19a8b597a77c3df8165b015aee",
+          "role": "retained_source_or_generation_input"
+        },
+        {
+          "path": "scripts/camp_readout.gd",
+          "status": "PRESENT",
+          "bytes": 5972,
+          "sha256": "bb9bb8b61ca3df1f79b6c2c7e10f21b033d66dce7ad9b634532942bbb307f9f0",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -538,15 +545,15 @@
         {
           "path": "scripts/construction_rules.gd",
           "status": "PRESENT",
-          "bytes": 11076,
-          "sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701",
+          "bytes": 11122,
+          "sha256": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
           "role": "retained_source_or_generation_input"
         },
         {
           "path": "scripts/recruitment_rules.gd",
           "status": "PRESENT",
-          "bytes": 9607,
-          "sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190",
+          "bytes": 9653,
+          "sha256": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
           "role": "retained_source_or_generation_input"
         }
       ],
@@ -642,8 +649,8 @@
   ],
   "pack_reference": {
     "last_frozen_linux_export_identity": {
-      "source_commit": "ede3c504f74843ca36dce6bff75d5d9107cb76da",
-      "pck_sha256": "673cedab795d548da1fb2db14680365d0bed847004a50d07d7fb8290a43827e1",
+      "source_commit": "d1c24ce113f276b785ffb90d54fd774716c4fee8",
+      "pck_sha256": "ffe5339bfaca985e701a588e2456a53a4cd71327b97d74a49014eec145693d62",
       "status": "EXISTING_EXPORT_IDENTITY_NOT_NEW_WORKTREE_ACCEPTANCE"
     },
     "prior_directory_audit": {
@@ -711,6 +718,13 @@
         "role": "retained_source_or_generation_input"
       },
       {
+        "path": "scripts/camp_readout.gd",
+        "status": "PRESENT",
+        "bytes": 5972,
+        "sha256": "bb9bb8b61ca3df1f79b6c2c7e10f21b033d66dce7ad9b634532942bbb307f9f0",
+        "role": "retained_source_or_generation_input"
+      },
+      {
         "path": "scripts/campaign_catalog.gd",
         "status": "PRESENT",
         "bytes": 29019,
@@ -748,8 +762,8 @@
       {
         "path": "scripts/construction_rules.gd",
         "status": "PRESENT",
-        "bytes": 11076,
-        "sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701",
+        "bytes": 11122,
+        "sha256": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
         "role": "retained_source_or_generation_input"
       },
       {
@@ -769,8 +783,8 @@
       {
         "path": "scripts/diagnostics/campaign_runner.gd",
         "status": "PRESENT",
-        "bytes": 24436,
-        "sha256": "5d77408d5121609b0a5289a1fd921d80b460ff624d04be92d3f999ed2064e3c2",
+        "bytes": 43753,
+        "sha256": "d429fb0c9028c238a8553317ffea107ae881f2051e121eba6f7b08989a569344",
         "role": "retained_source_or_generation_input"
       },
       {
@@ -790,22 +804,22 @@
       {
         "path": "scripts/hud.gd",
         "status": "PRESENT",
-        "bytes": 54147,
-        "sha256": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2",
+        "bytes": 55629,
+        "sha256": "98ac33cf983b128d2b487b81feac7cf96f4abd19a8b597a77c3df8165b015aee",
         "role": "retained_source_or_generation_input"
       },
       {
         "path": "scripts/main.gd",
         "status": "PRESENT",
-        "bytes": 48368,
-        "sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+        "bytes": 49385,
+        "sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
         "role": "retained_source_or_generation_input"
       },
       {
         "path": "scripts/recruitment_rules.gd",
         "status": "PRESENT",
-        "bytes": 9607,
-        "sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190",
+        "bytes": 9653,
+        "sha256": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
         "role": "retained_source_or_generation_input"
       },
       {

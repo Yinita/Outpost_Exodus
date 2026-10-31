@@ -1,0 +1,65 @@
+extends SceneTree
+# Source-rendered controller fixture only. Loads retained actual0.8victory saves;
+# does not run any route, measure an hour or establish native export acceptance.
+const Main = preload('res://scripts/main.gd')
+const Runner = preload('res://scripts/diagnostics/campaign_runner.gd')
+class ProbeRunner:
+	extends Runner
+	func _ready() -> void: set_process(false)
+var app: Node2D
+var monitor: Node
+var checks: int = 0
+var failures: Array[String] = []
+var samples: Array = []
+var out: String
+func _initialize() -> void: call_deferred('_run')
+func check(ok: bool, label: String) -> void:
+	checks += 1
+	if not ok: failures.append(label)
+func frames() -> void:
+	for index: int in range(8): await process_frame
+	await RenderingServer.frame_post_draw
+func _run() -> void:
+	if DisplayServer.get_name() == 'headless' or not OS.get_user_data_dir().contains('/work/soak-v09/lifecycle-data/'):
+		printerr('ControlledMain lifecycle fixture requires DISPLAY and dedicated lifecycle-data');quit(2);return
+	out=ProjectSettings.globalize_path('res://work/soak-v09/main-lifecycle')
+	DirAccess.make_dir_recursive_absolute(out)
+	app=Main.new();root.add_child(app);app.set_process(false);app.set_process_unhandled_input(false)
+	monitor=ProbeRunner.new();monitor.app=app;root.add_child(monitor)
+	monitor._started_usec=Time.get_ticks_usec();monitor._deadline_usec=monitor._started_usec+120000000
+	monitor._root_output_dir=out;monitor._soak_mode=true
+	monitor._soak_report={'stability_samples':[],'transitions':[],'music_instance_id':str(app.music_player.get_instance_id())}
+	await frames()
+	var original_ids: Array = [app.get_instance_id(),app.world.get_instance_id(),app.hud.get_instance_id(),app.game_audio.get_instance_id(),app.music_player.get_instance_id()]
+	var missions: Array[String] = ['canyon','delta','ridge']
+	var roots: Dictionary = {'canyon':'native-campaign-v08-canyon-full','delta':'native-campaign-v08-delta-full-retry','ridge':'native-campaign-v08-ridge-full'}
+	for index: int in range(missions.size()):
+		var mission: String=missions[index]
+		var source: String='res://work/'+str(roots[mission])+'/output/final-campaign-state.json'
+		var file: FileAccess=FileAccess.open(app.SAVE_PATH,FileAccess.WRITE)
+		file.store_buffer(FileAccess.get_file_as_bytes(source));file.close();file=null
+		check(app.load_campaign(),'actual Main loads retained valid '+mission+' victory fixture')
+		app._process(0.0);await frames()
+		check(app.sim.outcome=='victory' and app.menu=='victory','loaded fixture reaches real terminal controller menu')
+		monitor._requested_mission_id=mission;monitor._cycle_index=index+1
+		monitor.report={'route':{'success':true}}
+		var snapshot: Dictionary=monitor._stability_snapshot('controlled_fixture_'+mission)
+		check(int(snapshot.audio_stream_player_count)==9,'actual scene has six world/two UI/one music nodes')
+		monitor._soak_report.stability_samples.append(snapshot);samples.append(snapshot)
+		var next_mission: String=missions[(index+1)%missions.size()]
+		monitor._cycle_index=index+2;monitor._requested_mission_id=next_mission
+		monitor.output_dir=out.path_join('transition-%d'%index);DirAccess.make_dir_recursive_absolute(monitor.output_dir)
+		var tick_before: int=app.tick_count
+		check(await monitor._restart_through_title(next_mission),'actual title/selection/new/confirm lifecycle succeeds')
+		check(app.sim.time==0.0 and app.sim.mission_id==next_mission and app.sim.outcome=='playing','confirmed restart is fresh selected mission')
+		check(app.tick_count==tick_before,'UI lifecycle does not manually advance normal Main clock')
+		check(original_ids==[app.get_instance_id(),app.world.get_instance_id(),app.hud.get_instance_id(),app.game_audio.get_instance_id(),app.music_player.get_instance_id()],'all scene and music instances persist across actual UI restart')
+		await frames()
+	check(monitor.failures.is_empty(),'production runner has no lifecycle/stability failure on actual Main')
+	var evidence: Dictionary={'scope':'Controlled actual Main source-rendered UI lifecycle fixture; uses retained0.8victory saves, no route/hour/native-export/human proof','checks':checks,'failures':failures,'runner_failures':monitor.failures.duplicate(),'transitions':monitor._soak_report.transitions.duplicate(true),'stability_samples':samples,'main_sha256':FileAccess.get_sha256('res://scripts/main.gd'),'runner_sha256':FileAccess.get_sha256('res://scripts/diagnostics/campaign_runner.gd')}
+	var file: FileAccess=FileAccess.open(out.path_join('result.json'),FileAccess.WRITE);file.store_string(JSON.stringify(evidence,'\t',true,true));file.close();file=null
+	monitor.queue_free();app._release_audio();app.queue_free();monitor=null;app=null
+	for index: int in range(10): await process_frame
+	print('SOAK_MAIN_LIFECYCLE_SOURCE checks=%d failures=%d'%[checks,failures.size()])
+	for message: String in failures:printerr(message)
+	quit(0 if failures.is_empty() else 1)

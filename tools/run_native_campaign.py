@@ -31,6 +31,26 @@ BAD_OUTPUT = re.compile(
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 GIT_COMMIT = re.compile(r"[0-9a-f]{40}\Z")
 MISSION_TAGS = {"canyon": "rift_escape_01", "delta": "wetland_escape_02", "ridge": "ridge_escape_03"}
+SOAK_CYCLES = 7
+SOAK_MINIMUM_WALL_SECONDS = 3600
+SOAK_RESOLUTION = [1920, 1080]
+SOAK_CAPTURE_LABELS = ("opening", "middle_infrastructure", "withdrawal_after_disk_load", "completed_powered_exit", "victory")
+
+
+def soak_missions(starting_mission: str) -> list[str]:
+    order = list(MISSION_TAGS)
+    start = order.index(starting_mission)
+    return [order[(start + index) % len(order)] for index in range(SOAK_CYCLES)]
+
+
+def wall_time_limit(soak: bool, prepare_only: bool, requested: int | None) -> int:
+    if soak and prepare_only:
+        raise ValueError("--soak cannot be combined with --prepare-only")
+    limit = requested if requested is not None else (5400 if soak else 900)
+    minimum, maximum = (3600, 7200) if soak else (60, 1800)
+    if not minimum <= limit <= maximum:
+        raise ValueError(f"--max-seconds must be between {minimum} and {maximum} in this mode")
+    return limit
 
 
 def sha256(path: Path) -> str:
@@ -154,7 +174,8 @@ def validate_report(report: dict[str, Any], before: dict[str, Any],
                     after: dict[str, Any], prepare_only: bool,
                     expected_arguments: list[str] | None = None,
                     expected_mission: str = "canyon",
-                    final_state: dict[str, Any] | None = None) -> list[str]:
+                    final_state: dict[str, Any] | None = None,
+                    launch_mission: str | None = None) -> list[str]:
     """Reject narrower or stale evidence even if the native process exits zero."""
     errors: list[str] = []
     if expected_mission not in MISSION_TAGS:
@@ -186,7 +207,7 @@ def validate_report(report: dict[str, Any], before: dict[str, Any],
             errors.append("Actual process used a forbidden engine clock/render override")
         if expected_arguments is not None and arguments != expected_arguments:
             errors.append("Actual native process arguments differ from the verifier's launch")
-        if [argument for argument in arguments[1:] if argument.split("=", 1)[0] == "--mission"] != [f"--mission={expected_mission}"]:
+        if [argument for argument in arguments[1:] if argument.split("=", 1)[0] == "--mission"] != [f"--mission={launch_mission or expected_mission}"]:
             errors.append("Actual native process mission selector does not match the requested campaign")
     time_scale = report.get("engine_time_scale")
     if time_scale is None:
@@ -279,6 +300,431 @@ def validate_report(report: dict[str, Any], before: dict[str, Any],
     return errors
 
 
+def saved_dictionary(value: Any) -> dict[str, Any]:
+    if not isinstance(value, dict) or value.get("$type") != "Dictionary" or not isinstance(value.get("entries"), list):
+        raise ValueError("Missing encoded Dictionary")
+    decoded: dict[str, Any] = {}
+    for pair in value["entries"]:
+        if (not isinstance(pair, list) or len(pair) != 2 or not isinstance(pair[0], str)
+                or pair[0] in decoded):
+            raise ValueError("Invalid or duplicate encoded Dictionary entry")
+        decoded[pair[0]] = pair[1]
+    return decoded
+
+
+def whole(value: Any, minimum: int = 0) -> bool:
+    return number(value) and value >= minimum and int(value) == value
+
+
+def close_number(first: Any, second: Any) -> bool:
+    return number(first) and number(second) and math.isclose(first, second, rel_tol=2e-15, abs_tol=1e-12)
+
+
+def source_map_valid(value: Any) -> bool:
+    if not isinstance(value, dict) or not value:
+        return False
+    for name, record in value.items():
+        if not isinstance(name, str) or not isinstance(record, dict):
+            return False
+        if record.get("status") == "compiled/imported":
+            if record.get("sha256") is not None: return False
+        elif record.get("status") == "source_available":
+            if not isinstance(record.get("sha256"), str) or not SHA256.fullmatch(record["sha256"]): return False
+        else:
+            return False
+    return True
+
+
+def cycle_economic_errors(report: dict[str, Any], state: dict[str, Any]) -> list[str]:
+    """Independently inspect the actual retained completed save, not just route.success."""
+    errors: list[str] = []
+    route = report.get("route", {})
+    if not isinstance(route, dict):
+        return ["Missing full economic route report"]
+    for flag in ("west_gate_was_sealed", "deliberate_abandonment", "loaded_withdrawal_reloaded",
+                 "both_resource_sites_captured", "exit_powered_at_victory"):
+        if route.get(flag) is not True:
+            errors.append(f"Route lacks actual economic milestone: {flag}")
+    if not whole(route.get("actual_camp_count"), 3) or not whole(route.get("home_deliveries"), 1) or not whole(route.get("middle_deliveries"), 3):
+        errors.append("Route lacks three real camps and required physical convoy deliveries")
+    abandoned = route.get("abandoned_stock")
+    if (not isinstance(abandoned, dict) or not abandoned
+            or any(not number(value) or value < 0 for value in abandoned.values())
+            or sum(abandoned.values()) <= 0):
+        errors.append("Route did not deliberately leave actual unshipped stock")
+    paid = route.get("funded_exit_job", {})
+    costs = {"materials": 140.0, "fuel": 45.0, "supplies": 30.0}
+    if (not isinstance(paid, dict) or paid.get("costs") != costs
+            or any(paid.get(flag) is not True for flag in ("funded", "delivered", "done"))):
+        errors.append("Exit job lacks unchanged actual paid costs and completion flags")
+        paid = paid if isinstance(paid, dict) else {}
+    try:
+        payload = saved_dictionary(state.get("payload"))
+        buildings = [saved_dictionary(value) for value in payload["buildings"]]
+        units = [saved_dictionary(value) for value in payload["units"]]
+        jobs = [saved_dictionary(value) for value in payload["jobs"]]
+        camps = [saved_dictionary(value) for value in payload["camps"]]
+        exits = [value for value in buildings if value.get("id") == payload.get("exit_building_id")]
+        trucks = [value for value in units if value.get("id") == payload.get("main_truck_id")]
+        recorded = [value for value in jobs if value.get("id") == paid.get("id")]
+        if len(exits) != 1 or len(trucks) != 1 or len(recorded) != 1:
+            raise ValueError("Final save has no unique actual exit, command truck and paid job")
+        exit_building, truck, job = exits[0], trucks[0], recorded[0]
+        final = report.get("final", {})
+        final = final if isinstance(final, dict) else {}
+        loop = report.get("main_loop", {})
+        loop = loop if isinstance(loop, dict) else {}
+        if (payload.get("outcome") != "victory" or not whole(payload.get("evacuated"), 4)
+                or not number(payload.get("exit_progress")) or payload["exit_progress"] < 1.0
+                or not close_number(payload.get("evacuated"), final.get("evacuated"))
+                or not close_number(payload.get("time"), loop.get("observed_sim_seconds"))):
+            errors.append("Actual final save does not match observed full-route victory and clock")
+        if (exit_building.get("kind") != "exit" or not number(exit_building.get("hp")) or exit_building["hp"] <= 0
+                or exit_building.get("powered") is not True or not number(exit_building.get("progress"))
+                or exit_building["progress"] < 1.0 or exit_building.get("required_power") != 6.0):
+            errors.append("Actual saved exit is not alive, complete and powered at unchanged demand6")
+        if (truck.get("kind") != "truck" or truck.get("team") != "friendly" or truck.get("state") != "evacuated"
+                or not number(truck.get("hp")) or truck["hp"] <= 0):
+            errors.append("Actual saved command truck is not alive and evacuated")
+        positions = [value.get("pos", {}) for value in (truck, exit_building)]
+        if any(not isinstance(value, dict) or value.get("$type") != "Vector2"
+               or not number(value.get("x")) or not number(value.get("y")) for value in positions):
+            errors.append("Actual truck/exit positions are missing")
+        elif math.hypot(positions[0]["x"] - positions[1]["x"], positions[0]["y"] - positions[1]["y"]) > 5.000001:
+            errors.append("Actual saved command truck did not arrive at the completed exit")
+        if (job.get("kind") != "exit" or job.get("building_id") != payload.get("exit_building_id")
+                or job.get("source_camp_id") != paid.get("source_camp_id")
+                or any(job.get(flag) is not True for flag in ("funded", "delivered", "done"))
+                or saved_dictionary(job.get("costs")) != costs or len(camps) < 3):
+            errors.append("Actual saved economic records do not prove the paid exit and three camps")
+    except (KeyError, TypeError, ValueError) as error:
+        errors.append(f"Cannot independently verify actual final economic state: {error}")
+    return errors
+
+
+def retained_save_errors(metadata: Any, path: Path, mission: str,
+                         source_hash_key: str = "sha256") -> tuple[list[str], dict[str, Any]]:
+    errors: list[str] = []
+    state: dict[str, Any] = {}
+    if not isinstance(metadata, dict):
+        return [f"Missing retained disk metadata for {path.name}"], state
+    try:
+        if path.is_symlink() or path.parent.is_symlink():
+            raise ValueError("Retained evidence path cannot be a symlink")
+        state = read_object(path)
+        digest = sha256(path)
+        if (metadata.get("retained_path") != str(path) or metadata.get("retained_sha256") != digest
+                or metadata.get(source_hash_key) != digest):
+            errors.append(f"Retained {path.name} does not match actual disk source bytes")
+        errors.extend(mission_identity_errors(saved_mission_identity(state), mission, path.name, saved=True))
+    except (OSError, ValueError) as error:
+        errors.append(f"Cannot verify retained {path.name}: {error}")
+    return errors, state
+
+
+def soak_display_errors(display: Any, label: str) -> list[str]:
+    if not isinstance(display, dict):
+        return [f"{label} has no actual soak display measurements"]
+    visible = display.get("viewport_visible_size")
+    reported = display.get("texture_reported_size")
+    if (display.get("requested_client_size") != SOAK_RESOLUTION or display.get("requested_ui_scale") != 1.0
+            or display.get("client_size") != SOAK_RESOLUTION or display.get("viewport_pixel_size") != SOAK_RESOLUTION
+            or display.get("viewport_pixel_size_source") != "viewport_texture_get_image"
+            or not isinstance(reported, list) or len(reported) != 2 or any(not whole(value, 1) for value in reported)
+            or not isinstance(visible, list) or len(visible) != 2 or any(not whole(value, 1) for value in visible)
+            or not close_number(display.get("ui_scale"), 1.0) or not close_number(display.get("window_content_scale_factor"), 1.0)
+            or display.get("windowed") is not True or display.get("ready") is not True):
+        return [f"{label} did not reach actual1920x1080 client/rendered viewport and UI scale1"]
+    return []
+
+
+def soak_capture_errors(captures: Any, directory: Path) -> list[str]:
+    if (not isinstance(captures, list) or len(captures) != len(SOAK_CAPTURE_LABELS)
+            or any(not isinstance(record, dict) for record in captures)):
+        return ["Soak cycle lacks the five actual rendered route captures"]
+    errors: list[str] = []
+    for label, record in zip(SOAK_CAPTURE_LABELS, captures):
+        path = directory / f"{label}.png"
+        errors.extend(soak_display_errors(record.get("display"), f"Capture {label}"))
+        if (record.get("label") != label or record.get("path") != str(path)
+                or record.get("image_pixel_size") != SOAK_RESOLUTION):
+            errors.append(f"Capture {label} does not identify its actual1920x1080 route image")
+        try:
+            if path.is_symlink():
+                raise ValueError("Capture cannot be a symlink")
+            with path.open("rb") as image:
+                header = image.read(24)
+            if (header[:16] != b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR"
+                    or [int.from_bytes(header[16:20], "big"), int.from_bytes(header[20:24], "big")] != SOAK_RESOLUTION
+                    or record.get("sha256") != sha256(path)):
+                errors.append(f"Capture {label} actual PNG dimensions/hash differ from the retained proof")
+        except (OSError, ValueError) as error:
+            errors.append(f"Cannot verify actual rendered capture {label}: {error}")
+    return errors
+
+
+def stability_errors(samples: Any, planned: list[str]) -> list[str]:
+    if not isinstance(samples, list) or len(samples) != SOAK_CYCLES:
+        return ["Seven named post-warmup stability snapshots were not retained"]
+    errors: list[str] = []
+    baseline_ids: tuple[Any, Any] | None = None
+    baseline_nodes: tuple[Any, ...] | None = None
+    previous_wall, previous_updates = -1.0, -1
+    for index, sample in enumerate(samples, 1):
+        if not isinstance(sample, dict):
+            errors.append(f"Invalid stability sample {index}")
+            continue
+        if (sample.get("name") != f"post_warmup_cycle_{index:02d}_victory" or sample.get("cycle_index") != index
+                or sample.get("mission_id") != planned[index - 1] or sample.get("warmup_complete") is not True
+                or not number(sample.get("wall_seconds")) or sample["wall_seconds"] <= previous_wall):
+            errors.append(f"Stability sample {index} has no ordered post-route warmup identity")
+        if number(sample.get("wall_seconds")): previous_wall = sample["wall_seconds"]
+        memory = sample.get("memory", {})
+        memory = memory if isinstance(memory, dict) else {}
+        linux = memory.get("process_linux", {})
+        linux = linux if isinstance(linux, dict) else {}
+        if (linux.get("available") is not True or not whole(linux.get("VmRSS_bytes"), 1)
+                or not whole(linux.get("VmHWM_bytes"), 1) or linux.get("VmHWM_bytes", 0) < linux.get("VmRSS_bytes", 0)):
+            errors.append(f"Stability sample {index} lacks named memory readings")
+        for key, flag in (("godot_static_bytes", "godot_static_available"), ("godot_static_peak_bytes", "godot_static_peak_available")):
+            if not ((memory.get(flag) is True and whole(memory.get(key), 1)) or (memory.get(flag) is False and memory.get(key) is None)):
+                errors.append(f"Stability sample {index} must distinguish unavailable allocator counters from real bytes")
+        if memory.get("gpu_memory_available") is not False or memory.get("gpu_memory_bytes") is not None:
+            errors.append(f"Stability sample {index} claims unsupported per-process GPU memory")
+        for key, flag in (("object_count", "object_count_available"), ("orphan_node_count", "orphan_node_count_available")):
+            if not ((sample.get(flag) is True and whole(sample.get(key))) or (sample.get(flag) is False and sample.get(key) is None)):
+                errors.append(f"Stability sample {index} must label unavailable release object/orphan monitors")
+        node_keys = ("main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id", "music_instance_id")
+        node_counts = ("tree_node_count", "world_child_count", "hud_child_count", "audio_stream_player_count")
+        if (any(not isinstance(sample.get(key), str) or not sample[key] for key in node_keys)
+                or not whole(sample.get("tree_node_count"), 1) or any(not whole(sample.get(key)) for key in node_counts[1:])
+                or sample.get("audio_stream_player_count") != 9):
+            errors.append(f"Stability sample {index} lacks actual Main/world/HUD/audio/music node identity/count readings")
+        nodes = tuple(sample.get(key) for key in (*node_keys, *node_counts))
+        if baseline_nodes is None: baseline_nodes = nodes
+        elif nodes != baseline_nodes: errors.append("Main/world/HUD/audio/music instance or actual node counts changed after warmup")
+        audio = sample.get("audio", {})
+        if not isinstance(audio, dict): audio = {}
+        identifiers = (audio.get("world_player_ids"), audio.get("ui_player_ids"))
+        valid_ids = (isinstance(identifiers[0], list) and len(identifiers[0]) == 6
+                     and isinstance(identifiers[1], list) and len(identifiers[1]) == 2
+                     and all(isinstance(value, str) and value for group in identifiers for value in group)
+                     and len(set(identifiers[0] + identifiers[1])) == 8
+                     and isinstance(sample.get("music_instance_id"), str) and bool(sample["music_instance_id"])
+                     and sample["music_instance_id"] not in identifiers[0] + identifiers[1])
+        if (not valid_ids or audio.get("allocated_world_voices") != 6 or audio.get("allocated_ui_voices") != 2
+                or audio.get("allocated_music_players") != 1
+                or not whole(audio.get("active_world_voices")) or audio.get("active_world_voices", 7) > 6
+                or not whole(audio.get("active_ui_voices")) or audio.get("active_ui_voices", 3) > 2
+                or not whole(audio.get("peak_world_voices")) or audio.get("peak_world_voices", 7) > 6
+                or not whole(audio.get("observed_updates"), previous_updates + 1) or not whole(audio.get("dropped"))):
+            errors.append(f"Stability sample {index} does not prove bounded real audio voice pools")
+        if valid_ids:
+            if baseline_ids is None: baseline_ids = identifiers
+            elif identifiers != baseline_ids: errors.append("Audio voice instances changed across Main restarts")
+        if whole(audio.get("observed_updates")): previous_updates = audio["observed_updates"]
+    return errors
+
+
+def validate_soak_report(report: dict[str, Any], before: dict[str, Any], after: dict[str, Any],
+                         arguments: list[str], starting_mission: str, output: Path, process_id: int,
+                         process_wall_seconds: float, final_state: dict[str, Any]) -> tuple[list[str], dict[str, Any]]:
+    """Read every immutable per-cycle report/save; partial or short runs never pass."""
+    errors: list[str] = []
+    details: dict[str, Any] = {"cycles": [], "minimum_wall_seconds": SOAK_MINIMUM_WALL_SECONDS,
+                               "metric_scope": "Observed named post-warmup samples; no universal leak-free or hardware guarantee"}
+    if starting_mission not in MISSION_TAGS:
+        return ["Unsupported soak starting mission"], details
+    planned = soak_missions(starting_mission)
+    for stage in ("startup_display", "final_display"):
+        errors.extend(soak_display_errors(report.get(stage), stage))
+    if (report.get("soak_mode") is not True or report.get("prepare_only") is not False
+            or report.get("requested_mission_id") != starting_mission or report.get("planned_missions") != planned
+            or report.get("cycle_count_required") != SOAK_CYCLES
+            or report.get("minimum_wall_seconds") != SOAK_MINIMUM_WALL_SECONDS):
+        errors.append("Soak mode, fixed seven-cycle mission order or real-hour requirement differs from launch")
+    if (report.get("native_export_proof") is not True or report.get("one_hour_soak_evidence") is not True
+            or report.get("complete_campaign_evidence") is not True or report.get("errors") != []):
+        errors.append("Native process did not prove seven successful campaigns and one real hour")
+    if not number(report.get("wall_elapsed_seconds")) or report["wall_elapsed_seconds"] < SOAK_MINIMUM_WALL_SECONDS:
+        errors.append("Native monotonic wall time is less than one actual hour")
+    if not number(process_wall_seconds) or process_wall_seconds < SOAK_MINIMUM_WALL_SECONDS:
+        errors.append("Launcher's independently observed process wall time is less than one hour")
+    if number(report.get("wall_elapsed_seconds")) and number(process_wall_seconds) and report["wall_elapsed_seconds"] > process_wall_seconds + 1.0:
+        errors.append("Native soak wall time exceeds the independently observed process lifetime")
+    command_line = report.get("engine_command_line", {})
+    if (not isinstance(command_line, dict) or command_line.get("available") is not True
+            or command_line.get("source") != "/proc/self/cmdline" or command_line.get("arguments") != arguments
+            or arguments.count("--soak") != 1 or "--prepare-only" in arguments):
+        errors.append("Actual same-process soak arguments were not proven")
+    main_id, simulation_id = report.get("main_instance_id"), report.get("simulation_instance_id")
+    if (report.get("process_id") != process_id or not whole(process_id, 1)
+            or not isinstance(main_id, str) or not main_id or not isinstance(simulation_id, str) or not simulation_id):
+        errors.append("Soak has no stable launched process, Main and simulation identities")
+    for stage, expected in (("binaries_before", before), ("binaries_after", after)):
+        recorded = report.get(stage, {})
+        if not isinstance(recorded, dict) or any(not isinstance(recorded.get(key), dict)
+                or recorded[key].get("available") is not True or recorded[key].get("sha256") != expected[key]["sha256"]
+                for key in ("executable", "adjacent_pck")):
+            errors.append(f"Entire soak lacks the actual {stage} payload")
+    sources = report.get("sources_before")
+    valid_sources = source_map_valid(sources)
+    if before != after or sources != report.get("sources_after") or not valid_sources:
+        errors.append("Native payload or source changed during the soak")
+    cycles = report.get("cycles", [])
+    if not isinstance(cycles, list) or len(cycles) != SOAK_CYCLES:
+        errors.append("Exactly seven complete per-cycle proofs are required")
+        cycles = cycles if isinstance(cycles, list) else []
+    cycle_reports: list[dict[str, Any]] = []
+    previous_end, previous_wall = -1, -1.0
+    for index, mission in enumerate(planned, 1):
+        if index > len(cycles) or not isinstance(cycles[index - 1], dict):
+            errors.append(f"Cycle {index}/{mission} manifest entry is missing or invalid")
+            continue
+        record = cycles[index - 1]
+        directory = output / f"cycle-{index:02d}-{mission}"
+        report_path, state_path = directory / "campaign-validation.json", directory / "final-campaign-state.json"
+        try:
+            if directory.is_symlink() or report_path.is_symlink() or state_path.is_symlink():
+                raise ValueError("Cycle proof directory/files cannot be symlinks")
+            actual_report, actual_state = read_object(report_path), read_object(state_path)
+            cycle_reports.append(actual_report)
+            proof = actual_report.get("final_state", {})
+            proof = proof if isinstance(proof, dict) else {}
+            if (record.get("cycle_index") != index or record.get("mission_id") != mission
+                    or record.get("report_path") != str(report_path.relative_to(output))
+                    or record.get("final_state_path") != str(state_path.relative_to(output))
+                    or record.get("report_sha256") != sha256(report_path)
+                    or record.get("final_state_sha256") != sha256(state_path)
+                    or proof.get("sha256") != sha256(state_path)
+                    or record.get("complete_campaign_evidence") is not True):
+                errors.append(f"Cycle {index} manifest is not the actual unique retained report/final save")
+            cycle_errors = validate_report(actual_report, before, after, False, arguments, mission, actual_state,
+                                           launch_mission=starting_mission)
+            cycle_errors.extend(cycle_economic_errors(actual_report, actual_state))
+            cycle_errors.extend(soak_capture_errors(actual_report.get("captures"), directory))
+            if (actual_report.get("soak_mode") is not True or actual_report.get("cycle_index") != index
+                    or actual_report.get("process_id") != process_id or actual_report.get("main_instance_id") != main_id
+                    or actual_report.get("simulation_instance_id") != simulation_id
+                    or actual_report.get("sources_before") != report.get("sources_before")
+                    or actual_report.get("sources_after") != report.get("sources_after")
+                    or actual_report.get("binaries_changed") is not False or actual_report.get("sources_changed") is not False
+                    or actual_report.get("ui_speed") != 3.0):
+                cycle_errors.append("Cycle was not a normal3x route in the same unchanged Main process")
+            loop = actual_report.get("main_loop", {})
+            loop = loop if isinstance(loop, dict) else {}
+            start, end = loop.get("start_main_tick_count"), loop.get("end_main_tick_count")
+            if (not whole(start) or not whole(end) or start < previous_end or end <= start
+                    or not whole(loop.get("raw_main_ticks"), 1) or end - start != loop.get("raw_main_ticks")
+                    or not whole(loop.get("observed_ticks"), 30000) or not whole(loop.get("terminal_noop_ticks"))
+                    or loop.get("raw_main_ticks") != loop.get("observed_ticks", 0) + loop.get("terminal_noop_ticks", 0)
+                    or record.get("start_main_tick_count") != start or record.get("end_main_tick_count") != end):
+                cycle_errors.append("Cycle reused or broke the actual cumulative Main fixed-step interval")
+            if whole(end): previous_end = end
+            begin_wall, end_wall = actual_report.get("cycle_start_wall_seconds"), actual_report.get("cycle_end_wall_seconds")
+            if (not number(begin_wall) or not number(end_wall) or begin_wall < previous_wall
+                    or end_wall <= begin_wall or end_wall > report.get("wall_elapsed_seconds", 0)):
+                cycle_errors.append("Cycle wall intervals are missing, overlapping or outside the actual process")
+            if number(end_wall): previous_wall = end_wall
+            save_errors, checkpoint = retained_save_errors(actual_report.get("save_reload"), directory / "checkpoint-save.json", mission, "file_sha256")
+            cycle_errors.extend(save_errors)
+            try:
+                payload = saved_dictionary(checkpoint.get("payload"))
+                truck = next(saved_dictionary(value) for value in payload["units"]
+                             if saved_dictionary(value).get("id") == payload.get("main_truck_id"))
+                origin = next(saved_dictionary(value) for value in payload["camps"]
+                              if saved_dictionary(value).get("id") == truck.get("evac_origin_id"))
+                cargo = saved_dictionary(truck.get("cargo"))
+                if (payload.get("outcome") != "playing" or truck.get("order") != "evacuate_transport"
+                        or truck.get("haul_stage") != "outbound" or origin.get("state") != "packing"
+                        or not cargo or any(not number(value) or value < 0 for value in cargo.values()) or sum(cargo.values()) <= 0
+                        or not close_number(payload.get("time"), actual_report["save_reload"].get("simulation_time"))):
+                    cycle_errors.append("Retained checkpoint was not a real loaded outbound packing continuation")
+            except (KeyError, TypeError, ValueError, StopIteration) as error:
+                cycle_errors.append(f"Cannot independently verify loaded withdrawal disk state: {error}")
+            automatic = actual_report.get("automatic_saves", {})
+            automatic = automatic if isinstance(automatic, dict) else {}
+            if not whole(automatic.get("observed_file_changes"), 2): cycle_errors.append("Prior-cycle autosaves cannot replace two actual current-cycle writes")
+            for slot, filename in (("primary", "autosave-primary.json"), ("backup", "autosave-backup.json")):
+                slot_errors, slot_state = retained_save_errors(automatic.get(slot), directory / filename, mission)
+                cycle_errors.extend(slot_errors)
+                metadata = automatic.get(slot, {})
+                metadata = metadata if isinstance(metadata, dict) else {}
+                if metadata.get("schema_valid") is not True or not number(metadata.get("simulation_time")) or metadata["simulation_time"] <= 0:
+                    cycle_errors.append(f"Current-cycle {slot} autosave was not a valid progressed game")
+                try:
+                    if not close_number(saved_dictionary(slot_state.get("payload")).get("time"), metadata.get("simulation_time")):
+                        cycle_errors.append(f"Actual {slot} autosave time differs from its disk record")
+                except ValueError as error: cycle_errors.append(str(error))
+            errors.extend(f"Cycle {index}/{mission}: {error}" for error in cycle_errors)
+            details["cycles"].append({"cycle_index": index, "mission_id": mission, "errors": cycle_errors,
+                                      "report_sha256": sha256(report_path), "final_state_sha256": sha256(state_path)})
+        except (OSError, ValueError, TypeError) as error:
+            errors.append(f"Cycle {index}/{mission} actual proof is unavailable or invalid: {error}")
+    transitions = report.get("transitions", [])
+    if not isinstance(transitions, list) or len(transitions) != SOAK_CYCLES - 1:
+        errors.append("Six actual title/selection/confirmed-restart transitions are required")
+        transitions = []
+    for index, transition in enumerate(transitions, 1):
+        mission = planned[index]
+        if (not isinstance(transition, dict) or transition.get("from_cycle") != index or transition.get("to_cycle") != index + 1
+                or transition.get("mission_id") != mission or transition.get("process_id") != process_id or transition.get("main_instance_id") != main_id
+                or transition.get("actions") != ["title", "campaigns", f"campaign:{mission}", "new", "restart_confirm"]
+                or any(transition.get(flag) is not True for flag in ("title_ready", "campaign_selector_ready", "selected_start_ready",
+                                                                   "restart_confirmation_ready", "restart_ready", "success"))):
+            errors.append(f"Transition {index} did not exercise the proper public restart/title/start path")
+            continue
+        transition_errors, state = retained_save_errors(transition.get("restart_autosave"), output / f"cycle-{index+1:02d}-{mission}/restart-autosave.json", mission)
+        errors.extend(f"Transition {index}: {error}" for error in transition_errors)
+        try:
+            if saved_dictionary(state.get("payload")).get("time") != 0.0: errors.append(f"Transition {index} restart autosave is not a fresh initial campaign")
+        except ValueError as error: errors.append(str(error))
+        if len(cycle_reports) == SOAK_CYCLES:
+            previous, following = cycle_reports[index - 1], cycle_reports[index]
+            previous_loop, following_loop = previous.get("main_loop", {}), following.get("main_loop", {})
+            previous_loop = previous_loop if isinstance(previous_loop, dict) else {}
+            following_loop = following_loop if isinstance(following_loop, dict) else {}
+            if (not all(whole(value) for value in (transition.get("start_main_tick_count"), transition.get("end_main_tick_count"), previous_loop.get("end_main_tick_count"), following_loop.get("start_main_tick_count")))
+                    or transition["start_main_tick_count"] < previous_loop["end_main_tick_count"]
+                    or transition["end_main_tick_count"] < transition["start_main_tick_count"]
+                    or transition["end_main_tick_count"] > following_loop["start_main_tick_count"]):
+                errors.append(f"Transition {index} lost the cumulative Main clock boundary")
+            wall_values = (previous.get("cycle_end_wall_seconds"), transition.get("started_wall_seconds"), transition.get("ended_wall_seconds"), following.get("cycle_start_wall_seconds"))
+            if not all(number(value) for value in wall_values) or list(wall_values) != sorted(wall_values):
+                errors.append(f"Transition {index} wall interval does not join its actual completed and fresh cycles")
+    errors.extend(stability_errors(report.get("stability_samples"), planned))
+    if len(cycle_reports) == SOAK_CYCLES:
+        samples = report.get("stability_samples")
+        if isinstance(samples, list) and len(samples) == SOAK_CYCLES:
+            for index, actual in enumerate(cycle_reports):
+                if actual.get("stability_after") != samples[index]:
+                    errors.append(f"Cycle {index+1} stability reading differs from the retained report")
+                sample = samples[index]
+                if isinstance(sample, dict) and any(sample.get(key) != report.get(key) for key in ("main_instance_id", "world_instance_id", "hud_instance_id", "audio_instance_id", "music_instance_id")):
+                    errors.append(f"Cycle {index+1} metric identities differ from the original same-process Main/world/HUD/audio/music")
+            first, last = samples[0], samples[-1]
+            if isinstance(first, dict) and isinstance(last, dict):
+                try:
+                    details["stability_comparison"] = {
+                        "baseline": first["name"], "final": last["name"],
+                        "rss_delta_bytes": last["memory"]["process_linux"]["VmRSS_bytes"] - first["memory"]["process_linux"]["VmRSS_bytes"],
+                        "high_water_delta_bytes": last["memory"]["process_linux"]["VmHWM_bytes"] - first["memory"]["process_linux"]["VmHWM_bytes"],
+                        "tree_node_delta": last["tree_node_count"] - first["tree_node_count"],
+                        "interpretation": "RSS/high-water observations have no arbitrary broad pass threshold and do not prove universal leak freedom."}
+                except (KeyError, TypeError): pass
+        try:
+            errors.extend(mission_identity_errors(report.get("final_state"), planned[-1], "entire soak final file proof", saved=True))
+            root_final = output / "final-campaign-state.json"
+            proof = report.get("final_state", {})
+            if not isinstance(proof, dict) or proof.get("sha256") != sha256(root_final) or final_state != read_object(root_final):
+                errors.append("Entire soak final file does not match the independently read actual proof")
+            errors.extend(mission_identity_errors(saved_mission_identity(final_state), planned[-1], "final entire soak save", saved=True))
+            if final_state != read_object(output / f"cycle-07-{planned[-1]}/final-campaign-state.json"):
+                errors.append("Entire soak final save differs from the actual last completed campaign")
+        except (OSError, ValueError) as error: errors.append(str(error))
+    return errors, details
+
+
 def read_progress(path: Path, result: dict[str, Any], started: float) -> bool:
     if not path.is_file():
         return False
@@ -303,19 +749,20 @@ def main() -> int:
     parser.add_argument("--build-dir", type=Path, default=PROJECT / "builds/linux-release")
     parser.add_argument("--isolation-root", type=Path, required=True,
                         help="Absolute, absent or completely empty dedicated directory; never deleted")
-    parser.add_argument("--max-seconds", type=int, default=900,
-                        help="Native validator wall-time limit, 60 through 1800 seconds")
+    parser.add_argument("--max-seconds", type=int,
+                        help="Wall cap: ordinary default900/range60..1800; soak default5400/range3600..7200")
     parser.add_argument("--mission", choices=tuple(MISSION_TAGS), default="canyon",
                         help="Campaign to launch and prove through actual disk continuation (default: canyon)")
     parser.add_argument("--prepare-only", action="store_true",
                         help="Verify native setup/normal-loop progress only; never proves a complete campaign")
+    parser.add_argument("--soak", action="store_true",
+                        help="Seven full routes in the same real Main process; one-hour proof requires actual wall>=3600s")
     options = parser.parse_args()
     build = options.build_dir.resolve()
     try:
         if not sys.platform.startswith("linux"):
             raise ValueError("This launcher validates the Linux native export only")
-        if not 60 <= options.max_seconds <= 1800:
-            raise ValueError("--max-seconds must be between 60 and 1800")
+        options.max_seconds = wall_time_limit(options.soak, options.prepare_only, options.max_seconds)
         isolation = prepare_isolation(options.isolation_root, build)
     except (OSError, ValueError) as error:
         parser.error(str(error))
@@ -328,6 +775,7 @@ def main() -> int:
     result: dict[str, Any] = {"schema_version": 1, "success": False,
                               "complete_campaign_evidence": False, "performance_evidence": False,
                               "prepare_only": options.prepare_only, "requested_mission_id": options.mission,
+                              "soak_mode": options.soak, "one_hour_soak_evidence": False,
                               "started_utc": utc_now(),
                               "build_dir": str(build), "isolation_root": str(isolation),
                               "errors": [], "timed_out": False,
@@ -359,12 +807,15 @@ def main() -> int:
                    f"--max-seconds={options.max_seconds}"]
         if options.prepare_only:
             command.append("--prepare-only")
+        if options.soak:
+            command.append("--soak")
         result.update(argv=command, cwd=str(build), timeout_seconds=options.max_seconds + 20,
                       isolated_environment={key: environment[key] for key in
                                             ("CAMPAIGN_VALIDATION_ROOT", "XDG_DATA_HOME",
                                              "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "DISPLAY")})
         write_json(verification, result)
         with log.open("wb") as output:
+            process_started = time.monotonic()
             process = subprocess.Popen(command, cwd=build, env=environment, stdin=subprocess.DEVNULL,
                                        stdout=output, stderr=subprocess.STDOUT, start_new_session=True)
             result["pid"] = process.pid
@@ -381,6 +832,7 @@ def main() -> int:
                     write_json(verification, result)
                 time.sleep(0.5)
             result["returncode"] = process.wait(timeout=5)
+            result["native_process_wall_seconds"] = time.monotonic() - process_started
         read_progress(progress_path, result, started)
         after = binary_snapshot(build)
         result["binaries_after"] = after
@@ -401,10 +853,18 @@ def main() -> int:
         result["final_campaign_state"] = {"path": str(final_state_path), "sha256": final_digest}
         if not isinstance(report.get("final_state"), dict) or report["final_state"].get("sha256") != final_digest:
             result["errors"].append("Final state file does not match the native report's proof hash")
-        result["errors"].extend(validate_report(report, before, after, options.prepare_only, command,
-                                                 options.mission, final_state))
+        if options.soak:
+            soak_errors, independently_read = validate_soak_report(
+                report, before, after, command, options.mission, report_path.parent,
+                process.pid, result["native_process_wall_seconds"], final_state)
+            result["errors"].extend(soak_errors)
+            result["soak_validation"] = independently_read
+        else:
+            result["errors"].extend(validate_report(report, before, after, options.prepare_only, command,
+                                                     options.mission, final_state))
         result["success"] = not result["errors"]
         result["complete_campaign_evidence"] = result["success"] and not options.prepare_only
+        result["one_hour_soak_evidence"] = result["success"] and options.soak
     except KeyboardInterrupt:
         result["errors"].append("Campaign verification was interrupted; partial data is not accepted")
     except (OSError, ValueError, subprocess.SubprocessError) as error:
@@ -422,11 +882,13 @@ def main() -> int:
         signal.signal(signal.SIGTERM, old_signal)
         result["success"] = result["success"] and not result["errors"] and not result["timed_out"]
         result["complete_campaign_evidence"] = result["success"] and not options.prepare_only
+        result["one_hour_soak_evidence"] = result["success"] and options.soak
         result["finished_utc"] = utc_now()
         result["wall_elapsed_seconds"] = round(time.monotonic() - started, 3)
         write_json(verification, result)
     print(json.dumps({"success": result["success"], "prepare_only": options.prepare_only,
                       "requested_mission_id": options.mission,
+                      "soak_mode": options.soak, "one_hour_soak_evidence": result["one_hour_soak_evidence"],
                       "complete_campaign_evidence": result["complete_campaign_evidence"],
                       "verification_path": str(verification), "errors": result["errors"]},
                      ensure_ascii=False, indent=2))

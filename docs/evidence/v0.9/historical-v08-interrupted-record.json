@@ -1,0 +1,40 @@
+{
+  "scope": "Outer launcher/session ended143 while game remained live; not an accepted launcher run; all original files preserved",
+  "outer_session_exit": 143,
+  "native_pid": 2934793,
+  "terminal_observation": null,
+  "observed_utc": "2026-10-31T06:14:46.601342+00:00",
+  "game_report_summary": {
+    "complete_campaign_evidence": true,
+    "errors": [],
+    "final": {
+      "evacuated": 7,
+      "exit_powered": true,
+      "exit_progress": 1.0,
+      "mission_id": "delta",
+      "mission_tag": "wetland_escape_02",
+      "outcome": "victory",
+      "selected_mission_id": "delta",
+      "summary": {
+        "crude": 136.99999999995418,
+        "evacuated": 7,
+        "exit_progress": 1.0,
+        "fuel": 21.525800000012694,
+        "materials": 146.48000000005902,
+        "outcome": "victory",
+        "people": 7,
+        "phase": "evacuation",
+        "power": 14.0,
+        "power_capacity": 24.0,
+        "pursuit_eta": 653.2666666666207,
+        "salvage": 144.51999999998725,
+        "supplies": 34.4175000000014,
+        "time": 1668.84999999903,
+        "zombies": 100
+      },
+      "truck_distance": 4.969789028167725,
+      "truck_state": "evacuated"
+    },
+    "wall_elapsed_seconds": 565.266564
+  }
+}

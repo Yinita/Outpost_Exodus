@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+FAIL _test_disabled_camp_pager_isolation
+Macro control checks: 23; failures: 6
+Isolated user data: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v09-pager-baseline/work/macro-controls-data/baseline/godot/app_userdata/逐营突围 · Outpost Exodus
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v09-pager-baseline/work/macro-controls/camp-pager-isolation-960.png
+ - disabled pager/blank click cannot issue a world task: 0
+ - pager click retains targeting without world drag: 0
+ - disabled pager/blank click cannot issue a world task: 1
+ - pager click retains targeting without world drag: 1
+ - disabled pager/blank click cannot issue a world task: 2
+ - pager click retains targeting without world drag: 2

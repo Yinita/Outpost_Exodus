@@ -33,7 +33,9 @@ func _run() -> void:
 	root.add_child(app)
 	await _frames(8)
 	app.set_process(false)
-	var cases: Array[Callable] = [_test_camp_pagination, _test_camp_selection_and_rebinding, _test_training_layout_and_status, _test_targeting_and_tabs, _test_small_range_toggle]
+	var cases: Array[Callable] = [_test_camp_pagination, _test_disabled_camp_pager_isolation, _test_camp_selection_and_rebinding, _test_camp_status_detail, _test_training_layout_and_status, _test_targeting_and_tabs, _test_small_range_toggle]
+	if OS.get_cmdline_user_args().has("--pager-only"): cases = [_test_disabled_camp_pager_isolation]
+	elif OS.get_cmdline_user_args().has("--status-only"): cases = [_test_camp_status_detail]
 	for test_case: Callable in cases:
 		var previous: int = failures.size()
 		case_completed = false
@@ -208,6 +210,33 @@ func _test_camp_pagination() -> void:
 func _point_for_tile(tile: Vector2) -> Vector2:
 	return app.world.get_global_transform_with_canvas() * (tile * 48.0)
 
+func _test_disabled_camp_pager_isolation() -> void:
+	await _size(Vector2i(1152, 648), 1.2)
+	await _reset()
+	_six_camps()
+	await _frames()
+	while not _hotspot("camp_page_prev").is_empty(): await _click_action("camp_page_prev")
+	var pager: Vector2 = Vector2(app.get_viewport_rect().size.x - 268, 82 + app.camp_page_size() * 102)
+	var points: Array[Vector2] = [pager + Vector2(36, 13.5), pager + Vector2(136, 13.5)]
+	_check(_hotspot("camp_page_prev").is_empty(), "first-page previous control is disabled for isolation check")
+	for index: int in range(3):
+		if index == 2:
+			while not _hotspot("camp_page_next").is_empty(): await _click_action("camp_page_next")
+			_check(_hotspot("camp_page_next").is_empty(), "last-page next control is disabled for isolation check")
+		var point: Vector2 = points[index] if index < 2 else pager + Vector2(214, 13.5)
+		app.ui_action("task:guard")
+		var snapshot: String = _snapshot()
+		var selection: Array = app.selected_ids.duplicate()
+		var selected_camp: int = app.selected_camp
+		var page: int = app.camp_page
+		await _click(point)
+		_check(_snapshot() == snapshot, "disabled pager/blank click cannot issue a world task: %d" % index)
+		_check(app.pending_task == "guard" and not app.dragging, "pager click retains targeting without world drag: %d" % index)
+		_check(app.selected_ids == selection and app.selected_camp == selected_camp and app.camp_page == page, "pager non-action preserves selection and browsing: %d" % index)
+		app._cancel_pointer_modes()
+	await _capture("camp-pager-isolation-960.png")
+	case_completed = true
+
 func _camera_for_tile(tile: Vector2) -> void:
 	# Keep the chosen world target in the unobstructed center, away from side HUD.
 	app.camera.position = tile * 48.0
@@ -259,6 +288,32 @@ func _training_fixture() -> Dictionary:
 	var barracks: Dictionary = app.sim._add_building("barracks", Vector2(camp.pos) + Vector2(1, 1), int(camp.id), 1.0)
 	barracks.powered = true
 	return barracks
+
+func _test_camp_status_detail() -> void:
+	await _reset()
+	_training_fixture()
+	var camp: Dictionary = app.sim.camps[0]
+	app.ui_action("recruit:rifle")
+	_check(Array(camp.recruit_queue).size() == 1, "status fixture has an actually admitted local training order")
+	# Synthetic power-loss setup; input/rendering assertions below are not a
+	# construction, economic or full-playthrough claim.
+	camp.fuel = 0.0
+	app.sim._update_power(0.0)
+	app.ui_action("recipe:materials")
+	for configuration: Array in [[Vector2i(1600, 900), 1.0], [Vector2i(1152, 648), 1.2]]:
+		await _size(configuration[0], configuration[1])
+		var snapshot: String = _snapshot()
+		var row: Dictionary = app.camp_readouts[int(camp.id)]
+		_check(row.code == "training_waiting_power" and row.severity == "attention" and String(row.text).begins_with("Ⅱ "), "paused card preserves actual admitted-training power blocker")
+		var card: Dictionary = _hotspot("camp:%d" % int(camp.id))
+		_check(not card.is_empty(), "blocked camp retains its full rendered card action")
+		if card.is_empty(): continue
+		await _motion(card.rect.get_center())
+		_check(app.hud.tooltip.contains("成品燃料") and app.hud.tooltip.contains("战术暂停"), "actual camp hover shows paused fuel cause instead of only a generic pause")
+		_check(not app.hud.overlay_rects.is_empty() and app.get_viewport_rect().encloses(app.hud.overlay_rects.back()), "rendered full camp detail fits inside the logical viewport")
+		await _capture("camp-status-%d-%d.png" % [configuration[0].x, int(configuration[1] * 100)], true)
+		_check(_snapshot() == snapshot, "hovering and drawing full camp status preserve simulation and RNG")
+	case_completed = true
 
 func _test_training_layout_and_status() -> void:
 	await _reset()
@@ -395,10 +450,10 @@ func _test_small_range_toggle() -> void:
 	await _capture("range-toggle-960.png")
 	case_completed = true
 
-func _capture(name: String) -> void:
+func _capture(name: String, keep_mouse: bool = false) -> void:
 	var directory: String = ProjectSettings.globalize_path("res://work/macro-controls")
 	DirAccess.make_dir_recursive_absolute(directory)
-	await _motion(Vector2(app.get_viewport_rect().size.x * 0.5, 70))
+	if not keep_mouse: await _motion(Vector2(app.get_viewport_rect().size.x * 0.5, 70))
 	await _frames()
 	var path: String = directory.path_join(name)
 	_check(root.get_texture().get_image().save_png(path) == OK, "native screenshot saved: " + name)

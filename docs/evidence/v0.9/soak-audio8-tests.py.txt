@@ -1,0 +1,379 @@
+#!/usr/bin/env python3
+"""Synthetic proof-boundary/unit fixtures only; no native, GPU or elapsed-hour run."""
+from __future__ import annotations
+
+from copy import deepcopy
+from contextlib import redirect_stderr, redirect_stdout
+import io
+import json
+from pathlib import Path
+import tempfile
+from types import SimpleNamespace
+import unittest
+from unittest.mock import patch
+
+if __package__:
+    from . import run_native_campaign as launcher
+    from .test_native_campaign_launcher import fixture, disk_identity
+else:
+    import run_native_campaign as launcher
+    from test_native_campaign_launcher import fixture, disk_identity
+
+
+def encoded(value):
+    if isinstance(value, dict):
+        if value.get("$type") == "Vector2": return value
+        return {"$type": "Dictionary", "entries": [[key, encoded(item)] for key, item in value.items()]}
+    if isinstance(value, list): return [encoded(item) for item in value]
+    return value
+
+
+def save(mission, payload):
+    payload = deepcopy(payload)
+    if mission != "canyon": payload["mission_id"] = mission
+    return {"version": 1, "mission": launcher.MISSION_TAGS[mission], "payload": encoded(payload)}
+
+
+def completed_state(mission):
+    return save(mission, {"time": 1600.0, "outcome": "victory", "exit_progress": 1.0, "evacuated": 4,
+        "main_truck_id": 13, "exit_building_id": 20,
+        "units": [{"id": 13, "kind": "truck", "team": "friendly", "state": "evacuated", "hp": 380.0,
+                   "pos": {"$type": "Vector2", "x": 72.0, "y": 19.0}}],
+        "buildings": [{"id": 20, "kind": "exit", "hp": 900.0, "progress": 1.0, "powered": True,
+                       "required_power": 6.0, "pos": {"$type": "Vector2", "x": 72.0, "y": 19.0}}],
+        "camps": [{"id": 1}, {"id": 2}, {"id": 3}],
+        "jobs": [{"id": 300, "kind": "exit", "building_id": 20, "source_camp_id": 3,
+                  "funded": True, "delivered": True, "done": True,
+                  "costs": {"materials": 140.0, "fuel": 45.0, "supplies": 30.0}}]})
+
+
+def checkpoint_state(mission):
+    return save(mission, {"time": 900.0, "outcome": "playing", "main_truck_id": 13,
+        "units": [{"id": 13, "order": "evacuate_transport", "haul_stage": "outbound",
+                   "evac_origin_id": 2, "evac_destination_id": 3, "cargo": {"materials": 80.0}}],
+        "camps": [{"id": 2, "state": "packing"}, {"id": 3, "state": "active"}]})
+
+
+class SoakProof:
+    """Construct evidence documents for verifier tests, never simulated gameplay."""
+    def __init__(self, output, starting="canyon", binaries=None, executable="/fixture/outpost-exodus.x86_64"):
+        self.output = Path(output)
+        self.output.mkdir(parents=True, exist_ok=True)
+        self.starting = starting
+        self.arguments = [executable, "--", "--campaign-validation", f"--mission={starting}", "--max-seconds=5400", "--soak"]
+        self.process_id = 123456
+        self.main_id, self.simulation_id = "10001", "10002"
+        self.before = binaries or fixture(starting, executable=executable)[1]
+        self.process_wall = 3859.0
+        self.sources = {"res://scripts/campaign_simulation.gd": {"status":"compiled/imported","sha256":None},
+                        "res://scripts/diagnostics/campaign_runner.gd": {"status":"source_available","sha256":"e"*64}}
+        self.report = {"soak_mode": True, "prepare_only": False, "requested_mission_id": starting,
+            "planned_missions": launcher.soak_missions(starting), "cycle_count_required": 7,
+            "minimum_wall_seconds": 3600, "native_export_proof": True, "one_hour_soak_evidence": True,
+            "complete_campaign_evidence": True, "errors": [], "process_id": self.process_id,
+            "main_instance_id": self.main_id, "simulation_instance_id": self.simulation_id,
+            "world_instance_id": "10003", "hud_instance_id": "10004", "audio_instance_id": "10005",
+            "engine_command_line": {"available": True, "source": "/proc/self/cmdline", "arguments": self.arguments},
+            "binaries_before": deepcopy(self.before), "binaries_after": deepcopy(self.before),
+            "sources_before": self.sources, "sources_after": self.sources, "wall_elapsed_seconds": 3858.0,
+            "cycles": [], "transitions": [], "stability_samples": []}
+        self.cycle_reports = []
+        end_tick, end_wall = 0, 0.0
+        for index, mission in enumerate(self.report["planned_missions"], 1):
+            directory = self.output / f"cycle-{index:02d}-{mission}"
+            directory.mkdir()
+            cycle, _before, _state = fixture(mission, executable=executable)
+            start_tick, start_wall = end_tick + 3, end_wall + 1.0
+            end_tick, end_wall = start_tick + 32000, start_wall + 550.0
+            sample = self.sample(index, mission, end_tick, end_wall - 0.01)
+            cycle.update(soak_mode=True, cycle_index=index, process_id=self.process_id, main_instance_id=self.main_id,
+                         simulation_instance_id=self.simulation_id, ui_speed=3.0,
+                         sources_before=self.sources, sources_after=self.sources, binaries_changed=False, sources_changed=False,
+                         binaries_before=deepcopy(self.before), binaries_after=deepcopy(self.before),
+                         cycle_start_wall_seconds=start_wall, cycle_end_wall_seconds=end_wall,
+                         wall_elapsed_seconds=550.0, stability_after=sample)
+            cycle["engine_command_line"]["arguments"] = list(self.arguments)
+            cycle["main_loop"].update(observed_ticks=32000, observed_sim_seconds=1600.0, raw_main_ticks=32000,
+                                      terminal_noop_ticks=0, start_main_tick_count=start_tick, end_main_tick_count=end_tick)
+            cycle["route"].update(actual_camp_count=3, west_gate_was_sealed=True, deliberate_abandonment=True,
+                abandoned_stock={"materials": 2.0}, loaded_withdrawal_reloaded=True, home_deliveries=3, middle_deliveries=4,
+                both_resource_sites_captured=True, exit_powered_at_victory=True,
+                funded_exit_job={"id": 300, "building_id": 20, "source_camp_id": 3, "funded": True, "delivered": True,
+                                 "done": True, "costs": {"materials": 140.0, "fuel": 45.0, "supplies": 30.0}})
+            final_path = directory / "final-campaign-state.json"
+            launcher.write_json(final_path, completed_state(mission))
+            cycle["final_state"].update(path=str(final_path), sha256=launcher.sha256(final_path))
+            checkpoint = directory / "checkpoint-save.json"
+            launcher.write_json(checkpoint, checkpoint_state(mission))
+            cycle["save_reload"].update(simulation_time=900.0, retained_path=str(checkpoint),
+                                       retained_sha256=launcher.sha256(checkpoint), file_sha256=launcher.sha256(checkpoint))
+            cycle["automatic_saves"]["observed_file_changes"] = 10
+            for slot, name, seconds in (("primary", "autosave-primary.json", 1500.0), ("backup", "autosave-backup.json", 1400.0)):
+                path = directory / name
+                launcher.write_json(path, save(mission, {"time": seconds, "outcome": "playing"}))
+                cycle["automatic_saves"][slot].update(schema_valid=True, simulation_time=seconds, retained_path=str(path),
+                    retained_sha256=launcher.sha256(path), sha256=launcher.sha256(path))
+            report_path = directory / "campaign-validation.json"
+            launcher.write_json(report_path, cycle)
+            self.cycle_reports.append(cycle)
+            self.report["stability_samples"].append(sample)
+            self.report["cycles"].append({"cycle_index": index, "mission_id": mission,
+                "report_path": str(report_path.relative_to(self.output)), "report_sha256": launcher.sha256(report_path),
+                "final_state_path": str(final_path.relative_to(self.output)), "final_state_sha256": launcher.sha256(final_path),
+                "start_main_tick_count": start_tick, "end_main_tick_count": end_tick, "complete_campaign_evidence": True})
+            if index > 1:
+                restart = directory / "restart-autosave.json"
+                launcher.write_json(restart, save(mission, {"time": 0.0, "outcome": "playing"}))
+                self.report["transitions"].append({"from_cycle": index-1, "to_cycle": index, "mission_id": mission,
+                    "process_id": self.process_id, "main_instance_id": self.main_id,
+                    "actions": ["title", "campaigns", f"campaign:{mission}", "new", "restart_confirm"],
+                    **{flag: True for flag in ("title_ready", "campaign_selector_ready", "selected_start_ready", "restart_confirmation_ready", "restart_ready", "success")},
+                    "start_main_tick_count": start_tick-3, "end_main_tick_count": start_tick,
+                    "started_wall_seconds": start_wall-0.9, "ended_wall_seconds": start_wall-0.1,
+                    "restart_autosave": {**disk_identity(mission), "schema_valid": True, "retained_path": str(restart),
+                        "retained_sha256": launcher.sha256(restart), "sha256": launcher.sha256(restart)}})
+        self.final_state = completed_state(self.report["planned_missions"][-1])
+        root_final = self.output / "final-campaign-state.json"
+        launcher.write_json(root_final, self.final_state)
+        self.report["final_state"] = {**disk_identity(self.report["planned_missions"][-1]), "path": str(root_final), "sha256": launcher.sha256(root_final)}
+        self.flush()
+
+    @staticmethod
+    def sample(index, mission, ticks, wall):
+        return {"name": f"post_warmup_cycle_{index:02d}_victory", "cycle_index": index, "mission_id": mission,
+            "warmup_complete": True, "wall_seconds": wall, "main_tick_count": ticks,
+            "memory": {"process_linux": {"available": True, "VmRSS_bytes": 100000000 + index*10000, "VmHWM_bytes": 120000000},
+                       "godot_static_available":True,"godot_static_bytes": 10000000,
+                       "godot_static_peak_available":True,"godot_static_peak_bytes": 12000000,
+                       "gpu_memory_available":False,"gpu_memory_bytes":None},
+            "main_instance_id":"10001","world_instance_id":"10003","hud_instance_id":"10004","audio_instance_id":"10005",
+            "tree_node_count": 20,"world_child_count":0,"hud_child_count":0,"audio_stream_player_count":8,
+            "object_count_available":True,"object_count": 500, "orphan_node_count_available":False,"orphan_node_count": None,
+            "audio": {"world_player_ids": [str(value) for value in range(1,7)], "ui_player_ids": ["7","8"],
+                      "allocated_world_voices": 6, "allocated_ui_voices": 2, "active_world_voices": 0, "active_ui_voices": 0,
+                      "observed_updates": ticks, "dropped": index*10, "peak_world_voices": 6, "play_counts": {"shot":index*1000}}}
+
+    def flush(self):
+        for index, cycle in enumerate(self.cycle_reports):
+            path = self.output / self.report["cycles"][index]["report_path"]
+            launcher.write_json(path, cycle)
+            self.report["cycles"][index]["report_sha256"] = launcher.sha256(path)
+        launcher.write_json(self.output / "campaign-validation.json", self.report)
+
+    def validate(self):
+        self.flush()
+        return launcher.validate_soak_report(self.report, self.before, deepcopy(self.before), self.arguments,
+                                            self.starting, self.output, self.process_id, self.process_wall, self.final_state)[0]
+
+
+class SoakProofTests(unittest.TestCase):
+    def test_all_starting_missions_produce_seven_strict_actual_file_cycles(self):
+        for mission in launcher.MISSION_TAGS:
+            with self.subTest(mission=mission), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output", mission)
+                self.assertEqual(proof.validate(), [])
+                self.assertEqual(len(proof.report["cycles"]), 7)
+                self.assertEqual(proof.report["planned_missions"][0], mission)
+
+    def test_both_native_and_independent_actual_hour_are_required(self):
+        for native, independent in ((3599.9,3859.0),(3858.0,3599.9)):
+            with self.subTest(native=native, independent=independent), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output")
+                proof.report["wall_elapsed_seconds"] = native
+                proof.process_wall = independent
+                self.assertTrue(proof.validate())
+
+    def test_partial_reordered_and_reused_cycles_cannot_claim_one_hour(self):
+        mutations = [lambda p:p.report["cycles"].pop(),
+                     lambda p:p.report["planned_missions"].reverse(),
+                     lambda p:p.report["cycles"][2].update(report_path=p.report["cycles"][0]["report_path"]),
+                     lambda p:p.cycle_reports[3]["main_loop"].update(start_main_tick_count=0,end_main_tick_count=32000),
+                     lambda p:p.report.update(one_hour_soak_evidence=False),
+                     lambda p:p.report["transitions"].pop()]
+        for index, mutate in enumerate(mutations):
+            with self.subTest(case=index), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output")
+                mutate(proof)
+                # A malformed manifest may intentionally have no slot for flush.
+                if len(proof.report["cycles"]) != len(proof.cycle_reports):
+                    proof.cycle_reports = proof.cycle_reports[:len(proof.report["cycles"])]
+                self.assertTrue(proof.validate())
+
+    def test_cycle_failure_clock_identity_or_argv_cannot_hide_in_aggregate_success(self):
+        mutations = [lambda c:c["route"].update(success=False),
+                     lambda c:c.update(process_id=999),lambda c:c.update(main_instance_id="different"),
+                     lambda c:c.update(simulation_instance_id="different"),lambda c:c.update(ui_speed=6),
+                     lambda c:c["main_loop"].update(fixed_step_seconds=0.1),
+                     lambda c:c["engine_command_line"].update(arguments=["other","--soak"]),
+                     lambda c:c["save_reload"].update(full_ui_equal=False),
+                     lambda c:c["save_reload"].update(full_simulation_equal=False),
+                     lambda c:c["final"].update(outcome="playing")]
+        for index, mutate in enumerate(mutations):
+            with self.subTest(case=index), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output", "delta")
+                mutate(proof.cycle_reports[4])
+                self.assertTrue(proof.validate())
+
+    def test_every_cycle_preserves_physical_economic_and_actual_final_state_gates(self):
+        mutations = [lambda c:c["route"].update(middle_deliveries=2),
+                     lambda c:c["route"].update(abandoned_stock={"materials":0}),
+                     lambda c:c["route"].update(both_resource_sites_captured=False),
+                     lambda c:c["route"]["funded_exit_job"]["costs"].update(fuel=1),
+                     lambda c:c["automatic_saves"].update(observed_file_changes=1)]
+        for index, mutate in enumerate(mutations):
+            with self.subTest(case=index), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output")
+                mutate(proof.cycle_reports[1])
+                self.assertTrue(proof.validate())
+        with tempfile.TemporaryDirectory() as temporary:
+            proof = SoakProof(Path(temporary)/"output")
+            state = completed_state("delta")
+            payload = launcher.saved_dictionary(state["payload"])
+            # Rehash all report claims: independently read saved cost/power still rejects.
+            payload["buildings"][0]["entries"][-2][1] = 0.0  # required_power
+            path = proof.output / proof.report["cycles"][1]["final_state_path"]
+            launcher.write_json(path,state)
+            proof.report["cycles"][1]["final_state_sha256"] = launcher.sha256(path)
+            proof.cycle_reports[1]["final_state"]["sha256"] = launcher.sha256(path)
+            self.assertTrue(proof.validate())
+
+    def test_actual_checkpoint_and_both_autosave_bytes_are_independently_read(self):
+        for name in ("checkpoint-save.json","autosave-primary.json","autosave-backup.json","restart-autosave.json"):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output")
+                path = proof.output / "cycle-02-delta" / name
+                path.write_text('{}')
+                self.assertTrue(proof.validate())
+        with tempfile.TemporaryDirectory() as temporary:
+            proof = SoakProof(Path(temporary)/"output")
+            path = proof.output / "cycle-02-delta/checkpoint-save.json"
+            state = checkpoint_state("delta")
+            payload = launcher.saved_dictionary(state["payload"])
+            for pair in payload["units"][0]["entries"]:
+                if pair[0] == "cargo": pair[1] = encoded({})
+            launcher.write_json(path,state)
+            proof.cycle_reports[1]["save_reload"].update(retained_sha256=launcher.sha256(path),file_sha256=launcher.sha256(path))
+            self.assertTrue(proof.validate())
+
+    def test_proper_public_restart_and_retained_real_initial_autosave_are_required(self):
+        for key, value in (("actions",["start_campaign"]),("title_ready",False),("restart_confirmation_ready",False),
+                           ("main_instance_id","replacement"),("start_main_tick_count",0)):
+            with self.subTest(key=key), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output")
+                proof.report["transitions"][2][key] = value
+                self.assertTrue(proof.validate())
+
+    def test_metrics_are_named_post_warmup_and_voice_pool_reuse_is_proven(self):
+        for key, value in (("name","single_sample"),("warmup_complete",False),("memory",{}),("tree_node_count",0)):
+            with self.subTest(key=key), tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output")
+                proof.report["stability_samples"][3][key] = value
+                self.assertTrue(proof.validate())
+        with tempfile.TemporaryDirectory() as temporary:
+            proof = SoakProof(Path(temporary)/"output")
+            proof.report["stability_samples"][4]["audio"]["world_player_ids"][0] = "replacement"
+            self.assertTrue(proof.validate())
+
+    def test_malformed_evidence_is_rejected_without_acceptance_or_traceback(self):
+        for value in (None,[],"bad",True):
+            for key in ("main_loop","automatic_saves","final_state","route","save_reload"):
+                with self.subTest(key=key,value=value), tempfile.TemporaryDirectory() as temporary:
+                    proof = SoakProof(Path(temporary)/"output")
+                    proof.cycle_reports[2][key] = value
+                    self.assertTrue(proof.validate())
+
+    def test_malformed_manifest_entries_and_top_level_metrics_are_never_partial_success(self):
+        for value in (None,[],"bad",True):
+            for key in ("stability_samples","sources_before","transitions","cycles","final_state"):
+                with self.subTest(key=key,value=value), tempfile.TemporaryDirectory() as temporary:
+                    proof = SoakProof(Path(temporary)/"output")
+                    proof.report[key] = value
+                    errors, _details = launcher.validate_soak_report(proof.report,proof.before,proof.before,
+                        proof.arguments,proof.starting,proof.output,proof.process_id,proof.process_wall,proof.final_state)
+                    self.assertTrue(errors)
+            with tempfile.TemporaryDirectory() as temporary:
+                proof = SoakProof(Path(temporary)/"output")
+                proof.report["cycles"][2] = value
+                errors, _details = launcher.validate_soak_report(proof.report,proof.before,proof.before,
+                    proof.arguments,proof.starting,proof.output,proof.process_id,proof.process_wall,proof.final_state)
+                self.assertTrue(errors)
+
+    def test_release_unavailable_allocator_monitors_are_not_zero_memory_or_leak_proof(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            proof = SoakProof(Path(temporary)/"output")
+            for sample in proof.report["stability_samples"]:
+                sample["memory"].update(godot_static_available=False,godot_static_bytes=None,
+                                         godot_static_peak_available=False,godot_static_peak_bytes=None)
+                sample.update(object_count_available=False,object_count=None)
+            self.assertEqual(proof.validate(),[])
+            proof.report["stability_samples"][2]["memory"]["godot_static_bytes"] = 0
+            self.assertTrue(proof.validate())
+
+    def test_compiled_source_unavailability_stays_explicit_and_actual_payload_bound(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            proof=SoakProof(Path(temporary)/"output")
+            self.assertEqual(proof.validate(),[])
+            proof.sources["res://scripts/campaign_simulation.gd"]["status"]="source_available"
+            self.assertTrue(proof.validate())
+
+    def test_fixed_scene_and_world_hud_node_counts_are_independently_enforced(self):
+        for key in ("main_instance_id","world_instance_id","hud_instance_id","audio_instance_id","tree_node_count","world_child_count","hud_child_count","audio_stream_player_count"):
+            with self.subTest(key=key),tempfile.TemporaryDirectory() as temporary:
+                proof=SoakProof(Path(temporary)/"output")
+                original=proof.report["stability_samples"][4][key]
+                proof.report["stability_samples"][4][key] = "different" if isinstance(original,str) else original+1
+                self.assertTrue(proof.validate())
+
+
+class ModeAndLaunchTests(unittest.TestCase):
+    def test_mode_specific_bounds_and_prepare_distinction(self):
+        self.assertEqual(launcher.wall_time_limit(False,False,None),900)
+        self.assertEqual(launcher.wall_time_limit(True,False,None),5400)
+        for soak, bounds in ((False,(60,1800)),(True,(3600,7200))):
+            for value in bounds: self.assertEqual(launcher.wall_time_limit(soak,False,value),value)
+            for value in (bounds[0]-1,bounds[1]+1):
+                with self.assertRaises(ValueError): launcher.wall_time_limit(soak,False,value)
+        with self.assertRaises(ValueError): launcher.wall_time_limit(True,True,None)
+
+    def test_soak_and_prepare_are_rejected_before_owning_or_launching_anything(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            isolation = Path(temporary)/"untouched"
+            args = ["run_native_campaign.py","--isolation-root",str(isolation),"--soak","--prepare-only"]
+            with patch.object(launcher.sys,"argv",args), patch.object(launcher.subprocess,"Popen") as child, redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit) as stopped: launcher.main()
+            self.assertEqual(stopped.exception.code,2)
+            child.assert_not_called()
+            self.assertFalse(isolation.exists())
+
+    def test_launcher_launches_only_one_process_and_independently_rechecks_every_cycle(self):
+        for elapsed, expected in ((3859.0,0),(3599.0,1)):
+            with self.subTest(elapsed=elapsed), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                build = root/"build"
+                build.mkdir()
+                for name in (launcher.EXECUTABLE_NAME,launcher.PACK_NAME): (build/name).write_bytes(b"never executed")
+                (build/launcher.EXECUTABLE_NAME).chmod(0o755)
+                launcher.write_json(build/"export-source.json",{"source_commit":"1"*40,"sha256":{
+                    name:launcher.sha256(build/name) for name in (launcher.EXECUTABLE_NAME,launcher.PACK_NAME)}})
+                isolation = root/"isolation"
+                args = ["run_native_campaign.py","--build-dir",str(build),"--isolation-root",str(isolation),"--mission","ridge","--soak"]
+                clock = [0.0]
+                def child(command,**_kwargs):
+                    proof = SoakProof(isolation/"output","ridge",launcher.binary_snapshot(build),str(build/launcher.EXECUTABLE_NAME))
+                    self.assertEqual(command,proof.arguments)
+                    clock[0] = elapsed
+                    return SimpleNamespace(pid=proof.process_id,poll=lambda:0,wait=lambda **_kwargs:0)
+                with patch.object(launcher.sys,"argv",args), patch.dict(launcher.os.environ,{"DISPLAY":":mock"}), \
+                        patch.object(launcher.subprocess,"Popen",side_effect=child) as process, \
+                        patch.object(launcher.time,"monotonic",side_effect=lambda:clock[0]), redirect_stdout(io.StringIO()):
+                    status = launcher.main()
+                process.assert_called_once()
+                verdict = launcher.read_object(isolation/"verification.json")
+                self.assertEqual(status,expected,verdict["errors"])
+                self.assertEqual(verdict["one_hour_soak_evidence"],expected == 0)
+                self.assertFalse(verdict["performance_evidence"])
+                self.assertEqual(len(verdict["soak_validation"]["cycles"]),7)
+
+
+if __name__ == "__main__":
+    unittest.main()

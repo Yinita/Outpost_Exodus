@@ -1,0 +1,5 @@
+{
+  "scripts/diagnostics/campaign_runner.gd": "837f74098f14990c57e0bdef2638a40721e2a5da57b2c3e51f675005c90491fe",
+  "tools/run_native_campaign.py": "c8069a33041843b575d306949acea4a4b6c52a5ed2f44915b832ef4a69ac994d",
+  "tools/test_native_campaign_soak.py": "11b44983bbd8bdbe54d468dd4f03e29052b4e6f49074c19a4ba039b1c95281dc"
+}

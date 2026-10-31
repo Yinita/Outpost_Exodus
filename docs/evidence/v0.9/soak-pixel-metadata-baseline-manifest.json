@@ -1,0 +1,38 @@
+{
+  "scripts/diagnostics/campaign_runner.gd": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/campaign_runner.gd",
+    "sha256": "42f95390b5df0293b86918e0d1241bde73a42801a1ee0e8c3c5bdec8e7dee282"
+  },
+  "tools/run_native_campaign.py": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/run_native_campaign.py",
+    "sha256": "b5f297fc2d1ec6de9eb2c36b526cb65b163b6b221029b7a26ee8c4eb4c3db1d4"
+  },
+  "tools/test_native_campaign_soak.py": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/test_native_campaign_soak.py",
+    "sha256": "9fe10348e79af58307610a2ebfd6accbeec42d2866c353ae3012c2bb985ac684"
+  },
+  "work/soak-v09/python-unit-display1080.log": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/python-unit-display1080.log",
+    "sha256": "778cd1255d3ee6e4185a45a1fbacc51fa8271b25d51bbecf742709fdefd0b394"
+  },
+  "work/soak-v09/runner-check-only-display1080.log": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/runner-check-only-display1080.log",
+    "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+  },
+  "work/soak-v09/main-lifecycle.log": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/main-lifecycle.log",
+    "sha256": "db80708c07541e048ac106a9a3817df5b5cf7946fc6de77c2fbb100bfc6a68e7"
+  },
+  "work/soak-v09/main-lifecycle/result.json": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/result.json",
+    "sha256": "3a9a1b77f32b629a0baa0806a80e59039140e37cb5d3c4c7c9d9666967bcc732"
+  },
+  "work/soak-v09/main-lifecycle/display-preflight.png": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/display-preflight.png",
+    "sha256": "655d43a621d4ca8cbfba6fecba08e011ea25858adbefd75c06c549f645ad42d6"
+  },
+  "work/soak-v09/main-lifecycle.gd": {
+    "retained_path": "work/soak-v09/texture-metadata-baseline/main-lifecycle.gd",
+    "sha256": "bfb9e7da0dbe88e5ad477a8d36d45c1d4b49607683940c6e1f4c2989e35e8f04"
+  }
+}

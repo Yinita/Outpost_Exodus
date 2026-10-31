@@ -1,0 +1,13 @@
+{
+  "scope": "Focused original 0.8 worktree macro/pager regression using actual engine input; source/native-rendered controller fixture, not full campaign, FPS or human proof.",
+  "checks": 23,
+  "failures": 6,
+  "source_commit": "d1c24ce113f276b785ffb90d54fd774716c4fee8",
+  "sha256": {
+    "scripts/main.gd": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+    "scripts/hud.gd": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2",
+    "tests/test_macro_controls.gd": "3d17563990913638f912298ce8f3c10d713853148bd5acb2b7feef2205ac8906"
+  },
+  "log": "pager-baseline-rejected.txt",
+  "baseline_fixture_text": "pager-baseline-test.gd.txt"
+}

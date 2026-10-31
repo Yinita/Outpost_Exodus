@@ -25,6 +25,7 @@ var hotspots: Array[Dictionary] = []
 var map_rect: Rect2 = Rect2()
 var training_queue_rect: Rect2 = Rect2()
 var tooltip: String = ""
+var _camp_tooltip: bool = false
 var overlay_rects: Array[Rect2] = []
 var _campaign_previews: Dictionary = {}
 var _building_atlas: Texture2D
@@ -47,6 +48,7 @@ func _draw() -> void:
 	hotspots.clear()
 	overlay_rects.clear()
 	tooltip = ""
+	_camp_tooltip = false
 	training_queue_rect = Rect2()
 	var screen: Vector2 = get_viewport_rect().size
 	var summary: Dictionary = main.sim.get_summary()
@@ -66,6 +68,18 @@ func _draw() -> void:
 	if not main.menu.is_empty(): _draw_menu(screen)
 	elif not tooltip.is_empty() and main.capture_path.is_empty():
 		var mouse: Vector2 = get_viewport().get_mouse_position()
+		if _camp_tooltip:
+			var lines: Array[String] = _wrap_text(tooltip, 332, 15, false)
+			var maximum_lines: int = maxi(2, floori((screen.y - 106) / 21.0))
+			var count: int = mini(lines.size(), maximum_lines)
+			var height: float = count * 21.0 + 24.0
+			var pos: Vector2 = Vector2(clampf(mouse.x - 360, 16, screen.x - 376), clampf(mouse.y - height - 10, 72, screen.y - height - 10))
+			var rect: Rect2 = Rect2(pos, Vector2(360, height))
+			_panel(rect, INK, GOLD)
+			for index: int in range(count):
+				_text(pos + Vector2(12, 25 + index * 21), lines[index] + ("…" if index == count - 1 and lines.size() > count else ""), 15, PAPER)
+			overlay_rects.append(rect)
+			return
 		var pos: Vector2 = Vector2(clampf(mouse.x - 160, 16, screen.x - 376), maxf(80, mouse.y - 90))
 		_panel(Rect2(pos, Vector2(360, 72)), INK, GOLD)
 		_lines(pos + Vector2(12, 24), tooltip, 15, PAPER)
@@ -119,6 +133,7 @@ func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 
 func _draw_camp_cards(screen: Vector2) -> void:
 	var y: float = 82
+	var bottom: float = y
 	var page_size: int = main.camp_page_size()
 	var first: int = main.camp_page * page_size
 	for index: int in range(first, mini(first + page_size, main.sim.camps.size())):
@@ -128,15 +143,22 @@ func _draw_camp_cards(screen: Vector2) -> void:
 		_panel(rect, Color(PANEL, 0.95), TEAL if chosen else Color("456065"))
 		var state: String = String(camp.get("state", "active"))
 		var states: Dictionary = {"active":"运作", "packing":"撤收中", "abandoned":"已弃守"}
-		_text(rect.position + Vector2(12, 27), String(camp.get("name", "驻点")), 17, PAPER, 150)
-		_text(rect.position + Vector2(172, 26), states.get(state, state), 13, GOLD if state == "packing" else MUTED)
-		_text(rect.position + Vector2(12, 52), "材 %d  供 %d  油 %d" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0))], 14, MUTED)
+		_text(rect.position + Vector2(12, 24), String(camp.get("name", "驻点")), 16, PAPER, 150)
+		_text(rect.position + Vector2(172, 24), states.get(state, state), 12, GOLD if state == "packing" else MUTED)
+		_text(rect.position + Vector2(12, 44), "材 %d  供 %d  油 %d" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0))], 13, MUTED)
+		var readout: Dictionary = main.camp_readouts.get(int(camp.get("id", 0)), {})
+		var severity: String = String(readout.get("severity", "normal"))
+		var status_color: Color = GOLD if severity == "attention" else (MUTED if severity == "muted" else TEAL)
+		_text(rect.position + Vector2(12, 64), String(readout.get("text", "… 更新状态")), 13, status_color, 224)
 		var capacity: float = float(camp.get("power_capacity", 0.0))
-		_bar(Rect2(rect.position + Vector2(12, 66), Vector2(224, 8)), float(camp.get("power_used", 0.0)) / maxf(capacity, 1), GOLD)
-		_text(rect.position + Vector2(12, 85), "供能 %d / %d" % [int(camp.get("power_used", 0)), int(capacity)], 11, GOLD)
-		var tip: String = String(camp.get("name", "驻点")) + "：点击定位并管理本地生产/训练；Shift+%s 切换运作驻点。" % main.binding_label("focus_command")
+		_bar(Rect2(rect.position + Vector2(100, 77), Vector2(136, 6)), float(camp.get("power_used", 0.0)) / maxf(capacity, 1), GOLD)
+		_text(rect.position + Vector2(12, 84), "供能 %d/%d" % [int(camp.get("power_used", 0)), int(capacity)], 10, GOLD)
+		var tip: String = String(camp.get("name", "驻点")) + "：" + String(readout.get("detail", "正在更新本地工作状态。")) + "\n点击定位并管理；Shift+%s 切换运作驻点。" % main.binding_label("focus_command")
 		hotspots.append({"rect":rect, "action":"camp:%d" % int(camp.get("id", 0)), "tip":tip})
-		if rect.has_point(get_viewport().get_mouse_position()): tooltip = tip
+		if rect.has_point(get_viewport().get_mouse_position()):
+			tooltip = tip
+			_camp_tooltip = true
+		bottom = rect.end.y
 		y += 102
 	if main.camp_page_count() > 1:
 		var pager: Vector2 = Vector2(screen.x - 268, 82 + page_size * 102)
@@ -144,6 +166,11 @@ func _draw_camp_cards(screen: Vector2) -> void:
 		_text(pager + Vector2(84, 20), "%d / %d" % [main.camp_page + 1, main.camp_page_count()], 14, PAPER)
 		_button(Rect2(pager + Vector2(178, 0), Vector2(72, 27)), "下一页", "camp_page_next", "浏览驻点，不改变当前选中驻点", false, false, main.camp_page + 1 < main.camp_page_count())
 		_button(Rect2(pager + Vector2(78, 32), Vector2(172, 26)), "切换运作驻点", "camp_cycle", "Shift+%s：跳过已弃营地，定位下一运作或撤收驻点" % main.binding_label("focus_command"))
+		bottom = pager.y + 58
+	if bottom > 82:
+		# Consume clicks throughout the actual visible panel, including disabled
+		# pager buttons and page-number gaps; enabled hotspots still win first.
+		overlay_rects.append(Rect2(screen.x - 268, 82, 250, bottom - 82))
 
 func _draw_dock(screen: Vector2) -> void:
 	var top: float = screen.y - 190
