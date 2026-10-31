@@ -13,7 +13,9 @@ This directory records display-motion correctness, focus/title recovery, casualt
 | guide-quick.txt | 154 | Explicitly requested quick fixture run; skips full mission and says so |
 | mission-guide.txt | 137 | Three map-specific fixture and real paid opening scenarios |
 | ui.txt / macro-controls.txt / preferences.txt / selection.txt | 124 /268 /286 /114 | Final ordinary rendered UI/options/camp/training/campaign selection regression |
-| diagnostic-preflight.txt | 40 | Fresh isolated diagnostic environment and workload setup validation |
+| diagnostic-preflight.txt / diagnostic-focused-preflight.txt | 40 each | Initial and current post-startup-fix isolated diagnostic setup validation |
+| diagnostic-focus-quick.txt | 12stable startup frames | Explicit quick editor-capable functional probe;4normal/5strategic actual ticks with32/100actors, not performance evidence |
+| cli-native-1dec-probe.txt | 80ticks /30units | Earlier1dec nativeCLI smoke; unchangedMain, not the subsequent final export |
 
 `candidate-import.txt` records clean editor import and UID generation. The three `.gd.txt` probe sources preserve how the observations were obtained; they are not runtime modules. `pose-0.png`, `pose-50.png`, `pose-100.png` retain the native actor poses. `title-save-failed.png` shows the complete failure notice inside the pause panel at1152×648/120percentUI. Captures are evidence for those controlled conditions, not final art or human playability acceptance.
 
@@ -48,4 +50,14 @@ Do not run correctness jobs concurrently with native performance timing. Final0.
 
 ## Rejected first export
 
-`export-first-rejected.txt` records the clean-tree guard rejecting first export after the editor generated four evidence-PNG import metadata files. These metadata files are now tracked. The premature native diagnostic attempt was terminated with143 and is not accepted; the fresh final measurement uses `native-v06-final`. Runtime and test sources did not change. The exact final binary/commit binding remains in the external release evidence.
+`export-first-rejected.txt` records the clean-tree guard rejecting first export after the editor generated four evidence-PNG import metadata files. These metadata files are now tracked. The premature native diagnostic attempt was terminated with143 and is not accepted; a subsequent fresh measurement used `native-v06-final`, which was also rejected as described below. Runtime and test sources did not change. The exact final binary/commit binding remains in the external release evidence.
+
+
+## Rejected native startup-focus measurement
+
+`native-startup-focus-rejected.txt` records the completed native-v06-final attempt from export commit`1dec8b36a6cf3cf098046f88b8a98def72000a3a`. The export itself is verified, but the complete report has`valid_workload=false` and`performance_evidence=false`. Initial native-window reconfiguration delivered a focus-exit event after the normal-view fixture was installed, so the product correctly paused and that case measured0simulation ticks, no hauling, combat or construction. Its displayed near60FPS is an idle paused result and is not performance evidence. The strategic case separately recorded1206ticks, three real deliveries and three completed orders, but that valid subset does not make the whole run accepted.
+
+The full rejected report is preserved beside the release artifacts as`outpost-exodus-0.6.0-dev-native-render-rejected-focus-startup.json`,1,052,419bytes,SHA-256`11f02b4c356f62fe2b8767d7957b306aff89239c2e3896cd87d7c43ea84b8db3`. Its original executable/PCK identities and before/after source/payload checks remain intact; the report has not been edited. `candidate.json` retains a compact identity/workload record and this checksum reference. The source evidence includes the full raw process log. Product focus pause is not exempted or automatically resumed to make measurements pass; diagnostic setup must settle native focus before installing its measured fixture, then a new payload and fresh isolation are required.
+
+
+After the rejected native run, the diagnostic harness alone waits for actual focused, non-suspended, non-minimized state for12consecutive rendered frames before installing its fixture. Startup samples are recorded and failure to settle is an error. The quick editor-capable probe records successful settling in about282milliseconds and actual4/5simulation ticks with32/100actors; it is explicitly not performance evidence and does not establish completed hauling/construction. Current isolated preflight passes40. An earlier actual1dec nativeCLI--smoke also reaches80ticks/30units; this separate unchangedMain startup probe is bound to its earlier payload and is not promoted to final-candidate evidence. A new clean export and full fresh measurement are still required.

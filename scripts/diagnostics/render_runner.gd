@@ -166,6 +166,10 @@ func _run() -> void:
 	Engine.max_fps = 0
 	if RenderingServer.has_method("viewport_set_measure_render_time"):
 		RenderingServer.call("viewport_set_measure_render_time", window.get_viewport_rid(), true)
+	# Native window reconfiguration can post focus events after this function
+	# returns. Settle them before creating a running fixture. During measurement
+	# the normal focus-pause policy remains active and invalidates a paused run.
+	var startup_focus: Dictionary = await _settle_startup_focus(window)
 	var fingerprint: Dictionary = fixture_fingerprint()
 	report = {
 		"recorded_utc": Time.get_datetime_string_from_system(true, true) + "Z",
@@ -183,6 +187,7 @@ func _run() -> void:
 		"user_data_dir": OS.get_user_data_dir(), "output_dir": output_dir,
 		"sources_before": _source_hashes(), "binaries_before": _binary_hashes(),
 		"fixture_fingerprint": fingerprint,
+		"startup_focus": startup_focus,
 		"memory_start": _memory_snapshot(), "system_memory": _proc_memory("/proc/meminfo", ["MemTotal", "MemAvailable"]),
 		"method": {
 			"quick_check_only": quick or prepare_only, "prepare_only": prepare_only,
@@ -200,6 +205,7 @@ func _run() -> void:
 		},
 		"zooms": [],
 	}
+	if not bool(startup_focus.ready): errors.append("native window did not obtain stable focus before fixture installation")
 	if not bool(fingerprint.valid): errors.append("fixture fingerprint failed canonical/prevalidated constant verification")
 	if not OS.has_feature("editor") and not bool(report.binaries_before.adjacent_pck.available):
 		errors.append("native export diagnostics requires the actual adjacent PCK for provenance")
@@ -214,6 +220,22 @@ func _run() -> void:
 		report.zooms.append(result)
 		print("RENDER_DIAGNOSTICS_ZOOM ", str(zoom.name), " ", JSON.stringify(result.frame_ms), " ticks=", result.simulation_ticks, " workload=", str(result.workload))
 	await _finish()
+
+func _settle_startup_focus(window: Window) -> Dictionary:
+	var started: int = Time.get_ticks_usec()
+	var stable: int = 0
+	var samples: Array = []
+	for index: int in range(180):
+		await RenderingServer.frame_post_draw
+		var focused: bool = window.has_focus()
+		var suspended: bool = bool(app._window_suspended)
+		var minimized: bool = window.mode == Window.MODE_MINIMIZED
+		stable = stable + 1 if focused and not suspended and not minimized else 0
+		samples.append({"frame": index, "focused": focused, "suspended": suspended, "minimized": minimized})
+		if stable >= 12 or Time.get_ticks_usec() - started > 8000000: break
+		if not focused and index % 30 == 0: window.grab_focus()
+	return {"ready": stable >= 12, "stable_frames": stable, "required_stable_frames": 12,
+		"elapsed_ms": float(Time.get_ticks_usec() - started) / 1000.0, "samples": samples}
 
 func _install_scene(zoom: Dictionary) -> void:
 	app.set_process(false)

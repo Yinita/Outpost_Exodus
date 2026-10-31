@@ -91,13 +91,13 @@
     },
     "diagnostics": {
       "files": 1,
-      "physical_lines": 672,
-      "nonblank_lines": 635,
+      "physical_lines": 694,
+      "nonblank_lines": 656,
       "entries": {
         "scripts/diagnostics/render_runner.gd": {
-          "physical_lines": 672,
-          "nonblank_lines": 635,
-          "sha256": "28bb3f310b5bff9cfd612cc19eab948f4e5b2b81cd5dba9c07128bc88f7d8c97"
+          "physical_lines": 694,
+          "nonblank_lines": 656,
+          "sha256": "7cc889b85942bfa102a1fbdadaa898fe65b1c616f81c292135508a8c1178c2ca"
         }
       }
     },
@@ -320,7 +320,7 @@
       }
     }
   },
-  "all_own_source_physical_lines": 18916,
+  "all_own_source_physical_lines": 18938,
   "configuration_sha256": {
     "project.godot": "deae45b77790df73a32906b56415dee123facbb8f38ef94ac93d81558b528cd6",
     "main.tscn": "adf348911449e73f956fabed42b487d062ad633b7577a4c6d07018f59498341c",
@@ -358,7 +358,11 @@
     "focus-fixture-attempt1-rejected.txt": "fa4f9750293b9135bcfd16a397a30859e747e6511f21498a024c8a98bb1c87e5",
     "focus-fixture-attempt2-rejected.txt": "a326ab68a8163067a74448158d1fe8683baa24dc741dda60f03f07f651ea7fda",
     "focus-fixture-attempt3-rejected.txt": "a326ab68a8163067a74448158d1fe8683baa24dc741dda60f03f07f651ea7fda",
-    "export-first-rejected.txt": "a89d5f6fa175a253bd2e26868ec356c54e7dcf2809a6095a8c414882d1614285"
+    "export-first-rejected.txt": "a89d5f6fa175a253bd2e26868ec356c54e7dcf2809a6095a8c414882d1614285",
+    "native-startup-focus-rejected.txt": "d285fd3b3efd47cd2600ade89de54334d1c9b18e4a0e39bbe9b2dffe97ea3c89",
+    "diagnostic-focus-quick.txt": "3c75f97c252190d27996da5686a36ca237e18a8f4604b2558fad6e61a4d14946",
+    "diagnostic-focused-preflight.txt": "e428559909a3ecdbac3a8fc09a6e357afaa8987fa81dd74f8c947ae122a94148",
+    "cli-native-1dec-probe.txt": "14c0ad8527cdcb459c8eb9e895152b2163aa441386bded7ac8e8761946f050dc"
   },
   "probe_source_sha256": {
     "focus-policy-baseline.gd.txt": "f87364ca0c115349c5ec05e4f3816bb90ab5a0a0794ec2a10f8746d373054e23",
@@ -385,7 +389,8 @@
     "macro_controls": 268,
     "preferences": 286,
     "campaign_selection": 114,
-    "diagnostic_preflight": 40
+    "diagnostic_preflight": 40,
+    "diagnostic_current_preflight": 40
   },
   "known_rejected_source_baselines": {
     "onboarding": "onboarding-baseline-rejected.txt shows original four-fighter instruction after one casualty; public title failure also demonstrated.",
@@ -402,7 +407,7 @@
     ],
     "diagnosis": "Initial fixture changed force_native while visible and compared JSON-restored integral/float types without canonicalization. Later Godot child native-window focus did not represent switching out of the application. The final suite instead owns an independent external native X11 helper. Intermediate fixture source snapshots were not retained; logs are not passing evidence."
   },
-  "native_performance": "Not measured by these functional tests. Final0.6 actual exported executable/PCK performance remains separate; do not relabel older reports.",
+  "native_performance": "An actual0.6 exported run at1dec8b36a6cf3cf098046f88b8a98def72000a3a was measured and rejected; see known_rejected_native_measurement. At this source snapshot no complete accepted0.6 report exists. A new clean export/fresh isolation is required after diagnostic-only startup settling; do not relabel prior reports.",
   "open_gates": [
     "uncoached human playability, discovery, balance and pacing",
     "human listening/final audio, art, localization and accessibility",
@@ -424,7 +429,206 @@
     "discarded_native_attempt": {
       "isolation": "work/benchmarks/native-v06-full",
       "exit_code": 143,
-      "reason": "Root mistakenly started diagnostics before inspecting export failure, then terminated it after authoritative process inspection. No report from this attempt is accepted. The final run uses a fresh native-v06-final isolation root."
+      "reason": "Root mistakenly started diagnostics before inspecting export failure, then terminated it after authoritative process inspection. No report from this attempt is accepted. A subsequent native-v06-final run completed but was also rejected; see known_rejected_native_measurement."
     }
+  },
+  "known_rejected_native_measurement": {
+    "artifact": "outpost-exodus-0.6.0-dev-native-render-rejected-focus-startup.json",
+    "bytes": 1052419,
+    "sha256": "11f02b4c356f62fe2b8767d7957b306aff89239c2e3896cd87d7c43ea84b8db3",
+    "export_source_commit": "1dec8b36a6cf3cf098046f88b8a98def72000a3a",
+    "export_source_tree": "ec11be0bc03d7caa02ab306fd01d3aae341c3439",
+    "status": "rejected native performance evidence",
+    "valid_workload": false,
+    "performance_evidence": false,
+    "native_export_proof": true,
+    "errors": [
+      "gameplay stopped or opened a menu",
+      "no real resource pickup and delivery observed; increase --frames or investigate hauling",
+      "no actual combat observed",
+      "paid construction did not advance in measurement",
+      "busy actor population was not retained throughout measurement"
+    ],
+    "binaries_before": {
+      "adjacent_pck": {
+        "available": true,
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.pck",
+        "sha256": "fa0c2419d462a717cac4e1bcaf2ac287cc8e3395fc24e00712e353b5af6cf729"
+      },
+      "executable": {
+        "available": true,
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+        "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+      }
+    },
+    "binaries_after": {
+      "adjacent_pck": {
+        "available": true,
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.pck",
+        "sha256": "fa0c2419d462a717cac4e1bcaf2ac287cc8e3395fc24e00712e353b5af6cf729"
+      },
+      "executable": {
+        "available": true,
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+        "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+      }
+    },
+    "source_changed_during_run": false,
+    "binaries_changed_during_run": false,
+    "zooms": [
+      {
+        "name": "normal",
+        "simulation_ticks": 0,
+        "valid_workload": false,
+        "workload": {
+          "combat_effect_samples": 0,
+          "completed_ordered_buildings": 0,
+          "construction_max_progress_delta": 0.0,
+          "construction_peak_progress": 0.0,
+          "construction_start_progress": 0.0,
+          "construction_start_progress_by_id": {
+            "20000": 0.0,
+            "20002": 0.0,
+            "20004": 0.0
+          },
+          "enemy_max": 0,
+          "enemy_min": 99999,
+          "friendly_max": 0,
+          "friendly_min": 99999,
+          "hauling_cargo_samples": 0,
+          "hauling_deliveries": 0,
+          "nonempty_cargo_samples": 0,
+          "observed_simulation_ticks": 0,
+          "observer_cpu_usec": 0
+        }
+      },
+      {
+        "name": "strategic",
+        "simulation_ticks": 1206,
+        "valid_workload": true,
+        "workload": {
+          "combat_effect_samples": 12709,
+          "completed_ordered_buildings": 3,
+          "construction_max_progress_delta": 1.0,
+          "construction_peak_progress": 1.0,
+          "construction_start_progress": 0.0,
+          "construction_start_progress_by_id": {
+            "20000": 0.0,
+            "20002": 0.0,
+            "20004": 0.0
+          },
+          "enemy_max": 100,
+          "enemy_min": 100,
+          "friendly_max": 32,
+          "friendly_min": 32,
+          "hauling_cargo_samples": 1980,
+          "hauling_deliveries": 3,
+          "nonempty_cargo_samples": 2667,
+          "observed_simulation_ticks": 1206,
+          "observer_cpu_usec": 134242
+        }
+      }
+    ],
+    "diagnosis": "Initial native window reconfiguration posted focus loss after normal fixture installation. Product focus policy correctly paused that case; normal0ticks has no valid workload. Strategic1206ticks/3deliveries/3completedbuilds is a valid subset, not a passing whole report. Diagnostic startup must settle before measured fixture installation; normal product policy remains active."
+  },
+  "diagnostic_startup_functional_probe": {
+    "log": "diagnostic-focus-quick.txt",
+    "runtime_scope": "editor-capable runtime, explicitly quick and not performance evidence",
+    "stable_native_focus_frames": 12,
+    "observed_startup_ms": 282.525,
+    "normal_actual_ticks": 4,
+    "strategic_actual_ticks": 5,
+    "friendly": 32,
+    "enemy": 100,
+    "note": "Keeps product focus suspension active. Settles actual native focus/non-suspended/non-minimized12frames after geometry setup, before installing the measured fixture. Ready failure is an error; samples remain in reports. No automatic resume or workload relaxation.",
+    "report_sha256": "249a961ed17e6d78c73ae769c36083505b8dd4d81788b7e7b1716547968cdab0",
+    "startup_focus": {
+      "elapsed_ms": 282.525,
+      "ready": true,
+      "required_stable_frames": 12,
+      "samples": [
+        {
+          "focused": true,
+          "frame": 0,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 1,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 2,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 3,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 4,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 5,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 6,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 7,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 8,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 9,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 10,
+          "minimized": false,
+          "suspended": false
+        },
+        {
+          "focused": true,
+          "frame": 11,
+          "minimized": false,
+          "suspended": false
+        }
+      ],
+      "stable_frames": 12
+    },
+    "performance_evidence": false
+  },
+  "historical_native_cli_probe": {
+    "log": "cli-native-1dec-probe.txt",
+    "source_commit": "1dec8b36a6cf3cf098046f88b8a98def72000a3a",
+    "ticks": 80,
+    "units": 30,
+    "scope": "Actual native CLI--smoke startup of unchangedMain before diagnostic-only setup fix. Not the subsequent final export or full performance evidence."
   }
 }
