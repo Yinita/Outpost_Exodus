@@ -149,10 +149,16 @@ func _draw_camp_cards(screen: Vector2) -> void:
 		var readout: Dictionary = main.camp_readouts.get(int(camp.get("id", 0)), {})
 		var severity: String = String(readout.get("severity", "normal"))
 		var status_color: Color = GOLD if severity == "attention" else (MUTED if severity == "muted" else TEAL)
-		_text(rect.position + Vector2(12, 64), String(readout.get("text", "… 更新状态")), 13, status_color, 224)
-		var capacity: float = float(camp.get("power_capacity", 0.0))
-		_bar(Rect2(rect.position + Vector2(100, 77), Vector2(136, 6)), float(camp.get("power_used", 0.0)) / maxf(capacity, 1), GOLD)
-		_text(rect.position + Vector2(12, 84), "供能 %d/%d" % [int(camp.get("power_used", 0)), int(capacity)], 10, GOLD)
+		if readout.has("transport_text"):
+			# Keep the same card/stock rows and input geometry. Packing uses its two
+			# remaining lines for destination/cargo; exact cargo and power stay in tip.
+			_text(rect.position + Vector2(12, 64), String(readout.transport_text), 13, GOLD if severity == "attention" else TEAL, 224)
+			_text(rect.position + Vector2(12, 84), String(readout.cargo_text), 12, status_color, 224)
+		else:
+			_text(rect.position + Vector2(12, 64), String(readout.get("text", "… 更新状态")), 13, status_color, 224)
+			var capacity: float = float(camp.get("power_capacity", 0.0))
+			_bar(Rect2(rect.position + Vector2(100, 77), Vector2(136, 6)), float(camp.get("power_used", 0.0)) / maxf(capacity, 1), GOLD)
+			_text(rect.position + Vector2(12, 84), "供能 %d/%d" % [int(camp.get("power_used", 0)), int(capacity)], 10, GOLD)
 		var tip: String = String(camp.get("name", "驻点")) + "：" + String(readout.get("detail", "正在更新本地工作状态。")) + "\n点击定位并管理；Shift+%s 切换运作驻点。" % main.binding_label("focus_command")
 		hotspots.append({"rect":rect, "action":"camp:%d" % int(camp.get("id", 0)), "tip":tip})
 		if rect.has_point(get_viewport().get_mouse_position()):

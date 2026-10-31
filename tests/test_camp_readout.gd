@@ -14,7 +14,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	for test: Callable in [_test_read_only_and_detached_rows, _test_intent_and_setup, _test_actual_production_blockers, _test_admitted_training_and_priority, _test_real_packing_stages, _test_terminal_and_missing]:
+	for test: Callable in [_test_read_only_and_detached_rows, _test_intent_and_setup, _test_actual_production_blockers, _test_admitted_training_and_priority, _test_real_packing_stages, _test_transport_manifest_and_final_delivery, _test_transport_format_and_unavailable_vehicle, _test_marker_loss_retargets_last_convoy, _test_terminal_and_missing]:
 		var previous: int = failures.size()
 		test.call()
 		print("%s %s" % ["PASS" if previous == failures.size() else "FAIL", test.get_method()])
@@ -205,6 +205,105 @@ func _test_terminal_and_missing() -> void:
 	var row: Dictionary = Readout.status(sim, 999999)
 	_check(row.code == "no_camp" and row.severity == "muted", "unknown ID produces an inert non-alert row")
 	_check(_snapshot(sim) == before, "missing camp lookup preserves state")
+
+
+func _test_transport_manifest_and_final_delivery() -> void:
+	var sim: Variant = _fixture()
+	var origin: Dictionary = sim.camps[0]
+	var receiver: Dictionary = sim._make_camp(Vector2(22, 10), "东侧接收营", 0.0, 0.0, 0.0)
+	_check(sim.evacuate_camp(int(origin.id)), "public packing chooses an actual forward receiver")
+	var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+	var row: Dictionary = _expect(sim, "packing_returning", "normal", "empty first pickup")
+	_check(str(row.transport_text).contains(str(receiver.name)) and row.transport.destination_id == receiver.id, "default transport line names the actual receiver")
+	_check(str(row.cargo_text).contains("空车") and bool(row.transport.cargo_available), "real empty vehicle is distinct from an unavailable one")
+	sim._update_evacuations(0.0)
+	row = _expect(sim, "packing_loading", "normal", "real depot loading before cargo debit")
+	_check(str(row.transport_text).begins_with("装车 → ") and Dictionary(row.transport.cargo).is_empty(), "loading does not invent a future manifest")
+	sim._update_evacuations(6.0)
+	row = _expect(sim, "packing_outbound", "normal", "actual paid first convoy")
+	_check(row.transport.cargo == truck.cargo and row.transport.truck_id == truck.id, "summary copies the exact assigned vehicle cargo")
+	_check(float(row.transport.cargo.fuel) > 0.0 and float(row.transport.cargo.supplies) > 0.0, "first real load exposes the receiver's actual fuel and supply parcel")
+	_check(float(receiver.fuel) == 0.0 and float(receiver.supplies) == 0.0, "readout does not deposit in-transit resources into the receiver")
+	var manifest: Dictionary = Dictionary(truck.cargo).duplicate(true)
+	var before: String = _snapshot(sim)
+	row.transport.cargo["fuel"] = 999999.0
+	row.transport["destination_name"] = "caller mutation"
+	_check(_snapshot(sim) == before and Readout.status(sim, int(origin.id)).transport.cargo == manifest, "returned manifest and metadata never alias live state or cached rows")
+	sim.paused = true
+	row = _expect(sim, "packing_outbound", "normal", "paused manifest")
+	_check(str(row.transport_text).begins_with("Ⅱ ") and row.transport.cargo == manifest, "pause retains destination and real frozen cargo without claiming motion")
+	sim.paused = false
+	_check(sim.evacuate_camp(int(origin.id)), "second public request performs real emergency abandonment")
+	row = _expect(sim, "abandoned", "muted", "last convoy after actual urgent abandonment")
+	_check(str(row.transport_text).begins_with("末班 → ") and row.transport.cargo == truck.cargo, "abandoned origin keeps its real last vehicle visible until delivery")
+	_check(float(origin.materials) > 0.0 and str(row.detail).contains("未装车"), "cargo detail separates abandoned stock from the vehicle's parcel")
+	sim.paused = true
+	row = _expect(sim, "abandoned", "muted", "paused final convoy")
+	_check(str(row.transport_text).begins_with("Ⅱ ") and str(row.detail).contains("待续"), "final convoy also carries a truthful pause qualifier")
+	sim.paused = false
+	# Controlled arrival-position fixture: invoke the real deposit/retirement,
+	# rather than manually erasing cargo or claiming a physical route run.
+	truck.pos = receiver.pos
+	sim._update_evacuations(0.0)
+	row = _expect(sim, "abandoned", "muted", "last parcel actually deposited")
+	_check(not row.has("transport_text") and Dictionary(truck.cargo).is_empty(), "delivered final cargo disappears from the abandoned origin's summary")
+	_check(float(receiver.fuel) == float(manifest.fuel) and float(receiver.supplies) == float(manifest.supplies), "real receiver deposit occurs once through the existing simulation rule")
+
+
+func _test_transport_format_and_unavailable_vehicle() -> void:
+	var sim: Variant = _fixture()
+	var origin: Dictionary = sim.camps[0]
+	var receiver: Dictionary = sim._make_camp(Vector2(22, 10), "很长的东侧接收营名称完整保留供悬停查看", 0.0, 0.0, 0.0)
+	_check(sim.evacuate_camp(int(origin.id)), "format fixture begins with a real admitted evacuation")
+	sim._update_evacuations(0.0)
+	sim._update_evacuations(6.0)
+	var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+	# Manifest-format boundary fixture, not a claim that this truck can load
+	# beyond capacity. Queries must preserve even this read-only snapshot.
+	truck.cargo = {"materials":99999.0, "supplies":999999.0, "fuel":9999999.0, "salvage":12.25, "crude":34.5}
+	var row: Dictionary = _expect(sim, "packing_outbound", "normal", "five-type large manifest display")
+	_check(str(row.cargo_text).contains("材") and str(row.cargo_text).contains("供") and str(row.cargo_text).contains("油") and str(row.cargo_text).contains("+2项"), "compact line retains all three main resources and flags extra types")
+	var font: Font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
+	_check(font.get_string_size(str(row.cargo_text), HORIZONTAL_ALIGNMENT_LEFT, -1.0, 12).x <= 224.0, "actual shipping font fits the large five-type cargo line in the unchanged card width")
+	_check(str(row.detail).contains(str(receiver.name)) and str(row.detail).contains("废料") and str(row.detail).contains("原油") and str(row.detail).contains("本营供能"), "hover keeps full destination, both raw resources and displaced power detail")
+	_check(row.transport.cargo == truck.cargo, "abbreviation does not round or rewrite the retained raw manifest")
+	truck.cargo = {"crude":34.5, "salvage":12.25}
+	row = _expect(sim, "packing_outbound", "normal", "raw-only manifest")
+	_check(str(row.cargo_text).contains("油0") and str(row.cargo_text).contains("+2项") and not str(row.cargo_text).contains("空车"), "raw oil never becomes usable fuel and raw-only cargo is not called empty")
+	truck.cargo = {"fuel":0.04}
+	row = _expect(sim, "packing_outbound", "normal", "fractional real parcel")
+	_check(str(row.cargo_text).contains("油<0.1") and not str(row.cargo_text).contains("空车"), "small positive cargo never appears to be zero or an empty truck")
+	truck.order = "idle"
+	row = _expect(sim, "packing_waiting_truck", "attention", "assigned vehicle no longer executing this transfer")
+	_check(not bool(row.transport.cargo_available) and str(row.cargo_text).contains("未知") and not str(row.cargo_text).contains("空车"), "unrelated cargo on the assigned vehicle is not advertised as an evacuation parcel")
+	truck.order = "evacuate_transport"
+	truck.hp = 0.0
+	row = _expect(sim, "packing_waiting_truck", "attention", "lost vehicle retains an honest unknown state")
+	_check(not bool(row.transport.cargo_available), "destroyed truck is not reported as a live delivery")
+	truck.hp = 380.0
+	sim.camps.erase(receiver)
+	row = _expect(sim, "packing_waiting_destination", "attention", "missing receiver with a real loaded vehicle")
+	_check(str(row.transport_text).contains("接收营缺失") and row.transport.cargo == truck.cargo, "missing receiver does not fabricate a name or erase actual cargo")
+
+
+func _test_marker_loss_retargets_last_convoy() -> void:
+	var sim: Variant = _fixture()
+	var origin: Dictionary = sim.camps[0]
+	var original_receiver: Dictionary = sim._make_camp(Vector2(22, 10), "原接收营", 0.0, 0.0, 0.0)
+	_check(sim.evacuate_camp(int(origin.id)), "public request establishes the original receiver before marker loss")
+	sim._update_evacuations(0.0)
+	sim._update_evacuations(6.0)
+	var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+	var fallback: Dictionary = sim._make_camp(Vector2(40, 10), "失守后的后备营", 0.0, 0.0, 0.0)
+	# Controlled marker-damage fixture invokes the actual integrity rule. It
+	# retains the stale camp field and retargets the already-loaded real truck.
+	_building(sim, "command").hp = 0.0
+	sim._update_camp_integrity()
+	_check(origin.state == "abandoned" and int(origin.evac_target_id) == int(original_receiver.id) and int(truck.evac_destination_id) == int(fallback.id), "actual marker-loss rule abandons origin and retargets only the vehicle")
+	var row: Dictionary = _expect(sim, "abandoned", "muted", "marker-loss last convoy")
+	_check(row.has("transport_text"), "real last convoy stays visible when integrity retargets its receiver")
+	_check(row.has("transport") and int(row.transport.destination_id) == int(fallback.id) and str(row.transport.destination_name) == str(fallback.name), "last-convoy summary follows the vehicle's actual fallback rather than stale camp target")
+	_check(row.has("transport") and row.transport.cargo == truck.cargo, "retargeted convoy retains its exact real cargo without changing simulation")
 
 
 func _test_public_main_cache() -> void:
