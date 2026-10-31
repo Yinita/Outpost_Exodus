@@ -5,3 +5,8 @@
 *.ogg binary
 # Unified-diff evidence retains its literal context prefixes and empty lines.
 docs/benchmarks/v0.14/first-blocker-rejection/raw/functional/first-blocker.patch -whitespace
+# Exact v0.15 raw evidence retains unified-diff context and probe EOF bytes.
+docs/benchmarks/v0.15/withdrawal-receiver/raw/preparation/guide-source-draft.patch -whitespace
+docs/benchmarks/v0.15/withdrawal-receiver/raw/validation/receiver-guidance.patch -whitespace
+docs/benchmarks/v0.15/withdrawal-receiver/raw/validation/gui_probe.gd.txt -whitespace
+docs/benchmarks/v0.15/withdrawal-receiver/raw/validation/gui_probe_v02.gd.txt -whitespace

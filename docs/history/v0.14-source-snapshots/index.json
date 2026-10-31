@@ -1,0 +1,47 @@
+{
+  "version": "0.14.0-dev",
+  "source_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+  "scope": "Verbatim five source-stage documents from frozen accepted0.14 source commit. Snapshot is historical; acceptance happened later in external exact-payload evidence. No text/raw evidence was edited.",
+  "files": [
+    {
+      "original_path": "README.md",
+      "archive": "README.md",
+      "source_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+      "bytes": 5187,
+      "sha256": "6fbfeaf8ac02b8261e50ea94b70ea30f3d04c89becca29f05d406417999a62d3",
+      "scope": "Exact original0.14 source-candidate documentation snapshot; its pending-export statements describe that historical stage, not current accepted0.14 package status"
+    },
+    {
+      "original_path": "docs/current-checkpoint.md",
+      "archive": "current-checkpoint.md",
+      "source_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+      "bytes": 3109,
+      "sha256": "74c146f04f1cfb64079d399f6dfc148b5ee1136f5066f6f92448c9b86754963f",
+      "scope": "Exact original0.14 source-candidate documentation snapshot; its pending-export statements describe that historical stage, not current accepted0.14 package status"
+    },
+    {
+      "original_path": "docs/release-gates.md",
+      "archive": "release-gates.md",
+      "source_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+      "bytes": 3529,
+      "sha256": "06915ecc47ddacb1f190ab0755485c7f104649d51d94c1e715a2d2e3e8cb8810",
+      "scope": "Exact original0.14 source-candidate documentation snapshot; its pending-export statements describe that historical stage, not current accepted0.14 package status"
+    },
+    {
+      "original_path": "docs/validation-plan.md",
+      "archive": "validation-plan.md",
+      "source_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+      "bytes": 3724,
+      "sha256": "939294964235f3b7d280e22aa3785091a081e32a34c6c1e80f71cdfadac88bda",
+      "scope": "Exact original0.14 source-candidate documentation snapshot; its pending-export statements describe that historical stage, not current accepted0.14 package status"
+    },
+    {
+      "original_path": "docs/development-plan.md",
+      "archive": "development-plan.md",
+      "source_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+      "bytes": 3527,
+      "sha256": "f3674fdd2772f0f6cbfb9174fb9dcf48a0f94b739e6fb8a628249e68e34e9750",
+      "scope": "Exact original0.14 source-candidate documentation snapshot; its pending-export statements describe that historical stage, not current accepted0.14 package status"
+    }
+  ]
+}
