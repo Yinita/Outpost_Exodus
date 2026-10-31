@@ -2,7 +2,19 @@
 
 This plan separates simulation correctness, human playability and distribution evidence. Passing one layer does not imply the others pass. Use the version in `docs/implementation-contract.md` and record the exact runtime/build for every run.
 
-## Current 0.12 source validation and pending native results
+## Current 0.13 source integration and pending native results
+
+The withdrawal destination/manifest UI change is independently committed as `a83de5e03b75abc317f84ea2f8b66dce1f535d08`. It reads the actual assigned transport's order/origin/destination and cargo, returns detached data, preserves missing/paused/last-convoy states and follows real integrity-loss fallback retargeting. It does not allocate cargo or alter simulation rules. Final helper 189/0/observed exit 0 includes the actual integrity method fixture; the same new regression exposes 189/3/observed exit 1 before that fix.
+
+Retain validation stages separately: import and initial helper 181/0, UI 124/0, macro 309/0 use the earlier helper; final helper 189/0 and final three controlled source-rendered captures use the corrected helper. The HUD is unchanged between those stages. Each process receipt retains actual exit/log/argv and input source hashes under the isolated UI worktree's `work/withdrawal-summary-v01/`; small raw records are indexed under `docs/benchmarks/v0.13/withdrawal-readout/` without adding PNGs to source. Final `layout-v02/review.json` and `visual-inspection-v02.json` cover 250×91 cards,1152×648 logical/pixel output, long destination/five cargo types/paused full 16-line hover, and real public emergency abandonment. Format-only above-capacity cargo is explicitly a layout fixture, not a gameplay parcel. No human/native-export/FPS result is inferred from these captures.
+
+The actual 0.12 unpacked Linux Ridge report is accepted at source `a35bccab601fb6b16eb2245cd8c4ea6b9144ee88`:1774.55 simulated seconds, six survivors and truck, genuine full Sim/UI/mission disk continuation and native/launcher/collector exit 0. Launcher wall 594.251486 seconds and in-game report wall 592.506477 seconds keep their different boundaries. Authoritative outer `../outpost-exodus-0.12.0-dev-ridge-release-evidence.json` and companion collection-process JSON remain unchanged. Descriptive ordinary 0.11→0.12 phase observations are exit-build 20.815→48.178 FPS and arrival 30.268→57.269 FPS; different-build runs are not a paired controlled experiment. Current three-map/hour flags remain false and performance acceptance remains `not_assessed`.
+
+**0.13 export, native full route, FPS and hour acceptance are pending.** The separate movement experiment is not integrated after bounded source measurements show no confirmed gain; keep its branch and raw evidence under `docs/benchmarks/v0.13/static-motion-experiment/`. Final exact source count is pending. After integration/freeze, bind tests to the combined source and then observe the actual new exported Ridge route before extending native validation. Old CPU traces, prior one-route results and the historical 0.9 hour do not replace new-payload gates. Human playability/listening, Windows/clean machines, rights and Steam gates remain open.
+
+## Historical 0.12 source validation and pre-export boundary
+
+This frozen record predates the accepted0.12 Ridge-only report above. Its pending statements retain that original scope; no old evidence is rewritten or promoted to0.13 acceptance.
 
 The bounded static path-query cache is derived state: reuse across ticks depends on unchanged navigation geometry and exact terrain/ramps context, paths returned to callers are independent arrays, and campaign saves omit the cache. Final simulation SHA is `8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb`. Main integrations `3e109ba`/`ab2a8a9` retain the original rules, actor population and 0.05 simulation step. Evidence is collected under `docs/benchmarks/v0.12/path-query-cache/`.
 

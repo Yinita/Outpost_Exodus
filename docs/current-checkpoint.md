@@ -1,8 +1,24 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, preparing **0.12.0-dev** after the path-query cache integration. The objective remains a highly playable game that meets Steam release standards. The 0.11 package has accepted Ridge-only native evidence; the latest complete three-map/hour package remains 0.9. This working candidate is not release acceptance.
+Project: 逐营突围 / Outpost Exodus, preparing **0.13.0-dev**. The objective remains a highly playable game that meets Steam release standards. The 0.12 package has accepted Ridge-only native evidence; the latest complete three-map/hour package remains 0.9. This source integration draft is not release acceptance.
 
-## Current 0.12 source cache and validation boundary
+## Current 0.13 withdrawal summary and pending native gate
+
+UI commit `a83de5e03b75abc317f84ea2f8b66dce1f535d08` prepares a read-only withdrawal destination/vehicle-manifest summary. Cards retain their 250×91 geometry, stock row, pagination and click regions. Their two lower lines show actual transfer stage/destination and assigned-truck cargo; primary materials/supplies/refined fuel remain visible, with extra resource types and power in full hover. Pause, missing vehicle/receiver, raw oil versus refined fuel and the final convoy after abandonment retain truthful states. Marker-loss fallback follows the vehicle's actual destination without changing transport, abandonment, payment or power rules.
+
+Final helper regression passes 189/0 with actual exit 0. The newly exposed fallback-retarget case fails 189/3 on the preceding helper and passes 189/0 after the narrow fix; old source/logs remain. UI 124/0 and macro 309/0 are earlier-stage actual rendered passes with the same HUD and preceding helper, not final-helper reruns. Three final controlled source captures cover 250-pixel cards,648 logical height, long destination/five cargo types/pause/full 16-line hover and an actual public last-convoy abandonment. Assistant visual inspection found no overflow into the command dock; each render/query preserves full simulation/RNG. These are source/format fixtures, not fresh-player or exported-campaign evidence. Indexed small raw records are under `docs/benchmarks/v0.13/withdrawal-readout/`; original PNGs remain external.
+
+**No 0.13 export, native full route, FPS or hour result exists yet.** The separate movement experiment is not integrated because bounded source measurements show no confirmed gain; its branch/raw records remain under `docs/benchmarks/v0.13/static-motion-experiment/`. Final source count and evidence binding await the final recount.
+
+## Accepted actual 0.12 Ridge-only payload
+
+The actual unpacked Linux package at `a35bccab601fb6b16eb2245cd8c4ea6b9144ee88` completes ordinary Ridge at 1774.55 simulated seconds, six evacuees plus truck, with full simulation/UI/mission continuation through real loaded-withdrawal disk save/load. Native/launcher/foreground collector each have observed exit 0. Launcher-observed native wall time is 594.251486 seconds; the game's report records 592.506477 seconds. Authoritative outer `../outpost-exodus-0.12.0-dev-ridge-release-evidence.json` and companion collection-process JSON bind the actual ZIP/payload. Current all-three-maps and hour flags are false, with `performance_acceptance=not_assessed`.
+
+The actual ordinary 0.11→0.12 Ridge phase comparison records exit construction 20.815→48.178 FPS and arrival 30.268→57.269 FPS. It describes two different frozen builds/runs, not a paired controlled experiment or stable 60/minimum-machine acceptance. No old native measurement establishes 0.13 behavior.
+
+## Historical 0.12 pre-export source cache and validation boundary
+
+The following frozen source record predates the actual Ridge-only collection above. Its then-pending native statements are historical; old source/CPU/native evidence is unchanged.
 
 The two path-cache commits are integrated on main as `3e109ba` and `ab2a8a9`. The bounded derived cache reuses static path queries across ticks while navigation geometry is unchanged, distinguishes navigation teams/resolved endpoints, copies returned paths and invalidates with the navigation/terrain lifecycle. It is absent from serialized campaign state. The final simulation source SHA is `8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb`.
 
