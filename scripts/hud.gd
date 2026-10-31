@@ -674,7 +674,9 @@ func _draw_construction_preview(screen: Vector2) -> void:
 	_button(Rect2(rect.position.x + 12, rect.end.y - 36, rect.size.x - 24, 26), "取消施工", "cancel_build", "取消放置，不影响已安排的工程")
 
 func _construction_details_rect(screen: Vector2) -> Rect2:
-	return Rect2(Vector2((screen.x - 320.0) * 0.5, maxf(72.0, screen.y - 430.0)), Vector2(320, 228))
+	var top: float = maxf(132.0, screen.y - 430.0)
+	var height: float = minf(228.0, screen.y - 192.0 - top)
+	return Rect2(Vector2((screen.x - 320.0) * 0.5, top), Vector2(320, height))
 
 func _draw_construction_details(screen: Vector2) -> void:
 	var rect: Rect2 = _construction_details_rect(screen)
@@ -688,8 +690,8 @@ func _draw_construction_details(screen: Vector2) -> void:
 	var lines: Array[String] = _wrap_text(str(status.get("text", "")), 296, 14)
 	for index: int in range(mini(3, lines.size())):
 		_text(rect.position + Vector2(12, 113 + index * 19), lines[index], 14, GOLD, 296)
-	_text(rect.position + Vector2(12, 181), "战术暂停 · 继续后推进" if bool(status.get("paused", false)) else "施工记录 · 不改变现有指令", 12, MUTED, 296)
-	_button(Rect2(rect.position + Vector2(12, 192), Vector2(296, 26)), "关闭详情", "close_project", "关闭工地详情；也可按Esc")
+	_text(rect.position + Vector2(12, rect.size.y - 47), "战术暂停 · 继续后推进 · Esc关闭" if bool(status.get("paused", false)) else "Esc 关闭详情", 12, MUTED, 296)
+	_button(Rect2(rect.position + Vector2(12, rect.size.y - 36), Vector2(296, 26)), "关闭详情", "close_project", "")
 
 func _draw_guide_dialog(screen: Vector2) -> void:
 	var panel_size: Vector2 = Vector2(minf(900, screen.x - 32), minf(620, screen.y - 32))
