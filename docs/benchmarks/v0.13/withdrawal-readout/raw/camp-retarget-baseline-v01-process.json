@@ -1,0 +1,35 @@
+{
+  "scope": "Observed isolated source correctness/render-fixture process; not exported campaign, human play or performance acceptance",
+  "argv": [
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info",
+    "--script",
+    "res://tests/test_camp_readout.gd"
+  ],
+  "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info",
+  "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/camp-readout-data",
+  "returncode": 1,
+  "elapsed_seconds": 0.9659013939963188,
+  "sources_before": {
+    "scripts/camp_readout.gd": "821a1a20ada79c4a299d3ac1766f5e880136f58b8e4f43288a329e95090cabcf",
+    "scripts/hud.gd": "70467eb90e206dd230edf57ef8917cc0005e5a280dd926342679cd98b512cac2",
+    "tests/test_camp_readout.gd": "6364cbe3b525515064a0246757633852bcd5dc165a15004908cb4aca1760231e",
+    "scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+    "scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+    "project.godot": "f6a0eb8faa6df3a224a60d2e09b6b5d7c6c2b3f97c4cc8b2d056d884415a3fa0"
+  },
+  "sources_after": {
+    "scripts/camp_readout.gd": "821a1a20ada79c4a299d3ac1766f5e880136f58b8e4f43288a329e95090cabcf",
+    "scripts/hud.gd": "70467eb90e206dd230edf57ef8917cc0005e5a280dd926342679cd98b512cac2",
+    "tests/test_camp_readout.gd": "6364cbe3b525515064a0246757633852bcd5dc165a15004908cb4aca1760231e",
+    "scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+    "scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+    "project.godot": "f6a0eb8faa6df3a224a60d2e09b6b5d7c6c2b3f97c4cc8b2d056d884415a3fa0"
+  },
+  "sources_unchanged": true,
+  "log_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/camp-retarget-baseline-v01.log",
+  "log_sha256": "11b8ef9a0776263fbecd535c68661dd29b26f53019ef98cdeb9e3e87bba82278",
+  "error_or_leak_lines": []
+}

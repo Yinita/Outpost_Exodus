@@ -1,0 +1,64 @@
+{
+  "scope": "Assistant static visual inspection of three controlled source-rendered images via view_image; not fresh-player play, shipped native campaign, FPS or human acceptance",
+  "inspected": [
+    {
+      "label": "actual-withdrawal-1600",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02/actual-withdrawal-1600.png",
+      "sha256": "3c170cc808a2f173fa7247f208f6803afcae45262c4bef826a23158f03b8401e",
+      "pixels": [
+        1600,
+        900
+      ],
+      "logical_viewport": [
+        1600.0,
+        900.0
+      ],
+      "card_rect": "[P: (1332.0, 184.0), S: (250.0, 91.0)]",
+      "paused": false,
+      "tooltip_lines": 0,
+      "simulation_unchanged": true
+    },
+    {
+      "label": "long-five-cargo-paused-tooltip-648",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02/long-five-cargo-paused-tooltip-648.png",
+      "sha256": "6dda057842975948940bc56c859af0ae9536c5786c60c089f372e4b18e5794b6",
+      "pixels": [
+        1152,
+        648
+      ],
+      "logical_viewport": [
+        1152.0,
+        648.0
+      ],
+      "card_rect": "[P: (884.0, 184.0), S: (250.0, 91.0)]",
+      "paused": true,
+      "tooltip_lines": 16,
+      "simulation_unchanged": true
+    },
+    {
+      "label": "actual-last-convoy-648",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02/actual-last-convoy-648.png",
+      "sha256": "8971598e3a77bed1bfa96494fe6a586cbedaa1302d6c1879ceba9b17235a8afd",
+      "pixels": [
+        1152,
+        648
+      ],
+      "logical_viewport": [
+        1152.0,
+        648.0
+      ],
+      "card_rect": "[P: (884.0, 184.0), S: (250.0, 91.0)]",
+      "paused": false,
+      "tooltip_lines": 0,
+      "simulation_unchanged": true
+    }
+  ],
+  "observations": [
+    "Normal250x91 card shows actual destination and separate cargo while stock row remains visible.",
+    "648 logical-height long-name/five-type/paused hover shows complete details above command dock; destination uses the existing width clipping and full hover preserves its name.",
+    "Abandoned origin still shows its real last convoy destination and cargo before actual delivery."
+  ],
+  "visible_overflow_found": false,
+  "review_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02/review.json",
+  "review_sha256": "bed4b4997d4cb19abff07d4b1a02e9c3a123c3e3a687b3cf1ed69193ece06e6a"
+}

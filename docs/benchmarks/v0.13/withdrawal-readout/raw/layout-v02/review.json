@@ -1,0 +1,143 @@
+{
+	"captures": [
+		{
+			"card_rect": "[P: (1332.0, 184.0), S: (250.0, 91.0)]",
+			"label": "actual-withdrawal-1600",
+			"logical_viewport": [
+				1600.0,
+				900.0
+			],
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02/actual-withdrawal-1600.png",
+			"paused": false,
+			"pixels": [
+				1600,
+				900
+			],
+			"render_only_modifications": [],
+			"row": {
+				"cargo_text": "车上 材90 供40 油50",
+				"code": "packing_outbound",
+				"detail": "撤收车正在将已装载物资送往前进营地 2，未装车库存仍留在本营。\n接收营：前进营地 2。\n车上：建材 90、补给 40、成品燃料 50、废料 0、原油 0。\n未装车：建材 250、补给 67.5、成品燃料 44.4、废料 154、原油 340。\n本营供能 7/12；库存行不含车上货物。\n紧急弃营会留下未装车库存，车上货物仍按实际运输状态送达。",
+				"severity": "normal",
+				"text": "→ 撤收运输中",
+				"transport": {
+					"cargo": {
+						"fuel": 50.0,
+						"materials": 90.0,
+						"supplies": 40.0
+					},
+					"cargo_available": true,
+					"destination_id": 186,
+					"destination_name": "前进营地 2",
+					"stage": "运输",
+					"truck_id": 13
+				},
+				"transport_text": "运输 → 前进营地 2"
+			},
+			"sha256": "3c170cc808a2f173fa7247f208f6803afcae45262c4bef826a23158f03b8401e",
+			"simulation_sha256": "d2548fec58f0cee81a5a24fec850c833e7e6e53d5e7ebd897725059fcdd771e8",
+			"simulation_unchanged": true,
+			"tooltip_lines": 0,
+			"ui_scale": 1.0
+		},
+		{
+			"card_rect": "[P: (884.0, 184.0), S: (250.0, 91.0)]",
+			"label": "long-five-cargo-paused-tooltip-648",
+			"logical_viewport": [
+				1152.0,
+				648.0
+			],
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02/long-five-cargo-paused-tooltip-648.png",
+			"paused": true,
+			"pixels": [
+				1152,
+				648
+			],
+			"render_only_modifications": [
+				"long receiver name",
+				"format-only above-capacity five-type cargo",
+				"tactical pause"
+			],
+			"row": {
+				"cargo_text": "车上 材99.9k 供999k 油9.9M +2项",
+				"code": "packing_outbound",
+				"detail": "战术暂停；以下为本营当前状态，继续后才会推进。\n撤收车正在将已装载物资送往东侧前进接收营 · 很长名称保留供悬停完整查看，未装车库存仍留在本营。\n接收营：东侧前进接收营 · 很长名称保留供悬停完整查看。\n车上：建材 99999、补给 999999、成品燃料 9999999、废料 12.2、原油 34.5。\n未装车：建材 250、补给 67.5、成品燃料 44.4、废料 154、原油 340。\n本营供能 7/12；库存行不含车上货物。\n载货简写：k为千，M为百万。\n紧急弃营会留下未装车库存，车上货物仍按实际运输状态送达。",
+				"severity": "normal",
+				"text": "Ⅱ 撤收运输待续",
+				"transport": {
+					"cargo": {
+						"crude": 34.5,
+						"fuel": 9999999.0,
+						"materials": 99999.0,
+						"salvage": 12.25,
+						"supplies": 999999.0
+					},
+					"cargo_available": true,
+					"destination_id": 186,
+					"destination_name": "东侧前进接收营 · 很长名称保留供悬停完整查看",
+					"stage": "运输",
+					"truck_id": 13
+				},
+				"transport_text": "Ⅱ 运输 → 东侧前进接收营 · 很长名称保留供悬停完整查看"
+			},
+			"sha256": "6dda057842975948940bc56c859af0ae9536c5786c60c089f372e4b18e5794b6",
+			"simulation_sha256": "b02eb5dba598d12e8e124503f083f640890152caef6195e39c32835fe6a04ab8",
+			"simulation_unchanged": true,
+			"tooltip_lines": 16,
+			"ui_scale": 1.0
+		},
+		{
+			"card_rect": "[P: (884.0, 184.0), S: (250.0, 91.0)]",
+			"label": "actual-last-convoy-648",
+			"logical_viewport": [
+				1152.0,
+				648.0
+			],
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02/actual-last-convoy-648.png",
+			"paused": false,
+			"pixels": [
+				1152,
+				648
+			],
+			"render_only_modifications": [
+				"real public emergency-abandon request from unchanged retained checkpoint"
+			],
+			"row": {
+				"cargo_text": "车上 材90 供40 油50",
+				"code": "abandoned",
+				"detail": "驻点已弃守；库存数字表示留在原地的物资，在途撤收货物仍依实际运输状态处理。\n接收营：前进营地 2。\n车上：建材 90、补给 40、成品燃料 50、废料 0、原油 0。\n未装车：建材 250、补给 67.5、成品燃料 44.4、废料 154、原油 340。\n本营供能 7/12；库存行不含车上货物。",
+				"severity": "muted",
+				"text": "— 已弃守",
+				"transport": {
+					"cargo": {
+						"fuel": 50.0,
+						"materials": 90.0,
+						"supplies": 40.0
+					},
+					"cargo_available": true,
+					"destination_id": 186,
+					"destination_name": "前进营地 2",
+					"stage": "末班",
+					"truck_id": 13
+				},
+				"transport_text": "末班 → 前进营地 2"
+			},
+			"sha256": "8971598e3a77bed1bfa96494fe6a586cbedaa1302d6c1879ceba9b17235a8afd",
+			"simulation_sha256": "8deb36861ac15175a9de6a5d9963aa0767ca4d657c7a3a699005740c23c54e8a",
+			"simulation_unchanged": true,
+			"tooltip_lines": 0,
+			"ui_scale": 1.0
+		}
+	],
+	"checkpoint": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.11.0-dev-ridge-native-evidence/actual-disk/checkpoint-save.json",
+	"checkpoint_sha256": "155c9a0386da670050d8e5c691b51f0584233a1b3952e9c94bc67b47e996b5c2",
+	"errors": [],
+	"input_unchanged": true,
+	"scope": "Controlled source-rendered helper/layout review. First case retains actual saved state; long/cargo/pause are format fixtures; last case uses actual public abandonment. No native full-route, FPS or human result.",
+	"sources": {
+		"res://scripts/camp_readout.gd": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3",
+		"res://scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+		"res://scripts/hud.gd": "70467eb90e206dd230edf57ef8917cc0005e5a280dd926342679cd98b512cac2",
+		"res://scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb"
+	}
+}

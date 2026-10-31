@@ -1,0 +1,36 @@
+{
+  "scope": "Observed isolated source correctness/render-fixture process; not exported campaign, human play or performance acceptance",
+  "argv": [
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+    "--path",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info",
+    "--script",
+    "res://work/withdrawal-summary-v01/layout_probe_v02.gd"
+  ],
+  "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info",
+  "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-layout-data",
+  "returncode": 0,
+  "elapsed_seconds": 1.8174292309995508,
+  "sources_before": {
+    "scripts/camp_readout.gd": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3",
+    "scripts/hud.gd": "70467eb90e206dd230edf57ef8917cc0005e5a280dd926342679cd98b512cac2",
+    "tests/test_camp_readout.gd": "6364cbe3b525515064a0246757633852bcd5dc165a15004908cb4aca1760231e",
+    "scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+    "scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+    "project.godot": "f6a0eb8faa6df3a224a60d2e09b6b5d7c6c2b3f97c4cc8b2d056d884415a3fa0",
+    "work/withdrawal-summary-v01/layout_probe_v02.gd": "6feaa07730a3ee539217f824e0d66d4194e8da3843b5076ac8469a0abe57495d"
+  },
+  "sources_after": {
+    "scripts/camp_readout.gd": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3",
+    "scripts/hud.gd": "70467eb90e206dd230edf57ef8917cc0005e5a280dd926342679cd98b512cac2",
+    "tests/test_camp_readout.gd": "6364cbe3b525515064a0246757633852bcd5dc165a15004908cb4aca1760231e",
+    "scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+    "scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+    "project.godot": "f6a0eb8faa6df3a224a60d2e09b6b5d7c6c2b3f97c4cc8b2d056d884415a3fa0",
+    "work/withdrawal-summary-v01/layout_probe_v02.gd": "6feaa07730a3ee539217f824e0d66d4194e8da3843b5076ac8469a0abe57495d"
+  },
+  "sources_unchanged": true,
+  "log_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-macro-info/work/withdrawal-summary-v01/layout-v02.log",
+  "log_sha256": "8f4851808b9bab7d15448bd43e46099135a823dd1651cdca1d433158b5774430",
+  "error_or_leak_lines": []
+}

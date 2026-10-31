@@ -1,0 +1,133 @@
+extends SceneTree
+## Controlled source UI review, not native campaign/FPS or human play evidence.
+
+const CHECKPOINT: String = "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.11.0-dev-ridge-native-evidence/actual-disk/checkpoint-save.json"
+const CHECKPOINT_SHA: String = "155c9a0386da670050d8e5c691b51f0584233a1b3952e9c94bc67b47e996b5c2"
+const OUTPUT: String = "res://work/withdrawal-summary-v01/layout-v02"
+var app: Variant
+var captures: Array[Dictionary] = []
+var errors: Array[String] = []
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+func _state() -> String:
+	return JSON.stringify(app.sim.save_state(), "", true, true)
+
+func _origin() -> Dictionary:
+	for camp: Dictionary in app.sim.camps:
+		if str(camp.state) == "packing": return camp
+	return {}
+
+func _restore() -> Dictionary:
+	if not app.load_campaign():
+		errors.append("Actual retained checkpoint rejected")
+		return {}
+	app.menu = ""
+	app.edge_scroll = false
+	app.feedback_left = 0.0
+	app._window_suspended = false
+	return _origin()
+
+func _frames(count: int) -> void:
+	for index: int in range(count):
+		app._process(0.0)
+		app.world.queue_redraw()
+		app.hud.queue_redraw()
+		await process_frame
+	await RenderingServer.frame_post_draw
+
+func _capture(label: String, logical: Vector2i, origin: Dictionary, hover: bool, modifications: Array[String]) -> void:
+	root.content_scale_size = logical
+	app.display_configured = true
+	app.fullscreen = false
+	app.window_resolution = logical
+	app.ui_scale = 1.0
+	app._apply_display_settings()
+	app.camera.position = (Vector2(origin.pos) + Vector2(7, 0)) * app.TILE
+	app.camera.zoom = Vector2.ONE * 1.05
+	app.camera.force_update_scroll()
+	app.guide.update(app.sim, app.selected_ids, app.selected_camp)
+	app._refresh_camp_readouts(0.0, true)
+	await _frames(5)
+	var card: Rect2 = Rect2()
+	for hotspot: Dictionary in app.hud.hotspots:
+		if str(hotspot.action) == "camp:%d" % int(origin.id): card = hotspot.rect
+	if card.size != Vector2(250,91): errors.append(label + ": camp hotspot geometry changed")
+	root.warp_mouse(card.position + Vector2(120,45) if hover else Vector2(600,400))
+	var before: String = _state()
+	await _frames(5)
+	var screen: Vector2 = app.get_viewport_rect().size
+	if screen != Vector2(logical): errors.append(label + ": requested logical viewport not reached: " + str(screen))
+	var row: Dictionary = app.camp_readouts[int(origin.id)]
+	var tooltip_lines: int = 0
+	if hover:
+		tooltip_lines = app.hud._wrap_text(app.hud.tooltip,332,15,false).size()
+		var limit: int = maxi(2, floori((screen.y - 106) / 21.0))
+		if tooltip_lines > limit: errors.append(label + ": complete tooltip exceeds vertical budget")
+		if not str(app.hud.tooltip).contains("本营供能") or not str(app.hud.tooltip).contains("原油"): errors.append(label + ": missing full cargo/power tooltip")
+		var tooltip_rect: Rect2 = app.hud.overlay_rects.back()
+		if tooltip_rect.intersects(Rect2(0,screen.y-190,screen.x,190)): errors.append(label + ": tooltip overlaps bottom command dock")
+	var picture: Image = root.get_texture().get_image()
+	var path: String = OUTPUT.path_join(label + ".png")
+	if picture == null or picture.is_empty() or picture.save_png(path) != OK:
+		errors.append(label + ": image capture failed")
+		return
+	if before != _state(): errors.append(label + ": render/query changed complete simulation or RNG")
+	captures.append({"label":label,"path":ProjectSettings.globalize_path(path),"sha256":FileAccess.get_sha256(path),
+		"pixels":[picture.get_width(),picture.get_height()],"logical_viewport":[screen.x,screen.y],"card_rect":str(card),
+		"ui_scale":app.ui_scale,"paused":app.sim.paused,"tooltip_lines":tooltip_lines,"render_only_modifications":modifications,
+		"simulation_unchanged":before==_state(),"simulation_sha256":before.sha256_text(),"row":row})
+
+func _run() -> void:
+	var isolation: String = ProjectSettings.globalize_path("res://work/withdrawal-layout-data")
+	if DisplayServer.get_name() == "headless" or not OS.get_user_data_dir().begins_with(isolation + "/") or FileAccess.get_sha256(CHECKPOINT) != CHECKPOINT_SHA:
+		printerr("LAYOUT_REFUSED: native display, dedicated XDG data and exact retained checkpoint required")
+		quit(2)
+		return
+	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(OUTPUT)):
+		printerr("LAYOUT_REFUSED: output directory must be fresh")
+		quit(2)
+		return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
+	AudioServer.set_bus_mute(0,true)
+	app = load("res://main.tscn").instantiate()
+	root.add_child(app)
+	await process_frame
+	app.set_process(false)
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(app.SAVE_PATH).get_base_dir())
+	if DirAccess.copy_absolute(CHECKPOINT,ProjectSettings.globalize_path(app.SAVE_PATH)) != OK:
+		printerr("LAYOUT_REFUSED: isolated checkpoint copy failed")
+		quit(2)
+		return
+	var origin: Dictionary = _restore()
+	if origin.is_empty():
+		printerr("LAYOUT_REFUSED: fixture has no packing camp")
+		quit(2)
+		return
+	await _capture("actual-withdrawal-1600",Vector2i(1600,900),origin,false,[])
+	var receiver: Dictionary = app.sim.get_camp(int(origin.evac_target_id))
+	var truck: Dictionary = app.sim.get_unit(int(origin.evac_truck_id))
+	receiver.name = "东侧前进接收营 · 很长名称保留供悬停完整查看"
+	truck.cargo = {"materials":99999.0,"supplies":999999.0,"fuel":9999999.0,"salvage":12.25,"crude":34.5}
+	app.sim.paused = true
+	await _capture("long-five-cargo-paused-tooltip-648",Vector2i(1152,648),origin,true,["long receiver name","format-only above-capacity five-type cargo","tactical pause"])
+	origin = _restore()
+	if not app.sim.evacuate_camp(int(origin.id)): errors.append("Public emergency abandonment refused")
+	await _capture("actual-last-convoy-648",Vector2i(1152,648),origin,false,["real public emergency-abandon request from unchanged retained checkpoint"])
+	var sources: Dictionary = {}
+	for path: String in ["res://scripts/camp_readout.gd","res://scripts/hud.gd","res://scripts/campaign_simulation.gd","res://scripts/main.gd"]:
+		sources[path] = FileAccess.get_sha256(path)
+	var record: Dictionary = {"scope":"Controlled source-rendered helper/layout review. First case retains actual saved state; long/cargo/pause are format fixtures; last case uses actual public abandonment. No native full-route, FPS or human result.",
+		"checkpoint":CHECKPOINT,"checkpoint_sha256":FileAccess.get_sha256(CHECKPOINT),"input_unchanged":FileAccess.get_sha256(CHECKPOINT)==CHECKPOINT_SHA,
+		"sources":sources,"captures":captures,"errors":errors}
+	var file: FileAccess = FileAccess.open(OUTPUT.path_join("review.json"),FileAccess.WRITE)
+	file.store_string(JSON.stringify(record,"\t",true,true))
+	file.close()
+	print("WITHDRAWAL_LAYOUT ",JSON.stringify({"captures":captures.size(),"errors":errors,"review":ProjectSettings.globalize_path(OUTPUT.path_join("review.json"))}))
+	app._release_audio()
+	app.queue_free()
+	app = null
+	var deadline: int = Time.get_ticks_usec() + 120000
+	while Time.get_ticks_usec() < deadline: await process_frame
+	quit(0 if errors.is_empty() and captures.size()==3 else 1)
