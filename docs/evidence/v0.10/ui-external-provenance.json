@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "scope": "Paused source-rendered comparison using retained real Delta checkpoint; not exported-build, full-campaign, performance or human acceptance.",
+  "baseline_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+  "candidate_commit": "a1ca04115c278589150a549c409f0aa94454efe1",
+  "files": [
+    {
+      "path": "baseline/review.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish/baseline-01/review.json",
+      "sha256": "24fe0242e15e69423de608c815220455c7a43c65aec8e0fa5500a79010ffdfc2",
+      "bytes": 3740
+    },
+    {
+      "path": "baseline/1920x1080-scale1.0-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish/baseline-01/1920x1080-scale1.0-zoom1.05.png",
+      "sha256": "957785294e5db76325a08c1d774dfc6c9aa799f437c7ffe02569b10a40e0b24c",
+      "bytes": 770146
+    },
+    {
+      "path": "baseline/1920x1080-scale1.0-zoom0.35.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish/baseline-01/1920x1080-scale1.0-zoom0.35.png",
+      "sha256": "de71fcf984f5c1ff7fcf8235262cde933029db458204b20de3bba4d8fe8d96b2",
+      "bytes": 536644
+    },
+    {
+      "path": "baseline/1152x648-scale1.2-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish/baseline-01/1152x648-scale1.2-zoom1.05.png",
+      "sha256": "f3e66403ecaa4d4219fe64cfc22ca87603125443a9d3ec6af89e504c59ff473f",
+      "bytes": 374128
+    },
+    {
+      "path": "baseline/1152x648-scale1.2-zoom0.35.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish/baseline-01/1152x648-scale1.2-zoom0.35.png",
+      "sha256": "91cb9c3196ad2597889f0bbb37196d44f0f17e3f000c03796311bd744d1a77de",
+      "bytes": 291691
+    },
+    {
+      "path": "baseline/1280x720-scale1.0-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish/baseline-01/1280x720-scale1.0-zoom1.05.png",
+      "sha256": "4d32fc21990abd196e98b1669cf99ff8d10b1af59afd8161179bd48cc7a553ca",
+      "bytes": 409717
+    },
+    {
+      "path": "baseline/1280x720-scale1.0-zoom0.35.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish/baseline-01/1280x720-scale1.0-zoom0.35.png",
+      "sha256": "bec03f8bd1f1f85d0af132bcbd1976525ec1b185c5ef6090e66b218a081e030f",
+      "bytes": 304455
+    },
+    {
+      "path": "baseline/visual_polish_probe.gd",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual_polish_probe.gd",
+      "sha256": "5148744f6cc0ff399323f02eac0de473b5421464123dc7835c8bbc82a0fdd3d4",
+      "bytes": 4710
+    },
+    {
+      "path": "candidate/review.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/candidate-01/review.json",
+      "sha256": "c920bbe85a0ded8270487ed96732882e40f0cd96016bc39dc5c24e3df8bf06fd",
+      "bytes": 3806
+    },
+    {
+      "path": "candidate/1920x1080-scale1.0-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/candidate-01/1920x1080-scale1.0-zoom1.05.png",
+      "sha256": "db3a1b6138f7abdc5e8c380a8c991ae2e75bce13e8fea30dfd30fd81796c6efa",
+      "bytes": 770819
+    },
+    {
+      "path": "candidate/1920x1080-scale1.0-zoom0.35.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/candidate-01/1920x1080-scale1.0-zoom0.35.png",
+      "sha256": "e72823d4554c4551d5a5a6fb09527b0a3fd022f8d6a0affc20858a8df5e2f19a",
+      "bytes": 538726
+    },
+    {
+      "path": "candidate/1152x648-scale1.2-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/candidate-01/1152x648-scale1.2-zoom1.05.png",
+      "sha256": "81c0bec1d062cc0ee543fa9aefa124f02768c9abbdb7644e69f9277ffd0cba79",
+      "bytes": 374424
+    },
+    {
+      "path": "candidate/1152x648-scale1.2-zoom0.35.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/candidate-01/1152x648-scale1.2-zoom0.35.png",
+      "sha256": "7475884a051f3ceaeecd378a1e5da9f6a007a1ee1bf799879e4039b33ed12f64",
+      "bytes": 292753
+    },
+    {
+      "path": "candidate/1280x720-scale1.0-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/candidate-01/1280x720-scale1.0-zoom1.05.png",
+      "sha256": "c03d10a9e954805bd5bbf007cf55e11a970b269b769d8d049138a2edb3ce2a08",
+      "bytes": 402693
+    },
+    {
+      "path": "candidate/1280x720-scale1.0-zoom0.35.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/candidate-01/1280x720-scale1.0-zoom0.35.png",
+      "sha256": "80f87e309837b5539f099507ed2600ffeefd76f1e12346adfe368495ecaae0d4",
+      "bytes": 284630
+    },
+    {
+      "path": "candidate/visual_polish_probe.gd",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual_polish_probe.gd",
+      "sha256": "5148744f6cc0ff399323f02eac0de473b5421464123dc7835c8bbc82a0fdd3d4",
+      "bytes": 4710
+    },
+    {
+      "path": "logs/visual-polish-import-01.log",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish-import-01.log",
+      "sha256": "64580f7cafd642755bc1ffd2b68c4a7c39b5c1517e0145e8fc4e2ab0a556f152",
+      "bytes": 9544
+    },
+    {
+      "path": "logs/visual-polish-candidate-01.log",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish-candidate-01.log",
+      "sha256": "ee7e9ffaaeb5ba96cbb1d06f921b93468820e5f0c6fdea93a21ad41ca50c376d",
+      "bytes": 3471
+    },
+    {
+      "path": "logs/ui-polish-ui-01.log",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/ui-polish-ui-01.log",
+      "sha256": "a1003e99def445d3dd91330db1d8eea481c36a721e6658d919683f9b97ddf8ab",
+      "bytes": 370
+    },
+    {
+      "path": "logs/ui-polish-macro-01.log",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/ui-polish-macro-01.log",
+      "sha256": "d712f8479be13dce3f511e43406bf55d666455555f08dc53d8d5777e40d6aae8",
+      "bytes": 1932
+    },
+    {
+      "path": "logs/visual-polish-baseline-01.log",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/visual-polish-baseline-01.log",
+      "sha256": "82978ca98ffac8161f18bc9da2c46e4fa38d78c058c14adb6feaaaa15869a027",
+      "bytes": 3405
+    },
+    {
+      "path": "candidate-source/hud.gd",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/scripts/hud.gd",
+      "sha256": "32e50bbebbe67393eeaa239977fb935c6f79f9883013226e509f9e04e8e7f8a4",
+      "bytes": 56028
+    },
+    {
+      "path": "candidate-source/world_view.gd",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/scripts/world_view.gd",
+      "sha256": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098",
+      "bytes": 50828
+    },
+    {
+      "path": "guide-boundary/review.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/guide-boundary-01/review.json",
+      "sha256": "5e93eb207d6e4063c0eb70735bdd0792ec4519aae86d85cf0ed3ae1b3b9489a1",
+      "bytes": 1786
+    },
+    {
+      "path": "guide-boundary/1280x743-scale1.0-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/guide-boundary-01/1280x743-scale1.0-zoom1.05.png",
+      "sha256": "27ba476d7c0dbe5f645746001db1bd3f0e7abb56d477d7c50d1cba791b9f6d31",
+      "bytes": 409036
+    },
+    {
+      "path": "guide-boundary/1280x744-scale1.0-zoom1.05.png",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/guide-boundary-01/1280x744-scale1.0-zoom1.05.png",
+      "sha256": "27680c0e4f0ebb617f493355bdb2ec6f2f2fb5e19193998b27976bc917118eee",
+      "bytes": 413842
+    },
+    {
+      "path": "guide-boundary/guide_boundary_probe.gd",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/guide_boundary_probe.gd",
+      "sha256": "d178ef827e87f3ecee7bf3d0109ef85d79b62006f0d367f282dc2c6be072728f",
+      "bytes": 4679
+    },
+    {
+      "path": "logs/guide-boundary-01.log",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/guide-boundary-01.log",
+      "sha256": "89762d1adba3e831f8cfc88e777e469970ac0e9096114f89ccf3d47d0b65393d",
+      "bytes": 1771
+    }
+  ],
+  "observed_runs": [
+    {
+      "name": "baseline-six-captures",
+      "exit_code": 0,
+      "exec_chunk_id": "5c06df"
+    },
+    {
+      "name": "candidate-six-captures",
+      "exit_code": 0,
+      "exec_chunk_id": "627c12"
+    },
+    {
+      "name": "rendered-ui",
+      "exit_code": 0,
+      "checks": 124,
+      "failures": 0,
+      "exec_chunk_id": "598512"
+    },
+    {
+      "name": "macro-controls",
+      "exit_code": 0,
+      "checks": 309,
+      "failures": 0,
+      "exec_chunk_id": "cd73a9"
+    },
+    {
+      "name": "guide-boundary-743-744",
+      "exit_code": 0,
+      "exec_chunk_id": "266ac4",
+      "scope": "Explicit logical viewport fixtures, not native export acceptance"
+    }
+  ],
+  "assistant_visual_review": {
+    "normal": "Packing and guide target labels are separate; guide card shows less blank space.",
+    "strategic": "Labels remain readable in the inspected source-rendered overview.",
+    "small": "1152 physical /120% and 1280x720 logical fixture remain legible and fit.",
+    "not_a_human_playtest": true,
+    "guide_boundary": "743 logical pixels uses compact entry; 744 shows full card with visible separation above dock. Actual captured images inspected."
+  }
+}

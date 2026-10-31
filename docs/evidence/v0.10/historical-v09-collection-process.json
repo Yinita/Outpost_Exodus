@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "scope": "Observed foreground collection process, distinct from the original detached launcher's own unobserved exit status",
+  "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+  "argv": [
+    "python3",
+    "work/finalize_v09.py",
+    "--collect"
+  ],
+  "working_directory": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+  "observed_by": "tools.exec_command",
+  "exit_code": 0,
+  "wall_time_seconds": 3.093669373,
+  "chunk_id": "4e99dc",
+  "log": "outpost-exodus/work/v09-finalize.log"
+}

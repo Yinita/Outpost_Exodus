@@ -1,0 +1,4514 @@
+{
+  "schema_version": 1,
+  "version": "0.9.0-dev",
+  "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+  "steam_ready": false,
+  "recorded_utc": "2026-10-31T09:30:01.022487+00:00",
+  "archive_checks": [
+    {
+      "archive": "outpost-exodus-source-0.9.0-dev.zip",
+      "sha256": "a09d4b3d0198b2fb01df0a3f097382c1b652ab085b712fe87f31fafc8c7c9aac",
+      "bytes": 21490138,
+      "crc_paths_contents_and_provenance_verified": true
+    },
+    {
+      "archive": "outpost-exodus-linux-0.9.0-dev.zip",
+      "sha256": "831ad23c0a2b133cdab65dd72eb71dc0eb72832dbbae14032d52836e398a5188",
+      "bytes": 46972511,
+      "crc_paths_contents_and_provenance_verified": true
+    },
+    {
+      "archive": "outpost-exodus-windows-0.9.0-dev.zip",
+      "sha256": "583040aa05d081f06c2d4b90d46919143b9f06a7c2c5498b97a84b251d926160",
+      "bytes": 56509130,
+      "crc_paths_contents_and_provenance_verified": true
+    }
+  ],
+  "artifact_checksum_manifest": {
+    "version": "0.9.0-dev",
+    "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+    "artifacts": {
+      "outpost-exodus-source-0.9.0-dev.zip": {
+        "sha256": "a09d4b3d0198b2fb01df0a3f097382c1b652ab085b712fe87f31fafc8c7c9aac",
+        "bytes": 21490138
+      },
+      "outpost-exodus-linux-0.9.0-dev.zip": {
+        "sha256": "831ad23c0a2b133cdab65dd72eb71dc0eb72832dbbae14032d52836e398a5188",
+        "bytes": 46972511
+      },
+      "outpost-exodus-windows-0.9.0-dev.zip": {
+        "sha256": "583040aa05d081f06c2d4b90d46919143b9f06a7c2c5498b97a84b251d926160",
+        "bytes": 56509130
+      }
+    }
+  },
+  "native_soak": {
+    "accepted": true,
+    "one_hour_soak_evidence": true,
+    "cycles_completed": 7,
+    "from_actual_unpacked_linux_package": true,
+    "planned_missions": [
+      "canyon",
+      "delta",
+      "ridge",
+      "canyon",
+      "delta",
+      "ridge",
+      "canyon"
+    ],
+    "native_process_id": 3630652,
+    "launcher_pid": 3630650,
+    "launcher_start_ticks": 8529145,
+    "main_instance_id": "32195478883",
+    "native_wall_seconds": 3908.425177,
+    "launcher_observed_native_process_wall_seconds": 3910.379035138001,
+    "native_returncode": 0,
+    "terminal_process_observations": {
+      "launcher": null,
+      "native": null,
+      "original_launcher_exit_status": "not independently observed",
+      "native_child_returncode": 0,
+      "native_child_exit_observer": "original strict launcher Popen.wait",
+      "collector_exit_status": "must be retained separately by the foreground tool after this collector completes"
+    },
+    "actual_native_argv": [
+      "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-unpacked/outpost-exodus-linux/outpost-exodus.x86_64",
+      "--",
+      "--campaign-validation",
+      "--mission=canyon",
+      "--max-seconds=5400",
+      "--soak"
+    ],
+    "startup_display": {
+      "client_size": [
+        1920,
+        1080
+      ],
+      "ready": true,
+      "requested_client_size": [
+        1920,
+        1080
+      ],
+      "requested_ui_scale": 1.0,
+      "texture_reported_size": [
+        2304,
+        1296
+      ],
+      "ui_scale": 1.0,
+      "viewport_pixel_size": [
+        1920,
+        1080
+      ],
+      "viewport_pixel_size_source": "viewport_texture_get_image",
+      "viewport_visible_size": [
+        1600,
+        900
+      ],
+      "window_content_scale_factor": 1.0,
+      "windowed": true
+    },
+    "final_display": {
+      "client_size": [
+        1920,
+        1080
+      ],
+      "ready": true,
+      "requested_client_size": [
+        1920,
+        1080
+      ],
+      "requested_ui_scale": 1.0,
+      "texture_reported_size": [
+        2304,
+        1296
+      ],
+      "ui_scale": 1.0,
+      "viewport_pixel_size": [
+        1920,
+        1080
+      ],
+      "viewport_pixel_size_source": "viewport_texture_get_image",
+      "viewport_visible_size": [
+        1600,
+        900
+      ],
+      "window_content_scale_factor": 1.0,
+      "windowed": true
+    },
+    "source_proof": {
+      "requested_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+      "clean_worktree_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+      "launcher_export_metadata": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-unpacked/outpost-exodus-linux/build-info.json",
+        "sha256": "496cde590f76ea29dcfb2530716386a35ad9da2e340cbf0a91764fb8826261b9",
+        "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+        "source_tree": "8b3957fa28f1fb74ff333bd07956c0c8bf8caf73",
+        "format": "build-info.json"
+      },
+      "runtime_source_availability": {
+        "res://assets/audio/canyon_ambient.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_build.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_confirm.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_impact.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_loot.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_reject.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_shot_a.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_shot_b.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/audio/sfx_warning.wav": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/buildings-atlas.png": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://assets/fonts/NotoSansCJK-Regular.ttc": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://main.tscn": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://project.godot": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/actor_atlas.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/actor_canvas.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/camp_readout.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/campaign_catalog.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/campaign_guide.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/campaign_save_store.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/campaign_simulation.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/cartoon_canvas.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/construction_rules.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/decoration_cache.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/diagnostics/campaign_route.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/diagnostics/campaign_runner.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/diagnostics/render_runner.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/game_audio.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/hud.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/main.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/recruitment_rules.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/render_motion.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/terrain_cache.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        },
+        "res://scripts/world_view.gd": {
+          "sha256": null,
+          "status": "compiled/imported"
+        }
+      },
+      "scope": "Source commit comes from exact packaged build-info and independent launcher checks. Compiled/imported runtime scripts have no invented source-text hash; actual EXE/PCK hashes bind all seven routes."
+    },
+    "independent_strict_revalidation": {
+      "cycles": [
+        {
+          "cycle_index": 1,
+          "mission_id": "canyon",
+          "errors": [],
+          "report_sha256": "428e70561940ec3377d3146e3d5ce47345c8f37a468744ca7218c1e62976ef1b",
+          "final_state_sha256": "dedd99526f4be6d30f5638b3e66c6bc950821158d1054b805f4c0d8e5614578a"
+        },
+        {
+          "cycle_index": 2,
+          "mission_id": "delta",
+          "errors": [],
+          "report_sha256": "9a786c9209559282ee81bab03bc47a21e16010a5fd0d9edd02bf8465f5f0e9dc",
+          "final_state_sha256": "d17ca36b601504e8395d10acd1cdf2031eb654cd929ed56102c3e0f7e0ba1a7a"
+        },
+        {
+          "cycle_index": 3,
+          "mission_id": "ridge",
+          "errors": [],
+          "report_sha256": "59d823b072439edd515cf10babd61993ef1ef6f2036c7b8bb167cc39648102a5",
+          "final_state_sha256": "079b309c0127c223765b4fc666a53a3c2af2243d908a0db704ea9892da854a6a"
+        },
+        {
+          "cycle_index": 4,
+          "mission_id": "canyon",
+          "errors": [],
+          "report_sha256": "c8afb2d016ba8bd6fc32dc7bb699a9e9948ff7d4bea606c09a44b4ebc472fe6f",
+          "final_state_sha256": "1489412e0e7d86627e348cc509f5176a2ac021b1351118305fd09f62d946d25c"
+        },
+        {
+          "cycle_index": 5,
+          "mission_id": "delta",
+          "errors": [],
+          "report_sha256": "36352b82c9b5ab57b027bb0a4f5c5677a25a14cd9c9cd24c00d4c89d758c8154",
+          "final_state_sha256": "096a773fb6483a7f599d06294ba635d4221c3dd53007a0cb5e6dc8b734d33c97"
+        },
+        {
+          "cycle_index": 6,
+          "mission_id": "ridge",
+          "errors": [],
+          "report_sha256": "46f28b104959dc38b7a3231a03d508e949f7f08387cf254bc5136da89d89688a",
+          "final_state_sha256": "07839f3b90c6288132463bf1b99cda02ff77a3cad04c441ef38ea12aad306c95"
+        },
+        {
+          "cycle_index": 7,
+          "mission_id": "canyon",
+          "errors": [],
+          "report_sha256": "155dab6605d28c0935d7c671514b1464ec23c358e38e58d8186b1e78210827f5",
+          "final_state_sha256": "7db8da176d8992f992c172dc1f885bf840a373106504b8a91866490921a3b9bd"
+        }
+      ],
+      "minimum_wall_seconds": 3600,
+      "metric_scope": "Observed named post-warmup samples; no universal leak-free or hardware guarantee",
+      "stability_comparison": {
+        "baseline": "post_warmup_cycle_01_victory",
+        "final": "post_warmup_cycle_07_victory",
+        "rss_delta_bytes": 18472960,
+        "high_water_delta_bytes": 18472960,
+        "tree_node_delta": 0,
+        "interpretation": "RSS/high-water observations have no arbitrary broad pass threshold and do not prove universal leak freedom."
+      }
+    },
+    "stability_samples": [
+      {
+        "audio": {
+          "active_ui_voices": 0,
+          "active_world_voices": 0,
+          "allocated_music_players": 1,
+          "allocated_ui_voices": 2,
+          "allocated_world_voices": 6,
+          "dropped": 1114,
+          "observed_updates": 31797,
+          "peak_world_voices": 6,
+          "play_counts": {
+            "build": 9,
+            "confirm": 2,
+            "impact": 719,
+            "loot": 165,
+            "shot": 523,
+            "warning": 2
+          },
+          "ui_player_ids": [
+            "37195089329",
+            "37245420980"
+          ],
+          "world_player_ids": [
+            "37278975414",
+            "37312529848",
+            "37346084282",
+            "37379638716",
+            "37413193150",
+            "37446747584"
+          ]
+        },
+        "audio_instance_id": "37228643763",
+        "audio_stream_player_count": 9,
+        "cycle_index": 1,
+        "hud_child_count": 0,
+        "hud_instance_id": "37127980463",
+        "main_instance_id": "32195478883",
+        "main_tick_count": 31797,
+        "memory": {
+          "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+          "godot_static_available": false,
+          "godot_static_bytes": null,
+          "godot_static_peak_available": false,
+          "godot_static_peak_bytes": null,
+          "gpu_memory_available": false,
+          "gpu_memory_bytes": null,
+          "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+          "process_linux": {
+            "VmHWM_bytes": 337891328,
+            "VmRSS_bytes": 337891328,
+            "available": true,
+            "read_limit_bytes": 65536,
+            "source": "/proc/self/status"
+          }
+        },
+        "mission_id": "canyon",
+        "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+        "music_instance_id": "37480302018",
+        "name": "post_warmup_cycle_01_victory",
+        "object_count": 1619,
+        "object_count_available": true,
+        "orphan_node_count": null,
+        "orphan_node_count_available": false,
+        "tree_node_count": 23,
+        "wall_seconds": 531.201412,
+        "warmup_complete": true,
+        "world_child_count": 3,
+        "world_instance_id": "36524000669"
+      },
+      {
+        "audio": {
+          "active_ui_voices": 0,
+          "active_world_voices": 0,
+          "allocated_music_players": 1,
+          "allocated_ui_voices": 2,
+          "allocated_world_voices": 6,
+          "dropped": 2168,
+          "observed_updates": 65134,
+          "peak_world_voices": 6,
+          "play_counts": {
+            "build": 16,
+            "confirm": 9,
+            "impact": 1341,
+            "loot": 308,
+            "shot": 1014,
+            "warning": 4
+          },
+          "ui_player_ids": [
+            "37195089329",
+            "37245420980"
+          ],
+          "world_player_ids": [
+            "37278975414",
+            "37312529848",
+            "37346084282",
+            "37379638716",
+            "37413193150",
+            "37446747584"
+          ]
+        },
+        "audio_instance_id": "37228643763",
+        "audio_stream_player_count": 9,
+        "cycle_index": 2,
+        "hud_child_count": 0,
+        "hud_instance_id": "37127980463",
+        "main_instance_id": "32195478883",
+        "main_tick_count": 65134,
+        "memory": {
+          "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+          "godot_static_available": false,
+          "godot_static_bytes": null,
+          "godot_static_peak_available": false,
+          "godot_static_peak_bytes": null,
+          "gpu_memory_available": false,
+          "gpu_memory_bytes": null,
+          "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+          "process_linux": {
+            "VmHWM_bytes": 349954048,
+            "VmRSS_bytes": 349954048,
+            "available": true,
+            "read_limit_bytes": 65536,
+            "source": "/proc/self/status"
+          }
+        },
+        "mission_id": "delta",
+        "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+        "music_instance_id": "37480302018",
+        "name": "post_warmup_cycle_02_victory",
+        "object_count": 1622,
+        "object_count_available": true,
+        "orphan_node_count": null,
+        "orphan_node_count_available": false,
+        "tree_node_count": 23,
+        "wall_seconds": 1093.103236,
+        "warmup_complete": true,
+        "world_child_count": 3,
+        "world_instance_id": "36524000669"
+      },
+      {
+        "audio": {
+          "active_ui_voices": 0,
+          "active_world_voices": 0,
+          "allocated_music_players": 1,
+          "allocated_ui_voices": 2,
+          "allocated_world_voices": 6,
+          "dropped": 3533,
+          "observed_updates": 100590,
+          "peak_world_voices": 6,
+          "play_counts": {
+            "build": 23,
+            "confirm": 16,
+            "impact": 2161,
+            "loot": 469,
+            "shot": 1504,
+            "warning": 6
+          },
+          "ui_player_ids": [
+            "37195089329",
+            "37245420980"
+          ],
+          "world_player_ids": [
+            "37278975414",
+            "37312529848",
+            "37346084282",
+            "37379638716",
+            "37413193150",
+            "37446747584"
+          ]
+        },
+        "audio_instance_id": "37228643763",
+        "audio_stream_player_count": 9,
+        "cycle_index": 3,
+        "hud_child_count": 0,
+        "hud_instance_id": "37127980463",
+        "main_instance_id": "32195478883",
+        "main_tick_count": 100590,
+        "memory": {
+          "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+          "godot_static_available": false,
+          "godot_static_bytes": null,
+          "godot_static_peak_available": false,
+          "godot_static_peak_bytes": null,
+          "gpu_memory_available": false,
+          "gpu_memory_bytes": null,
+          "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+          "process_linux": {
+            "VmHWM_bytes": 353054720,
+            "VmRSS_bytes": 353054720,
+            "available": true,
+            "read_limit_bytes": 65536,
+            "source": "/proc/self/status"
+          }
+        },
+        "mission_id": "ridge",
+        "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+        "music_instance_id": "37480302018",
+        "name": "post_warmup_cycle_03_victory",
+        "object_count": 1622,
+        "object_count_available": true,
+        "orphan_node_count": null,
+        "orphan_node_count_available": false,
+        "tree_node_count": 23,
+        "wall_seconds": 1685.348191,
+        "warmup_complete": true,
+        "world_child_count": 3,
+        "world_instance_id": "36524000669"
+      },
+      {
+        "audio": {
+          "active_ui_voices": 0,
+          "active_world_voices": 0,
+          "allocated_music_players": 1,
+          "allocated_ui_voices": 2,
+          "allocated_world_voices": 6,
+          "dropped": 4618,
+          "observed_updates": 132388,
+          "peak_world_voices": 6,
+          "play_counts": {
+            "build": 32,
+            "confirm": 23,
+            "impact": 2887,
+            "loot": 638,
+            "shot": 2019,
+            "warning": 8
+          },
+          "ui_player_ids": [
+            "37195089329",
+            "37245420980"
+          ],
+          "world_player_ids": [
+            "37278975414",
+            "37312529848",
+            "37346084282",
+            "37379638716",
+            "37413193150",
+            "37446747584"
+          ]
+        },
+        "audio_instance_id": "37228643763",
+        "audio_stream_player_count": 9,
+        "cycle_index": 4,
+        "hud_child_count": 0,
+        "hud_instance_id": "37127980463",
+        "main_instance_id": "32195478883",
+        "main_tick_count": 132388,
+        "memory": {
+          "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+          "godot_static_available": false,
+          "godot_static_bytes": null,
+          "godot_static_peak_available": false,
+          "godot_static_peak_bytes": null,
+          "gpu_memory_available": false,
+          "gpu_memory_bytes": null,
+          "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+          "process_linux": {
+            "VmHWM_bytes": 354328576,
+            "VmRSS_bytes": 354328576,
+            "available": true,
+            "read_limit_bytes": 65536,
+            "source": "/proc/self/status"
+          }
+        },
+        "mission_id": "canyon",
+        "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+        "music_instance_id": "37480302018",
+        "name": "post_warmup_cycle_04_victory",
+        "object_count": 1622,
+        "object_count_available": true,
+        "orphan_node_count": null,
+        "orphan_node_count_available": false,
+        "tree_node_count": 23,
+        "wall_seconds": 2216.209761,
+        "warmup_complete": true,
+        "world_child_count": 3,
+        "world_instance_id": "36524000669"
+      },
+      {
+        "audio": {
+          "active_ui_voices": 0,
+          "active_world_voices": 0,
+          "allocated_music_players": 1,
+          "allocated_ui_voices": 2,
+          "allocated_world_voices": 6,
+          "dropped": 5632,
+          "observed_updates": 165715,
+          "peak_world_voices": 6,
+          "play_counts": {
+            "build": 39,
+            "confirm": 30,
+            "impact": 3529,
+            "loot": 778,
+            "shot": 2507,
+            "warning": 10
+          },
+          "ui_player_ids": [
+            "37195089329",
+            "37245420980"
+          ],
+          "world_player_ids": [
+            "37278975414",
+            "37312529848",
+            "37346084282",
+            "37379638716",
+            "37413193150",
+            "37446747584"
+          ]
+        },
+        "audio_instance_id": "37228643763",
+        "audio_stream_player_count": 9,
+        "cycle_index": 5,
+        "hud_child_count": 0,
+        "hud_instance_id": "37127980463",
+        "main_instance_id": "32195478883",
+        "main_tick_count": 165716,
+        "memory": {
+          "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+          "godot_static_available": false,
+          "godot_static_bytes": null,
+          "godot_static_peak_available": false,
+          "godot_static_peak_bytes": null,
+          "gpu_memory_available": false,
+          "gpu_memory_bytes": null,
+          "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+          "process_linux": {
+            "VmHWM_bytes": 355172352,
+            "VmRSS_bytes": 355172352,
+            "available": true,
+            "read_limit_bytes": 65536,
+            "source": "/proc/self/status"
+          }
+        },
+        "mission_id": "delta",
+        "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+        "music_instance_id": "37480302018",
+        "name": "post_warmup_cycle_05_victory",
+        "object_count": 1622,
+        "object_count_available": true,
+        "orphan_node_count": null,
+        "orphan_node_count_available": false,
+        "tree_node_count": 23,
+        "wall_seconds": 2779.831289,
+        "warmup_complete": true,
+        "world_child_count": 3,
+        "world_instance_id": "36524000669"
+      },
+      {
+        "audio": {
+          "active_ui_voices": 0,
+          "active_world_voices": 0,
+          "allocated_music_players": 1,
+          "allocated_ui_voices": 2,
+          "allocated_world_voices": 6,
+          "dropped": 7042,
+          "observed_updates": 201304,
+          "peak_world_voices": 6,
+          "play_counts": {
+            "build": 46,
+            "confirm": 37,
+            "impact": 4332,
+            "loot": 951,
+            "shot": 3028,
+            "warning": 12
+          },
+          "ui_player_ids": [
+            "37195089329",
+            "37245420980"
+          ],
+          "world_player_ids": [
+            "37278975414",
+            "37312529848",
+            "37346084282",
+            "37379638716",
+            "37413193150",
+            "37446747584"
+          ]
+        },
+        "audio_instance_id": "37228643763",
+        "audio_stream_player_count": 9,
+        "cycle_index": 6,
+        "hud_child_count": 0,
+        "hud_instance_id": "37127980463",
+        "main_instance_id": "32195478883",
+        "main_tick_count": 201305,
+        "memory": {
+          "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+          "godot_static_available": false,
+          "godot_static_bytes": null,
+          "godot_static_peak_available": false,
+          "godot_static_peak_bytes": null,
+          "gpu_memory_available": false,
+          "gpu_memory_bytes": null,
+          "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+          "process_linux": {
+            "VmHWM_bytes": 356085760,
+            "VmRSS_bytes": 356085760,
+            "available": true,
+            "read_limit_bytes": 65536,
+            "source": "/proc/self/status"
+          }
+        },
+        "mission_id": "ridge",
+        "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+        "music_instance_id": "37480302018",
+        "name": "post_warmup_cycle_06_victory",
+        "object_count": 1622,
+        "object_count_available": true,
+        "orphan_node_count": null,
+        "orphan_node_count_available": false,
+        "tree_node_count": 23,
+        "wall_seconds": 3374.217171,
+        "warmup_complete": true,
+        "world_child_count": 3,
+        "world_instance_id": "36524000669"
+      },
+      {
+        "audio": {
+          "active_ui_voices": 0,
+          "active_world_voices": 0,
+          "allocated_music_players": 1,
+          "allocated_ui_voices": 2,
+          "allocated_world_voices": 6,
+          "dropped": 8099,
+          "observed_updates": 233301,
+          "peak_world_voices": 6,
+          "play_counts": {
+            "build": 55,
+            "confirm": 44,
+            "impact": 5065,
+            "loot": 1118,
+            "shot": 3550,
+            "warning": 14
+          },
+          "ui_player_ids": [
+            "37195089329",
+            "37245420980"
+          ],
+          "world_player_ids": [
+            "37278975414",
+            "37312529848",
+            "37346084282",
+            "37379638716",
+            "37413193150",
+            "37446747584"
+          ]
+        },
+        "audio_instance_id": "37228643763",
+        "audio_stream_player_count": 9,
+        "cycle_index": 7,
+        "hud_child_count": 0,
+        "hud_instance_id": "37127980463",
+        "main_instance_id": "32195478883",
+        "main_tick_count": 233302,
+        "memory": {
+          "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+          "godot_static_available": false,
+          "godot_static_bytes": null,
+          "godot_static_peak_available": false,
+          "godot_static_peak_bytes": null,
+          "gpu_memory_available": false,
+          "gpu_memory_bytes": null,
+          "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+          "process_linux": {
+            "VmHWM_bytes": 356364288,
+            "VmRSS_bytes": 356364288,
+            "available": true,
+            "read_limit_bytes": 65536,
+            "source": "/proc/self/status"
+          }
+        },
+        "mission_id": "canyon",
+        "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+        "music_instance_id": "37480302018",
+        "name": "post_warmup_cycle_07_victory",
+        "object_count": 1622,
+        "object_count_available": true,
+        "orphan_node_count": null,
+        "orphan_node_count_available": false,
+        "tree_node_count": 23,
+        "wall_seconds": 3908.423414,
+        "warmup_complete": true,
+        "world_child_count": 3,
+        "world_instance_id": "36524000669"
+      }
+    ],
+    "metric_scope": "Named measurements after the first complete route warms this same Main process. Memory/node/audio observations and bounded voice pools are recorded; this is not minimum-hardware, frame-pacing, human listening or universal no-leak proof.",
+    "representative_missions": {
+      "canyon": {
+        "cycle_index": 1,
+        "campaign_start": {
+          "mission_id": "canyon",
+          "mission_tag": "rift_escape_01",
+          "selected_mission_id": "canyon"
+        },
+        "simulation_seconds": 1589.849999999102,
+        "wall_seconds": 530.837748,
+        "main_loop": {
+          "end_main_tick_count": 31797,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 25868,
+          "observed_sim_seconds": 1589.849999999102,
+          "observed_ticks": 31797,
+          "raw_main_ticks": 31797,
+          "start_main_tick_count": 0,
+          "terminal_noop_ticks": 0
+        },
+        "save_reload": {
+          "disk_schema_valid": true,
+          "file_sha256": "80da85dad1b3ceb94d8ddccc3dc3d955b8eb712bbef0c9b59407f9ebc644838d",
+          "full_simulation_equal": true,
+          "full_ui_equal": true,
+          "label": "loaded_middle_withdrawal",
+          "load_success": true,
+          "mission_after": {
+            "mission_id": "canyon",
+            "mission_tag": "rift_escape_01",
+            "selected_mission_id": "canyon"
+          },
+          "mission_before": {
+            "mission_id": "canyon",
+            "mission_tag": "rift_escape_01",
+            "selected_mission_id": "canyon"
+          },
+          "mission_equal": true,
+          "mission_on_disk": {
+            "mission_id": "canyon",
+            "mission_tag": "rift_escape_01",
+            "payload_mission_id": ""
+          },
+          "read_only_guide_refreshed_before_save": true,
+          "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-01-canyon/checkpoint-save.json",
+          "retained_sha256": "80da85dad1b3ceb94d8ddccc3dc3d955b8eb712bbef0c9b59407f9ebc644838d",
+          "simulation_sha256": "2e78d1fd02c5cd934f018f6ac387dda11a7d436980f4bc6baa75c8d15ebb699e",
+          "simulation_time": 912.8499999997176,
+          "success": true,
+          "write_success": true
+        },
+        "route": {
+          "abandoned_stock": {
+            "crude": 84.00000000006378,
+            "fuel": 43.90655000001985,
+            "materials": 0.0,
+            "salvage": 0.0,
+            "supplies": 55.8800000000034
+          },
+          "actual_camp_count": 3,
+          "both_resource_sites_captured": true,
+          "deliberate_abandonment": true,
+          "evacuated": 6,
+          "exit_powered_at_victory": true,
+          "final_summary": {
+            "crude": 177.76749999993686,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 17.494800000011494,
+            "materials": 106.56000000003985,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 419.86428571385676,
+            "salvage": 39.44000000002394,
+            "supplies": 20.202500000005642,
+            "time": 1589.849999999102,
+            "zombies": 100
+          },
+          "funded_exit_job": {
+            "building_id": 19,
+            "costs": {
+              "fuel": 45.0,
+              "materials": 140.0,
+              "supplies": 30.0
+            },
+            "delivered": true,
+            "done": true,
+            "funded": true,
+            "id": 326,
+            "source_camp_id": 218
+          },
+          "home_deliveries": 3,
+          "loaded_withdrawal_reloaded": true,
+          "middle_deliveries": 4,
+          "milestones": [
+            {
+              "camp_id": 1,
+              "label": "production_materials",
+              "simulation_time": 0.0
+            },
+            {
+              "home_id": 1,
+              "label": "opening",
+              "simulation_time": 0.0
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_highway",
+              "simulation_time": 0.05,
+              "target": [
+                25.0,
+                20.0
+              ]
+            },
+            {
+              "label": "highway_captured",
+              "simulation_time": 40.04999999999986
+            },
+            {
+              "costs": {
+                "materials": 16.0
+              },
+              "kind": "road",
+              "label": "home_to_middle_road_ordered",
+              "simulation_time": 40.04999999999986,
+              "source_camp_id": 1,
+              "tile": [
+                26,
+                21
+              ]
+            },
+            {
+              "label": "home_to_middle_road_complete",
+              "simulation_time": 80.0499999999976
+            },
+            {
+              "costs": {
+                "materials": 50.0,
+                "supplies": 10.0
+              },
+              "kind": "camp",
+              "label": "middle_camp_ordered",
+              "simulation_time": 80.0499999999976,
+              "source_camp_id": 1,
+              "tile": [
+                26,
+                23
+              ]
+            },
+            {
+              "label": "middle_camp_complete",
+              "simulation_time": 125.04999999999504
+            },
+            {
+              "home_deliveries": 3,
+              "label": "home_evacuated_and_west_sealed",
+              "simulation_time": 200.15000000001126
+            },
+            {
+              "costs": {
+                "materials": 12.0
+              },
+              "kind": "road",
+              "label": "middle_local_road_ordered",
+              "simulation_time": 200.15000000001126,
+              "source_camp_id": 46,
+              "tile": [
+                29,
+                24
+              ]
+            },
+            {
+              "label": "middle_local_road_complete",
+              "simulation_time": 230.15000000001808
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "middle_generator_ordered",
+              "simulation_time": 230.15000000001808,
+              "source_camp_id": 46,
+              "tile": [
+                28,
+                22
+              ]
+            },
+            {
+              "label": "middle_generator_complete",
+              "simulation_time": 260.1500000000249
+            },
+            {
+              "costs": {
+                "materials": 40.0
+              },
+              "kind": "workshop",
+              "label": "middle_workshop_ordered",
+              "simulation_time": 260.1500000000249,
+              "source_camp_id": 46,
+              "tile": [
+                30,
+                24
+              ]
+            },
+            {
+              "label": "middle_workshop_complete",
+              "simulation_time": 295.15000000003283
+            },
+            {
+              "costs": {
+                "materials": 35.0,
+                "supplies": 5.0
+              },
+              "kind": "tower",
+              "label": "middle_defense_ordered",
+              "simulation_time": 295.15000000003283,
+              "source_camp_id": 46,
+              "tile": [
+                25,
+                20
+              ]
+            },
+            {
+              "label": "middle_defense_complete",
+              "simulation_time": 325.15000000003965
+            },
+            {
+              "camp_id": 46,
+              "label": "production_materials",
+              "simulation_time": 325.15000000003965
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_materials_branch",
+              "simulation_time": 325.20000000003967,
+              "target": [
+                35.0,
+                10.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 34.0
+              },
+              "kind": "road",
+              "label": "quarry_road_ordered",
+              "simulation_time": 375.20000000005103,
+              "source_camp_id": 46,
+              "tile": [
+                35,
+                10
+              ]
+            },
+            {
+              "label": "quarry_road_complete",
+              "simulation_time": 445.25000000006696
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_fuel_branch",
+              "simulation_time": 445.25000000006696,
+              "target": [
+                35.0,
+                31.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 26.0
+              },
+              "kind": "road",
+              "label": "fuel_road_ordered",
+              "simulation_time": 495.30000000007834,
+              "source_camp_id": 46,
+              "tile": [
+                35,
+                31
+              ]
+            },
+            {
+              "label": "fuel_road_complete",
+              "simulation_time": 565.4500000000335
+            },
+            {
+              "label": "both_resource_branches_connected",
+              "simulation_time": 665.4499999999425
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_forward_cache",
+              "simulation_time": 665.4499999999425,
+              "target": [
+                53.0,
+                21.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 38.0
+              },
+              "kind": "road",
+              "label": "forward_road_ordered",
+              "simulation_time": 725.449999999888,
+              "source_camp_id": 46,
+              "tile": [
+                53,
+                22
+              ]
+            },
+            {
+              "label": "forward_road_complete",
+              "simulation_time": 815.4499999998061
+            },
+            {
+              "costs": {
+                "materials": 50.0,
+                "supplies": 10.0
+              },
+              "kind": "camp",
+              "label": "forward_camp_ordered",
+              "simulation_time": 815.4499999998061,
+              "source_camp_id": 46,
+              "tile": [
+                54,
+                23
+              ]
+            },
+            {
+              "label": "forward_camp_complete",
+              "simulation_time": 905.4499999997242
+            },
+            {
+              "destination_id": 218,
+              "label": "loaded_middle_withdrawal",
+              "origin_id": 46,
+              "simulation_time": 912.8499999997175
+            },
+            {
+              "label": "middle_deliberately_abandoned",
+              "middle_deliveries": 4,
+              "simulation_time": 1012.1499999996273,
+              "stock_left": {
+                "crude": 84.00000000006378,
+                "fuel": 43.90655000001985,
+                "materials": 0.0,
+                "salvage": 0.0,
+                "supplies": 55.8800000000034
+              }
+            },
+            {
+              "costs": {
+                "materials": 10.0
+              },
+              "kind": "road",
+              "label": "front_local_road_ordered",
+              "simulation_time": 1047.2499999995955,
+              "source_camp_id": 218,
+              "tile": [
+                57,
+                23
+              ]
+            },
+            {
+              "label": "front_local_road_complete",
+              "simulation_time": 1072.2499999995728
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "front_generator_ordered",
+              "simulation_time": 1072.2499999995728,
+              "source_camp_id": 218,
+              "tile": [
+                56,
+                21
+              ]
+            },
+            {
+              "label": "front_generator_complete",
+              "simulation_time": 1102.2499999995455
+            },
+            {
+              "costs": {
+                "materials": 40.0
+              },
+              "kind": "workshop",
+              "label": "front_workshop_ordered",
+              "simulation_time": 1102.2499999995455,
+              "source_camp_id": 218,
+              "tile": [
+                57,
+                25
+              ]
+            },
+            {
+              "label": "front_workshop_complete",
+              "simulation_time": 1142.249999999509
+            },
+            {
+              "camp_id": 218,
+              "label": "production_fuel",
+              "simulation_time": 1142.249999999509
+            },
+            {
+              "camp_id": 218,
+              "label": "production_supplies",
+              "simulation_time": 1170.2999999994836
+            },
+            {
+              "camp_id": 218,
+              "label": "production_idle",
+              "simulation_time": 1231.7999999994277
+            },
+            {
+              "camp": {
+                "crude": 177.76749999993686,
+                "energy": 100.0,
+                "evac_target_id": 0.0,
+                "evac_truck_id": 0.0,
+                "fuel": 80.7997999999994,
+                "id": 218.0,
+                "last_shortage": -100.0,
+                "materials": 314.56000000003985,
+                "name": "前进营地 2",
+                "pack_progress": 0.0,
+                "pos": "(54.0, 23.0)",
+                "power": 8.0,
+                "power_capacity": 12.0,
+                "power_used": 4.0,
+                "priority": "production",
+                "recipe": "idle",
+                "recruit_queue": [],
+                "recruit_status": "idle",
+                "salvage": 39.44000000002394,
+                "state": "active",
+                "supplies": 80.02250000000569
+              },
+              "label": "forward_exit_reserves",
+              "simulation_time": 1231.7999999994277
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_exit_approach",
+              "simulation_time": 1231.7999999994277,
+              "target": [
+                68.0,
+                20.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 26.0
+              },
+              "kind": "road",
+              "label": "exit_power_road_ordered",
+              "simulation_time": 1296.7999999993685,
+              "source_camp_id": 218,
+              "tile": [
+                68,
+                22
+              ]
+            },
+            {
+              "label": "exit_power_road_complete",
+              "simulation_time": 1386.7999999992867
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "exit_local_generator_ordered",
+              "simulation_time": 1386.7999999992867,
+              "source_camp_id": 218,
+              "tile": [
+                68,
+                22
+              ]
+            },
+            {
+              "label": "exit_local_generator_complete",
+              "simulation_time": 1431.7999999992458
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "capture_exit_site",
+              "simulation_time": 1431.7999999992458,
+              "target": [
+                72.0,
+                19.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 12.0
+              },
+              "kind": "road",
+              "label": "exit_construction_road_ordered",
+              "simulation_time": 1466.799999999214,
+              "source_camp_id": 218,
+              "tile": [
+                72,
+                19
+              ]
+            },
+            {
+              "label": "exit_construction_road_complete",
+              "simulation_time": 1526.7999999991594
+            },
+            {
+              "funded_job": {
+                "building_id": 19,
+                "costs": {
+                  "fuel": 45.0,
+                  "materials": 140.0,
+                  "supplies": 30.0
+                },
+                "delivered": true,
+                "done": true,
+                "funded": true,
+                "id": 326,
+                "source_camp_id": 218
+              },
+              "label": "exit_funded_and_complete",
+              "simulation_time": 1576.1999999991144
+            },
+            {
+              "evacuated": 6,
+              "label": "actual_victory",
+              "simulation_time": 1589.849999999102
+            }
+          ],
+          "mission_id": "canyon",
+          "simulated_seconds": 1589.849999999102,
+          "success": true,
+          "west_gate_was_sealed": true
+        },
+        "final": {
+          "evacuated": 6,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "canyon",
+          "mission_tag": "rift_escape_01",
+          "outcome": "victory",
+          "selected_mission_id": "canyon",
+          "summary": {
+            "crude": 177.76749999993686,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 17.494800000011494,
+            "materials": 106.56000000003985,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 419.86428571385676,
+            "salvage": 39.44000000002394,
+            "supplies": 20.202500000005642,
+            "time": 1589.849999999102,
+            "zombies": 100
+          },
+          "truck_distance": 4.97404670715332,
+          "truck_state": "evacuated"
+        },
+        "automatic_saves": {
+          "backup": {
+            "exists": true,
+            "mission_id": "canyon",
+            "mission_tag": "rift_escape_01",
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json.bak",
+            "payload_mission_id": "",
+            "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-01-canyon/autosave-backup.json",
+            "retained_sha256": "4567edc168470bcc71f3ce20e65d74388af6e8b1c526eae57816f365fabae739",
+            "schema_valid": true,
+            "sha256": "4567edc168470bcc71f3ce20e65d74388af6e8b1c526eae57816f365fabae739",
+            "simulation_time": 1452.9499999992263
+          },
+          "observed_file_changes": 11,
+          "primary": {
+            "exists": true,
+            "mission_id": "canyon",
+            "mission_tag": "rift_escape_01",
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+            "payload_mission_id": "",
+            "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-01-canyon/autosave-primary.json",
+            "retained_sha256": "5172539fd57b1ba06da405eb3fc205cc937cc537db6e3797bace26cc7857a8c4",
+            "schema_valid": true,
+            "sha256": "5172539fd57b1ba06da405eb3fc205cc937cc537db6e3797bace26cc7857a8c4",
+            "simulation_time": 1587.9999999991037
+          }
+        }
+      },
+      "delta": {
+        "cycle_index": 2,
+        "campaign_start": {
+          "mission_id": "delta",
+          "mission_tag": "wetland_escape_02",
+          "selected_mission_id": "delta"
+        },
+        "simulation_seconds": 1666.8499999990318,
+        "wall_seconds": 561.899667,
+        "main_loop": {
+          "end_main_tick_count": 65134,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 22160,
+          "observed_sim_seconds": 1666.8499999990318,
+          "observed_ticks": 33337,
+          "raw_main_ticks": 33337,
+          "start_main_tick_count": 31797,
+          "terminal_noop_ticks": 0
+        },
+        "save_reload": {
+          "disk_schema_valid": true,
+          "file_sha256": "df5a5bac78e5ff56db96ff7b7298b7bdb7359cd1891b2db4220cce557346b7ea",
+          "full_simulation_equal": true,
+          "full_ui_equal": true,
+          "label": "loaded_middle_withdrawal",
+          "load_success": true,
+          "mission_after": {
+            "mission_id": "delta",
+            "mission_tag": "wetland_escape_02",
+            "selected_mission_id": "delta"
+          },
+          "mission_before": {
+            "mission_id": "delta",
+            "mission_tag": "wetland_escape_02",
+            "selected_mission_id": "delta"
+          },
+          "mission_equal": true,
+          "mission_on_disk": {
+            "mission_id": "delta",
+            "mission_tag": "wetland_escape_02",
+            "payload_mission_id": "delta"
+          },
+          "read_only_guide_refreshed_before_save": true,
+          "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-02-delta/checkpoint-save.json",
+          "retained_sha256": "df5a5bac78e5ff56db96ff7b7298b7bdb7359cd1891b2db4220cce557346b7ea",
+          "simulation_sha256": "a1d9feccb92650052af606dea67b7eb9814c50ae1489f1c2a0b6435826e87805",
+          "simulation_time": 964.8999999996702,
+          "success": true,
+          "write_success": true
+        },
+        "route": {
+          "abandoned_stock": {
+            "crude": 190.00000000004584,
+            "fuel": 40.49530000002295,
+            "materials": 0.0,
+            "salvage": 0.0,
+            "supplies": 19.840000000005038
+          },
+          "actual_camp_count": 3,
+          "both_resource_sites_captured": true,
+          "deliberate_abandonment": true,
+          "evacuated": 5,
+          "exit_powered_at_victory": true,
+          "final_summary": {
+            "crude": 136.86999999995462,
+            "evacuated": 5,
+            "exit_progress": 1.0,
+            "fuel": 21.70955000001264,
+            "materials": 146.44000000005911,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 658.2166666666209,
+            "salvage": 144.55999999998673,
+            "supplies": 34.4175000000014,
+            "time": 1666.8499999990318,
+            "zombies": 100
+          },
+          "funded_exit_job": {
+            "building_id": 19,
+            "costs": {
+              "fuel": 45.0,
+              "materials": 140.0,
+              "supplies": 30.0
+            },
+            "delivered": true,
+            "done": true,
+            "funded": true,
+            "id": 292,
+            "source_camp_id": 173
+          },
+          "home_deliveries": 3,
+          "loaded_withdrawal_reloaded": true,
+          "middle_deliveries": 4,
+          "milestones": [
+            {
+              "camp_id": 1,
+              "label": "production_materials",
+              "simulation_time": 0.0
+            },
+            {
+              "home_id": 1,
+              "label": "opening",
+              "simulation_time": 0.0
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_highway",
+              "simulation_time": 0.2,
+              "target": [
+                25.0,
+                11.0
+              ]
+            },
+            {
+              "label": "highway_captured",
+              "simulation_time": 40.199999999999854
+            },
+            {
+              "costs": {
+                "materials": 18.0
+              },
+              "kind": "road",
+              "label": "home_to_middle_road_ordered",
+              "simulation_time": 40.199999999999854,
+              "source_camp_id": 1,
+              "tile": [
+                27,
+                11
+              ]
+            },
+            {
+              "label": "home_to_middle_road_complete",
+              "simulation_time": 80.19999999999759
+            },
+            {
+              "costs": {
+                "materials": 50.0,
+                "supplies": 10.0
+              },
+              "kind": "camp",
+              "label": "middle_camp_ordered",
+              "simulation_time": 80.19999999999759,
+              "source_camp_id": 1,
+              "tile": [
+                27,
+                13
+              ]
+            },
+            {
+              "label": "middle_camp_complete",
+              "simulation_time": 125.19999999999503
+            },
+            {
+              "home_deliveries": 3,
+              "label": "home_evacuated_and_west_sealed",
+              "simulation_time": 203.75000000001208
+            },
+            {
+              "costs": {
+                "materials": 12.0
+              },
+              "kind": "road",
+              "label": "middle_local_road_ordered",
+              "simulation_time": 203.75000000001208,
+              "source_camp_id": 46,
+              "tile": [
+                30,
+                14
+              ]
+            },
+            {
+              "label": "middle_local_road_complete",
+              "simulation_time": 233.7500000000189
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "middle_generator_ordered",
+              "simulation_time": 233.7500000000189,
+              "source_camp_id": 46,
+              "tile": [
+                29,
+                12
+              ]
+            },
+            {
+              "label": "middle_generator_complete",
+              "simulation_time": 263.7500000000257
+            },
+            {
+              "costs": {
+                "materials": 40.0
+              },
+              "kind": "workshop",
+              "label": "middle_workshop_ordered",
+              "simulation_time": 263.7500000000257,
+              "source_camp_id": 46,
+              "tile": [
+                31,
+                14
+              ]
+            },
+            {
+              "label": "middle_workshop_complete",
+              "simulation_time": 298.75000000003365
+            },
+            {
+              "costs": {
+                "materials": 35.0,
+                "supplies": 5.0
+              },
+              "kind": "tower",
+              "label": "middle_defense_ordered",
+              "simulation_time": 298.75000000003365,
+              "source_camp_id": 46,
+              "tile": [
+                26,
+                10
+              ]
+            },
+            {
+              "label": "middle_defense_complete",
+              "simulation_time": 328.7500000000405
+            },
+            {
+              "camp_id": 46,
+              "label": "production_materials",
+              "simulation_time": 328.7500000000405
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_materials_branch",
+              "simulation_time": 328.8000000000405,
+              "target": [
+                35.0,
+                29.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 40.0
+              },
+              "kind": "road",
+              "label": "quarry_road_ordered",
+              "simulation_time": 378.80000000005185,
+              "source_camp_id": 46,
+              "tile": [
+                35,
+                29
+              ]
+            },
+            {
+              "label": "quarry_road_complete",
+              "simulation_time": 448.80000000006777
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_fuel_branch",
+              "simulation_time": 448.80000000006777,
+              "target": [
+                42.0,
+                7.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 32.0
+              },
+              "kind": "road",
+              "label": "fuel_road_ordered",
+              "simulation_time": 498.80000000007914,
+              "source_camp_id": 46,
+              "tile": [
+                42,
+                7
+              ]
+            },
+            {
+              "label": "fuel_road_complete",
+              "simulation_time": 568.8000000000304
+            },
+            {
+              "label": "both_resource_branches_connected",
+              "simulation_time": 668.8499999999394
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_forward_cache",
+              "simulation_time": 668.8499999999394,
+              "target": [
+                53.0,
+                26.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 52.0
+              },
+              "kind": "road",
+              "label": "forward_road_ordered",
+              "simulation_time": 728.8499999998849,
+              "source_camp_id": 46,
+              "tile": [
+                53,
+                27
+              ]
+            },
+            {
+              "label": "forward_road_complete",
+              "simulation_time": 858.8499999997666
+            },
+            {
+              "costs": {
+                "materials": 50.0,
+                "supplies": 10.0
+              },
+              "kind": "camp",
+              "label": "forward_camp_ordered",
+              "simulation_time": 858.8499999997666,
+              "source_camp_id": 46,
+              "tile": [
+                54,
+                28
+              ]
+            },
+            {
+              "label": "forward_camp_complete",
+              "simulation_time": 958.8499999996757
+            },
+            {
+              "destination_id": 173,
+              "label": "loaded_middle_withdrawal",
+              "origin_id": 46,
+              "simulation_time": 964.8999999996702
+            },
+            {
+              "label": "middle_deliberately_abandoned",
+              "middle_deliveries": 4,
+              "simulation_time": 1150.3499999995015,
+              "stock_left": {
+                "crude": 190.00000000004584,
+                "fuel": 40.49530000002295,
+                "materials": 0.0,
+                "salvage": 0.0,
+                "supplies": 19.840000000005038
+              }
+            },
+            {
+              "costs": {
+                "materials": 10.0
+              },
+              "kind": "road",
+              "label": "front_local_road_ordered",
+              "simulation_time": 1185.8499999994692,
+              "source_camp_id": 173,
+              "tile": [
+                57,
+                28
+              ]
+            },
+            {
+              "label": "front_local_road_complete",
+              "simulation_time": 1211.1499999994462
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "front_generator_ordered",
+              "simulation_time": 1211.1499999994462,
+              "source_camp_id": 173,
+              "tile": [
+                56,
+                26
+              ]
+            },
+            {
+              "label": "front_generator_complete",
+              "simulation_time": 1241.2499999994188
+            },
+            {
+              "costs": {
+                "materials": 40.0
+              },
+              "kind": "workshop",
+              "label": "front_workshop_ordered",
+              "simulation_time": 1241.2499999994188,
+              "source_camp_id": 173,
+              "tile": [
+                57,
+                30
+              ]
+            },
+            {
+              "label": "front_workshop_complete",
+              "simulation_time": 1281.2499999993825
+            },
+            {
+              "camp_id": 173,
+              "label": "production_fuel",
+              "simulation_time": 1281.2499999993825
+            },
+            {
+              "camp_id": 173,
+              "label": "production_supplies",
+              "simulation_time": 1301.449999999364
+            },
+            {
+              "camp_id": 173,
+              "label": "production_idle",
+              "simulation_time": 1301.449999999364
+            },
+            {
+              "camp": {
+                "crude": 136.86999999995462,
+                "energy": 100.0,
+                "evac_target_id": 0.0,
+                "evac_truck_id": 0.0,
+                "fuel": 85.13455000000043,
+                "id": 173.0,
+                "last_shortage": -100.0,
+                "materials": 356.4400000000591,
+                "name": "前进营地 2",
+                "pack_progress": 0.0,
+                "pos": "(54.0, 28.0)",
+                "power": 8.0,
+                "power_capacity": 12.0,
+                "power_used": 4.0,
+                "priority": "production",
+                "recipe": "idle",
+                "recruit_queue": [],
+                "recruit_status": "idle",
+                "salvage": 144.55999999998673,
+                "state": "active",
+                "supplies": 95.07750000000152
+              },
+              "label": "forward_exit_reserves",
+              "simulation_time": 1301.449999999364
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_exit_approach",
+              "simulation_time": 1301.449999999364,
+              "target": [
+                68.0,
+                31.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 32.0
+              },
+              "kind": "road",
+              "label": "exit_power_road_ordered",
+              "simulation_time": 1366.8499999993046,
+              "source_camp_id": 173,
+              "tile": [
+                68,
+                33
+              ]
+            },
+            {
+              "label": "exit_power_road_complete",
+              "simulation_time": 1457.1999999992224
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "exit_local_generator_ordered",
+              "simulation_time": 1457.1999999992224,
+              "source_camp_id": 173,
+              "tile": [
+                68,
+                33
+              ]
+            },
+            {
+              "label": "exit_local_generator_complete",
+              "simulation_time": 1502.3499999991814
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "capture_exit_site",
+              "simulation_time": 1502.3499999991814,
+              "target": [
+                72.0,
+                30.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 8.0
+              },
+              "kind": "road",
+              "label": "exit_construction_road_ordered",
+              "simulation_time": 1537.3999999991495,
+              "source_camp_id": 173,
+              "tile": [
+                72,
+                30
+              ]
+            },
+            {
+              "label": "exit_construction_road_complete",
+              "simulation_time": 1597.4499999990949
+            },
+            {
+              "funded_job": {
+                "building_id": 19,
+                "costs": {
+                  "fuel": 45.0,
+                  "materials": 140.0,
+                  "supplies": 30.0
+                },
+                "delivered": true,
+                "done": true,
+                "funded": true,
+                "id": 292,
+                "source_camp_id": 173
+              },
+              "label": "exit_funded_and_complete",
+              "simulation_time": 1652.5499999990448
+            },
+            {
+              "evacuated": 5,
+              "label": "actual_victory",
+              "simulation_time": 1666.8499999990318
+            }
+          ],
+          "mission_id": "delta",
+          "simulated_seconds": 1666.8499999990318,
+          "success": true,
+          "west_gate_was_sealed": true
+        },
+        "final": {
+          "evacuated": 5,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "delta",
+          "mission_tag": "wetland_escape_02",
+          "outcome": "victory",
+          "selected_mission_id": "delta",
+          "summary": {
+            "crude": 136.86999999995462,
+            "evacuated": 5,
+            "exit_progress": 1.0,
+            "fuel": 21.70955000001264,
+            "materials": 146.44000000005911,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 658.2166666666209,
+            "salvage": 144.55999999998673,
+            "supplies": 34.4175000000014,
+            "time": 1666.8499999990318,
+            "zombies": 100
+          },
+          "truck_distance": 4.993866920471191,
+          "truck_state": "evacuated"
+        },
+        "automatic_saves": {
+          "backup": {
+            "exists": true,
+            "mission_id": "delta",
+            "mission_tag": "wetland_escape_02",
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json.bak",
+            "payload_mission_id": "delta",
+            "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-02-delta/autosave-backup.json",
+            "retained_sha256": "b7d47b98e877523ff130166463fc830667baac74a45e7e8f18d077092742bbb3",
+            "schema_valid": true,
+            "sha256": "b7d47b98e877523ff130166463fc830667baac74a45e7e8f18d077092742bbb3",
+            "simulation_time": 1505.5999999991784
+          },
+          "observed_file_changes": 12,
+          "primary": {
+            "exists": true,
+            "mission_id": "delta",
+            "mission_tag": "wetland_escape_02",
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+            "payload_mission_id": "delta",
+            "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-02-delta/autosave-primary.json",
+            "retained_sha256": "c9027607a31e44f04d867d215bb2997adc7555ed26448347dc8f7afefa997913",
+            "schema_valid": true,
+            "sha256": "c9027607a31e44f04d867d215bb2997adc7555ed26448347dc8f7afefa997913",
+            "simulation_time": 1640.5999999990556
+          }
+        }
+      },
+      "ridge": {
+        "cycle_index": 3,
+        "campaign_start": {
+          "mission_id": "ridge",
+          "mission_tag": "ridge_escape_03",
+          "selected_mission_id": "ridge"
+        },
+        "simulation_seconds": 1772.7999999989354,
+        "wall_seconds": 592.242497,
+        "main_loop": {
+          "end_main_tick_count": 100590,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 25292,
+          "observed_sim_seconds": 1772.7999999989354,
+          "observed_ticks": 35456,
+          "raw_main_ticks": 35456,
+          "start_main_tick_count": 65134,
+          "terminal_noop_ticks": 0
+        },
+        "save_reload": {
+          "disk_schema_valid": true,
+          "file_sha256": "a14189fd04dcebbc3989dc3fc13ff1d4589b64d93eae68cdf115b454b8b16276",
+          "full_simulation_equal": true,
+          "full_ui_equal": true,
+          "label": "loaded_middle_withdrawal",
+          "load_success": true,
+          "mission_after": {
+            "mission_id": "ridge",
+            "mission_tag": "ridge_escape_03",
+            "selected_mission_id": "ridge"
+          },
+          "mission_before": {
+            "mission_id": "ridge",
+            "mission_tag": "ridge_escape_03",
+            "selected_mission_id": "ridge"
+          },
+          "mission_equal": true,
+          "mission_on_disk": {
+            "mission_id": "ridge",
+            "mission_tag": "ridge_escape_03",
+            "payload_mission_id": "ridge"
+          },
+          "read_only_guide_refreshed_before_save": true,
+          "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-03-ridge/checkpoint-save.json",
+          "retained_sha256": "a14189fd04dcebbc3989dc3fc13ff1d4589b64d93eae68cdf115b454b8b16276",
+          "simulation_sha256": "41540d60bc6247a09180b149dd9f2ae24ea29b30827c101d042c4d20a7aa838f",
+          "simulation_time": 1068.1999999995762,
+          "success": true,
+          "write_success": true
+        },
+        "route": {
+          "abandoned_stock": {
+            "crude": 276.00000000001387,
+            "fuel": 37.74405000002545,
+            "materials": 0.0,
+            "salvage": 0.0,
+            "supplies": 12.820000000004764
+          },
+          "actual_camp_count": 3,
+          "both_resource_sites_captured": true,
+          "deliberate_abandonment": true,
+          "evacuated": 6,
+          "exit_powered_at_victory": true,
+          "final_summary": {
+            "crude": 50.902499999986574,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 21.661100000012652,
+            "materials": 139.00000000000887,
+            "outcome": "victory",
+            "people": 6,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 486.62580645081687,
+            "salvage": 194.000000000005,
+            "supplies": 40.985000000001634,
+            "time": 1772.7999999989354,
+            "zombies": 100
+          },
+          "funded_exit_job": {
+            "building_id": 19,
+            "costs": {
+              "fuel": 45.0,
+              "materials": 140.0,
+              "supplies": 30.0
+            },
+            "delivered": true,
+            "done": true,
+            "funded": true,
+            "id": 329,
+            "source_camp_id": 190
+          },
+          "home_deliveries": 3,
+          "loaded_withdrawal_reloaded": true,
+          "middle_deliveries": 3,
+          "milestones": [
+            {
+              "camp_id": 1,
+              "label": "production_materials",
+              "simulation_time": 0.0
+            },
+            {
+              "home_id": 1,
+              "label": "opening",
+              "simulation_time": 0.0
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_highway",
+              "simulation_time": 0.2,
+              "target": [
+                25.0,
+                29.0
+              ]
+            },
+            {
+              "label": "highway_captured",
+              "simulation_time": 40.199999999999854
+            },
+            {
+              "costs": {
+                "materials": 24.0
+              },
+              "kind": "road",
+              "label": "home_to_middle_road_ordered",
+              "simulation_time": 40.199999999999854,
+              "source_camp_id": 1,
+              "tile": [
+                27,
+                26
+              ]
+            },
+            {
+              "label": "home_to_middle_road_complete",
+              "simulation_time": 80.19999999999759
+            },
+            {
+              "costs": {
+                "materials": 50.0,
+                "supplies": 10.0
+              },
+              "kind": "camp",
+              "label": "middle_camp_ordered",
+              "simulation_time": 80.19999999999759,
+              "source_camp_id": 1,
+              "tile": [
+                27,
+                28
+              ]
+            },
+            {
+              "label": "middle_camp_complete",
+              "simulation_time": 125.19999999999503
+            },
+            {
+              "home_deliveries": 3,
+              "label": "home_evacuated_and_west_sealed",
+              "simulation_time": 211.3000000000138
+            },
+            {
+              "costs": {
+                "materials": 10.0
+              },
+              "kind": "road",
+              "label": "middle_local_road_ordered",
+              "simulation_time": 211.3000000000138,
+              "source_camp_id": 46,
+              "tile": [
+                30,
+                29
+              ]
+            },
+            {
+              "label": "middle_local_road_complete",
+              "simulation_time": 241.30000000002062
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "middle_generator_ordered",
+              "simulation_time": 241.30000000002062,
+              "source_camp_id": 46,
+              "tile": [
+                29,
+                27
+              ]
+            },
+            {
+              "label": "middle_generator_complete",
+              "simulation_time": 271.3000000000274
+            },
+            {
+              "costs": {
+                "materials": 40.0
+              },
+              "kind": "workshop",
+              "label": "middle_workshop_ordered",
+              "simulation_time": 271.3000000000274,
+              "source_camp_id": 46,
+              "tile": [
+                31,
+                29
+              ]
+            },
+            {
+              "label": "middle_workshop_complete",
+              "simulation_time": 306.30000000003537
+            },
+            {
+              "costs": {
+                "materials": 35.0,
+                "supplies": 5.0
+              },
+              "kind": "tower",
+              "label": "middle_defense_ordered",
+              "simulation_time": 306.30000000003537,
+              "source_camp_id": 46,
+              "tile": [
+                26,
+                25
+              ]
+            },
+            {
+              "label": "middle_defense_complete",
+              "simulation_time": 336.3000000000422
+            },
+            {
+              "camp_id": 46,
+              "label": "production_materials",
+              "simulation_time": 336.3000000000422
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_materials_branch",
+              "simulation_time": 336.3500000000422,
+              "target": [
+                36.0,
+                8.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 50.0
+              },
+              "kind": "road",
+              "label": "quarry_road_ordered",
+              "simulation_time": 386.35000000005357,
+              "source_camp_id": 46,
+              "tile": [
+                36,
+                8
+              ]
+            },
+            {
+              "label": "quarry_road_complete",
+              "simulation_time": 456.4000000000695
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_fuel_branch",
+              "simulation_time": 456.4000000000695,
+              "target": [
+                38.0,
+                29.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 18.0
+              },
+              "kind": "road",
+              "label": "fuel_road_ordered",
+              "simulation_time": 506.40000000008087,
+              "source_camp_id": 46,
+              "tile": [
+                38,
+                29
+              ]
+            },
+            {
+              "label": "fuel_road_complete",
+              "simulation_time": 576.4500000000235
+            },
+            {
+              "label": "both_resource_branches_connected",
+              "simulation_time": 676.4499999999325
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_forward_cache",
+              "simulation_time": 676.4499999999325,
+              "target": [
+                53.0,
+                10.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 34.0
+              },
+              "kind": "road",
+              "label": "forward_road_ordered",
+              "simulation_time": 736.449999999878,
+              "source_camp_id": 46,
+              "tile": [
+                53,
+                11
+              ]
+            },
+            {
+              "label": "forward_road_complete",
+              "simulation_time": 866.4499999997597
+            },
+            {
+              "costs": {
+                "materials": 50.0,
+                "supplies": 10.0
+              },
+              "kind": "camp",
+              "label": "forward_camp_ordered",
+              "simulation_time": 866.4499999997597,
+              "source_camp_id": 46,
+              "tile": [
+                54,
+                12
+              ]
+            },
+            {
+              "label": "forward_camp_complete",
+              "simulation_time": 966.4499999996688
+            },
+            {
+              "destination_id": 190,
+              "label": "loaded_middle_withdrawal",
+              "origin_id": 46,
+              "simulation_time": 1068.1999999995762
+            },
+            {
+              "label": "middle_deliberately_abandoned",
+              "middle_deliveries": 3,
+              "simulation_time": 1260.3999999994014,
+              "stock_left": {
+                "crude": 276.00000000001387,
+                "fuel": 37.74405000002545,
+                "materials": 0.0,
+                "salvage": 0.0,
+                "supplies": 12.820000000004764
+              }
+            },
+            {
+              "costs": {
+                "materials": 10.0
+              },
+              "kind": "road",
+              "label": "front_local_road_ordered",
+              "simulation_time": 1295.5499999993694,
+              "source_camp_id": 190,
+              "tile": [
+                57,
+                12
+              ]
+            },
+            {
+              "label": "front_local_road_complete",
+              "simulation_time": 1320.5499999993467
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "front_generator_ordered",
+              "simulation_time": 1320.5499999993467,
+              "source_camp_id": 190,
+              "tile": [
+                56,
+                10
+              ]
+            },
+            {
+              "label": "front_generator_complete",
+              "simulation_time": 1350.5499999993194
+            },
+            {
+              "costs": {
+                "materials": 40.0
+              },
+              "kind": "workshop",
+              "label": "front_workshop_ordered",
+              "simulation_time": 1350.5499999993194,
+              "source_camp_id": 190,
+              "tile": [
+                57,
+                14
+              ]
+            },
+            {
+              "label": "front_workshop_complete",
+              "simulation_time": 1390.599999999283
+            },
+            {
+              "camp_id": 190,
+              "label": "production_fuel",
+              "simulation_time": 1390.599999999283
+            },
+            {
+              "camp_id": 190,
+              "label": "production_supplies",
+              "simulation_time": 1410.7499999992647
+            },
+            {
+              "camp_id": 190,
+              "label": "production_idle",
+              "simulation_time": 1410.7499999992647
+            },
+            {
+              "camp": {
+                "crude": 50.902499999986574,
+                "energy": 100.0,
+                "evac_target_id": 0.0,
+                "evac_truck_id": 0.0,
+                "fuel": 85.10235000000043,
+                "id": 190.0,
+                "last_shortage": -100.0,
+                "materials": 345.00000000000887,
+                "name": "前进营地 2",
+                "pack_progress": 0.0,
+                "pos": "(54.0, 12.0)",
+                "power": 8.0,
+                "power_capacity": 12.0,
+                "power_used": 4.0,
+                "priority": "production",
+                "recipe": "idle",
+                "recruit_queue": [],
+                "recruit_status": "idle",
+                "salvage": 154.000000000005,
+                "state": "active",
+                "supplies": 96.90500000000159
+              },
+              "label": "forward_exit_reserves",
+              "simulation_time": 1410.7499999992647
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "clear_exit_approach",
+              "simulation_time": 1410.7499999992647,
+              "target": [
+                68.0,
+                11.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 24.0
+              },
+              "kind": "road",
+              "label": "exit_power_road_ordered",
+              "simulation_time": 1475.8999999992054,
+              "source_camp_id": 190,
+              "tile": [
+                68,
+                13
+              ]
+            },
+            {
+              "label": "exit_power_road_complete",
+              "simulation_time": 1565.8999999991236
+            },
+            {
+              "costs": {
+                "fuel": 5.0,
+                "materials": 30.0
+              },
+              "kind": "generator",
+              "label": "exit_local_generator_ordered",
+              "simulation_time": 1565.8999999991236,
+              "source_camp_id": 190,
+              "tile": [
+                68,
+                13
+              ]
+            },
+            {
+              "label": "exit_local_generator_complete",
+              "simulation_time": 1610.8999999990826
+            },
+            {
+              "army_ids": [
+                6,
+                7,
+                8
+              ],
+              "label": "capture_exit_site",
+              "simulation_time": 1610.8999999990826,
+              "target": [
+                72.0,
+                10.0
+              ]
+            },
+            {
+              "costs": {
+                "materials": 12.0
+              },
+              "kind": "road",
+              "label": "exit_construction_road_ordered",
+              "simulation_time": 1646.0499999990507,
+              "source_camp_id": 190,
+              "tile": [
+                72,
+                10
+              ]
+            },
+            {
+              "label": "exit_construction_road_complete",
+              "simulation_time": 1706.049999998996
+            },
+            {
+              "funded_job": {
+                "building_id": 19,
+                "costs": {
+                  "fuel": 45.0,
+                  "materials": 140.0,
+                  "supplies": 30.0
+                },
+                "delivered": true,
+                "done": true,
+                "funded": true,
+                "id": 329,
+                "source_camp_id": 190
+              },
+              "label": "exit_funded_and_complete",
+              "simulation_time": 1758.7499999989482
+            },
+            {
+              "evacuated": 6,
+              "label": "actual_victory",
+              "simulation_time": 1772.7999999989354
+            }
+          ],
+          "mission_id": "ridge",
+          "simulated_seconds": 1772.7999999989354,
+          "success": true,
+          "west_gate_was_sealed": true
+        },
+        "final": {
+          "evacuated": 6,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "ridge",
+          "mission_tag": "ridge_escape_03",
+          "outcome": "victory",
+          "selected_mission_id": "ridge",
+          "summary": {
+            "crude": 50.902499999986574,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 21.661100000012652,
+            "materials": 139.00000000000887,
+            "outcome": "victory",
+            "people": 6,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 486.62580645081687,
+            "salvage": 194.000000000005,
+            "supplies": 40.985000000001634,
+            "time": 1772.7999999989354,
+            "zombies": 100
+          },
+          "truck_distance": 4.9967193603515625,
+          "truck_state": "evacuated"
+        },
+        "automatic_saves": {
+          "backup": {
+            "exists": true,
+            "mission_id": "ridge",
+            "mission_tag": "ridge_escape_03",
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json.bak",
+            "payload_mission_id": "ridge",
+            "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-03-ridge/autosave-backup.json",
+            "retained_sha256": "33fd595f6d9e05b176d0c24fe80028ce825c997ce4032a0a1e4cd2cda3bad8e5",
+            "schema_valid": true,
+            "sha256": "33fd595f6d9e05b176d0c24fe80028ce825c997ce4032a0a1e4cd2cda3bad8e5",
+            "simulation_time": 1608.7499999990846
+          },
+          "observed_file_changes": 12,
+          "primary": {
+            "exists": true,
+            "mission_id": "ridge",
+            "mission_tag": "ridge_escape_03",
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+            "payload_mission_id": "ridge",
+            "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-03-ridge/autosave-primary.json",
+            "retained_sha256": "f85e5ede78f8cbc61122e5d819178ba29e85c79bfb2fc1c8f071e23bd82a91a5",
+            "schema_valid": true,
+            "sha256": "f85e5ede78f8cbc61122e5d819178ba29e85c79bfb2fc1c8f071e23bd82a91a5",
+            "simulation_time": 1743.7999999989618
+          }
+        }
+      }
+    },
+    "each_cycle": [
+      {
+        "cycle_index": 1,
+        "mission_id": "canyon",
+        "main_loop": {
+          "end_main_tick_count": 31797,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 25868,
+          "observed_sim_seconds": 1589.849999999102,
+          "observed_ticks": 31797,
+          "raw_main_ticks": 31797,
+          "start_main_tick_count": 0,
+          "terminal_noop_ticks": 0
+        },
+        "final": {
+          "evacuated": 6,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "canyon",
+          "mission_tag": "rift_escape_01",
+          "outcome": "victory",
+          "selected_mission_id": "canyon",
+          "summary": {
+            "crude": 177.76749999993686,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 17.494800000011494,
+            "materials": 106.56000000003985,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 419.86428571385676,
+            "salvage": 39.44000000002394,
+            "supplies": 20.202500000005642,
+            "time": 1589.849999999102,
+            "zombies": 100
+          },
+          "truck_distance": 4.97404670715332,
+          "truck_state": "evacuated"
+        },
+        "wall_seconds": 530.837748,
+        "save_reload_success": true,
+        "stability_after": {
+          "audio": {
+            "active_ui_voices": 0,
+            "active_world_voices": 0,
+            "allocated_music_players": 1,
+            "allocated_ui_voices": 2,
+            "allocated_world_voices": 6,
+            "dropped": 1114,
+            "observed_updates": 31797,
+            "peak_world_voices": 6,
+            "play_counts": {
+              "build": 9,
+              "confirm": 2,
+              "impact": 719,
+              "loot": 165,
+              "shot": 523,
+              "warning": 2
+            },
+            "ui_player_ids": [
+              "37195089329",
+              "37245420980"
+            ],
+            "world_player_ids": [
+              "37278975414",
+              "37312529848",
+              "37346084282",
+              "37379638716",
+              "37413193150",
+              "37446747584"
+            ]
+          },
+          "audio_instance_id": "37228643763",
+          "audio_stream_player_count": 9,
+          "cycle_index": 1,
+          "hud_child_count": 0,
+          "hud_instance_id": "37127980463",
+          "main_instance_id": "32195478883",
+          "main_tick_count": 31797,
+          "memory": {
+            "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+            "godot_static_available": false,
+            "godot_static_bytes": null,
+            "godot_static_peak_available": false,
+            "godot_static_peak_bytes": null,
+            "gpu_memory_available": false,
+            "gpu_memory_bytes": null,
+            "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+            "process_linux": {
+              "VmHWM_bytes": 337891328,
+              "VmRSS_bytes": 337891328,
+              "available": true,
+              "read_limit_bytes": 65536,
+              "source": "/proc/self/status"
+            }
+          },
+          "mission_id": "canyon",
+          "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+          "music_instance_id": "37480302018",
+          "name": "post_warmup_cycle_01_victory",
+          "object_count": 1619,
+          "object_count_available": true,
+          "orphan_node_count": null,
+          "orphan_node_count_available": false,
+          "tree_node_count": 23,
+          "wall_seconds": 531.201412,
+          "warmup_complete": true,
+          "world_child_count": 3,
+          "world_instance_id": "36524000669"
+        }
+      },
+      {
+        "cycle_index": 2,
+        "mission_id": "delta",
+        "main_loop": {
+          "end_main_tick_count": 65134,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 22160,
+          "observed_sim_seconds": 1666.8499999990318,
+          "observed_ticks": 33337,
+          "raw_main_ticks": 33337,
+          "start_main_tick_count": 31797,
+          "terminal_noop_ticks": 0
+        },
+        "final": {
+          "evacuated": 5,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "delta",
+          "mission_tag": "wetland_escape_02",
+          "outcome": "victory",
+          "selected_mission_id": "delta",
+          "summary": {
+            "crude": 136.86999999995462,
+            "evacuated": 5,
+            "exit_progress": 1.0,
+            "fuel": 21.70955000001264,
+            "materials": 146.44000000005911,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 658.2166666666209,
+            "salvage": 144.55999999998673,
+            "supplies": 34.4175000000014,
+            "time": 1666.8499999990318,
+            "zombies": 100
+          },
+          "truck_distance": 4.993866920471191,
+          "truck_state": "evacuated"
+        },
+        "wall_seconds": 561.899667,
+        "save_reload_success": true,
+        "stability_after": {
+          "audio": {
+            "active_ui_voices": 0,
+            "active_world_voices": 0,
+            "allocated_music_players": 1,
+            "allocated_ui_voices": 2,
+            "allocated_world_voices": 6,
+            "dropped": 2168,
+            "observed_updates": 65134,
+            "peak_world_voices": 6,
+            "play_counts": {
+              "build": 16,
+              "confirm": 9,
+              "impact": 1341,
+              "loot": 308,
+              "shot": 1014,
+              "warning": 4
+            },
+            "ui_player_ids": [
+              "37195089329",
+              "37245420980"
+            ],
+            "world_player_ids": [
+              "37278975414",
+              "37312529848",
+              "37346084282",
+              "37379638716",
+              "37413193150",
+              "37446747584"
+            ]
+          },
+          "audio_instance_id": "37228643763",
+          "audio_stream_player_count": 9,
+          "cycle_index": 2,
+          "hud_child_count": 0,
+          "hud_instance_id": "37127980463",
+          "main_instance_id": "32195478883",
+          "main_tick_count": 65134,
+          "memory": {
+            "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+            "godot_static_available": false,
+            "godot_static_bytes": null,
+            "godot_static_peak_available": false,
+            "godot_static_peak_bytes": null,
+            "gpu_memory_available": false,
+            "gpu_memory_bytes": null,
+            "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+            "process_linux": {
+              "VmHWM_bytes": 349954048,
+              "VmRSS_bytes": 349954048,
+              "available": true,
+              "read_limit_bytes": 65536,
+              "source": "/proc/self/status"
+            }
+          },
+          "mission_id": "delta",
+          "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+          "music_instance_id": "37480302018",
+          "name": "post_warmup_cycle_02_victory",
+          "object_count": 1622,
+          "object_count_available": true,
+          "orphan_node_count": null,
+          "orphan_node_count_available": false,
+          "tree_node_count": 23,
+          "wall_seconds": 1093.103236,
+          "warmup_complete": true,
+          "world_child_count": 3,
+          "world_instance_id": "36524000669"
+        }
+      },
+      {
+        "cycle_index": 3,
+        "mission_id": "ridge",
+        "main_loop": {
+          "end_main_tick_count": 100590,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 25292,
+          "observed_sim_seconds": 1772.7999999989354,
+          "observed_ticks": 35456,
+          "raw_main_ticks": 35456,
+          "start_main_tick_count": 65134,
+          "terminal_noop_ticks": 0
+        },
+        "final": {
+          "evacuated": 6,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "ridge",
+          "mission_tag": "ridge_escape_03",
+          "outcome": "victory",
+          "selected_mission_id": "ridge",
+          "summary": {
+            "crude": 50.902499999986574,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 21.661100000012652,
+            "materials": 139.00000000000887,
+            "outcome": "victory",
+            "people": 6,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 486.62580645081687,
+            "salvage": 194.000000000005,
+            "supplies": 40.985000000001634,
+            "time": 1772.7999999989354,
+            "zombies": 100
+          },
+          "truck_distance": 4.9967193603515625,
+          "truck_state": "evacuated"
+        },
+        "wall_seconds": 592.242497,
+        "save_reload_success": true,
+        "stability_after": {
+          "audio": {
+            "active_ui_voices": 0,
+            "active_world_voices": 0,
+            "allocated_music_players": 1,
+            "allocated_ui_voices": 2,
+            "allocated_world_voices": 6,
+            "dropped": 3533,
+            "observed_updates": 100590,
+            "peak_world_voices": 6,
+            "play_counts": {
+              "build": 23,
+              "confirm": 16,
+              "impact": 2161,
+              "loot": 469,
+              "shot": 1504,
+              "warning": 6
+            },
+            "ui_player_ids": [
+              "37195089329",
+              "37245420980"
+            ],
+            "world_player_ids": [
+              "37278975414",
+              "37312529848",
+              "37346084282",
+              "37379638716",
+              "37413193150",
+              "37446747584"
+            ]
+          },
+          "audio_instance_id": "37228643763",
+          "audio_stream_player_count": 9,
+          "cycle_index": 3,
+          "hud_child_count": 0,
+          "hud_instance_id": "37127980463",
+          "main_instance_id": "32195478883",
+          "main_tick_count": 100590,
+          "memory": {
+            "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+            "godot_static_available": false,
+            "godot_static_bytes": null,
+            "godot_static_peak_available": false,
+            "godot_static_peak_bytes": null,
+            "gpu_memory_available": false,
+            "gpu_memory_bytes": null,
+            "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+            "process_linux": {
+              "VmHWM_bytes": 353054720,
+              "VmRSS_bytes": 353054720,
+              "available": true,
+              "read_limit_bytes": 65536,
+              "source": "/proc/self/status"
+            }
+          },
+          "mission_id": "ridge",
+          "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+          "music_instance_id": "37480302018",
+          "name": "post_warmup_cycle_03_victory",
+          "object_count": 1622,
+          "object_count_available": true,
+          "orphan_node_count": null,
+          "orphan_node_count_available": false,
+          "tree_node_count": 23,
+          "wall_seconds": 1685.348191,
+          "warmup_complete": true,
+          "world_child_count": 3,
+          "world_instance_id": "36524000669"
+        }
+      },
+      {
+        "cycle_index": 4,
+        "mission_id": "canyon",
+        "main_loop": {
+          "end_main_tick_count": 132388,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 25656,
+          "observed_sim_seconds": 1589.899999999102,
+          "observed_ticks": 31798,
+          "raw_main_ticks": 31798,
+          "start_main_tick_count": 100590,
+          "terminal_noop_ticks": 0
+        },
+        "final": {
+          "evacuated": 6,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "canyon",
+          "mission_tag": "rift_escape_01",
+          "outcome": "victory",
+          "selected_mission_id": "canyon",
+          "summary": {
+            "crude": 177.79999999993845,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 17.464800000011493,
+            "materials": 105.88000000003854,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 424.06428571385976,
+            "salvage": 40.12000000002365,
+            "supplies": 20.202500000005642,
+            "time": 1589.899999999102,
+            "zombies": 100
+          },
+          "truck_distance": 4.97404670715332,
+          "truck_state": "evacuated"
+        },
+        "wall_seconds": 530.859522,
+        "save_reload_success": true,
+        "stability_after": {
+          "audio": {
+            "active_ui_voices": 0,
+            "active_world_voices": 0,
+            "allocated_music_players": 1,
+            "allocated_ui_voices": 2,
+            "allocated_world_voices": 6,
+            "dropped": 4618,
+            "observed_updates": 132388,
+            "peak_world_voices": 6,
+            "play_counts": {
+              "build": 32,
+              "confirm": 23,
+              "impact": 2887,
+              "loot": 638,
+              "shot": 2019,
+              "warning": 8
+            },
+            "ui_player_ids": [
+              "37195089329",
+              "37245420980"
+            ],
+            "world_player_ids": [
+              "37278975414",
+              "37312529848",
+              "37346084282",
+              "37379638716",
+              "37413193150",
+              "37446747584"
+            ]
+          },
+          "audio_instance_id": "37228643763",
+          "audio_stream_player_count": 9,
+          "cycle_index": 4,
+          "hud_child_count": 0,
+          "hud_instance_id": "37127980463",
+          "main_instance_id": "32195478883",
+          "main_tick_count": 132388,
+          "memory": {
+            "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+            "godot_static_available": false,
+            "godot_static_bytes": null,
+            "godot_static_peak_available": false,
+            "godot_static_peak_bytes": null,
+            "gpu_memory_available": false,
+            "gpu_memory_bytes": null,
+            "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+            "process_linux": {
+              "VmHWM_bytes": 354328576,
+              "VmRSS_bytes": 354328576,
+              "available": true,
+              "read_limit_bytes": 65536,
+              "source": "/proc/self/status"
+            }
+          },
+          "mission_id": "canyon",
+          "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+          "music_instance_id": "37480302018",
+          "name": "post_warmup_cycle_04_victory",
+          "object_count": 1622,
+          "object_count_available": true,
+          "orphan_node_count": null,
+          "orphan_node_count_available": false,
+          "tree_node_count": 23,
+          "wall_seconds": 2216.209761,
+          "warmup_complete": true,
+          "world_child_count": 3,
+          "world_instance_id": "36524000669"
+        }
+      },
+      {
+        "cycle_index": 5,
+        "mission_id": "delta",
+        "main_loop": {
+          "end_main_tick_count": 165716,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 22203,
+          "observed_sim_seconds": 1666.3499999990322,
+          "observed_ticks": 33327,
+          "raw_main_ticks": 33328,
+          "start_main_tick_count": 132388,
+          "terminal_noop_ticks": 1
+        },
+        "final": {
+          "evacuated": 5,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "delta",
+          "mission_tag": "wetland_escape_02",
+          "outcome": "victory",
+          "selected_mission_id": "delta",
+          "summary": {
+            "crude": 120.96749999995285,
+            "evacuated": 5,
+            "exit_progress": 1.0,
+            "fuel": 21.59010000001264,
+            "materials": 146.7600000000595,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 655.0166666666207,
+            "salvage": 144.2399999999881,
+            "supplies": 34.58250000000142,
+            "time": 1666.3499999990322,
+            "zombies": 100
+          },
+          "truck_distance": 4.962121486663818,
+          "truck_state": "evacuated"
+        },
+        "wall_seconds": 563.619468,
+        "save_reload_success": true,
+        "stability_after": {
+          "audio": {
+            "active_ui_voices": 0,
+            "active_world_voices": 0,
+            "allocated_music_players": 1,
+            "allocated_ui_voices": 2,
+            "allocated_world_voices": 6,
+            "dropped": 5632,
+            "observed_updates": 165715,
+            "peak_world_voices": 6,
+            "play_counts": {
+              "build": 39,
+              "confirm": 30,
+              "impact": 3529,
+              "loot": 778,
+              "shot": 2507,
+              "warning": 10
+            },
+            "ui_player_ids": [
+              "37195089329",
+              "37245420980"
+            ],
+            "world_player_ids": [
+              "37278975414",
+              "37312529848",
+              "37346084282",
+              "37379638716",
+              "37413193150",
+              "37446747584"
+            ]
+          },
+          "audio_instance_id": "37228643763",
+          "audio_stream_player_count": 9,
+          "cycle_index": 5,
+          "hud_child_count": 0,
+          "hud_instance_id": "37127980463",
+          "main_instance_id": "32195478883",
+          "main_tick_count": 165716,
+          "memory": {
+            "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+            "godot_static_available": false,
+            "godot_static_bytes": null,
+            "godot_static_peak_available": false,
+            "godot_static_peak_bytes": null,
+            "gpu_memory_available": false,
+            "gpu_memory_bytes": null,
+            "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+            "process_linux": {
+              "VmHWM_bytes": 355172352,
+              "VmRSS_bytes": 355172352,
+              "available": true,
+              "read_limit_bytes": 65536,
+              "source": "/proc/self/status"
+            }
+          },
+          "mission_id": "delta",
+          "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+          "music_instance_id": "37480302018",
+          "name": "post_warmup_cycle_05_victory",
+          "object_count": 1622,
+          "object_count_available": true,
+          "orphan_node_count": null,
+          "orphan_node_count_available": false,
+          "tree_node_count": 23,
+          "wall_seconds": 2779.831289,
+          "warmup_complete": true,
+          "world_child_count": 3,
+          "world_instance_id": "36524000669"
+        }
+      },
+      {
+        "cycle_index": 6,
+        "mission_id": "ridge",
+        "main_loop": {
+          "end_main_tick_count": 201305,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 25245,
+          "observed_sim_seconds": 1779.4499999989293,
+          "observed_ticks": 35589,
+          "raw_main_ticks": 35589,
+          "start_main_tick_count": 165716,
+          "terminal_noop_ticks": 0
+        },
+        "final": {
+          "evacuated": 6,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "ridge",
+          "mission_tag": "ridge_escape_03",
+          "outcome": "victory",
+          "selected_mission_id": "ridge",
+          "summary": {
+            "crude": 122.83749999997127,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 21.700800000012677,
+            "materials": 139.00000000003047,
+            "outcome": "victory",
+            "people": 6,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 481.82580645081157,
+            "salvage": 189.99999999999872,
+            "supplies": 40.95750000000163,
+            "time": 1779.4499999989293,
+            "zombies": 100
+          },
+          "truck_distance": 4.9925384521484375,
+          "truck_state": "evacuated"
+        },
+        "wall_seconds": 594.383453,
+        "save_reload_success": true,
+        "stability_after": {
+          "audio": {
+            "active_ui_voices": 0,
+            "active_world_voices": 0,
+            "allocated_music_players": 1,
+            "allocated_ui_voices": 2,
+            "allocated_world_voices": 6,
+            "dropped": 7042,
+            "observed_updates": 201304,
+            "peak_world_voices": 6,
+            "play_counts": {
+              "build": 46,
+              "confirm": 37,
+              "impact": 4332,
+              "loot": 951,
+              "shot": 3028,
+              "warning": 12
+            },
+            "ui_player_ids": [
+              "37195089329",
+              "37245420980"
+            ],
+            "world_player_ids": [
+              "37278975414",
+              "37312529848",
+              "37346084282",
+              "37379638716",
+              "37413193150",
+              "37446747584"
+            ]
+          },
+          "audio_instance_id": "37228643763",
+          "audio_stream_player_count": 9,
+          "cycle_index": 6,
+          "hud_child_count": 0,
+          "hud_instance_id": "37127980463",
+          "main_instance_id": "32195478883",
+          "main_tick_count": 201305,
+          "memory": {
+            "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+            "godot_static_available": false,
+            "godot_static_bytes": null,
+            "godot_static_peak_available": false,
+            "godot_static_peak_bytes": null,
+            "gpu_memory_available": false,
+            "gpu_memory_bytes": null,
+            "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+            "process_linux": {
+              "VmHWM_bytes": 356085760,
+              "VmRSS_bytes": 356085760,
+              "available": true,
+              "read_limit_bytes": 65536,
+              "source": "/proc/self/status"
+            }
+          },
+          "mission_id": "ridge",
+          "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+          "music_instance_id": "37480302018",
+          "name": "post_warmup_cycle_06_victory",
+          "object_count": 1622,
+          "object_count_available": true,
+          "orphan_node_count": null,
+          "orphan_node_count_available": false,
+          "tree_node_count": 23,
+          "wall_seconds": 3374.217171,
+          "warmup_complete": true,
+          "world_child_count": 3,
+          "world_instance_id": "36524000669"
+        }
+      },
+      {
+        "cycle_index": 7,
+        "mission_id": "canyon",
+        "main_loop": {
+          "end_main_tick_count": 233302,
+          "fixed_step_seconds": 0.05,
+          "invalid_time_steps": 0,
+          "observed_frames": 25968,
+          "observed_sim_seconds": 1599.849999999093,
+          "observed_ticks": 31997,
+          "raw_main_ticks": 31997,
+          "start_main_tick_count": 201305,
+          "terminal_noop_ticks": 0
+        },
+        "final": {
+          "evacuated": 6,
+          "exit_powered": true,
+          "exit_progress": 1.0,
+          "mission_id": "canyon",
+          "mission_tag": "rift_escape_01",
+          "outcome": "victory",
+          "selected_mission_id": "canyon",
+          "summary": {
+            "crude": 177.79999999993913,
+            "evacuated": 6,
+            "exit_progress": 1.0,
+            "fuel": 16.910300000012057,
+            "materials": 105.7600000000383,
+            "outcome": "victory",
+            "people": 7,
+            "phase": "evacuation",
+            "power": 14.0,
+            "power_capacity": 24.0,
+            "pursuit_eta": 414.11428571385267,
+            "salvage": 40.240000000023215,
+            "supplies": 18.950000000005595,
+            "time": 1599.849999999093,
+            "zombies": 100
+          },
+          "truck_distance": 4.946895599365234,
+          "truck_state": "evacuated"
+        },
+        "wall_seconds": 534.203607,
+        "save_reload_success": true,
+        "stability_after": {
+          "audio": {
+            "active_ui_voices": 0,
+            "active_world_voices": 0,
+            "allocated_music_players": 1,
+            "allocated_ui_voices": 2,
+            "allocated_world_voices": 6,
+            "dropped": 8099,
+            "observed_updates": 233301,
+            "peak_world_voices": 6,
+            "play_counts": {
+              "build": 55,
+              "confirm": 44,
+              "impact": 5065,
+              "loot": 1118,
+              "shot": 3550,
+              "warning": 14
+            },
+            "ui_player_ids": [
+              "37195089329",
+              "37245420980"
+            ],
+            "world_player_ids": [
+              "37278975414",
+              "37312529848",
+              "37346084282",
+              "37379638716",
+              "37413193150",
+              "37446747584"
+            ]
+          },
+          "audio_instance_id": "37228643763",
+          "audio_stream_player_count": 9,
+          "cycle_index": 7,
+          "hud_child_count": 0,
+          "hud_instance_id": "37127980463",
+          "main_instance_id": "32195478883",
+          "main_tick_count": 233302,
+          "memory": {
+            "allocator_scope": "Release allocator counters may be unavailable; null is not zero memory.",
+            "godot_static_available": false,
+            "godot_static_bytes": null,
+            "godot_static_peak_available": false,
+            "godot_static_peak_bytes": null,
+            "gpu_memory_available": false,
+            "gpu_memory_bytes": null,
+            "gpu_memory_status": "No per-process GPU allocation reading is claimed by this gate.",
+            "process_linux": {
+              "VmHWM_bytes": 356364288,
+              "VmRSS_bytes": 356364288,
+              "available": true,
+              "read_limit_bytes": 65536,
+              "source": "/proc/self/status"
+            }
+          },
+          "mission_id": "canyon",
+          "monitor_scope": "Unsupported release monitors are null; actual tree/child counts and instance IDs are measured directly.",
+          "music_instance_id": "37480302018",
+          "name": "post_warmup_cycle_07_victory",
+          "object_count": 1622,
+          "object_count_available": true,
+          "orphan_node_count": null,
+          "orphan_node_count_available": false,
+          "tree_node_count": 23,
+          "wall_seconds": 3908.423414,
+          "warmup_complete": true,
+          "world_child_count": 3,
+          "world_instance_id": "36524000669"
+        }
+      }
+    ]
+  },
+  "native_performance": {
+    "scope": "Separate actual native canonical busy-scene 3600-frame measurements; not measured during the campaign soak or proof of stable 60 FPS/minimum hardware.",
+    "payload": {
+      "executable": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-unpacked/outpost-exodus-linux/outpost-exodus.x86_64",
+        "available": true,
+        "bytes": 73519416,
+        "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+      },
+      "adjacent_pck": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-unpacked/outpost-exodus-linux/outpost-exodus.pck",
+        "available": true,
+        "bytes": 18486704,
+        "sha256": "9faa6bf367e8d7a4e28791ac5329b6e9176fcb448d7245df0fe3d6a73289acaf"
+      }
+    },
+    "host": {
+      "cpu": "Intel(R) Core(TM) i7-14700",
+      "gpu_adapter": "NVIDIA GeForce RTX 5060",
+      "system_memory": {
+        "MemAvailable_bytes": 35758514176,
+        "MemTotal_bytes": 60717228032,
+        "available": true,
+        "source": "/proc/meminfo"
+      },
+      "display_server": "X11",
+      "window_size": [
+        1920.0,
+        1080.0
+      ],
+      "viewport_size": [
+        1920.0,
+        1080.0
+      ],
+      "screen_refresh_hz": 59.9700012207031
+    },
+    "zooms": [
+      {
+        "name": "normal",
+        "frame_ms": {
+          "intervals_over_16_667_ms": 1922,
+          "intervals_over_33_333_ms": 5,
+          "max": 70936.0,
+          "max_ms": 70.936,
+          "mean": 16753.0491666667,
+          "mean_ms": 16.7530491666667,
+          "nonzero_samples": 3600,
+          "observed_fps": 59.69062646755,
+          "p50": 16689.0,
+          "p50_ms": 16.689,
+          "p95": 22639.0,
+          "p95_ms": 22.639,
+          "p99": 29080.0,
+          "p99_ms": 29.08,
+          "samples": 3600
+        },
+        "workload": {
+          "combat_effect_samples": 12709,
+          "completed_ordered_buildings": 3,
+          "construction_max_progress_delta": 1.0,
+          "construction_peak_progress": 1.0,
+          "construction_start_progress": 0.0,
+          "construction_start_progress_by_id": {
+            "20000": 0.0,
+            "20002": 0.0,
+            "20004": 0.0
+          },
+          "enemy_max": 100,
+          "enemy_min": 100,
+          "friendly_max": 32,
+          "friendly_min": 32,
+          "hauling_cargo_samples": 1980,
+          "hauling_deliveries": 3,
+          "nonempty_cargo_samples": 2667,
+          "observed_simulation_ticks": 1206,
+          "observer_cpu_usec": 131939
+        },
+        "measured_frames": 3600,
+        "warmup_frames": 120,
+        "save_measurements": [
+          {
+            "after_measured_frame": 300,
+            "bytes": 151698,
+            "exists": true,
+            "included_in_wall_frame_interval": 301,
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+            "read_semantic_verification_usec": 11879,
+            "save_call_ms": 24.732,
+            "save_call_usec": 24732,
+            "save_returned_success": true,
+            "write_and_read_valid": true
+          }
+        ]
+      },
+      {
+        "name": "strategic",
+        "frame_ms": {
+          "intervals_over_16_667_ms": 1945,
+          "intervals_over_33_333_ms": 8,
+          "max": 90374.0,
+          "max_ms": 90.374,
+          "mean": 16753.1769444444,
+          "mean_ms": 16.7531769444444,
+          "nonzero_samples": 3600,
+          "observed_fps": 59.69017120252,
+          "p50": 16700.0,
+          "p50_ms": 16.7,
+          "p95": 22804.0,
+          "p95_ms": 22.804,
+          "p99": 29345.0,
+          "p99_ms": 29.345,
+          "samples": 3600
+        },
+        "workload": {
+          "combat_effect_samples": 12709,
+          "completed_ordered_buildings": 3,
+          "construction_max_progress_delta": 1.0,
+          "construction_peak_progress": 1.0,
+          "construction_start_progress": 0.0,
+          "construction_start_progress_by_id": {
+            "20000": 0.0,
+            "20002": 0.0,
+            "20004": 0.0
+          },
+          "enemy_max": 100,
+          "enemy_min": 100,
+          "friendly_max": 32,
+          "friendly_min": 32,
+          "hauling_cargo_samples": 1980,
+          "hauling_deliveries": 3,
+          "nonempty_cargo_samples": 2667,
+          "observed_simulation_ticks": 1206,
+          "observer_cpu_usec": 132257
+        },
+        "measured_frames": 3600,
+        "warmup_frames": 120,
+        "save_measurements": [
+          {
+            "after_measured_frame": 300,
+            "bytes": 152109,
+            "exists": true,
+            "included_in_wall_frame_interval": 301,
+            "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v09-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+            "read_semantic_verification_usec": 11670,
+            "save_call_ms": 48.504,
+            "save_call_usec": 48504,
+            "save_returned_success": true,
+            "write_and_read_valid": true
+          }
+        ]
+      }
+    ]
+  },
+  "automatic_cycle": {
+    "actual_automatic_cycle": true,
+    "files": [
+      {
+        "camera_zoom": 0.3499999940395355,
+        "name": "campaign-autosave.json",
+        "schema_valid": true,
+        "sha256": "be6bebbbb00b33d20a0d3612cb5fcffe20d75a78024c11112190dc3204d831ab",
+        "simulation_time": 44.99999999999958
+      },
+      {
+        "camera_zoom": 0.3499999940395355,
+        "name": "campaign-autosave.json.bak",
+        "schema_valid": true,
+        "sha256": "c5a9f790a7adbae06f1b1c59395e79941fcaa5b8d305c3b8fd0ae3b0f71a353f",
+        "simulation_time": 7.199999999999982
+      }
+    ],
+    "scope": "Actual final native3600-frame strategic run: main autosave at45seconds rotated the forced frame300 checkpoint into backup. Both final files re-read and validated using unchanged current Main/Simulation schema in a separate headless process."
+  },
+  "linux_smoke": {
+    "schema_version": 1,
+    "success": true,
+    "started_utc": "2026-10-31T08:14:31.360420+00:00",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "display": ":0",
+    "payload_sha256": {
+      "outpost-exodus.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+      "outpost-exodus.pck": "9faa6bf367e8d7a4e28791ac5329b6e9176fcb448d7245df0fe3d6a73289acaf"
+    },
+    "runs": [
+      {
+        "name": "headless",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+          "--headless",
+          "--fixed-fps",
+          "60",
+          "--",
+          "--smoke"
+        ],
+        "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release",
+        "timeout_seconds": 60.0,
+        "isolated_environment": {
+          "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless-data",
+          "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless-config",
+          "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless-cache"
+        },
+        "returncode": 0,
+        "timed_out": false,
+        "elapsed_seconds": 0.8292,
+        "log_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/headless.log",
+        "runtime_output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSMOKE_OK ticks=80 units=30\n",
+        "error_or_leak_output": false,
+        "expected_marker": true,
+        "simulation_ticks": 80,
+        "unit_count": 30,
+        "minimum_simulation_ticks": 70,
+        "success": true
+      },
+      {
+        "name": "rendered",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release/outpost-exodus.x86_64",
+          "--",
+          "--capture=/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/preview.png"
+        ],
+        "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/builds/linux-release",
+        "timeout_seconds": 60.0,
+        "isolated_environment": {
+          "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered-data",
+          "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered-config",
+          "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered-cache"
+        },
+        "returncode": 0,
+        "timed_out": false,
+        "elapsed_seconds": 1.6415,
+        "log_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/rendered.log",
+        "runtime_output": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nOpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060\n\nCAPTURE_RESULT 0 /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/preview.png\n",
+        "error_or_leak_output": false,
+        "expected_marker": true,
+        "success": true
+      }
+    ],
+    "scope": [
+      "Linux native release export headless startup/simulation smoke",
+      "Linux native release export rendered campaign capture and clean shutdown"
+    ],
+    "not_verified": [
+      "fresh-player usability",
+      "full native campaign playthrough",
+      "minimum hardware or frame pacing",
+      "clean-machine installation",
+      "Windows execution",
+      "Steam integration/review",
+      "manual screenshot inspection"
+    ],
+    "export_provenance": {
+      "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+      "source_tree": "8b3957fa28f1fb74ff333bd07956c0c8bf8caf73",
+      "sha256": {
+        "outpost-exodus.x86_64": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63",
+        "outpost-exodus.pck": "9faa6bf367e8d7a4e28791ac5329b6e9176fcb448d7245df0fe3d6a73289acaf"
+      }
+    },
+    "capture": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-smoke/preview.png",
+      "width": 1440,
+      "height": 810,
+      "bytes": 384037,
+      "sha256": "33a5d5aa97f1589408fad006817f85967d3d0a4976b99fd4f058258c02f9c27d"
+    },
+    "finished_utc": "2026-10-31T08:14:33.927401+00:00"
+  },
+  "evidence_bundle": {
+    "path": "outpost-exodus-0.9.0-dev-native-soak-evidence",
+    "files": [
+      {
+        "path": "archive-notice-verification.json",
+        "sha256": "d50a3790330cad1642930f381915fa14800bba40acefe0799deb1e43fbbe2415",
+        "bytes": 535
+      },
+      {
+        "path": "automatic-cycle-verification.json",
+        "sha256": "4e6c3b2d1d22bca6e973e35a0d2cc3e5a67ee6315fa0044b93dd0b2de1f2ee14",
+        "bytes": 768
+      },
+      {
+        "path": "benchmark-autosaves/campaign-autosave.json",
+        "sha256": "be6bebbbb00b33d20a0d3612cb5fcffe20d75a78024c11112190dc3204d831ab",
+        "bytes": 146695
+      },
+      {
+        "path": "benchmark-autosaves/campaign-autosave.json.bak",
+        "sha256": "c5a9f790a7adbae06f1b1c59395e79941fcaa5b8d305c3b8fd0ae3b0f71a353f",
+        "bytes": 152109
+      },
+      {
+        "path": "benchmark-captures/normal.png",
+        "sha256": "df5a20453ca50e7524dcb1546bdbd10c93f3fab1297b8b31dca15de7e3d00bd0",
+        "bytes": 715276
+      },
+      {
+        "path": "benchmark-captures/strategic.png",
+        "sha256": "6330d2243760a90058a5eae877f679386054bbd6cd570d3e1c03d7a320409e26",
+        "bytes": 417718
+      },
+      {
+        "path": "checksums.json",
+        "sha256": "b8e8c2c262298aeb44cd41c897147c57f1f91c7bdf9495909d15c0e74c1dc9b4",
+        "bytes": 593
+      },
+      {
+        "path": "collector.py.txt",
+        "sha256": "b0042bd70a6d327bf8d40ee9f869660000a3f398ee11eef8fadb12e8d56f5a1d",
+        "bytes": 30786
+      },
+      {
+        "path": "launcher-start.json",
+        "sha256": "432c80097292af1bf0fb32a4d06109cb3a119c75855d77665e4ce8295d92d833",
+        "bytes": 987
+      },
+      {
+        "path": "launcher-terminal-output.json",
+        "sha256": "c857ac3f721b34ff30b751a7c4d0bf9c7e022df81fc3874f349234f2a6ed42f5",
+        "bytes": 328
+      },
+      {
+        "path": "native-process.log",
+        "sha256": "492e274d7d0a0af4b13d7ae046e4534eb449e00b2e38e8d6bc170232db2fccbe",
+        "bytes": 1667
+      },
+      {
+        "path": "output/campaign-progress.json",
+        "sha256": "eca53bb3dfb59bf0a47d5768288bed795e6b8b9ba17e3bd3ca4c324b70b4d128",
+        "bytes": 613
+      },
+      {
+        "path": "output/campaign-validation.json",
+        "sha256": "2accb183d73d6b9029ed7a72be4ffd61f8d63f14cc9bf2e5654d2641b877fc6b",
+        "bytes": 35085
+      },
+      {
+        "path": "output/cycle-01-canyon/autosave-backup.json",
+        "sha256": "4567edc168470bcc71f3ce20e65d74388af6e8b1c526eae57816f365fabae739",
+        "bytes": 208329
+      },
+      {
+        "path": "output/cycle-01-canyon/autosave-primary.json",
+        "sha256": "5172539fd57b1ba06da405eb3fc205cc937cc537db6e3797bace26cc7857a8c4",
+        "bytes": 193088
+      },
+      {
+        "path": "output/cycle-01-canyon/campaign-validation.json",
+        "sha256": "428e70561940ec3377d3146e3d5ce47345c8f37a468744ca7218c1e62976ef1b",
+        "bytes": 67745
+      },
+      {
+        "path": "output/cycle-01-canyon/checkpoint-save.json",
+        "sha256": "80da85dad1b3ceb94d8ddccc3dc3d955b8eb712bbef0c9b59407f9ebc644838d",
+        "bytes": 119638
+      },
+      {
+        "path": "output/cycle-01-canyon/completed_powered_exit.png",
+        "sha256": "eef5d1a55acf92817dfdf8b2b703e982927df7165ede6394a0e3449a3baaabd6",
+        "bytes": 510291
+      },
+      {
+        "path": "output/cycle-01-canyon/final-campaign-state.json",
+        "sha256": "dedd99526f4be6d30f5638b3e66c6bc950821158d1054b805f4c0d8e5614578a",
+        "bytes": 506461
+      },
+      {
+        "path": "output/cycle-01-canyon/middle_infrastructure.png",
+        "sha256": "d5ef50d2e3959d41a8693f82aef7e8d020b21c894567abb3c5bd002cc4551e7c",
+        "bytes": 616964
+      },
+      {
+        "path": "output/cycle-01-canyon/opening.png",
+        "sha256": "31eddc59524d53cba3f5ffc3f96c82778b5750d9ae43f9baef636d9664f9cc5a",
+        "bytes": 578213
+      },
+      {
+        "path": "output/cycle-01-canyon/victory.png",
+        "sha256": "6b42af7696f53b8ff6a99d57b927063e0efb5ee737fa07060f309ea87e187719",
+        "bytes": 341348
+      },
+      {
+        "path": "output/cycle-01-canyon/withdrawal_after_disk_load.png",
+        "sha256": "b768ee18fcd9a8cb43c047a2170275e2f851ece88ded9789a962ebffdc6efde8",
+        "bytes": 772083
+      },
+      {
+        "path": "output/cycle-02-delta/autosave-backup.json",
+        "sha256": "b7d47b98e877523ff130166463fc830667baac74a45e7e8f18d077092742bbb3",
+        "bytes": 250209
+      },
+      {
+        "path": "output/cycle-02-delta/autosave-primary.json",
+        "sha256": "c9027607a31e44f04d867d215bb2997adc7555ed26448347dc8f7afefa997913",
+        "bytes": 232869
+      },
+      {
+        "path": "output/cycle-02-delta/campaign-validation.json",
+        "sha256": "9a786c9209559282ee81bab03bc47a21e16010a5fd0d9edd02bf8465f5f0e9dc",
+        "bytes": 67963
+      },
+      {
+        "path": "output/cycle-02-delta/checkpoint-save.json",
+        "sha256": "df5a5bac78e5ff56db96ff7b7298b7bdb7359cd1891b2db4220cce557346b7ea",
+        "bytes": 131951
+      },
+      {
+        "path": "output/cycle-02-delta/completed_powered_exit.png",
+        "sha256": "d3d3e833eb0ac623894c626de2df26c19c6cad2e016d9ceebe098188acdac8e5",
+        "bytes": 517788
+      },
+      {
+        "path": "output/cycle-02-delta/final-campaign-state.json",
+        "sha256": "d17ca36b601504e8395d10acd1cdf2031eb654cd929ed56102c3e0f7e0ba1a7a",
+        "bytes": 598140
+      },
+      {
+        "path": "output/cycle-02-delta/middle_infrastructure.png",
+        "sha256": "a0784b907ab8971bed6f24ca77fd3fbff9830d5308ec5c4c95eabfe61036b7d1",
+        "bytes": 611287
+      },
+      {
+        "path": "output/cycle-02-delta/opening.png",
+        "sha256": "e353deba94ad611d64b4972782febbc31698c9982f56fbe417bb8e7f72325bc4",
+        "bytes": 573817
+      },
+      {
+        "path": "output/cycle-02-delta/restart-autosave.json",
+        "sha256": "3b7eef180b4187d0b604e5ffd3996ba20ed2a92bc90fa98d3b2cb1f2caf2f07c",
+        "bytes": 37861
+      },
+      {
+        "path": "output/cycle-02-delta/victory.png",
+        "sha256": "93e330d05df6584f359904860a4fecdc210b78327e06c7169e6afee8675774a8",
+        "bytes": 342667
+      },
+      {
+        "path": "output/cycle-02-delta/withdrawal_after_disk_load.png",
+        "sha256": "928d03e15fdb76c01fed2123bc1c5e07927bc6f889e0c521b6b528cf863e76bd",
+        "bytes": 762384
+      },
+      {
+        "path": "output/cycle-03-ridge/autosave-backup.json",
+        "sha256": "33fd595f6d9e05b176d0c24fe80028ce825c997ce4032a0a1e4cd2cda3bad8e5",
+        "bytes": 289882
+      },
+      {
+        "path": "output/cycle-03-ridge/autosave-primary.json",
+        "sha256": "f85e5ede78f8cbc61122e5d819178ba29e85c79bfb2fc1c8f071e23bd82a91a5",
+        "bytes": 275728
+      },
+      {
+        "path": "output/cycle-03-ridge/campaign-validation.json",
+        "sha256": "59d823b072439edd515cf10babd61993ef1ef6f2036c7b8bb167cc39648102a5",
+        "bytes": 68742
+      },
+      {
+        "path": "output/cycle-03-ridge/checkpoint-save.json",
+        "sha256": "a14189fd04dcebbc3989dc3fc13ff1d4589b64d93eae68cdf115b454b8b16276",
+        "bytes": 151789
+      },
+      {
+        "path": "output/cycle-03-ridge/completed_powered_exit.png",
+        "sha256": "8f7c538d0fc6ea78a1653884be356b9c52efd87ae3de323afc709d70251fd74d",
+        "bytes": 493328
+      },
+      {
+        "path": "output/cycle-03-ridge/final-campaign-state.json",
+        "sha256": "079b309c0127c223765b4fc666a53a3c2af2243d908a0db704ea9892da854a6a",
+        "bytes": 698094
+      },
+      {
+        "path": "output/cycle-03-ridge/middle_infrastructure.png",
+        "sha256": "734dc891110070253622bfa746b840dacc263b17d486255d30c2022eb300b801",
+        "bytes": 626222
+      },
+      {
+        "path": "output/cycle-03-ridge/opening.png",
+        "sha256": "58ecac798b4ab93bdc711c4e9550d89601262c439c5637afa76457716c316c92",
+        "bytes": 572887
+      },
+      {
+        "path": "output/cycle-03-ridge/restart-autosave.json",
+        "sha256": "b6703b1a3e96ebab556a9c1b5eb3290772517655e8bf39e2221aa8e48465d32c",
+        "bytes": 37815
+      },
+      {
+        "path": "output/cycle-03-ridge/victory.png",
+        "sha256": "37525cf2ff508e85e0ad96efcf84f8ffb14f9e32bd22c7927ac5045dd9747120",
+        "bytes": 334969
+      },
+      {
+        "path": "output/cycle-03-ridge/withdrawal_after_disk_load.png",
+        "sha256": "0acd0f17bf8fdef2e01e01c66b8ec8f302505eb84ad32bcf58514ed4bcea122c",
+        "bytes": 731575
+      },
+      {
+        "path": "output/cycle-04-canyon/autosave-backup.json",
+        "sha256": "580dca81611beec040079a3b6cfd60c26bb458e1fb7177d5a476cfc18bca6fb2",
+        "bytes": 211131
+      },
+      {
+        "path": "output/cycle-04-canyon/autosave-primary.json",
+        "sha256": "4803f2ff72073a60510c185b0b95a3b4f69dd3c0f67ecc9210f6a4121e07a7b9",
+        "bytes": 193606
+      },
+      {
+        "path": "output/cycle-04-canyon/campaign-validation.json",
+        "sha256": "c8afb2d016ba8bd6fc32dc7bb699a9e9948ff7d4bea606c09a44b4ebc472fe6f",
+        "bytes": 68196
+      },
+      {
+        "path": "output/cycle-04-canyon/checkpoint-save.json",
+        "sha256": "7d1a9c0b76716dce01ad334a55482702a11680662231b4acf6e1ac16e084adb2",
+        "bytes": 119550
+      },
+      {
+        "path": "output/cycle-04-canyon/completed_powered_exit.png",
+        "sha256": "6ab7725d862ca2a4c67252254249d25d3ea6d189c5330eb7f446b7c7dee8f175",
+        "bytes": 509391
+      },
+      {
+        "path": "output/cycle-04-canyon/final-campaign-state.json",
+        "sha256": "1489412e0e7d86627e348cc509f5176a2ac021b1351118305fd09f62d946d25c",
+        "bytes": 508206
+      },
+      {
+        "path": "output/cycle-04-canyon/middle_infrastructure.png",
+        "sha256": "1e5a11cf73eb247942c3ab16a33d23639e145e2e6e1ba92ba6b95ce544f48521",
+        "bytes": 617137
+      },
+      {
+        "path": "output/cycle-04-canyon/opening.png",
+        "sha256": "af336557378ac08be260aea5d750194ed0c10b1fb16ef950f2d610f81cce1456",
+        "bytes": 577059
+      },
+      {
+        "path": "output/cycle-04-canyon/restart-autosave.json",
+        "sha256": "bf413c79c81b1e67fd215ad6cb5003c44fec80196ee23525ccad8bac9b8c8e6f",
+        "bytes": 37731
+      },
+      {
+        "path": "output/cycle-04-canyon/victory.png",
+        "sha256": "5240f8b3957127835234e15061afea19bdc83e76bf26be76f5fadfead293fce9",
+        "bytes": 341452
+      },
+      {
+        "path": "output/cycle-04-canyon/withdrawal_after_disk_load.png",
+        "sha256": "1c549ae4059ff40b378f909f70fccdc3264b4ef278674d9463b23b6c715e18e2",
+        "bytes": 778254
+      },
+      {
+        "path": "output/cycle-05-delta/autosave-backup.json",
+        "sha256": "b94c89322a3935e3010c30f5e882419dcde0d6eb85222bdc64b79b129c3de51c",
+        "bytes": 250233
+      },
+      {
+        "path": "output/cycle-05-delta/autosave-primary.json",
+        "sha256": "a9ddbe79d4fe555a008ca25ffc2c30921012b72c7e126c53c470a08e60564c40",
+        "bytes": 232958
+      },
+      {
+        "path": "output/cycle-05-delta/campaign-validation.json",
+        "sha256": "36352b82c9b5ab57b027bb0a4f5c5677a25a14cd9c9cd24c00d4c89d758c8154",
+        "bytes": 68261
+      },
+      {
+        "path": "output/cycle-05-delta/checkpoint-save.json",
+        "sha256": "2f073f2074b631730120d50083f97ceb6a5f1c43edc69846ca48497214a9cbf3",
+        "bytes": 132762
+      },
+      {
+        "path": "output/cycle-05-delta/completed_powered_exit.png",
+        "sha256": "f8a740a7cd701b556fee9c0d864e406babaff1fff7f91e68dab1635da07fa44a",
+        "bytes": 517846
+      },
+      {
+        "path": "output/cycle-05-delta/final-campaign-state.json",
+        "sha256": "096a773fb6483a7f599d06294ba635d4221c3dd53007a0cb5e6dc8b734d33c97",
+        "bytes": 601030
+      },
+      {
+        "path": "output/cycle-05-delta/middle_infrastructure.png",
+        "sha256": "6aa7075b92e6cdd83d048898bdfe53dd6cb4f0365c0c3809aa39b96ad22e2493",
+        "bytes": 611701
+      },
+      {
+        "path": "output/cycle-05-delta/opening.png",
+        "sha256": "35eb05fe58b33e08518b7a274fc4d1bdfc68500d9d6c2017fa8092bf0603c3c3",
+        "bytes": 571885
+      },
+      {
+        "path": "output/cycle-05-delta/restart-autosave.json",
+        "sha256": "3b7eef180b4187d0b604e5ffd3996ba20ed2a92bc90fa98d3b2cb1f2caf2f07c",
+        "bytes": 37861
+      },
+      {
+        "path": "output/cycle-05-delta/victory.png",
+        "sha256": "b3075449afc765c561a8e3b06437a93323c6d50d1d1ba1c43113befdd60b76c0",
+        "bytes": 342519
+      },
+      {
+        "path": "output/cycle-05-delta/withdrawal_after_disk_load.png",
+        "sha256": "582a97030f55352d0fef7aa2f2078748c1721de98b00f44447eacd00c4ecc249",
+        "bytes": 778829
+      },
+      {
+        "path": "output/cycle-06-ridge/autosave-backup.json",
+        "sha256": "597e7d34fb888abca98bd27edc0e09a35ff4f7e52636c612bd3e14221c876328",
+        "bytes": 294870
+      },
+      {
+        "path": "output/cycle-06-ridge/autosave-primary.json",
+        "sha256": "11bc9ea9beea3448cb03b1382a20d27e8574714bf08a18523c291a428ac0cc47",
+        "bytes": 282109
+      },
+      {
+        "path": "output/cycle-06-ridge/campaign-validation.json",
+        "sha256": "46f28b104959dc38b7a3231a03d508e949f7f08387cf254bc5136da89d89688a",
+        "bytes": 69080
+      },
+      {
+        "path": "output/cycle-06-ridge/checkpoint-save.json",
+        "sha256": "0065f5b5369123d690c109a2af40d57f5d65400df189d1534de8424f2fb36067",
+        "bytes": 151995
+      },
+      {
+        "path": "output/cycle-06-ridge/completed_powered_exit.png",
+        "sha256": "a21b1b91b425c3b19fdac7206f31cfb9b4f0b9d7655370ff5023128b3b159581",
+        "bytes": 492706
+      },
+      {
+        "path": "output/cycle-06-ridge/final-campaign-state.json",
+        "sha256": "07839f3b90c6288132463bf1b99cda02ff77a3cad04c441ef38ea12aad306c95",
+        "bytes": 698526
+      },
+      {
+        "path": "output/cycle-06-ridge/middle_infrastructure.png",
+        "sha256": "e349fba9265fedf7114a63e733f2d82f1d0f0d196a74de5b29b31b3c17821a8c",
+        "bytes": 626214
+      },
+      {
+        "path": "output/cycle-06-ridge/opening.png",
+        "sha256": "e6b637fb4f0924aa1b810b6b2e838bbb569277ebc71c5c512b60c3276b336915",
+        "bytes": 572901
+      },
+      {
+        "path": "output/cycle-06-ridge/restart-autosave.json",
+        "sha256": "b6703b1a3e96ebab556a9c1b5eb3290772517655e8bf39e2221aa8e48465d32c",
+        "bytes": 37815
+      },
+      {
+        "path": "output/cycle-06-ridge/victory.png",
+        "sha256": "3cc0b58600b7680b83902a523d0d68f59a39b71aaf0024ee3c463e503c386e88",
+        "bytes": 334633
+      },
+      {
+        "path": "output/cycle-06-ridge/withdrawal_after_disk_load.png",
+        "sha256": "2a6e812f6f2d26ee0c4246a8134388fab6f08a589ae6ba05262da3e3356909f6",
+        "bytes": 734344
+      },
+      {
+        "path": "output/cycle-07-canyon/autosave-backup.json",
+        "sha256": "98b5f1f03d5a3ad1cd69bed54ad160e42a9ea29b7c84ae1a46d48049f2465660",
+        "bytes": 210177
+      },
+      {
+        "path": "output/cycle-07-canyon/autosave-primary.json",
+        "sha256": "3e4d770e3f4f15c52ef8bea6258288f2626605a2140e480c0f04944b043d5d08",
+        "bytes": 167536
+      },
+      {
+        "path": "output/cycle-07-canyon/campaign-validation.json",
+        "sha256": "155dab6605d28c0935d7c671514b1464ec23c358e38e58d8186b1e78210827f5",
+        "bytes": 68220
+      },
+      {
+        "path": "output/cycle-07-canyon/checkpoint-save.json",
+        "sha256": "d8f0cf5fcaf0b0e614b40f987b32836f6ca60ad96f95c31c944058fc1e087b8a",
+        "bytes": 117754
+      },
+      {
+        "path": "output/cycle-07-canyon/completed_powered_exit.png",
+        "sha256": "cbc00a0593d01b6fc9fb86a4709c98e718923b77bc75f425d26a978c87b749e8",
+        "bytes": 509263
+      },
+      {
+        "path": "output/cycle-07-canyon/final-campaign-state.json",
+        "sha256": "7db8da176d8992f992c172dc1f885bf840a373106504b8a91866490921a3b9bd",
+        "bytes": 508650
+      },
+      {
+        "path": "output/cycle-07-canyon/middle_infrastructure.png",
+        "sha256": "684a31706509e3dd17716dd71cc60ff499fdb9595b2de72b2df2c1aef2488aaf",
+        "bytes": 617098
+      },
+      {
+        "path": "output/cycle-07-canyon/opening.png",
+        "sha256": "d0e292506f8ad526903f23cc7e863496ef9492f38af8b46950a076c36ddf882e",
+        "bytes": 577054
+      },
+      {
+        "path": "output/cycle-07-canyon/restart-autosave.json",
+        "sha256": "bf413c79c81b1e67fd215ad6cb5003c44fec80196ee23525ccad8bac9b8c8e6f",
+        "bytes": 37731
+      },
+      {
+        "path": "output/cycle-07-canyon/victory.png",
+        "sha256": "b23d7d195e45343364f1ddc9e4ff131e49ec2974c250b6e40dfc5cc76bd18011",
+        "bytes": 348344
+      },
+      {
+        "path": "output/cycle-07-canyon/withdrawal_after_disk_load.png",
+        "sha256": "a87fffab89c16d0e516103700af4b278dafdd352db8a6e70851e62e6cc00545e",
+        "bytes": 770668
+      },
+      {
+        "path": "output/final-campaign-state.json",
+        "sha256": "7db8da176d8992f992c172dc1f885bf840a373106504b8a91866490921a3b9bd",
+        "bytes": 508650
+      },
+      {
+        "path": "post-terminal-process-observations.json",
+        "sha256": "1a6ee2b76577157a4a01e8d1b68b1578ed5650006aaa318727de5def0ebd26f0",
+        "bytes": 321
+      },
+      {
+        "path": "rendered-benchmark.json",
+        "sha256": "7b08ebcf58145d5db95b9bfec43eede30c685c8def9f63a7d59efddedc1c94a5",
+        "bytes": 1066947
+      },
+      {
+        "path": "smoke/headless.log",
+        "sha256": "f2aca5a854bd3dff5888a0b08be135e678b6fa58359af830cc63c41ac6eab30c",
+        "bytes": 100
+      },
+      {
+        "path": "smoke/preview.png",
+        "sha256": "33a5d5aa97f1589408fad006817f85967d3d0a4976b99fd4f058258c02f9c27d",
+        "bytes": 384037
+      },
+      {
+        "path": "smoke/rendered.log",
+        "sha256": "f4daee8ccdf4c166bd4423468114327dd782d52e6c79d01e531048df097155ca",
+        "bytes": 286
+      },
+      {
+        "path": "smoke-result.json",
+        "sha256": "b1a3b90d4e4d84cdf7112ff8de76cce5c7e9ea3298da93d1fd032f51a8e50a0a",
+        "bytes": 4388
+      },
+      {
+        "path": "verification.json",
+        "sha256": "68af3c8e877d9cd497ac25721e5e677fea8c7fbe16d4967dfd9d12a6837a11b2",
+        "bytes": 51809
+      },
+      {
+        "path": "windows-pe-resources.json",
+        "sha256": "6e62ab534668634f56c37916a420862cc46155667e235782a1f013cdb778dcbf",
+        "bytes": 5046
+      }
+    ],
+    "native_output_byte_identical": true
+  },
+  "steam_gallery": {
+    "path": "outpost-exodus-0.9.0-dev-steam-gallery",
+    "provenance_sha256": "108305a86fc7b1f0d3e3b0105dd2a1040593664f407745cd18bb87ce938d3e16",
+    "images": [
+      {
+        "path": "01-canyon-middle_infrastructure.png",
+        "sha256": "d5ef50d2e3959d41a8693f82aef7e8d020b21c894567abb3c5bd002cc4551e7c",
+        "bytes": 616964,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-01-canyon/middle_infrastructure.png",
+        "source_cycle": 1,
+        "mission_id": "canyon",
+        "route_capture_label": "middle_infrastructure",
+        "simulation_time": 325.20000000003967,
+        "display": {
+          "client_size": [
+            1920,
+            1080
+          ],
+          "ready": true,
+          "requested_client_size": [
+            1920,
+            1080
+          ],
+          "requested_ui_scale": 1.0,
+          "texture_reported_size": [
+            2304,
+            1296
+          ],
+          "ui_scale": 1.0,
+          "viewport_pixel_size": [
+            1920,
+            1080
+          ],
+          "viewport_pixel_size_source": "viewport_texture_get_image",
+          "viewport_visible_size": [
+            1600,
+            900
+          ],
+          "window_content_scale_factor": 1.0,
+          "windowed": true
+        },
+        "source_report_sha256": "428e70561940ec3377d3146e3d5ce47345c8f37a468744ca7218c1e62976ef1b",
+        "transformation": "None: byte-identical PNG copy from actual accepted native gameplay route"
+      },
+      {
+        "path": "02-canyon-withdrawal_after_disk_load.png",
+        "sha256": "b768ee18fcd9a8cb43c047a2170275e2f851ece88ded9789a962ebffdc6efde8",
+        "bytes": 772083,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-01-canyon/withdrawal_after_disk_load.png",
+        "source_cycle": 1,
+        "mission_id": "canyon",
+        "route_capture_label": "withdrawal_after_disk_load",
+        "simulation_time": 912.8999999997176,
+        "display": {
+          "client_size": [
+            1920,
+            1080
+          ],
+          "ready": true,
+          "requested_client_size": [
+            1920,
+            1080
+          ],
+          "requested_ui_scale": 1.0,
+          "texture_reported_size": [
+            2304,
+            1296
+          ],
+          "ui_scale": 1.0,
+          "viewport_pixel_size": [
+            1920,
+            1080
+          ],
+          "viewport_pixel_size_source": "viewport_texture_get_image",
+          "viewport_visible_size": [
+            1600,
+            900
+          ],
+          "window_content_scale_factor": 1.0,
+          "windowed": true
+        },
+        "source_report_sha256": "428e70561940ec3377d3146e3d5ce47345c8f37a468744ca7218c1e62976ef1b",
+        "transformation": "None: byte-identical PNG copy from actual accepted native gameplay route"
+      },
+      {
+        "path": "03-delta-middle_infrastructure.png",
+        "sha256": "a0784b907ab8971bed6f24ca77fd3fbff9830d5308ec5c4c95eabfe61036b7d1",
+        "bytes": 611287,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-02-delta/middle_infrastructure.png",
+        "source_cycle": 2,
+        "mission_id": "delta",
+        "route_capture_label": "middle_infrastructure",
+        "simulation_time": 328.8000000000405,
+        "display": {
+          "client_size": [
+            1920,
+            1080
+          ],
+          "ready": true,
+          "requested_client_size": [
+            1920,
+            1080
+          ],
+          "requested_ui_scale": 1.0,
+          "texture_reported_size": [
+            2304,
+            1296
+          ],
+          "ui_scale": 1.0,
+          "viewport_pixel_size": [
+            1920,
+            1080
+          ],
+          "viewport_pixel_size_source": "viewport_texture_get_image",
+          "viewport_visible_size": [
+            1600,
+            900
+          ],
+          "window_content_scale_factor": 1.0,
+          "windowed": true
+        },
+        "source_report_sha256": "9a786c9209559282ee81bab03bc47a21e16010a5fd0d9edd02bf8465f5f0e9dc",
+        "transformation": "None: byte-identical PNG copy from actual accepted native gameplay route"
+      },
+      {
+        "path": "04-delta-withdrawal_after_disk_load.png",
+        "sha256": "928d03e15fdb76c01fed2123bc1c5e07927bc6f889e0c521b6b528cf863e76bd",
+        "bytes": 762384,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-02-delta/withdrawal_after_disk_load.png",
+        "source_cycle": 2,
+        "mission_id": "delta",
+        "route_capture_label": "withdrawal_after_disk_load",
+        "simulation_time": 964.9499999996701,
+        "display": {
+          "client_size": [
+            1920,
+            1080
+          ],
+          "ready": true,
+          "requested_client_size": [
+            1920,
+            1080
+          ],
+          "requested_ui_scale": 1.0,
+          "texture_reported_size": [
+            2304,
+            1296
+          ],
+          "ui_scale": 1.0,
+          "viewport_pixel_size": [
+            1920,
+            1080
+          ],
+          "viewport_pixel_size_source": "viewport_texture_get_image",
+          "viewport_visible_size": [
+            1600,
+            900
+          ],
+          "window_content_scale_factor": 1.0,
+          "windowed": true
+        },
+        "source_report_sha256": "9a786c9209559282ee81bab03bc47a21e16010a5fd0d9edd02bf8465f5f0e9dc",
+        "transformation": "None: byte-identical PNG copy from actual accepted native gameplay route"
+      },
+      {
+        "path": "05-ridge-middle_infrastructure.png",
+        "sha256": "734dc891110070253622bfa746b840dacc263b17d486255d30c2022eb300b801",
+        "bytes": 626222,
+        "dimensions": [
+          1920,
+          1080
+        ],
+        "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-03-ridge/middle_infrastructure.png",
+        "source_cycle": 3,
+        "mission_id": "ridge",
+        "route_capture_label": "middle_infrastructure",
+        "simulation_time": 336.3500000000422,
+        "display": {
+          "client_size": [
+            1920,
+            1080
+          ],
+          "ready": true,
+          "requested_client_size": [
+            1920,
+            1080
+          ],
+          "requested_ui_scale": 1.0,
+          "texture_reported_size": [
+            2304,
+            1296
+          ],
+          "ui_scale": 1.0,
+          "viewport_pixel_size": [
+            1920,
+            1080
+          ],
+          "viewport_pixel_size_source": "viewport_texture_get_image",
+          "viewport_visible_size": [
+            1600,
+            900
+          ],
+          "window_content_scale_factor": 1.0,
+          "windowed": true
+        },
+        "source_report_sha256": "59d823b072439edd515cf10babd61993ef1ef6f2036c7b8bb167cc39648102a5",
+        "transformation": "None: byte-identical PNG copy from actual accepted native gameplay route"
+      }
+    ],
+    "submitted": false,
+    "manual_visual_store_and_rights_approval": false
+  },
+  "not_verified": [
+    "fresh-player usability or physical-mouse full playthrough",
+    "native Windows execution",
+    "clean-machine installation",
+    "minimum hardware, stable frame pacing or universal leak freedom",
+    "human audio listening/accessibility acceptance",
+    "asset rights approval and Steam account/store/depot/review"
+  ]
+}

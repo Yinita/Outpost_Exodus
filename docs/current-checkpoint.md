@@ -1,8 +1,30 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, **0.9.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
+Project: 逐营突围 / Outpost Exodus, **0.10.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
 
-## Current 0.9 work
+## Current 0.10 candidate work
+
+The original project now includes UI commit `a1ca04115c278589150a549c409f0aa94454efe1` and profiling integration `c0ca682aad4a868fbbce298ffaf73cb6379b0a89`. This candidate has not been exported or accepted through native complete routes, an elapsed hour, rendered FPS or minimum hardware. Accepted 0.9 evidence remains bound to the old payload.
+
+The UI change separates camp/packing, resource and guide labels with screen-sized, prioritized local placement. It changes annotation drawing, not actor coordinates or camera/input transforms. The guide card keeps its existing 2–6-line budget, then fits its visible text; a four-line large card is 192 logical pixels rather than 248. Available height comes from dock top minus guide top and a 12-pixel gap: 743 uses the compact entry, while 744 can fit the full 145-pixel minimum. Buttons and input masking follow the actual card; guide preferences and game commands remain.
+
+Merged `scripts/hud.gd` SHA `32e50bbebbe67393eeaa239977fb935c6f79f9883013226e509f9e04e8e7f8a4` and `scripts/world_view.gd` SHA `b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098` are byte-identical to the independently reviewed UI tree. External `../outpost-exodus-ui-polish-evidence/provenance.json` lists 28 retained files and observed clean process exits: baseline/candidate each have six paused source-rendered configurations (three resolution/scale settings × normal/strategic zoom), plus explicit 743/744 logical-height fixtures. UI 124 and macro 309 pass. These use a retained real Delta checkpoint in controlled source fixtures; assistant visual inspection is not a new exported full campaign, frame benchmark, human playtest or Steam screenshot set.
+
+The new bounded frame sampler prepares observations at actual rendered-frame endpoints and by campaign phase. It does not advance simulation or grant performance acceptance. External `../outpost-exodus-frame-profiling/work/frame-sampler-preflight-v01/result.json` retains clean headless import, sampler 107 synthetic/arithmetic checks and route configuration 103, with all five listed source hashes unchanged before/after at that recorded profiling stage. Later working-tree runner/version edits require their own final source binding. Its `native_rendered_frame_evidence=false` and `performance_acceptance=not_assessed` remain explicit. No actual 0.10 phase/frame data has been claimed from these source tests.
+
+At this merged source snapshot, 70 own-source files contain 23,723 physical/21,657 nonblank lines: gameplay 17/8,471; packaged diagnostics 4/2,015; GDScript tests 36/10,422; build/generation tools 7/1,817; other helpers 2/95; Python tests 4/903. New sampler/test UIDs are metadata, not source lines. Counts are bookkeeping, not playability or release evidence; final inventory/candidate binding is coordinated separately.
+
+## Accepted historical 0.9 native payload
+
+Tag `v0.9.0-dev` identifies `2f650205fc64cb3e1e3f45a04f29c9e9562d92ac`. The actual unpacked Linux package completed seven strict full campaigns in the same normal Main process, Canyon/Delta/Ridge/Canyon/Delta/Ridge/Canyon, over 3908.425177 actual seconds. Each retained actual loaded-withdrawal disk continuation, full simulation/RNG/UI/mission identity, normal clock, original paid economy, completed powered exit and real truck/survivor arrival. The native child return code is 0; the separately observed foreground collector also exits 0. The original detached launcher's own exit remains unobserved, rather than being invented as 0.
+
+The authoritative outer `../outpost-exodus-0.9.0-dev-release-evidence.json` and `../outpost-exodus-0.9.0-dev-collection-process.json` retain those boundaries, exact payload provenance and separate busy benchmarks: 59.690626/59.690171 mean FPS, 120 warmup/3,600 measured frames per zoom, maxima 70.936/90.374 ms. The hour is accepted technical evidence for 0.9; it does not establish 0.10 reliability, stable 60 FPS, minimum hardware, Windows, clean machines, human fun/listening or Steam readiness.
+
+## Previous 0.9 pre-export source snapshot
+
+The following records preserve the earlier candidate chronology. Statements that native/hour/FPS had not started refer to that pre-export snapshot. Later accepted 0.9 outer evidence above supplies its terminal verdict; the committed `docs/evidence/v0.9`, old ZIPs and tagged payload remain unchanged.
+
+
 
 Runtime, tests, tools and import are frozen for this pre-export source candidate. `CampReadout.status` observes local production, admitted training and actual packing stages; blocked admitted work takes priority over ordinary work, while missing/unfinished facilities and deliberate idle remain neutral setup/standby states. Cards retain actual inventory/power and show non-color symbols plus wrapped details. During tactical pause, the underlying cause remains visible with paused/“待续” wording. The two existing rules queries only add optional `include_pause=true`; ordinary callers keep their behavior, and summaries pass false without toggling live pause or advancing queues/power.
 
@@ -129,7 +151,7 @@ The following records preserve the pre-export candidate chronology and rejected 
 
 ## Evidence
 
-See docs/evidence/v0.9 for the new candidate boundary, original pager baseline and unchanged accepted historical 0.8 records; docs/benchmarks/v0.9 prepares new-payload and long-run validation. Committed v0.8 and v0.7 evidence remain their original pre-export snapshots; later outer release records supply acceptance without rewriting history. Earlier 0.6.1 and 0.6 records retain their identities and scopes. Earlier0.5 functional and export-protocol records remain under their original version directories. See docs/evidence/v0.4 and docs/benchmarks/v0.4 for the preceding gameplay-feedback/performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Historical recorded suite counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
+Current 0.10 UI comparison and sampler preflight remain in the two external evidence directories named above. Accepted 0.9 outer release/collection records bind the tagged actual package. docs/evidence/v0.9 and docs/benchmarks/v0.9 retain their original pre-export source/protocol scope, including pager baselines and historical 0.8 records. Committed v0.8 and v0.7 evidence remain their original pre-export snapshots; later outer release records supply acceptance without rewriting history. Earlier 0.6.1 and 0.6 records retain their identities and scopes. Earlier0.5 functional and export-protocol records remain under their original version directories. See docs/evidence/v0.4 and docs/benchmarks/v0.4 for the preceding gameplay-feedback/performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Historical recorded suite counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
 
 ## Still required
 

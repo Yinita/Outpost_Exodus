@@ -1,0 +1,89 @@
+extends SceneTree
+## Private screenshot review of a real retained campaign checkpoint.
+## Not a full-campaign, performance, or human-playtest result.
+
+var app: Variant
+var checkpoint: String = ""
+var output_dir: String = "res://work/visual-polish"
+var captures: Array[Dictionary] = []
+var errors: Array[String] = []
+
+func _initialize() -> void:
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--checkpoint="): checkpoint = argument.trim_prefix("--checkpoint=")
+		if argument.begins_with("--output-dir="): output_dir = argument.trim_prefix("--output-dir=")
+	call_deferred("_run")
+
+func _run() -> void:
+	var isolation: String = ProjectSettings.globalize_path("res://work/visual-polish-data")
+	if DisplayServer.get_name() == "headless" or not OS.get_user_data_dir().begins_with(isolation + "/") or not FileAccess.file_exists(checkpoint):
+		printerr("VISUAL_REVIEW_REFUSED: native display, isolated data and retained checkpoint required")
+		quit(2)
+		return
+	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(output_dir)):
+		printerr("VISUAL_REVIEW_REFUSED: output directory must be fresh; retain earlier evidence")
+		quit(2)
+		return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
+	create_timer(60.0).timeout.connect(func() -> void:
+		printerr("VISUAL_REVIEW_DEADLINE: capture did not finish within 60 seconds")
+		quit(2))
+	AudioServer.set_bus_mute(0, true)
+	app = load("res://main.tscn").instantiate()
+	root.add_child(app)
+	await _frames(4)
+	app.set_process(false)
+	var copy_error: Error = DirAccess.copy_absolute(checkpoint, ProjectSettings.globalize_path(app.SAVE_PATH))
+	if copy_error != OK or not app.load_campaign():
+		printerr("VISUAL_REVIEW_REFUSED: checkpoint did not load through normal save path")
+		quit(2)
+		return
+	app.sim.paused = true
+	app.edge_scroll = false
+	app.feedback_left = 0.0
+	app.last_sim_message = ""
+	var truck: Dictionary = app.sim.get_unit(app.sim.main_truck_id)
+	app.camera.position = Vector2(truck.pos) * app.TILE
+	var before: String = JSON.stringify(app.sim.save_state(), "", true, true)
+	for physical: Vector2i in [Vector2i(1920,1080), Vector2i(1152,648), Vector2i(1280,720)]:
+		# The last case is an explicit logical-viewport boundary fixture, not a
+		# claim about the default production window's stretch configuration.
+		root.content_scale_size = physical if physical.x == 1280 else Vector2i(1600,900)
+		app.display_configured = true
+		app.fullscreen = false
+		app.window_resolution = physical
+		app.ui_scale = 1.2 if physical.x == 1152 else 1.0
+		app._apply_display_settings()
+		for zoom: float in [1.05, 0.35]:
+			app.camera.position = Vector2(truck.pos) * app.TILE
+			app.camera.zoom = Vector2.ONE * zoom
+			app.camera.force_update_scroll()
+			await _frames(6)
+			var picture: Image = root.get_texture().get_image()
+			var label: String = "%dx%d-scale%.1f-zoom%.2f" % [physical.x,physical.y,app.ui_scale,zoom]
+			var path: String = output_dir.path_join(label + ".png")
+			if picture == null or picture.is_empty() or picture.save_png(path) != OK:
+				errors.append("Missing actual image: " + label)
+				continue
+			captures.append({"label":label,"path":ProjectSettings.globalize_path(path),"sha256":FileAccess.get_sha256(path),"pixels":[picture.get_width(),picture.get_height()],"logical_viewport":str(app.get_viewport_rect().size),"logical_boundary_fixture":physical.x == 1280,"ui_scale":app.ui_scale,"zoom":zoom,"camera":[app.camera.position.x,app.camera.position.y]})
+	if before != JSON.stringify(app.sim.save_state(), "", true, true): errors.append("Paused review changed simulation or RNG")
+	var record: Dictionary = {"scope":"Private source-rendered review of retained checkpoint; not native export/hour/human acceptance", "checkpoint":checkpoint, "checkpoint_sha256":FileAccess.get_sha256(checkpoint), "mission":app.sim.mission_id, "simulation_time":app.sim.time, "captures":captures, "errors":errors,"sources":{}}
+	for path: String in ["res://scripts/hud.gd", "res://scripts/world_view.gd", "res://scripts/campaign_simulation.gd"]: record.sources[path] = FileAccess.get_sha256(path)
+	var file: FileAccess = FileAccess.open(output_dir.path_join("review.json"), FileAccess.WRITE)
+	file.store_string(JSON.stringify(record,"\t",true,true))
+	file.close()
+	print("VISUAL_REVIEW ", JSON.stringify(record))
+	app._release_audio()
+	app.queue_free()
+	app = null
+	for frame: int in range(6): await process_frame
+	quit(0 if errors.is_empty() and captures.size() == 6 else 1)
+
+func _frames(count: int) -> void:
+	for frame: int in range(count):
+		if app != null:
+			app._process(0.0)
+			app.world.queue_redraw()
+			app.hud.queue_redraw()
+		await process_frame
+	await RenderingServer.frame_post_draw

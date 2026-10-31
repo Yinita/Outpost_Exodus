@@ -1,0 +1,7 @@
+{
+  "scripts/diagnostics/frame_sampler.gd": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+  "scripts/diagnostics/campaign_runner.gd": "973c28045df2253294d409e0406113a93e5965332ab8c77c9f5cf9436d5b0c1c",
+  "scripts/diagnostics/campaign_route.gd": "681196da1e1f8acc95c3b5031a38282b0c74d901641f410e523986e5370682ef",
+  "tests/test_frame_sampler.gd": "3d832d684bf4926ecbf98d7c316510770aeb099a99c50c4813c4ebe39329ae58",
+  "tests/test_native_route_config.gd": "28fcea8597a9d0fb09bf5f8d6631b2bf537dabf525d87d7ddd82e80f36eb155b"
+}

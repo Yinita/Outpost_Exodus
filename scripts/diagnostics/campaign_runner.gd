@@ -142,6 +142,8 @@ func _run() -> void:
 		printerr("CAMPAIGN_VALIDATION_REFUSED output directory cannot be created")
 		get_tree().quit(2)
 		return
+	# Ordinary route timing uses the same named render size as the soak.
+	if not _soak_mode: configure_soak_display()
 	_frame_sampler.start(_frame_context)
 	if _soak_mode:
 		await _run_soak(config)
@@ -178,7 +180,7 @@ func _new_cycle_report(config: Dictionary) -> Dictionary:
 		"time_scale": Engine.time_scale, "max_fps": Engine.max_fps, "user_data_dir": OS.get_user_data_dir(),
 		"rendering_method": RenderingServer.get_current_rendering_method(), "gpu_adapter": RenderingServer.get_video_adapter_name(),
 		"binaries_before": _binary_hashes(), "sources_before": _source_hashes(), "events": [], "captures": [], "save_reload": {"success": false},
-		"route": {"success": false, "not_run": true}, "scope": "Public-command automated selected campaign route through actual Main20Hz fixed simulation, renderer and file save/load. No direct simulation step/state injection; standard3x UI speed. Not physical-mouse, human-playability, Windows, clean-machine or FPS evidence."}
+		"route": {"success": false, "not_run": true}, "scope": "Public-command automated selected campaign route through actual Main20Hz fixed simulation, renderer and file save/load. No direct simulation step/state injection; standard3x UI speed. Includes observed frame-post-draw timing when available; not physical-mouse, human-playability, Windows, clean-machine, stable-FPS or minimum-hardware acceptance."}
 
 
 static func soak_missions(starting_mission: String) -> Array[String]:
@@ -262,6 +264,8 @@ func _frame_context() -> Dictionary:
 func _begin_campaign_observation() -> bool:
 	report["campaign_start"] = _live_mission_identity()
 	if not check(app.started and app.menu.is_empty() and app.sim.outcome == "playing" and is_zero_approx(float(app.sim.time)) and _mission_matches(report.campaign_start, true), "requested mission starts fresh with matching live, selected and saved identities"): return false
+	report["timing_display_start"] = soak_display_snapshot()
+	if not check(report.timing_display_start.ready, "campaign timing starts at actual1920x1080 rendered pixels and UI scale1"): return false
 	app.ui_action("speed")
 	app.ui_action("speed")
 	if not check(is_equal_approx(app.speed, 3.0), "normal speed controls select3x"): return false
@@ -633,6 +637,8 @@ func _seal_cycle() -> void:
 		var stability: Dictionary = _stability_snapshot(label)
 		report["stability_after"] = stability
 		_soak_report.stability_samples.append(stability)
+	report["timing_display_final"] = soak_display_snapshot()
+	check(report.timing_display_final.ready, "campaign timing finishes at actual1920x1080 rendered pixels and UI scale1")
 	report["rendered_frame_timing"] = _frame_sampler.end_cycle()
 	report["checks"] = checks - _cycle_checks_start
 	report["errors"] = failures.duplicate()

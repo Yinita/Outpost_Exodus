@@ -1,0 +1,11 @@
+{
+  "scope": "Root-observed headless editor import/compile only; no rendered route, native prepare/fullroute, frame timing or hour acceptance.",
+  "observed_by": "root tools.exec_command record supplied in task",
+  "observed_exit_code": 0,
+  "exec_chunk_id": "3324d2",
+  "wall_time_seconds": 1.756232735,
+  "log": "merged-import-scope-only-stage.txt",
+  "log_sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6",
+  "superseded_by_display_final": true,
+  "source_hash_at_earlier_invocation": "Not separately retained; scope-only predecessor, not exact current runner proof."
+}

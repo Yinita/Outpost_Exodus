@@ -1,0 +1,77 @@
+{
+  "scope": "Serial Godot4.7.2 headless editor import and synthetic arithmetic/source route-data tests only. No native window, GPU benchmark, actual rendered frame pacing, full route, hour or performance acceptance claim.",
+  "runs": [
+    {
+      "name": "editor_import",
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--editor",
+        "--path",
+        ".",
+        "--import"
+      ],
+      "observed_tool_exit_code": 0,
+      "checks": null,
+      "failures": null,
+      "log": "work/frame-sampler-preflight-v01/import.log",
+      "log_sha256": "7edac34e7956a6940cd4dc4d643078fbb95062bae0240c679a79f006364a9b9e",
+      "script_error_or_resource_leak_output": false
+    },
+    {
+      "name": "frame_sampler",
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        ".",
+        "--script",
+        "tests/test_frame_sampler.gd"
+      ],
+      "observed_tool_exit_code": 0,
+      "checks": 107,
+      "failures": 0,
+      "log": "work/frame-sampler-preflight-v01/frame-sampler.log",
+      "log_sha256": "803e8a2ce2ed4e7fc373bff8768c1eb23da4e5a086fb04e68715b334f085163b",
+      "script_error_or_resource_leak_output": false
+    },
+    {
+      "name": "native_route_config",
+      "argv": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        ".",
+        "--script",
+        "tests/test_native_route_config.gd"
+      ],
+      "observed_tool_exit_code": 0,
+      "checks": 103,
+      "failures": 0,
+      "log": "work/frame-sampler-preflight-v01/native-route-config.log",
+      "log_sha256": "c57b647ac39fe524612680eec1d0b280f3bbbdb111dfa4f39d93cb82fd92d123",
+      "script_error_or_resource_leak_output": false
+    }
+  ],
+  "source_before": {
+    "scripts/diagnostics/frame_sampler.gd": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+    "scripts/diagnostics/campaign_runner.gd": "973c28045df2253294d409e0406113a93e5965332ab8c77c9f5cf9436d5b0c1c",
+    "scripts/diagnostics/campaign_route.gd": "681196da1e1f8acc95c3b5031a38282b0c74d901641f410e523986e5370682ef",
+    "tests/test_frame_sampler.gd": "3d832d684bf4926ecbf98d7c316510770aeb099a99c50c4813c4ebe39329ae58",
+    "tests/test_native_route_config.gd": "28fcea8597a9d0fb09bf5f8d6631b2bf537dabf525d87d7ddd82e80f36eb155b"
+  },
+  "source_after": {
+    "scripts/diagnostics/frame_sampler.gd": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+    "scripts/diagnostics/campaign_runner.gd": "973c28045df2253294d409e0406113a93e5965332ab8c77c9f5cf9436d5b0c1c",
+    "scripts/diagnostics/campaign_route.gd": "681196da1e1f8acc95c3b5031a38282b0c74d901641f410e523986e5370682ef",
+    "tests/test_frame_sampler.gd": "3d832d684bf4926ecbf98d7c316510770aeb099a99c50c4813c4ebe39329ae58",
+    "tests/test_native_route_config.gd": "28fcea8597a9d0fb09bf5f8d6631b2bf537dabf525d87d7ddd82e80f36eb155b"
+  },
+  "source_unchanged": true,
+  "import_generated_uid_files": {
+    "scripts/diagnostics/frame_sampler.gd.uid": "01d8f73b552cb4f57da99215978e93689f97cddb33f5a8f35c5e606fe006368a",
+    "tests/test_frame_sampler.gd.uid": "eee4bf9803c28c253b7ec4576ba2d6c0ab613d420e6509699d75cb5cda44db02"
+  },
+  "native_rendered_frame_evidence": false,
+  "performance_acceptance": "not_assessed"
+}

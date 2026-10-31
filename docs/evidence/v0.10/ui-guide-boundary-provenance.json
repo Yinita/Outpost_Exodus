@@ -1,0 +1,49 @@
+{
+	"captures": [
+		{
+			"camera": [
+				1296.69287109375,
+				576.6746215820313
+			],
+			"label": "1280x743-scale1.0-zoom1.05",
+			"logical_boundary_fixture": true,
+			"logical_viewport": "(1280.0, 743.0)",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/guide-boundary-01/1280x743-scale1.0-zoom1.05.png",
+			"pixels": [
+				1280,
+				743
+			],
+			"sha256": "27ba476d7c0dbe5f645746001db1bd3f0e7abb56d477d7c50d1cba791b9f6d31",
+			"ui_scale": 1.0,
+			"zoom": 1.05
+		},
+		{
+			"camera": [
+				1296.69287109375,
+				576.6746215820313
+			],
+			"label": "1280x744-scale1.0-zoom1.05",
+			"logical_boundary_fixture": true,
+			"logical_viewport": "(1280.0, 744.0)",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish/work/visual-polish/guide-boundary-01/1280x744-scale1.0-zoom1.05.png",
+			"pixels": [
+				1280,
+				744
+			],
+			"sha256": "27680c0e4f0ebb617f493355bdb2ec6f2f2fb5e19193998b27976bc917118eee",
+			"ui_scale": 1.0,
+			"zoom": 1.05
+		}
+	],
+	"checkpoint": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v09-full/output/cycle-02-delta/checkpoint-save.json",
+	"checkpoint_sha256": "df5a5bac78e5ff56db96ff7b7298b7bdb7359cd1891b2db4220cce557346b7ea",
+	"errors": [],
+	"mission": "delta",
+	"scope": "Private source-rendered review of retained checkpoint; not native export/hour/human acceptance",
+	"simulation_time": 964.8999999996702,
+	"sources": {
+		"res://scripts/campaign_simulation.gd": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a",
+		"res://scripts/hud.gd": "32e50bbebbe67393eeaa239977fb935c6f79f9883013226e509f9e04e8e7f8a4",
+		"res://scripts/world_view.gd": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098"
+	}
+}

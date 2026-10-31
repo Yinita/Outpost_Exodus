@@ -1,0 +1,158 @@
+{
+  "status": "PREPARED_TEXT_ONLY_NOT_FINAL_CANDIDATE_FREEZE",
+  "scope": "Raw text/JSON copied without alteration; external PNGs checked in place, not added to source. Probe text copies are evidence, not gameplay source or fresh native acceptance.",
+  "copies": [
+    {
+      "retained_as": "ui-baseline-provenance.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/baseline/review.json",
+      "sha256": "24fe0242e15e69423de608c815220455c7a43c65aec8e0fa5500a79010ffdfc2",
+      "bytes": 3740
+    },
+    {
+      "retained_as": "ui-candidate-provenance.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/candidate/review.json",
+      "sha256": "c920bbe85a0ded8270487ed96732882e40f0cd96016bc39dc5c24e3df8bf06fd",
+      "bytes": 3806
+    },
+    {
+      "retained_as": "ui-guide-boundary-provenance.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/guide-boundary/review.json",
+      "sha256": "5e93eb207d6e4063c0eb70735bdd0792ec4519aae86d85cf0ed3ae1b3b9489a1",
+      "bytes": 1786
+    },
+    {
+      "retained_as": "ui-rendered.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/logs/ui-polish-ui-01.log",
+      "sha256": "a1003e99def445d3dd91330db1d8eea481c36a721e6658d919683f9b97ddf8ab",
+      "bytes": 370
+    },
+    {
+      "retained_as": "ui-macro-controls.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/logs/ui-polish-macro-01.log",
+      "sha256": "d712f8479be13dce3f511e43406bf55d666455555f08dc53d8d5777e40d6aae8",
+      "bytes": 1932
+    },
+    {
+      "retained_as": "ui-import.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/logs/visual-polish-import-01.log",
+      "sha256": "64580f7cafd642755bc1ffd2b68c4a7c39b5c1517e0145e8fc4e2ab0a556f152",
+      "bytes": 9544
+    },
+    {
+      "retained_as": "ui-baseline.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/logs/visual-polish-baseline-01.log",
+      "sha256": "82978ca98ffac8161f18bc9da2c46e4fa38d78c058c14adb6feaaaa15869a027",
+      "bytes": 3405
+    },
+    {
+      "retained_as": "ui-candidate.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/logs/visual-polish-candidate-01.log",
+      "sha256": "ee7e9ffaaeb5ba96cbb1d06f921b93468820e5f0c6fdea93a21ad41ca50c376d",
+      "bytes": 3471
+    },
+    {
+      "retained_as": "ui-guide-boundary.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/logs/guide-boundary-01.log",
+      "sha256": "89762d1adba3e831f8cfc88e777e469970ac0e9096114f89ccf3d47d0b65393d",
+      "bytes": 1771
+    },
+    {
+      "retained_as": "ui-baseline-probe.gd.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/baseline/visual_polish_probe.gd",
+      "sha256": "5148744f6cc0ff399323f02eac0de473b5421464123dc7835c8bbc82a0fdd3d4",
+      "bytes": 4710
+    },
+    {
+      "retained_as": "ui-candidate-probe.gd.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/candidate/visual_polish_probe.gd",
+      "sha256": "5148744f6cc0ff399323f02eac0de473b5421464123dc7835c8bbc82a0fdd3d4",
+      "bytes": 4710
+    },
+    {
+      "retained_as": "ui-boundary-probe.gd.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/guide-boundary/guide_boundary_probe.gd",
+      "sha256": "d178ef827e87f3ecee7bf3d0109ef85d79b62006f0d367f282dc2c6be072728f",
+      "bytes": 4679
+    },
+    {
+      "retained_as": "ui-external-provenance.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/provenance.json",
+      "sha256": "d4f19cdedb9114277f03bdcb7beb81bde1885d0a202924ae0e8a694d0f7ac38d",
+      "bytes": 10349
+    },
+    {
+      "retained_as": "sampler-preflight-result.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-frame-profiling/work/frame-sampler-preflight-v01/result.json",
+      "sha256": "807e621a1e136f559172ac1fd20965ecc56a153f80a572a25dc5c6dfb58f1bdb",
+      "bytes": 3460
+    },
+    {
+      "retained_as": "sampler-source-before-hashes.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-frame-profiling/work/frame-sampler-preflight-v01/source-before-hashes.json",
+      "sha256": "718a4861f9edcd595555a9b32c41a160ac7f4403c1bdb1bc906baf43acb15600",
+      "bytes": 544
+    },
+    {
+      "retained_as": "sampler-import.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-frame-profiling/work/frame-sampler-preflight-v01/import.log",
+      "sha256": "7edac34e7956a6940cd4dc4d643078fbb95062bae0240c679a79f006364a9b9e",
+      "bytes": 9892
+    },
+    {
+      "retained_as": "sampler-arithmetic.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-frame-profiling/work/frame-sampler-preflight-v01/frame-sampler.log",
+      "sha256": "803e8a2ce2ed4e7fc373bff8768c1eb23da4e5a086fb04e68715b334f085163b",
+      "bytes": 123
+    },
+    {
+      "retained_as": "sampler-route-config.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-frame-profiling/work/frame-sampler-preflight-v01/native-route-config.log",
+      "sha256": "c57b647ac39fe524612680eec1d0b280f3bbbdb111dfa4f39d93cb82fd92d123",
+      "bytes": 125
+    },
+    {
+      "retained_as": "merged-import-scope-only-stage.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-merged-import-final.log",
+      "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6",
+      "bytes": 1017
+    },
+    {
+      "retained_as": "merged-import-display-final.txt",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-merged-import-display.log",
+      "sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6",
+      "bytes": 1017
+    },
+    {
+      "retained_as": "historical-v09-release-evidence.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.9.0-dev-release-evidence.json",
+      "sha256": "e277da43ff24488ce58a6d07998790c0d98182d9031df7f1d80843b596b5140f",
+      "bytes": 153203
+    },
+    {
+      "retained_as": "historical-v09-collection-process.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.9.0-dev-collection-process.json",
+      "sha256": "a06a8fa1d0ad46b11112f2b6dd9b0c2d93ef841983fc314454148589e7393154",
+      "bytes": 551
+    },
+    {
+      "retained_as": "historical-v09-checksums.json",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.9.0-dev-checksums.json",
+      "sha256": "b8e8c2c262298aeb44cd41c897147c57f1f91c7bdf9495909d15c0e74c1dc9b4",
+      "bytes": 593
+    }
+  ],
+  "external_ui_provenance": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-ui-polish-evidence/provenance.json",
+    "sha256": "d4f19cdedb9114277f03bdcb7beb81bde1885d0a202924ae0e8a694d0f7ac38d",
+    "bytes": 10349
+  },
+  "external_pngs_verified": 14,
+  "external_pngs_added_to_source": 0,
+  "profiling_stage_source_snapshot_verified": true,
+  "profiling_non_runner_inputs_and_uids_match_current": true,
+  "profiling_runner_matches_current": false,
+  "profiling_runner_stage_sha256": "973c28045df2253294d409e0406113a93e5965332ab8c77c9f5cf9436d5b0c1c",
+  "current_runner_sha256": "42520760257189a95c3c239d843decc9303b8f5d55d79a7db4c05da29e5888f0",
+  "ui_candidate_source_match_current": true,
+  "historical_v09_acceptance_is_current_v010_acceptance": false
+}

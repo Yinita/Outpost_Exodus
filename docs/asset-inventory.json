@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "WORKTREE_INVENTORY_AND_DISCLOSURE_DRAFT_NOT_RIGHTS_OR_RELEASE_SIGNOFF",
   "snapshot": {
-    "recorded_utc": "2026-10-31T08:05:58.582526+00:00",
-    "base_commit": "d1c24ce113f276b785ffb90d54fd774716c4fee8",
+    "recorded_utc": "2026-10-31T10:01:27.572366+00:00",
+    "base_commit": "c0ca682aad4a868fbbce298ffaf73cb6379b0a89",
     "working_tree_dirty": true,
     "scope": "Current source asset bytes, retained production inputs and player-facing script categories. Hashes must be refreshed at source freeze, then checked against the actual final export."
   },
@@ -132,15 +132,15 @@
         {
           "path": "scripts/world_view.gd",
           "status": "PRESENT",
-          "bytes": 46430,
-          "sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda",
+          "bytes": 50828,
+          "sha256": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098",
           "role": "retained_source_or_generation_input"
         },
         {
           "path": "scripts/hud.gd",
           "status": "PRESENT",
-          "bytes": 55629,
-          "sha256": "98ac33cf983b128d2b487b81feac7cf96f4abd19a8b597a77c3df8165b015aee",
+          "bytes": 56028,
+          "sha256": "32e50bbebbe67393eeaa239977fb935c6f79f9883013226e509f9e04e8e7f8a4",
           "role": "retained_source_or_generation_input"
         }
       ],
@@ -496,8 +496,8 @@
         {
           "path": "project.godot",
           "status": "PRESENT",
-          "bytes": 983,
-          "sha256": "d35402b90560ef75585016e1e02992fc1016fe972462a53e36f72d15420fff3f",
+          "bytes": 984,
+          "sha256": "8df1712268aeed156c19c86cd9671f8ff6a150e04db826f7d0be1ab2b5d917a3",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -510,8 +510,8 @@
         {
           "path": "scripts/hud.gd",
           "status": "PRESENT",
-          "bytes": 55629,
-          "sha256": "98ac33cf983b128d2b487b81feac7cf96f4abd19a8b597a77c3df8165b015aee",
+          "bytes": 56028,
+          "sha256": "32e50bbebbe67393eeaa239977fb935c6f79f9883013226e509f9e04e8e7f8a4",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -649,8 +649,8 @@
   ],
   "pack_reference": {
     "last_frozen_linux_export_identity": {
-      "source_commit": "d1c24ce113f276b785ffb90d54fd774716c4fee8",
-      "pck_sha256": "ffe5339bfaca985e701a588e2456a53a4cd71327b97d74a49014eec145693d62",
+      "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+      "pck_sha256": "9faa6bf367e8d7a4e28791ac5329b6e9176fcb448d7245df0fe3d6a73289acaf",
       "status": "EXISTING_EXPORT_IDENTITY_NOT_NEW_WORKTREE_ACCEPTANCE"
     },
     "prior_directory_audit": {
@@ -776,15 +776,22 @@
       {
         "path": "scripts/diagnostics/campaign_route.gd",
         "status": "PRESENT",
-        "bytes": 21963,
-        "sha256": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+        "bytes": 22261,
+        "sha256": "681196da1e1f8acc95c3b5031a38282b0c74d901641f410e523986e5370682ef",
         "role": "retained_source_or_generation_input"
       },
       {
         "path": "scripts/diagnostics/campaign_runner.gd",
         "status": "PRESENT",
-        "bytes": 43753,
-        "sha256": "d429fb0c9028c238a8553317ffea107ae881f2051e121eba6f7b08989a569344",
+        "bytes": 46194,
+        "sha256": "42520760257189a95c3c239d843decc9303b8f5d55d79a7db4c05da29e5888f0",
+        "role": "retained_source_or_generation_input"
+      },
+      {
+        "path": "scripts/diagnostics/frame_sampler.gd",
+        "status": "PRESENT",
+        "bytes": 8041,
+        "sha256": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
         "role": "retained_source_or_generation_input"
       },
       {
@@ -804,8 +811,8 @@
       {
         "path": "scripts/hud.gd",
         "status": "PRESENT",
-        "bytes": 55629,
-        "sha256": "98ac33cf983b128d2b487b81feac7cf96f4abd19a8b597a77c3df8165b015aee",
+        "bytes": 56028,
+        "sha256": "32e50bbebbe67393eeaa239977fb935c6f79f9883013226e509f9e04e8e7f8a4",
         "role": "retained_source_or_generation_input"
       },
       {
@@ -839,8 +846,8 @@
       {
         "path": "scripts/world_view.gd",
         "status": "PRESENT",
-        "bytes": 46430,
-        "sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda",
+        "bytes": 50828,
+        "sha256": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098",
         "role": "retained_source_or_generation_input"
       }
     ],

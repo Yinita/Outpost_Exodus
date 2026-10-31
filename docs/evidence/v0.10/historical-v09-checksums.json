@@ -1,0 +1,18 @@
+{
+  "version": "0.9.0-dev",
+  "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+  "artifacts": {
+    "outpost-exodus-source-0.9.0-dev.zip": {
+      "sha256": "a09d4b3d0198b2fb01df0a3f097382c1b652ab085b712fe87f31fafc8c7c9aac",
+      "bytes": 21490138
+    },
+    "outpost-exodus-linux-0.9.0-dev.zip": {
+      "sha256": "831ad23c0a2b133cdab65dd72eb71dc0eb72832dbbae14032d52836e398a5188",
+      "bytes": 46972511
+    },
+    "outpost-exodus-windows-0.9.0-dev.zip": {
+      "sha256": "583040aa05d081f06c2d4b90d46919143b9f06a7c2c5498b97a84b251d926160",
+      "bytes": 56509130
+    }
+  }
+}

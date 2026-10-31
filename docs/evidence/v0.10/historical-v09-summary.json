@@ -1,0 +1,459 @@
+{
+  "status": "HISTORICAL_ACCEPTED_0_9_NOT_CURRENT_0_10_PAYLOAD",
+  "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
+  "native_wall_seconds": 3908.425177,
+  "launcher_observed_native_wall_seconds": 3910.379035138001,
+  "cycles_completed": 7,
+  "same_main_instance_id": "32195478883",
+  "process_id": 3630652,
+  "planned_missions": [
+    "canyon",
+    "delta",
+    "ridge",
+    "canyon",
+    "delta",
+    "ridge",
+    "canyon"
+  ],
+  "native_child_exit_code": 0,
+  "original_detached_launcher_exit_status": "NOT_INDEPENDENTLY_OBSERVED",
+  "foreground_collector_exit_code": 0,
+  "strict_revalidation": {
+    "cycles": [
+      {
+        "cycle_index": 1,
+        "mission_id": "canyon",
+        "errors": [],
+        "report_sha256": "428e70561940ec3377d3146e3d5ce47345c8f37a468744ca7218c1e62976ef1b",
+        "final_state_sha256": "dedd99526f4be6d30f5638b3e66c6bc950821158d1054b805f4c0d8e5614578a"
+      },
+      {
+        "cycle_index": 2,
+        "mission_id": "delta",
+        "errors": [],
+        "report_sha256": "9a786c9209559282ee81bab03bc47a21e16010a5fd0d9edd02bf8465f5f0e9dc",
+        "final_state_sha256": "d17ca36b601504e8395d10acd1cdf2031eb654cd929ed56102c3e0f7e0ba1a7a"
+      },
+      {
+        "cycle_index": 3,
+        "mission_id": "ridge",
+        "errors": [],
+        "report_sha256": "59d823b072439edd515cf10babd61993ef1ef6f2036c7b8bb167cc39648102a5",
+        "final_state_sha256": "079b309c0127c223765b4fc666a53a3c2af2243d908a0db704ea9892da854a6a"
+      },
+      {
+        "cycle_index": 4,
+        "mission_id": "canyon",
+        "errors": [],
+        "report_sha256": "c8afb2d016ba8bd6fc32dc7bb699a9e9948ff7d4bea606c09a44b4ebc472fe6f",
+        "final_state_sha256": "1489412e0e7d86627e348cc509f5176a2ac021b1351118305fd09f62d946d25c"
+      },
+      {
+        "cycle_index": 5,
+        "mission_id": "delta",
+        "errors": [],
+        "report_sha256": "36352b82c9b5ab57b027bb0a4f5c5677a25a14cd9c9cd24c00d4c89d758c8154",
+        "final_state_sha256": "096a773fb6483a7f599d06294ba635d4221c3dd53007a0cb5e6dc8b734d33c97"
+      },
+      {
+        "cycle_index": 6,
+        "mission_id": "ridge",
+        "errors": [],
+        "report_sha256": "46f28b104959dc38b7a3231a03d508e949f7f08387cf254bc5136da89d89688a",
+        "final_state_sha256": "07839f3b90c6288132463bf1b99cda02ff77a3cad04c441ef38ea12aad306c95"
+      },
+      {
+        "cycle_index": 7,
+        "mission_id": "canyon",
+        "errors": [],
+        "report_sha256": "155dab6605d28c0935d7c671514b1464ec23c358e38e58d8186b1e78210827f5",
+        "final_state_sha256": "7db8da176d8992f992c172dc1f885bf840a373106504b8a91866490921a3b9bd"
+      }
+    ],
+    "minimum_wall_seconds": 3600,
+    "metric_scope": "Observed named post-warmup samples; no universal leak-free or hardware guarantee",
+    "stability_comparison": {
+      "baseline": "post_warmup_cycle_01_victory",
+      "final": "post_warmup_cycle_07_victory",
+      "rss_delta_bytes": 18472960,
+      "high_water_delta_bytes": 18472960,
+      "tree_node_delta": 0,
+      "interpretation": "RSS/high-water observations have no arbitrary broad pass threshold and do not prove universal leak freedom."
+    }
+  },
+  "each_cycle": [
+    {
+      "cycle_index": 1,
+      "mission_id": "canyon",
+      "main_loop": {
+        "end_main_tick_count": 31797,
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 25868,
+        "observed_sim_seconds": 1589.849999999102,
+        "observed_ticks": 31797,
+        "raw_main_ticks": 31797,
+        "start_main_tick_count": 0,
+        "terminal_noop_ticks": 0
+      },
+      "final": {
+        "evacuated": 6,
+        "exit_powered": true,
+        "exit_progress": 1.0,
+        "mission_id": "canyon",
+        "mission_tag": "rift_escape_01",
+        "outcome": "victory",
+        "selected_mission_id": "canyon",
+        "summary": {
+          "crude": 177.76749999993686,
+          "evacuated": 6,
+          "exit_progress": 1.0,
+          "fuel": 17.494800000011494,
+          "materials": 106.56000000003985,
+          "outcome": "victory",
+          "people": 7,
+          "phase": "evacuation",
+          "power": 14.0,
+          "power_capacity": 24.0,
+          "pursuit_eta": 419.86428571385676,
+          "salvage": 39.44000000002394,
+          "supplies": 20.202500000005642,
+          "time": 1589.849999999102,
+          "zombies": 100
+        },
+        "truck_distance": 4.97404670715332,
+        "truck_state": "evacuated"
+      },
+      "wall_seconds": 530.837748,
+      "save_reload_success": true
+    },
+    {
+      "cycle_index": 2,
+      "mission_id": "delta",
+      "main_loop": {
+        "end_main_tick_count": 65134,
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 22160,
+        "observed_sim_seconds": 1666.8499999990318,
+        "observed_ticks": 33337,
+        "raw_main_ticks": 33337,
+        "start_main_tick_count": 31797,
+        "terminal_noop_ticks": 0
+      },
+      "final": {
+        "evacuated": 5,
+        "exit_powered": true,
+        "exit_progress": 1.0,
+        "mission_id": "delta",
+        "mission_tag": "wetland_escape_02",
+        "outcome": "victory",
+        "selected_mission_id": "delta",
+        "summary": {
+          "crude": 136.86999999995462,
+          "evacuated": 5,
+          "exit_progress": 1.0,
+          "fuel": 21.70955000001264,
+          "materials": 146.44000000005911,
+          "outcome": "victory",
+          "people": 7,
+          "phase": "evacuation",
+          "power": 14.0,
+          "power_capacity": 24.0,
+          "pursuit_eta": 658.2166666666209,
+          "salvage": 144.55999999998673,
+          "supplies": 34.4175000000014,
+          "time": 1666.8499999990318,
+          "zombies": 100
+        },
+        "truck_distance": 4.993866920471191,
+        "truck_state": "evacuated"
+      },
+      "wall_seconds": 561.899667,
+      "save_reload_success": true
+    },
+    {
+      "cycle_index": 3,
+      "mission_id": "ridge",
+      "main_loop": {
+        "end_main_tick_count": 100590,
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 25292,
+        "observed_sim_seconds": 1772.7999999989354,
+        "observed_ticks": 35456,
+        "raw_main_ticks": 35456,
+        "start_main_tick_count": 65134,
+        "terminal_noop_ticks": 0
+      },
+      "final": {
+        "evacuated": 6,
+        "exit_powered": true,
+        "exit_progress": 1.0,
+        "mission_id": "ridge",
+        "mission_tag": "ridge_escape_03",
+        "outcome": "victory",
+        "selected_mission_id": "ridge",
+        "summary": {
+          "crude": 50.902499999986574,
+          "evacuated": 6,
+          "exit_progress": 1.0,
+          "fuel": 21.661100000012652,
+          "materials": 139.00000000000887,
+          "outcome": "victory",
+          "people": 6,
+          "phase": "evacuation",
+          "power": 14.0,
+          "power_capacity": 24.0,
+          "pursuit_eta": 486.62580645081687,
+          "salvage": 194.000000000005,
+          "supplies": 40.985000000001634,
+          "time": 1772.7999999989354,
+          "zombies": 100
+        },
+        "truck_distance": 4.9967193603515625,
+        "truck_state": "evacuated"
+      },
+      "wall_seconds": 592.242497,
+      "save_reload_success": true
+    },
+    {
+      "cycle_index": 4,
+      "mission_id": "canyon",
+      "main_loop": {
+        "end_main_tick_count": 132388,
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 25656,
+        "observed_sim_seconds": 1589.899999999102,
+        "observed_ticks": 31798,
+        "raw_main_ticks": 31798,
+        "start_main_tick_count": 100590,
+        "terminal_noop_ticks": 0
+      },
+      "final": {
+        "evacuated": 6,
+        "exit_powered": true,
+        "exit_progress": 1.0,
+        "mission_id": "canyon",
+        "mission_tag": "rift_escape_01",
+        "outcome": "victory",
+        "selected_mission_id": "canyon",
+        "summary": {
+          "crude": 177.79999999993845,
+          "evacuated": 6,
+          "exit_progress": 1.0,
+          "fuel": 17.464800000011493,
+          "materials": 105.88000000003854,
+          "outcome": "victory",
+          "people": 7,
+          "phase": "evacuation",
+          "power": 14.0,
+          "power_capacity": 24.0,
+          "pursuit_eta": 424.06428571385976,
+          "salvage": 40.12000000002365,
+          "supplies": 20.202500000005642,
+          "time": 1589.899999999102,
+          "zombies": 100
+        },
+        "truck_distance": 4.97404670715332,
+        "truck_state": "evacuated"
+      },
+      "wall_seconds": 530.859522,
+      "save_reload_success": true
+    },
+    {
+      "cycle_index": 5,
+      "mission_id": "delta",
+      "main_loop": {
+        "end_main_tick_count": 165716,
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 22203,
+        "observed_sim_seconds": 1666.3499999990322,
+        "observed_ticks": 33327,
+        "raw_main_ticks": 33328,
+        "start_main_tick_count": 132388,
+        "terminal_noop_ticks": 1
+      },
+      "final": {
+        "evacuated": 5,
+        "exit_powered": true,
+        "exit_progress": 1.0,
+        "mission_id": "delta",
+        "mission_tag": "wetland_escape_02",
+        "outcome": "victory",
+        "selected_mission_id": "delta",
+        "summary": {
+          "crude": 120.96749999995285,
+          "evacuated": 5,
+          "exit_progress": 1.0,
+          "fuel": 21.59010000001264,
+          "materials": 146.7600000000595,
+          "outcome": "victory",
+          "people": 7,
+          "phase": "evacuation",
+          "power": 14.0,
+          "power_capacity": 24.0,
+          "pursuit_eta": 655.0166666666207,
+          "salvage": 144.2399999999881,
+          "supplies": 34.58250000000142,
+          "time": 1666.3499999990322,
+          "zombies": 100
+        },
+        "truck_distance": 4.962121486663818,
+        "truck_state": "evacuated"
+      },
+      "wall_seconds": 563.619468,
+      "save_reload_success": true
+    },
+    {
+      "cycle_index": 6,
+      "mission_id": "ridge",
+      "main_loop": {
+        "end_main_tick_count": 201305,
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 25245,
+        "observed_sim_seconds": 1779.4499999989293,
+        "observed_ticks": 35589,
+        "raw_main_ticks": 35589,
+        "start_main_tick_count": 165716,
+        "terminal_noop_ticks": 0
+      },
+      "final": {
+        "evacuated": 6,
+        "exit_powered": true,
+        "exit_progress": 1.0,
+        "mission_id": "ridge",
+        "mission_tag": "ridge_escape_03",
+        "outcome": "victory",
+        "selected_mission_id": "ridge",
+        "summary": {
+          "crude": 122.83749999997127,
+          "evacuated": 6,
+          "exit_progress": 1.0,
+          "fuel": 21.700800000012677,
+          "materials": 139.00000000003047,
+          "outcome": "victory",
+          "people": 6,
+          "phase": "evacuation",
+          "power": 14.0,
+          "power_capacity": 24.0,
+          "pursuit_eta": 481.82580645081157,
+          "salvage": 189.99999999999872,
+          "supplies": 40.95750000000163,
+          "time": 1779.4499999989293,
+          "zombies": 100
+        },
+        "truck_distance": 4.9925384521484375,
+        "truck_state": "evacuated"
+      },
+      "wall_seconds": 594.383453,
+      "save_reload_success": true
+    },
+    {
+      "cycle_index": 7,
+      "mission_id": "canyon",
+      "main_loop": {
+        "end_main_tick_count": 233302,
+        "fixed_step_seconds": 0.05,
+        "invalid_time_steps": 0,
+        "observed_frames": 25968,
+        "observed_sim_seconds": 1599.849999999093,
+        "observed_ticks": 31997,
+        "raw_main_ticks": 31997,
+        "start_main_tick_count": 201305,
+        "terminal_noop_ticks": 0
+      },
+      "final": {
+        "evacuated": 6,
+        "exit_powered": true,
+        "exit_progress": 1.0,
+        "mission_id": "canyon",
+        "mission_tag": "rift_escape_01",
+        "outcome": "victory",
+        "selected_mission_id": "canyon",
+        "summary": {
+          "crude": 177.79999999993913,
+          "evacuated": 6,
+          "exit_progress": 1.0,
+          "fuel": 16.910300000012057,
+          "materials": 105.7600000000383,
+          "outcome": "victory",
+          "people": 7,
+          "phase": "evacuation",
+          "power": 14.0,
+          "power_capacity": 24.0,
+          "pursuit_eta": 414.11428571385267,
+          "salvage": 40.240000000023215,
+          "supplies": 18.950000000005595,
+          "time": 1599.849999999093,
+          "zombies": 100
+        },
+        "truck_distance": 4.946895599365234,
+        "truck_state": "evacuated"
+      },
+      "wall_seconds": 534.203607,
+      "save_reload_success": true
+    }
+  ],
+  "separate_busy_scene": {
+    "scope": "Separate actual native canonical busy-scene 3600-frame measurements; not measured during the campaign soak or proof of stable 60 FPS/minimum hardware.",
+    "zooms": [
+      {
+        "name": "normal",
+        "frame_ms": {
+          "intervals_over_16_667_ms": 1922,
+          "intervals_over_33_333_ms": 5,
+          "max": 70936.0,
+          "max_ms": 70.936,
+          "mean": 16753.0491666667,
+          "mean_ms": 16.7530491666667,
+          "nonzero_samples": 3600,
+          "observed_fps": 59.69062646755,
+          "p50": 16689.0,
+          "p50_ms": 16.689,
+          "p95": 22639.0,
+          "p95_ms": 22.639,
+          "p99": 29080.0,
+          "p99_ms": 29.08,
+          "samples": 3600
+        },
+        "measured_frames": 3600,
+        "warmup_frames": 120
+      },
+      {
+        "name": "strategic",
+        "frame_ms": {
+          "intervals_over_16_667_ms": 1945,
+          "intervals_over_33_333_ms": 8,
+          "max": 90374.0,
+          "max_ms": 90.374,
+          "mean": 16753.1769444444,
+          "mean_ms": 16.7531769444444,
+          "nonzero_samples": 3600,
+          "observed_fps": 59.69017120252,
+          "p50": 16700.0,
+          "p50_ms": 16.7,
+          "p95": 22804.0,
+          "p95_ms": 22.804,
+          "p99": 29345.0,
+          "p99_ms": 29.345,
+          "samples": 3600
+        },
+        "measured_frames": 3600,
+        "warmup_frames": 120
+      }
+    ]
+  },
+  "not_verified": [
+    "fresh-player usability or physical-mouse full playthrough",
+    "native Windows execution",
+    "clean-machine installation",
+    "minimum hardware, stable frame pacing or universal leak freedom",
+    "human audio listening/accessibility acceptance",
+    "asset rights approval and Steam account/store/depot/review"
+  ],
+  "scope": "Exact accepted0.9 EXE/PCK/commit only. New0.10 native export, full routes/hour and new phase-frame/FPS evidence remain pending. No Windows, fresh-player, minimum-hardware, rights or Steam approval is inferred."
+}

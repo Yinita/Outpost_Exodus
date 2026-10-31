@@ -1,0 +1,18 @@
+{
+  "scope": "Root-observed headless editor import/compile only; no rendered route, native prepare/fullroute, frame timing or hour acceptance.",
+  "observed_by": "root tools.exec_command record supplied in task",
+  "observed_exit_code": 0,
+  "exec_chunk_id": "babf54",
+  "wall_time_seconds": 1.747015272,
+  "log": "merged-import-display-final.txt",
+  "log_sha256": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6",
+  "superseded_by_display_final": false,
+  "source_hashes_observed_after_import": {
+    "project.godot": "8df1712268aeed156c19c86cd9671f8ff6a150e04db826f7d0be1ab2b5d917a3",
+    "scripts/diagnostics/campaign_runner.gd": "42520760257189a95c3c239d843decc9303b8f5d55d79a7db4c05da29e5888f0",
+    "scripts/diagnostics/frame_sampler.gd": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+    "scripts/diagnostics/campaign_route.gd": "681196da1e1f8acc95c3b5031a38282b0c74d901641f410e523986e5370682ef",
+    "tests/test_frame_sampler.gd": "3d832d684bf4926ecbf98d7c316510770aeb099a99c50c4813c4ebe39329ae58"
+  },
+  "current_runner_test_boundary": "The107/103 preflight retained973c runner before later scope/display-readiness changes; this import does not turn those tests into validation of the new runner."
+}
