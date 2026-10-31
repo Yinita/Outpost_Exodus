@@ -1,0 +1,66 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SOURCE_EVENT production_materials t=0.0
+SOURCE_EVENT opening t=0.0
+SOURCE_EVENT clear_highway t=0.0
+SOURCE_EVENT highway_captured t=39.9999999999999
+SOURCE_EVENT home_to_middle_road_ordered t=39.9999999999999
+SOURCE_EVENT home_to_middle_road_complete t=79.9999999999976
+SOURCE_EVENT middle_camp_ordered t=79.9999999999976
+SOURCE_EVENT middle_camp_complete t=124.999999999995
+SOURCE_EVENT actual_delivery t=151.05
+SOURCE_EVENT actual_delivery t=179.450000000007
+SOURCE_EVENT actual_delivery t=207.800000000013
+SOURCE_EVENT home_evacuated_and_west_sealed t=211.100000000014
+SOURCE_EVENT middle_local_road_ordered t=211.100000000014
+SOURCE_EVENT middle_local_road_complete t=241.100000000021
+SOURCE_EVENT middle_generator_ordered t=241.100000000021
+SOURCE_EVENT middle_generator_complete t=271.100000000027
+SOURCE_EVENT middle_workshop_ordered t=271.100000000027
+SOURCE_EVENT middle_workshop_complete t=306.100000000035
+SOURCE_EVENT middle_defense_ordered t=306.100000000035
+SOURCE_EVENT middle_defense_complete t=336.100000000042
+SOURCE_EVENT production_materials t=336.100000000042
+SOURCE_EVENT clear_materials_branch t=336.100000000042
+SOURCE_EVENT quarry_road_ordered t=386.100000000054
+SOURCE_EVENT quarry_road_complete t=456.100000000069
+SOURCE_EVENT clear_fuel_branch t=456.100000000069
+SOURCE_EVENT fuel_road_ordered t=506.100000000081
+SOURCE_EVENT fuel_road_complete t=576.100000000024
+SOURCE_EVENT both_resource_branches_connected t=676.099999999933
+SOURCE_EVENT clear_forward_cache t=676.099999999933
+SOURCE_EVENT forward_road_ordered t=736.099999999878
+SOURCE_EVENT forward_road_complete t=866.09999999976
+SOURCE_EVENT forward_camp_ordered t=866.09999999976
+SOURCE_EVENT forward_camp_complete t=966.099999999669
+SOURCE_EVENT loaded_middle_withdrawal t=997.099999999641
+SOURCE_EVENT actual_delivery t=1033.59999999961
+SOURCE_EVENT actual_delivery t=1111.39999999954
+SOURCE_EVENT actual_delivery t=1189.19999999947
+SOURCE_EVENT actual_delivery t=1266.9999999994
+SOURCE_EVENT middle_deliberately_abandoned t=1266.9999999994
+SOURCE_EVENT front_local_road_ordered t=1302.09999999936
+SOURCE_EVENT front_local_road_complete t=1327.09999999934
+SOURCE_EVENT front_generator_ordered t=1327.09999999934
+SOURCE_EVENT front_generator_complete t=1357.09999999931
+SOURCE_EVENT front_workshop_ordered t=1357.09999999931
+SOURCE_EVENT front_workshop_complete t=1397.09999999928
+SOURCE_EVENT production_fuel t=1397.09999999928
+SOURCE_EVENT production_supplies t=1417.09999999926
+SOURCE_EVENT production_idle t=1417.09999999926
+SOURCE_EVENT forward_exit_reserves t=1417.09999999926
+SOURCE_EVENT clear_exit_approach t=1417.09999999926
+SOURCE_EVENT exit_power_road_ordered t=1482.0999999992
+SOURCE_EVENT exit_power_road_complete t=1572.09999999912
+SOURCE_EVENT exit_local_generator_ordered t=1572.09999999912
+SOURCE_EVENT exit_local_generator_complete t=1617.09999999908
+SOURCE_EVENT capture_exit_site t=1617.09999999908
+SOURCE_EVENT exit_construction_road_ordered t=1652.09999999905
+SOURCE_EVENT exit_construction_road_complete t=1712.09999999899
+SOURCE_EVENT exit_funded_and_complete t=1764.99999999894
+SOURCE_EVENT actual_victory t=1779.04999999893
+SOURCE_ROUTE_FAILURE tested runtime sources unchanged during run t=1779.04999999893
+SOURCE_ROUTE_RESULT ridge success=true time=1779.04999999893 wall=312.862749 checks=35633 failures=["tested runtime sources unchanged during run"] summary={ "materials": 139.00000000003, "supplies": 40.9575000000016, "fuel": 21.5720500000127, "power": 14.0, "power_capacity": 24.0, "salvage": 175.999999999999, "crude": 122.999999999971, "people": 6, "zombies": 100, "phase": "evacuation", "outcome": "victory", "exit_progress": 1.0, "evacuated": 6, "pursuit_eta": 476.125806450804, "time": 1779.04999999893 }
+SOURCE_TRUCK { "id": 13.0, "kind": "truck", "team": "friendly", "pos": (67.00932, 9.999751), "hp": 380.0, "max_hp": 380.0, "state": "evacuated", "target": (73.0, 10.0), "camp_id": 191, "squad": 0.0, "speed": 1.75, "range": 0.0, "damage": 0.0, "attack_interval": 0.85, "cooldown": 0.0, "path": [(55.0, 10.0), (55.0, 9.0), (56.0, 9.0), (57.0, 9.0), (58.0, 9.0), (59.0, 9.0), (59.0, 10.0), (60.0, 10.0), (61.0, 10.0), (62.0, 10.0), (63.0, 10.0), (64.0, 10.0), (65.0, 10.0), (66.0, 10.0), (67.0, 10.0), (68.0, 10.0), (69.0, 10.0), (70.0, 10.0), (71.0, 10.0), (72.0, 10.0), (73.0, 10.0)], "path_index": 16, "repath": 0.0, "order": "attack_move", "attack_move": true, "manual": true, "job_id": 0, "cargo": {  }, "haul_site": 0, "haul_stage": "", "guard_pos": (11.0, 30.0), "escort_id": 0.0, "pursuer": false, "evac_origin_id": 46.0, "evac_destination_id": 191.0, "capacity": 180.0, "nav_wait": 0.0, "formation_anchor": (72.0, 10.0), "formation_slot": (73.0, 10.0) }
+Command exited with non-zero status 1
+SOURCE_RIDGE_WALL=313.19 CPU=99% RSS_KB=135956

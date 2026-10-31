@@ -1,0 +1,39 @@
+{
+  "scope": "Independent read-only structural comparison of the two retained original strict mismatch states. Dictionary key/entry order and every array length/value were traversed. Only the two numeric differences below were found; this is a JSON precision fixture analysis, not a separate gameplay failure or native proof.",
+  "source_sha256": {
+    "arrival-precision-mismatch-live.json": "00aef5c1a8851074197607d08302e147809e8d3d7e1fd652df5b59e8b0539914",
+    "arrival-precision-mismatch-loaded.json": "c10611edf34cf1d82815634eb4ce21e772c8e2a15211c729f5dcce46e05d5cd0"
+  },
+  "differences": [
+    {
+      "encoded_path": "root.payload.entries[8][1][83].entries[31][1]",
+      "live_value": "0.49999999999999994",
+      "loaded_value": "0.5",
+      "absolute_delta": 5.551115123125783e-17,
+      "live_value_ulp": 5.551115123125783e-17,
+      "difference_in_live_ulps": 1.0,
+      "unit_id": 251,
+      "team": "enemy",
+      "kind": "zombie",
+      "field": "nav_wait"
+    },
+    {
+      "encoded_path": "root.payload.entries[8][1][88].entries[31][1]",
+      "live_value": "1.0000000000000002",
+      "loaded_value": "1.0000000000000004",
+      "absolute_delta": 2.220446049250313e-16,
+      "live_value_ulp": 2.220446049250313e-16,
+      "difference_in_live_ulps": 1.0,
+      "unit_id": 256,
+      "team": "enemy",
+      "kind": "zombie",
+      "field": "nav_wait"
+    }
+  ],
+  "count": 2,
+  "comparison_bound": {
+    "absolute": 1e-12,
+    "relative": 2e-15,
+    "formula": "abs(left-right) <= max(absolute, max(abs(left), abs(right))*relative)"
+  }
+}

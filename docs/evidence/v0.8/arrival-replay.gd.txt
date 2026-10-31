@@ -1,0 +1,25 @@
+extends SceneTree
+const Route = preload("res://scripts/diagnostics/campaign_route.gd")
+func _initialize() -> void:
+	call_deferred("_run")
+func _run() -> void:
+	var source: String = "res://work/arrival-staging-v08/baseline_simulation.gd"
+	var name: String = "baseline"
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--source="): source = argument.trim_prefix("--source=")
+		if argument.begins_with("--name="): name = argument.trim_prefix("--name=")
+	var sim: RefCounted = load(source).new()
+	assert(sim.load_state(JSON.parse_string(FileAccess.get_file_as_string("res://work/arrival-staging-v08/delta-dock-blocked-state.json"))))
+	var report: Dictionary = {"source_sha256":FileAccess.get_sha256(source),"fixture_sha256":FileAccess.get_sha256("res://work/arrival-staging-v08/delta-dock-blocked-state.json"),"samples":[]}
+	for tick: int in range(1200):
+		sim.tick(0.05)
+		if tick % 100 == 0 or tick == 1199:
+			var job: Dictionary = {}
+			for raw: Variant in Route.serialized_dictionary(sim.save_state().payload).jobs:
+				var decoded: Dictionary = Route.serialized_dictionary(raw)
+				if int(decoded.id) == 276: job = decoded
+			report.samples.append({"ticks":tick+1,"time":sim.time,"job":job,"engineer":sim.get_unit(9).duplicate(true),"truck":sim.get_unit(13).duplicate(true)})
+			print("REPLAY_SAMPLE ", name," ",tick+1," cursor=",job.get("road_cursor")," delivered=",job.get("delivered")," progress=",job.get("progress")," done=",job.get("done")," engineer=",sim.get_unit(9).get("pos"))
+	var file: FileAccess = FileAccess.open("res://work/arrival-staging-v08/"+name+"-replay.json",FileAccess.WRITE)
+	file.store_string(JSON.stringify(report,"\t"))
+	quit()

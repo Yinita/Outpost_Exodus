@@ -1,0 +1,139 @@
+extends SceneTree
+## Ignored source-only economic/command probe. This is NOT native, renderer,
+## controller-clock or human evidence. Only this test facade calls tick(0.05).
+## The production route never ticks or writes simulation fields/resources.
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+const Route = preload("res://scripts/diagnostics/campaign_route.gd")
+
+class SourceController extends Node2D:
+	var sim: RefCounted
+	var started: bool = true
+	func focus_camp(_camp_id: int) -> void:
+		pass
+
+class SourceObserver extends Node:
+	var app: SourceController
+	var failures: Array[String] = []
+	var checks: int = 0
+	var ticks: int = 0
+	var events: Array[Dictionary] = []
+	var captures: Array[Dictionary] = []
+	var disk_continuation: Dictionary = {}
+	var deliveries: Dictionary = {}
+	var previous_stage: String = ""
+	var previous_origin: int = 0
+	var previous_destination: int = 0
+	var previous_cargo: float = 0.0
+	var previous_transport: bool = false
+
+	func check(ok: bool, label: String) -> bool:
+		checks += 1
+		if not ok:
+			failures.append(label)
+			printerr("SOURCE_ROUTE_FAILURE ", label, " t=", app.sim.time)
+		return ok
+
+	func event(label: String, details: Dictionary = {}) -> void:
+		events.append({"label": label, "time": float(app.sim.time), "details": details.duplicate(true)})
+		print("SOURCE_EVENT ", label, " t=", app.sim.time)
+
+	func advance(seconds: float, label: String) -> bool:
+		var target: float = float(app.sim.time) + seconds
+		return wait_for(func() -> bool: return float(app.sim.time) + 0.000001 >= target, seconds + 5.0, label)
+
+	func wait_for(condition: Callable, timeout: float, label: String) -> bool:
+		var deadline: float = float(app.sim.time) + timeout
+		while failures.is_empty():
+			if bool(condition.call()): return true
+			if not check(app.sim.outcome == "playing", label + " retains playing outcome"): return false
+			if float(app.sim.time) > deadline: return check(false, "simulation timeout: " + label)
+			app.sim.tick(0.05)
+			ticks += 1
+			_observe_deliveries()
+		return false
+
+	func capture(label: String, focus_tile: Vector2) -> bool:
+		captures.append({"label": label, "focus": [focus_tile.x, focus_tile.y], "rendered": false, "time": float(app.sim.time)})
+		return check(focus_tile.x >= 0.0 and focus_tile.y >= 0.0 and focus_tile.x < 80.0 and focus_tile.y < 40.0, "source capture target inside map")
+
+	func deliveries_from(origin: int) -> int:
+		return int(deliveries.get(origin, 0))
+
+	func _observe_deliveries() -> void:
+		var truck: Dictionary = app.sim.get_unit(int(app.sim.main_truck_id))
+		if truck.is_empty(): return
+		var stage: String = str(truck.get("haul_stage", ""))
+		var cargo: float = 0.0
+		for amount: Variant in Dictionary(truck.get("cargo", {})).values(): cargo += float(amount)
+		if previous_transport and previous_cargo > 0.0 and previous_stage == "outbound" and stage != "outbound" and cargo <= 0.0:
+			var camp: Dictionary = app.sim.get_camp(previous_destination)
+			if not camp.is_empty() and Vector2(truck.pos).distance_to(Vector2(camp.pos)) <= 2.5:
+				deliveries[previous_origin] = deliveries_from(previous_origin) + 1
+				event("actual_delivery", {"origin": previous_origin, "destination": int(camp.id), "count": deliveries_from(previous_origin)})
+		previous_stage = stage
+		previous_origin = int(truck.get("evac_origin_id", 0))
+		previous_destination = int(truck.get("evac_destination_id", 0))
+		previous_cargo = cargo
+		previous_transport = truck.get("order", "") == "evacuate_transport"
+
+	func save_and_reload(label: String) -> bool:
+		var path: String = "res://work/route-v08-" + str(app.sim.mission_id) + "-checkpoint.json"
+		var before: Dictionary = app.sim.save_state()
+		var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+		if not check(file != null, "source checkpoint opens actual disk file"): return false
+		file.store_string(JSON.stringify(before))
+		file.close()
+		var saved: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+		if not check(saved is Dictionary, "source checkpoint parses actual disk JSON"): return false
+		var continued: RefCounted = Simulation.new()
+		if not check(continued.load_state(saved), "source checkpoint loads through public validation"): return false
+		var before_normalized: String = JSON.stringify(JSON.parse_string(JSON.stringify(before)))
+		var after_normalized: String = JSON.stringify(JSON.parse_string(JSON.stringify(continued.save_state())))
+		if not check(before_normalized == after_normalized and continued.mission_id == app.sim.mission_id, "source checkpoint preserves complete simulation/RNG and mission"): return false
+		app.sim = continued
+		disk_continuation = {"success": true, "label": label, "mission_id": str(app.sim.mission_id), "mission_tag": str(saved.mission), "time": float(app.sim.time), "file_sha256": FileAccess.get_sha256(path)}
+		return true
+
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+
+func _run() -> void:
+	var mission_id: String = "delta"
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--mission="): mission_id = argument.trim_prefix("--mission=")
+	var app: SourceController = SourceController.new()
+	app.sim = Simulation.new()
+	if not app.sim.reset(42, mission_id):
+		printerr("Unknown mission")
+		quit(1)
+		return
+	var observer: SourceObserver = SourceObserver.new()
+	observer.app = app
+	var before: Dictionary = {"route": FileAccess.get_sha256("res://scripts/diagnostics/campaign_route.gd"), "simulation": FileAccess.get_sha256("res://scripts/campaign_simulation.gd")}
+	var started: int = Time.get_ticks_usec()
+	var result: Dictionary = await Route.new().run(app, observer)
+	var elapsed: float = float(Time.get_ticks_usec() - started) / 1000000.0
+	var after: Dictionary = {"route": FileAccess.get_sha256("res://scripts/diagnostics/campaign_route.gd"), "simulation": FileAccess.get_sha256("res://scripts/campaign_simulation.gd")}
+	observer.check(before == after, "tested runtime sources unchanged during run")
+	observer.check(result.get("mission_id") == mission_id and app.sim.mission_id == mission_id, "requested/route/final identity matches")
+	observer.check(bool(result.get("success", false)) and app.sim.outcome == "victory", "same production route wins at source0.05step")
+	observer.check(bool(observer.disk_continuation.get("success", false)), "source route actually continued a loaded withdrawal from disk")
+	var truck: Dictionary = app.sim.get_unit(app.sim.main_truck_id)
+	var exit: Dictionary = {}
+	for building: Dictionary in app.sim.buildings:
+		if int(building.id) == int(app.sim.exit_building_id): exit = building
+	observer.check(not exit.is_empty() and float(exit.get("hp", 0.0)) > 0.0 and float(exit.get("progress", 0.0)) >= 1.0 and bool(exit.get("powered", false)) and float(exit.get("required_power", 0.0)) == 6.0, "final exit alive completed and powered at unchanged6demand")
+	observer.check(not truck.is_empty() and float(truck.get("hp", 0.0)) > 0.0 and str(truck.get("state", "")) == "evacuated" and int(app.sim.evacuated) >= 4, "actual living command truck and four survivors evacuated")
+	var report: Dictionary = {"scope": "SOURCE ONLY: same production route with actual Simulation.tick(0.05) in test observer; no native/render/Main-clock evidence or state/resource injection.", "mission_id": mission_id, "checks": observer.checks, "failures": observer.failures, "tick_seconds": 0.05, "ticks": observer.ticks, "wall_seconds": elapsed, "sources_before": before, "sources_after": after, "route": result, "disk_continuation": observer.disk_continuation, "events": observer.events, "captures": observer.captures, "summary": app.sim.get_summary(), "truck": truck, "exit": exit}
+	var report_file: FileAccess = FileAccess.open("res://work/route-v08-" + mission_id + "-report.json", FileAccess.WRITE)
+	if report_file != null: report_file.store_string(JSON.stringify(report, "\t"))
+	var state_file: FileAccess = FileAccess.open("res://work/route-v08-" + mission_id + "-state.json", FileAccess.WRITE)
+	if state_file != null: state_file.store_string(JSON.stringify(app.sim.save_state()))
+	print("SOURCE_ROUTE_RESULT ", mission_id, " success=", bool(result.get("success", false)), " time=", app.sim.time, " wall=", elapsed, " checks=", observer.checks, " failures=", observer.failures, " summary=", app.sim.get_summary())
+	print("SOURCE_TRUCK ", truck)
+	var passed: bool = observer.failures.is_empty()
+	observer.free()
+	app.free()
+	quit(0 if passed else 1)

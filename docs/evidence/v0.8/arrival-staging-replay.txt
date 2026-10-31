@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+REPLAY_SAMPLE staging 1 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE staging 101 cursor=3 delivered=true progress=0.64 done=false engineer=(56.94427, 27.0)
+REPLAY_SAMPLE staging 201 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 301 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 401 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 501 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 601 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 701 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 801 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 901 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 1001 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 1101 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)
+REPLAY_SAMPLE staging 1200 cursor=4 delivered=true progress=1.0 done=true engineer=(56.99763, 27.95744)

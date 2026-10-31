@@ -1,0 +1,50 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SOURCE_EVENT production_materials t=0.0
+SOURCE_EVENT opening t=0.0
+SOURCE_EVENT clear_highway t=0.0
+SOURCE_EVENT highway_captured t=39.9999999999999
+SOURCE_EVENT home_to_middle_road_ordered t=39.9999999999999
+SOURCE_EVENT home_to_middle_road_complete t=79.9999999999976
+SOURCE_EVENT middle_camp_ordered t=79.9999999999976
+SOURCE_EVENT middle_camp_complete t=124.999999999995
+SOURCE_EVENT actual_delivery t=143.199999999998
+SOURCE_EVENT actual_delivery t=171.750000000005
+SOURCE_EVENT actual_delivery t=200.300000000011
+SOURCE_EVENT home_evacuated_and_west_sealed t=203.450000000012
+SOURCE_EVENT middle_local_road_ordered t=203.450000000012
+SOURCE_EVENT middle_local_road_complete t=233.450000000019
+SOURCE_EVENT middle_generator_ordered t=233.450000000019
+SOURCE_EVENT middle_generator_complete t=263.450000000026
+SOURCE_EVENT middle_workshop_ordered t=263.450000000026
+SOURCE_EVENT middle_workshop_complete t=298.450000000034
+SOURCE_EVENT middle_defense_ordered t=298.450000000034
+SOURCE_EVENT middle_defense_complete t=328.45000000004
+SOURCE_EVENT production_materials t=328.45000000004
+SOURCE_EVENT clear_materials_branch t=328.45000000004
+SOURCE_EVENT quarry_road_ordered t=378.450000000052
+SOURCE_EVENT quarry_road_complete t=448.450000000068
+SOURCE_EVENT clear_fuel_branch t=448.450000000068
+SOURCE_EVENT fuel_road_ordered t=498.450000000079
+SOURCE_EVENT fuel_road_complete t=568.450000000031
+SOURCE_EVENT both_resource_branches_connected t=668.44999999994
+SOURCE_EVENT clear_forward_cache t=668.44999999994
+SOURCE_EVENT forward_road_ordered t=728.449999999885
+SOURCE_EVENT forward_road_complete t=858.449999999767
+SOURCE_EVENT forward_camp_ordered t=858.449999999767
+SOURCE_EVENT forward_camp_complete t=958.449999999676
+SOURCE_EVENT loaded_middle_withdrawal t=964.499999999671
+SOURCE_EVENT actual_delivery t=990.199999999648
+SOURCE_EVENT actual_delivery t=1043.4499999996
+SOURCE_EVENT actual_delivery t=1096.69999999955
+SOURCE_EVENT actual_delivery t=1149.9499999995
+SOURCE_EVENT middle_deliberately_abandoned t=1149.9499999995
+SOURCE_EVENT front_local_road_ordered t=1185.04999999947
+SOURCE_ROUTE_FAILURE simulation timeout: front_local_road actual completion t=1330.09999999934
+SOURCE_ROUTE_FAILURE same production route wins at source0.05step t=1330.09999999934
+SOURCE_ROUTE_FAILURE final exit alive completed and powered at unchanged6demand t=1330.09999999934
+SOURCE_ROUTE_FAILURE actual living command truck and four survivors evacuated t=1330.09999999934
+SOURCE_ROUTE_RESULT delta success=false time=1330.09999999934 wall=210.004121 checks=26644 failures=["simulation timeout: front_local_road actual completion", "same production route wins at source0.05step", "final exit alive completed and powered at unchanged6demand", "actual living command truck and four survivors evacuated"] summary={ "materials": 426.160000000059, "supplies": 79.4599999999999, "fuel": 80.0, "power": 0.0, "power_capacity": 0.0, "salvage": 144.839999999987, "crude": 133.999999999954, "people": 7, "zombies": 100, "phase": "advance", "outcome": "playing", "exit_progress": 0.0, "evacuated": 0, "pursuit_eta": 993.866666666633, "time": 1330.09999999934 }
+SOURCE_TRUCK { "id": 13.0, "kind": "truck", "team": "friendly", "pos": (54.49641, 27.02895), "hp": 380.0, "max_hp": 380.0, "state": "idle", "target": (54.0, 27.0), "camp_id": 173, "squad": 0.0, "speed": 1.75, "range": 0.0, "damage": 0.0, "attack_interval": 0.85, "cooldown": 0.0, "path": [(54.0, 26.0), (54.0, 27.0)], "path_index": 2, "repath": 0.0, "order": "idle", "attack_move": false, "manual": false, "job_id": 0.0, "cargo": {  }, "haul_site": 0.0, "haul_stage": "", "guard_pos": (11.0, 13.0), "escort_id": 0.0, "pursuer": false, "evac_origin_id": 46.0, "evac_destination_id": 173.0, "capacity": 180.0, "nav_wait": 0.0 }
+Command exited with non-zero status 1
+SOURCE_DELTA_WALL=210.29 CPU=99% RSS_KB=135704

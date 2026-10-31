@@ -1,0 +1,4 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+FIRST_MISMATCH tick=0
+ARRIVAL_STAGING_TEST checks=356 failures=0

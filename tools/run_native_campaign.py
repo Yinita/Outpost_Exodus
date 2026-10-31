@@ -30,6 +30,7 @@ BAD_OUTPUT = re.compile(
 )
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 GIT_COMMIT = re.compile(r"[0-9a-f]{40}\Z")
+MISSION_TAGS = {"canyon": "rift_escape_01", "delta": "wetland_escape_02", "ridge": "ridge_escape_03"}
 
 
 def sha256(path: Path) -> str:
@@ -119,11 +120,48 @@ def number(value: Any) -> bool:
         return False
 
 
+def mission_identity_errors(identity: Any, mission: str, stage: str,
+                            *, live: bool = False, saved: bool = False) -> list[str]:
+    if not isinstance(identity, dict):
+        return [f"Missing mission identity proof at {stage}"]
+    errors: list[str] = []
+    if identity.get("mission_id") != mission or identity.get("mission_tag") != MISSION_TAGS[mission]:
+        errors.append(f"Mission identity at {stage} does not match requested {mission}")
+    if live and identity.get("selected_mission_id") != mission:
+        errors.append(f"Controller mission selection at {stage} does not match requested {mission}")
+    if saved and identity.get("payload_mission_id") != ("" if mission == "canyon" else mission):
+        errors.append(f"Saved mission payload at {stage} does not match requested {mission}")
+    return errors
+
+
+def saved_mission_identity(state: dict[str, Any]) -> dict[str, Any]:
+    """Read the encoded save's identity without rewriting or trusting report fields."""
+    payload = state.get("payload")
+    if not isinstance(payload, dict) or payload.get("$type") != "Dictionary":
+        raise ValueError("Final campaign state has no encoded simulation dictionary")
+    entries = payload.get("entries")
+    if not isinstance(entries, list) or any(not isinstance(pair, list) or len(pair) != 2 for pair in entries):
+        raise ValueError("Final campaign state has invalid encoded dictionary entries")
+    identifiers = [pair[1] for pair in entries if pair[0] == "mission_id"]
+    if len(identifiers) > 1:
+        raise ValueError("Final campaign state repeats its mission identity")
+    tag = state.get("mission")
+    return {"mission_id": next((mission for mission, value in MISSION_TAGS.items() if value == tag), ""),
+            "mission_tag": tag, "payload_mission_id": identifiers[0] if identifiers else ""}
+
+
 def validate_report(report: dict[str, Any], before: dict[str, Any],
                     after: dict[str, Any], prepare_only: bool,
-                    expected_arguments: list[str] | None = None) -> list[str]:
+                    expected_arguments: list[str] | None = None,
+                    expected_mission: str = "canyon",
+                    final_state: dict[str, Any] | None = None) -> list[str]:
     """Reject narrower or stale evidence even if the native process exits zero."""
     errors: list[str] = []
+    if expected_mission not in MISSION_TAGS:
+        return ["Unsupported requested campaign mission"]
+    if report.get("requested_mission_id") != expected_mission:
+        errors.append("Native report requested mission does not match the launch")
+    errors.extend(mission_identity_errors(report.get("campaign_start"), expected_mission, "campaign start", live=True))
     if report.get("native_export_proof") is not True:
         errors.append("Report is not from a native release export")
     if report.get("prepare_only") is not prepare_only:
@@ -148,6 +186,8 @@ def validate_report(report: dict[str, Any], before: dict[str, Any],
             errors.append("Actual process used a forbidden engine clock/render override")
         if expected_arguments is not None and arguments != expected_arguments:
             errors.append("Actual native process arguments differ from the verifier's launch")
+        if [argument for argument in arguments[1:] if argument.split("=", 1)[0] == "--mission"] != [f"--mission={expected_mission}"]:
+            errors.append("Actual native process mission selector does not match the requested campaign")
     time_scale = report.get("engine_time_scale")
     if time_scale is None:
         time_scale = report.get("time_scale")
@@ -182,19 +222,46 @@ def validate_report(report: dict[str, Any], before: dict[str, Any],
     startup = report.get("startup_focus", {})
     if not isinstance(startup, dict) or startup.get("ready") is not True:
         errors.append("Native window focus was not ready before the campaign")
+    save = report.get("save_reload", {})
+    if not isinstance(save, dict) or any(save.get(key) is not True for key in
+                                       ("success", "full_simulation_equal", "full_ui_equal", "mission_equal")):
+        errors.append("Actual disk save/load simulation, UI and mission equality was not proven")
+        save = save if isinstance(save, dict) else {}
+    for key, live, saved in (("mission_before", True, False), ("mission_on_disk", False, True),
+                             ("mission_after", True, False)):
+        errors.extend(mission_identity_errors(save.get(key), expected_mission, f"save/load {key}", live=live, saved=saved))
+    errors.extend(mission_identity_errors(report.get("final"), expected_mission, "final simulation", live=True))
+    proof = report.get("final_state", {})
+    errors.extend(mission_identity_errors(proof, expected_mission, "final saved state", saved=True))
+    if not isinstance(proof, dict) or not isinstance(proof.get("sha256"), str) or not SHA256.fullmatch(proof["sha256"]):
+        errors.append("Final saved state proof has no valid file hash")
+    if final_state is None:
+        errors.append("Actual final campaign state was not independently read")
+    else:
+        try:
+            errors.extend(mission_identity_errors(saved_mission_identity(final_state), expected_mission,
+                                                  "independently read final state", saved=True))
+        except ValueError as error:
+            errors.append(str(error))
     if prepare_only:
+        if report.get("prepare_complete") is not True:
+            errors.append("Prepare-only setup and actual disk continuation did not complete")
         if report.get("complete_campaign_evidence") is not False:
             errors.append("Prepare-only run must not claim a complete campaign")
         return errors
     if report.get("complete_campaign_evidence") is not True:
         errors.append("Native report does not prove a complete campaign")
-    save = report.get("save_reload", {})
-    if not isinstance(save, dict) or any(save.get(key) is not True for key in
-                                       ("success", "full_simulation_equal", "full_ui_equal")):
-        errors.append("Actual mid-campaign disk save/load equality was not proven")
     route = report.get("route", {})
     if not isinstance(route, dict) or route.get("success") is not True:
         errors.append("Public-command campaign route did not succeed")
+    if not isinstance(route, dict) or route.get("mission_id") != expected_mission:
+        errors.append("Public-command route mission does not match the requested campaign")
+    automatic = report.get("automatic_saves", {})
+    if not isinstance(automatic, dict):
+        automatic = {}
+    for slot in ("primary", "backup"):
+        errors.extend(mission_identity_errors(automatic.get(slot), expected_mission,
+                                              f"automatic save {slot}", saved=True))
     final = report.get("final", {})
     if not isinstance(final, dict):
         final = {}
@@ -238,6 +305,8 @@ def main() -> int:
                         help="Absolute, absent or completely empty dedicated directory; never deleted")
     parser.add_argument("--max-seconds", type=int, default=900,
                         help="Native validator wall-time limit, 60 through 1800 seconds")
+    parser.add_argument("--mission", choices=tuple(MISSION_TAGS), default="canyon",
+                        help="Campaign to launch and prove through actual disk continuation (default: canyon)")
     parser.add_argument("--prepare-only", action="store_true",
                         help="Verify native setup/normal-loop progress only; never proves a complete campaign")
     options = parser.parse_args()
@@ -254,10 +323,12 @@ def main() -> int:
     log = isolation / "native-process.log"
     report_path = isolation / "output/campaign-validation.json"
     progress_path = isolation / "output/campaign-progress.json"
+    final_state_path = isolation / "output/final-campaign-state.json"
     started = time.monotonic()
     result: dict[str, Any] = {"schema_version": 1, "success": False,
                               "complete_campaign_evidence": False, "performance_evidence": False,
-                              "prepare_only": options.prepare_only, "started_utc": utc_now(),
+                              "prepare_only": options.prepare_only, "requested_mission_id": options.mission,
+                              "started_utc": utc_now(),
                               "build_dir": str(build), "isolation_root": str(isolation),
                               "errors": [], "timed_out": False,
                               "scope": "Native exported game's actual Main loop and public-command campaign route",
@@ -284,7 +355,7 @@ def main() -> int:
             environment[key] = str(isolation / directory)
         if not environment.get("DISPLAY"):
             raise ValueError("DISPLAY must identify the actual native graphical display")
-        command = [str(build / EXECUTABLE_NAME), "--", "--campaign-validation", "--mission=canyon",
+        command = [str(build / EXECUTABLE_NAME), "--", "--campaign-validation", f"--mission={options.mission}",
                    f"--max-seconds={options.max_seconds}"]
         if options.prepare_only:
             command.append("--prepare-only")
@@ -325,7 +396,13 @@ def main() -> int:
         report = read_object(report_path)
         result["native_report"] = {"path": str(report_path), "sha256": sha256(report_path),
                                    "data": report}
-        result["errors"].extend(validate_report(report, before, after, options.prepare_only, command))
+        final_state = read_object(final_state_path)
+        final_digest = sha256(final_state_path)
+        result["final_campaign_state"] = {"path": str(final_state_path), "sha256": final_digest}
+        if not isinstance(report.get("final_state"), dict) or report["final_state"].get("sha256") != final_digest:
+            result["errors"].append("Final state file does not match the native report's proof hash")
+        result["errors"].extend(validate_report(report, before, after, options.prepare_only, command,
+                                                 options.mission, final_state))
         result["success"] = not result["errors"]
         result["complete_campaign_evidence"] = result["success"] and not options.prepare_only
     except KeyboardInterrupt:
@@ -349,6 +426,7 @@ def main() -> int:
         result["wall_elapsed_seconds"] = round(time.monotonic() - started, 3)
         write_json(verification, result)
     print(json.dumps({"success": result["success"], "prepare_only": options.prepare_only,
+                      "requested_mission_id": options.mission,
                       "complete_campaign_evidence": result["complete_campaign_evidence"],
                       "verification_path": str(verification), "errors": result["errors"]},
                      ensure_ascii=False, indent=2))

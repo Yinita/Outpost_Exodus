@@ -1,0 +1,15 @@
+{
+  "scope": "Read-only pixel comparison of paused source screenshot fixture; assistant visual inspection only, not a human playtest or native campaign proof",
+  "region_physical_pixels": [
+    900,
+    490,
+    1145,
+    635
+  ],
+  "changed_pixels": 75,
+  "nonempty_difference": true,
+  "images": [
+    "delta-small-guide.png",
+    "delta-small-hidden.png"
+  ]
+}

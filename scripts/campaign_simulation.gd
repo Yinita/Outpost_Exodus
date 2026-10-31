@@ -1553,6 +1553,7 @@ func _update_logistics(delta: float) -> void:
 	if _logistics_clock + EPSILON < 1.0:
 		return
 	_logistics_clock = 0.0
+	_clear_idle_depot_approaches()
 	for worker in units:
 		var can_haul: bool = str(worker["kind"]) == "worker" or (str(worker["kind"]) == "truck" and int(worker["id"]) != main_truck_id)
 		if not can_haul or str(worker["team"]) != "friendly" or float(worker["hp"]) <= 0.0 or str(worker.get("order", "idle")) != "idle" or bool(worker.get("manual", false)) or not Dictionary(worker.get("cargo", {})).is_empty():
@@ -1584,6 +1585,45 @@ func _update_logistics(delta: float) -> void:
 			worker["order"] = "haul"
 			worker["state"] = "collecting"
 			_set_target(worker, Vector2(best["pos"]))
+
+
+func _clear_idle_depot_approaches() -> void:
+	# Delivered parcels leave idle units targeting the same depot tile. If a
+	# working crew is blocked there, walk those arrivals to separate waiting
+	# places instead of repeatedly nudging them back toward their old targets.
+	# An assigned path survives save/load; its off-depot target prevents repeats.
+	for camp: Dictionary in camps:
+		if str(camp["state"]) != "active": continue
+		var center: Vector2 = Vector2(camp["pos"])
+		var dock: Vector2 = Vector2(_nearest_tile(center, "friendly"))
+		var blocked: bool = false
+		for mover: Dictionary in units:
+			if str(mover["team"]) == "friendly" and float(mover["hp"]) > 0.0 and ["construct", "haul", "evacuate_transport"].has(str(mover.get("order", ""))) and float(mover.get("nav_wait", 0.0)) >= 0.5 and Vector2(mover["pos"]).distance_to(dock) < 3.0:
+				blocked = true
+				break
+		if not blocked: continue
+		var arrivals: Array = []
+		var selected: Dictionary = {}
+		for unit: Dictionary in units:
+			if str(unit["team"]) != "friendly" or float(unit["hp"]) <= 0.0 or str(unit["state"]) == "evacuated" or int(unit["camp_id"]) != int(camp["id"]): continue
+			if str(unit.get("order", "")) != "idle" or bool(unit.get("manual", false)) or int(unit.get("job_id", 0)) != 0 or not Dictionary(unit.get("cargo", {})).is_empty() or unit.has("formation_anchor"): continue
+			if Vector2(unit["pos"]).distance_to(dock) >= 2.0 or Vector2(unit["target"]).distance_to(dock) > 0.75: continue
+			arrivals.append(unit)
+			selected[int(unit["id"])] = true
+		arrivals.sort_custom(func(first: Dictionary, second: Dictionary) -> bool: return int(first["id"]) < int(second["id"]))
+		var away: Vector2 = (center - dock).normalized()
+		if away.length_squared() < 0.5: away = Vector2.DOWN
+		var side: Vector2 = Vector2(-away.y, away.x)
+		var reserved: Dictionary = {}
+		for index: int in range(arrivals.size()):
+			var unit: Dictionary = arrivals[index]
+			var preferred: Vector2i = Vector2i((center + away * (3.0 + int(index / 3)) + side * (index % 3 - 1)).round())
+			var slot: Vector2i = _formation_destination(unit, preferred, reserved, selected)
+			if Vector2(slot).distance_to(dock) <= 2.0: continue
+			reserved[slot] = true
+			unit["order"] = "move"
+			unit["state"] = "moving"
+			_set_target(unit, Vector2(slot))
 
 
 func evacuate_camp(camp_id: int) -> bool:

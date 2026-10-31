@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+REPLAY_SAMPLE baseline 1 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 101 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 201 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 301 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 401 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 501 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 601 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 701 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 801 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 901 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 1001 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 1101 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)
+REPLAY_SAMPLE baseline 1200 cursor=1.0 delivered=false progress=0.0 done=false engineer=(53.29804, 27.29153)

@@ -1,0 +1,58 @@
+extends SceneTree
+# Render-only source QA. Paused real campaigns; not a mission or timing proof.
+var app: Node2D
+var captures: Array = []
+var out: String
+func _initialize() -> void:
+	out = ProjectSettings.globalize_path('res://work/hud-v08-layout')
+	DirAccess.make_dir_recursive_absolute(out)
+	call_deferred('_run')
+func _frames() -> void:
+	for index: int in range(8):
+		app.hud.queue_redraw()
+		await process_frame
+	await RenderingServer.frame_post_draw
+func _capture(label: String) -> void:
+	await _frames()
+	var before: String = JSON.stringify(app.sim.save_state(), '', true, true)
+	var frame: Image = root.get_texture().get_image()
+	assert(frame != null and not frame.is_empty())
+	var path: String = out.path_join(label + '.png')
+	assert(frame.save_png(path) == OK)
+	assert(before == JSON.stringify(app.sim.save_state(), '', true, true))
+	captures.append({'label':label,'path':path,'width':frame.get_width(),'height':frame.get_height(),'ui_scale':app.ui_scale,'guide_visible':app.guide.get_hint().get('visible',false),'started':app.started,'read_only_simulation':true})
+func _size(size: Vector2i, scale_value: float) -> void:
+	app.display_configured = true
+	app.fullscreen = false
+	app.window_resolution = size
+	app.ui_scale = scale_value
+	app._apply_display_settings()
+	await _frames()
+func _run() -> void:
+	assert(DisplayServer.get_name() != 'headless')
+	assert(OS.get_user_data_dir().contains('/work/hud-v08-layout-data/'))
+	app = load('res://scripts/main.gd').new()
+	root.add_child(app)
+	await _frames()
+	await _size(Vector2i(1920,1080),1.0)
+	await _capture('title-1080')
+	app.start_campaign('delta')
+	app.ui_action('pause')
+	app.feedback_left = 0.0
+	await _capture('delta-1080-guide')
+	await _size(Vector2i(1152,648),1.2)
+	await _capture('delta-small-guide')
+	app.ui_action('guide_toggle')
+	await _capture('delta-small-hidden')
+	await _size(Vector2i(1920,1080),1.0)
+	app.hud._building_atlas = null
+	await _capture('atlas-fallback-1080')
+	var file: FileAccess = FileAccess.open(out.path_join('captures.json'),FileAccess.WRITE)
+	file.store_string(JSON.stringify({'scope':'Paused source-render QA only, no native campaign/FPS/human claim','captures':captures},'\t'))
+	file.close()
+	file = null
+	app.queue_free()
+	for index: int in range(10): await process_frame
+	app = null
+	print('HUD_LAYOUT_CAPTURE_COMPLETE ',captures.size())
+	quit()

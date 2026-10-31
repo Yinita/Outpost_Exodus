@@ -1,0 +1,1299 @@
+{
+	"captures": [
+		{
+			"focus": [
+				18.0,
+				28.0
+			],
+			"label": "opening",
+			"rendered": false,
+			"time": 0.0
+		},
+		{
+			"focus": [
+				30.0,
+				27.0
+			],
+			"label": "middle_infrastructure",
+			"rendered": false,
+			"time": 336.100000000042
+		},
+		{
+			"focus": [
+				27.136157989502,
+				26.9146862030029
+			],
+			"label": "withdrawal_after_disk_load",
+			"rendered": false,
+			"time": 998.44999999964
+		},
+		{
+			"focus": [
+				72.0,
+				10.0
+			],
+			"label": "completed_powered_exit",
+			"rendered": false,
+			"time": 1766.34999999894
+		},
+		{
+			"focus": [
+				72.0,
+				10.0
+			],
+			"label": "victory",
+			"rendered": false,
+			"time": 1780.34999999893
+		}
+	],
+	"checks": 35659,
+	"disk_continuation": {
+		"file_sha256": "0d7f32c75af953b4f0f4985d0fcac29e16c6c9812d59197081a59eef9422d915",
+		"label": "loaded_middle_withdrawal",
+		"mission_id": "ridge",
+		"mission_tag": "ridge_escape_03",
+		"success": true,
+		"time": 998.44999999964
+	},
+	"events": [
+		{
+			"details": {
+				"camp_id": 1
+			},
+			"label": "production_materials",
+			"time": 0.0
+		},
+		{
+			"details": {
+				"home_id": 1
+			},
+			"label": "opening",
+			"time": 0.0
+		},
+		{
+			"details": {
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"target": [
+					25.0,
+					29.0
+				]
+			},
+			"label": "clear_highway",
+			"time": 0.0
+		},
+		{
+			"details": {},
+			"label": "highway_captured",
+			"time": 39.9999999999999
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 24.0
+				},
+				"kind": "road",
+				"source_camp_id": 1,
+				"tile": [
+					27,
+					26
+				]
+			},
+			"label": "home_to_middle_road_ordered",
+			"time": 39.9999999999999
+		},
+		{
+			"details": {},
+			"label": "home_to_middle_road_complete",
+			"time": 79.9999999999976
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 50.0,
+					"supplies": 10.0
+				},
+				"kind": "camp",
+				"source_camp_id": 1,
+				"tile": [
+					27,
+					28
+				]
+			},
+			"label": "middle_camp_ordered",
+			"time": 79.9999999999976
+		},
+		{
+			"details": {},
+			"label": "middle_camp_complete",
+			"time": 124.999999999995
+		},
+		{
+			"details": {
+				"count": 1,
+				"destination": 46,
+				"origin": 1
+			},
+			"label": "actual_delivery",
+			"time": 151.05
+		},
+		{
+			"details": {
+				"count": 2,
+				"destination": 46,
+				"origin": 1
+			},
+			"label": "actual_delivery",
+			"time": 179.450000000007
+		},
+		{
+			"details": {
+				"count": 3,
+				"destination": 46,
+				"origin": 1
+			},
+			"label": "actual_delivery",
+			"time": 207.800000000013
+		},
+		{
+			"details": {
+				"home_deliveries": 3
+			},
+			"label": "home_evacuated_and_west_sealed",
+			"time": 211.100000000014
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 10.0
+				},
+				"kind": "road",
+				"source_camp_id": 46,
+				"tile": [
+					30,
+					29
+				]
+			},
+			"label": "middle_local_road_ordered",
+			"time": 211.100000000014
+		},
+		{
+			"details": {},
+			"label": "middle_local_road_complete",
+			"time": 241.100000000021
+		},
+		{
+			"details": {
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"source_camp_id": 46,
+				"tile": [
+					29,
+					27
+				]
+			},
+			"label": "middle_generator_ordered",
+			"time": 241.100000000021
+		},
+		{
+			"details": {},
+			"label": "middle_generator_complete",
+			"time": 271.100000000027
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 40.0
+				},
+				"kind": "workshop",
+				"source_camp_id": 46,
+				"tile": [
+					31,
+					29
+				]
+			},
+			"label": "middle_workshop_ordered",
+			"time": 271.100000000027
+		},
+		{
+			"details": {},
+			"label": "middle_workshop_complete",
+			"time": 306.100000000035
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 35.0,
+					"supplies": 5.0
+				},
+				"kind": "tower",
+				"source_camp_id": 46,
+				"tile": [
+					26,
+					25
+				]
+			},
+			"label": "middle_defense_ordered",
+			"time": 306.100000000035
+		},
+		{
+			"details": {},
+			"label": "middle_defense_complete",
+			"time": 336.100000000042
+		},
+		{
+			"details": {
+				"camp_id": 46
+			},
+			"label": "production_materials",
+			"time": 336.100000000042
+		},
+		{
+			"details": {
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"target": [
+					36.0,
+					8.0
+				]
+			},
+			"label": "clear_materials_branch",
+			"time": 336.100000000042
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 50.0
+				},
+				"kind": "road",
+				"source_camp_id": 46,
+				"tile": [
+					36,
+					8
+				]
+			},
+			"label": "quarry_road_ordered",
+			"time": 386.100000000054
+		},
+		{
+			"details": {},
+			"label": "quarry_road_complete",
+			"time": 456.100000000069
+		},
+		{
+			"details": {
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"target": [
+					38.0,
+					29.0
+				]
+			},
+			"label": "clear_fuel_branch",
+			"time": 456.100000000069
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 18.0
+				},
+				"kind": "road",
+				"source_camp_id": 46,
+				"tile": [
+					38,
+					29
+				]
+			},
+			"label": "fuel_road_ordered",
+			"time": 506.100000000081
+		},
+		{
+			"details": {},
+			"label": "fuel_road_complete",
+			"time": 576.100000000024
+		},
+		{
+			"details": {},
+			"label": "both_resource_branches_connected",
+			"time": 676.099999999933
+		},
+		{
+			"details": {
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"target": [
+					53.0,
+					10.0
+				]
+			},
+			"label": "clear_forward_cache",
+			"time": 676.099999999933
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 34.0
+				},
+				"kind": "road",
+				"source_camp_id": 46,
+				"tile": [
+					53,
+					11
+				]
+			},
+			"label": "forward_road_ordered",
+			"time": 736.099999999878
+		},
+		{
+			"details": {},
+			"label": "forward_road_complete",
+			"time": 866.09999999976
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 50.0,
+					"supplies": 10.0
+				},
+				"kind": "camp",
+				"source_camp_id": 46,
+				"tile": [
+					54,
+					12
+				]
+			},
+			"label": "forward_camp_ordered",
+			"time": 866.09999999976
+		},
+		{
+			"details": {},
+			"label": "forward_camp_complete",
+			"time": 966.099999999669
+		},
+		{
+			"details": {
+				"destination_id": 189,
+				"origin_id": 46
+			},
+			"label": "loaded_middle_withdrawal",
+			"time": 998.44999999964
+		},
+		{
+			"details": {
+				"count": 1,
+				"destination": 189,
+				"origin": 46
+			},
+			"label": "actual_delivery",
+			"time": 1034.89999999961
+		},
+		{
+			"details": {
+				"count": 2,
+				"destination": 189,
+				"origin": 46
+			},
+			"label": "actual_delivery",
+			"time": 1112.69999999954
+		},
+		{
+			"details": {
+				"count": 3,
+				"destination": 189,
+				"origin": 46
+			},
+			"label": "actual_delivery",
+			"time": 1190.49999999947
+		},
+		{
+			"details": {
+				"count": 4,
+				"destination": 189,
+				"origin": 46
+			},
+			"label": "actual_delivery",
+			"time": 1268.29999999939
+		},
+		{
+			"details": {
+				"middle_deliveries": 4,
+				"stock_left": {
+					"crude": 204.000000000029,
+					"fuel": 37.5465500000256,
+					"materials": 0.0,
+					"salvage": 0.0,
+					"supplies": 16.600000000005
+				}
+			},
+			"label": "middle_deliberately_abandoned",
+			"time": 1268.29999999939
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 10.0
+				},
+				"kind": "road",
+				"source_camp_id": 189,
+				"tile": [
+					57,
+					12
+				]
+			},
+			"label": "front_local_road_ordered",
+			"time": 1303.39999999936
+		},
+		{
+			"details": {},
+			"label": "front_local_road_complete",
+			"time": 1328.39999999934
+		},
+		{
+			"details": {
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"source_camp_id": 189,
+				"tile": [
+					56,
+					10
+				]
+			},
+			"label": "front_generator_ordered",
+			"time": 1328.39999999934
+		},
+		{
+			"details": {},
+			"label": "front_generator_complete",
+			"time": 1358.39999999931
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 40.0
+				},
+				"kind": "workshop",
+				"source_camp_id": 189,
+				"tile": [
+					57,
+					14
+				]
+			},
+			"label": "front_workshop_ordered",
+			"time": 1358.39999999931
+		},
+		{
+			"details": {},
+			"label": "front_workshop_complete",
+			"time": 1398.39999999928
+		},
+		{
+			"details": {
+				"camp_id": 189
+			},
+			"label": "production_fuel",
+			"time": 1398.39999999928
+		},
+		{
+			"details": {
+				"camp_id": 189
+			},
+			"label": "production_supplies",
+			"time": 1418.39999999926
+		},
+		{
+			"details": {
+				"camp_id": 189
+			},
+			"label": "production_idle",
+			"time": 1418.39999999926
+		},
+		{
+			"details": {
+				"camp": {
+					"crude": 122.999999999971,
+					"energy": 100.0,
+					"evac_target_id": 0.0,
+					"evac_truck_id": 0.0,
+					"fuel": 85.0120500000004,
+					"id": 189.0,
+					"last_shortage": -100.0,
+					"materials": 345.00000000003,
+					"name": "前进营地 2",
+					"pack_progress": 0.0,
+					"pos": "(54.0, 12.0)",
+					"power": 8.0,
+					"power_capacity": 12.0,
+					"power_used": 4.0,
+					"priority": "production",
+					"recipe": "idle",
+					"recruit_queue": [],
+					"recruit_status": "idle",
+					"salvage": 175.999999999999,
+					"state": "active",
+					"supplies": 96.8775000000016
+				}
+			},
+			"label": "forward_exit_reserves",
+			"time": 1418.39999999926
+		},
+		{
+			"details": {
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"target": [
+					68.0,
+					11.0
+				]
+			},
+			"label": "clear_exit_approach",
+			"time": 1418.39999999926
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 24.0
+				},
+				"kind": "road",
+				"source_camp_id": 189,
+				"tile": [
+					68,
+					13
+				]
+			},
+			"label": "exit_power_road_ordered",
+			"time": 1483.3999999992
+		},
+		{
+			"details": {},
+			"label": "exit_power_road_complete",
+			"time": 1573.39999999912
+		},
+		{
+			"details": {
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"source_camp_id": 189,
+				"tile": [
+					68,
+					13
+				]
+			},
+			"label": "exit_local_generator_ordered",
+			"time": 1573.39999999912
+		},
+		{
+			"details": {},
+			"label": "exit_local_generator_complete",
+			"time": 1618.39999999908
+		},
+		{
+			"details": {
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"target": [
+					72.0,
+					10.0
+				]
+			},
+			"label": "capture_exit_site",
+			"time": 1618.39999999908
+		},
+		{
+			"details": {
+				"costs": {
+					"materials": 12.0
+				},
+				"kind": "road",
+				"source_camp_id": 189,
+				"tile": [
+					72,
+					10
+				]
+			},
+			"label": "exit_construction_road_ordered",
+			"time": 1653.39999999904
+		},
+		{
+			"details": {},
+			"label": "exit_construction_road_complete",
+			"time": 1713.39999999899
+		},
+		{
+			"details": {
+				"funded_job": {
+					"building_id": 19,
+					"costs": {
+						"fuel": 45.0,
+						"materials": 140.0,
+						"supplies": 30.0
+					},
+					"delivered": true,
+					"done": true,
+					"funded": true,
+					"id": 326,
+					"source_camp_id": 189
+				}
+			},
+			"label": "exit_funded_and_complete",
+			"time": 1766.34999999894
+		},
+		{
+			"details": {
+				"evacuated": 6
+			},
+			"label": "actual_victory",
+			"time": 1780.34999999893
+		}
+	],
+	"exit": {
+		"abandoned": false,
+		"camp_id": 189,
+		"construction_started": true,
+		"cooldown": 0.0,
+		"hp": 900.0,
+		"id": 19.0,
+		"kind": "exit",
+		"max_hp": 900.0,
+		"pos": "(72.0, 10.0)",
+		"power_radius": 0.0,
+		"powered": true,
+		"progress": 1.0,
+		"range": 0.0,
+		"required_power": 6.0
+	},
+	"failures": [],
+	"mission_id": "ridge",
+	"route": {
+		"abandoned_stock": {
+			"crude": 204.000000000029,
+			"fuel": 37.5465500000256,
+			"materials": 0.0,
+			"salvage": 0.0,
+			"supplies": 16.600000000005
+		},
+		"actual_camp_count": 3,
+		"both_resource_sites_captured": true,
+		"deliberate_abandonment": true,
+		"evacuated": 6,
+		"exit_powered_at_victory": true,
+		"final_summary": {
+			"crude": 122.999999999971,
+			"evacuated": 6,
+			"exit_progress": 1.0,
+			"fuel": 21.5733000000127,
+			"materials": 139.00000000003,
+			"outcome": "victory",
+			"people": 6,
+			"phase": "evacuation",
+			"power": 14.0,
+			"power_capacity": 24.0,
+			"pursuit_eta": 480.625806450809,
+			"salvage": 175.999999999999,
+			"supplies": 40.5975000000016,
+			"time": 1780.34999999893,
+			"zombies": 100
+		},
+		"funded_exit_job": {
+			"building_id": 19,
+			"costs": {
+				"fuel": 45.0,
+				"materials": 140.0,
+				"supplies": 30.0
+			},
+			"delivered": true,
+			"done": true,
+			"funded": true,
+			"id": 326,
+			"source_camp_id": 189
+		},
+		"home_deliveries": 3,
+		"loaded_withdrawal_reloaded": true,
+		"middle_deliveries": 4,
+		"milestones": [
+			{
+				"camp_id": 1,
+				"label": "production_materials",
+				"simulation_time": 0.0
+			},
+			{
+				"home_id": 1,
+				"label": "opening",
+				"simulation_time": 0.0
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_highway",
+				"simulation_time": 0.0,
+				"target": [
+					25.0,
+					29.0
+				]
+			},
+			{
+				"label": "highway_captured",
+				"simulation_time": 39.9999999999999
+			},
+			{
+				"costs": {
+					"materials": 24.0
+				},
+				"kind": "road",
+				"label": "home_to_middle_road_ordered",
+				"simulation_time": 39.9999999999999,
+				"source_camp_id": 1,
+				"tile": [
+					27,
+					26
+				]
+			},
+			{
+				"label": "home_to_middle_road_complete",
+				"simulation_time": 79.9999999999976
+			},
+			{
+				"costs": {
+					"materials": 50.0,
+					"supplies": 10.0
+				},
+				"kind": "camp",
+				"label": "middle_camp_ordered",
+				"simulation_time": 79.9999999999976,
+				"source_camp_id": 1,
+				"tile": [
+					27,
+					28
+				]
+			},
+			{
+				"label": "middle_camp_complete",
+				"simulation_time": 124.999999999995
+			},
+			{
+				"home_deliveries": 3,
+				"label": "home_evacuated_and_west_sealed",
+				"simulation_time": 211.100000000014
+			},
+			{
+				"costs": {
+					"materials": 10.0
+				},
+				"kind": "road",
+				"label": "middle_local_road_ordered",
+				"simulation_time": 211.100000000014,
+				"source_camp_id": 46,
+				"tile": [
+					30,
+					29
+				]
+			},
+			{
+				"label": "middle_local_road_complete",
+				"simulation_time": 241.100000000021
+			},
+			{
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"label": "middle_generator_ordered",
+				"simulation_time": 241.100000000021,
+				"source_camp_id": 46,
+				"tile": [
+					29,
+					27
+				]
+			},
+			{
+				"label": "middle_generator_complete",
+				"simulation_time": 271.100000000027
+			},
+			{
+				"costs": {
+					"materials": 40.0
+				},
+				"kind": "workshop",
+				"label": "middle_workshop_ordered",
+				"simulation_time": 271.100000000027,
+				"source_camp_id": 46,
+				"tile": [
+					31,
+					29
+				]
+			},
+			{
+				"label": "middle_workshop_complete",
+				"simulation_time": 306.100000000035
+			},
+			{
+				"costs": {
+					"materials": 35.0,
+					"supplies": 5.0
+				},
+				"kind": "tower",
+				"label": "middle_defense_ordered",
+				"simulation_time": 306.100000000035,
+				"source_camp_id": 46,
+				"tile": [
+					26,
+					25
+				]
+			},
+			{
+				"label": "middle_defense_complete",
+				"simulation_time": 336.100000000042
+			},
+			{
+				"camp_id": 46,
+				"label": "production_materials",
+				"simulation_time": 336.100000000042
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_materials_branch",
+				"simulation_time": 336.100000000042,
+				"target": [
+					36.0,
+					8.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 50.0
+				},
+				"kind": "road",
+				"label": "quarry_road_ordered",
+				"simulation_time": 386.100000000054,
+				"source_camp_id": 46,
+				"tile": [
+					36,
+					8
+				]
+			},
+			{
+				"label": "quarry_road_complete",
+				"simulation_time": 456.100000000069
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_fuel_branch",
+				"simulation_time": 456.100000000069,
+				"target": [
+					38.0,
+					29.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 18.0
+				},
+				"kind": "road",
+				"label": "fuel_road_ordered",
+				"simulation_time": 506.100000000081,
+				"source_camp_id": 46,
+				"tile": [
+					38,
+					29
+				]
+			},
+			{
+				"label": "fuel_road_complete",
+				"simulation_time": 576.100000000024
+			},
+			{
+				"label": "both_resource_branches_connected",
+				"simulation_time": 676.099999999933
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_forward_cache",
+				"simulation_time": 676.099999999933,
+				"target": [
+					53.0,
+					10.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 34.0
+				},
+				"kind": "road",
+				"label": "forward_road_ordered",
+				"simulation_time": 736.099999999878,
+				"source_camp_id": 46,
+				"tile": [
+					53,
+					11
+				]
+			},
+			{
+				"label": "forward_road_complete",
+				"simulation_time": 866.09999999976
+			},
+			{
+				"costs": {
+					"materials": 50.0,
+					"supplies": 10.0
+				},
+				"kind": "camp",
+				"label": "forward_camp_ordered",
+				"simulation_time": 866.09999999976,
+				"source_camp_id": 46,
+				"tile": [
+					54,
+					12
+				]
+			},
+			{
+				"label": "forward_camp_complete",
+				"simulation_time": 966.099999999669
+			},
+			{
+				"destination_id": 189,
+				"label": "loaded_middle_withdrawal",
+				"origin_id": 46,
+				"simulation_time": 998.44999999964
+			},
+			{
+				"label": "middle_deliberately_abandoned",
+				"middle_deliveries": 4,
+				"simulation_time": 1268.29999999939,
+				"stock_left": {
+					"crude": 204.000000000029,
+					"fuel": 37.5465500000256,
+					"materials": 0.0,
+					"salvage": 0.0,
+					"supplies": 16.600000000005
+				}
+			},
+			{
+				"costs": {
+					"materials": 10.0
+				},
+				"kind": "road",
+				"label": "front_local_road_ordered",
+				"simulation_time": 1303.39999999936,
+				"source_camp_id": 189,
+				"tile": [
+					57,
+					12
+				]
+			},
+			{
+				"label": "front_local_road_complete",
+				"simulation_time": 1328.39999999934
+			},
+			{
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"label": "front_generator_ordered",
+				"simulation_time": 1328.39999999934,
+				"source_camp_id": 189,
+				"tile": [
+					56,
+					10
+				]
+			},
+			{
+				"label": "front_generator_complete",
+				"simulation_time": 1358.39999999931
+			},
+			{
+				"costs": {
+					"materials": 40.0
+				},
+				"kind": "workshop",
+				"label": "front_workshop_ordered",
+				"simulation_time": 1358.39999999931,
+				"source_camp_id": 189,
+				"tile": [
+					57,
+					14
+				]
+			},
+			{
+				"label": "front_workshop_complete",
+				"simulation_time": 1398.39999999928
+			},
+			{
+				"camp_id": 189,
+				"label": "production_fuel",
+				"simulation_time": 1398.39999999928
+			},
+			{
+				"camp_id": 189,
+				"label": "production_supplies",
+				"simulation_time": 1418.39999999926
+			},
+			{
+				"camp_id": 189,
+				"label": "production_idle",
+				"simulation_time": 1418.39999999926
+			},
+			{
+				"camp": {
+					"crude": 122.999999999971,
+					"energy": 100.0,
+					"evac_target_id": 0.0,
+					"evac_truck_id": 0.0,
+					"fuel": 85.0120500000004,
+					"id": 189.0,
+					"last_shortage": -100.0,
+					"materials": 345.00000000003,
+					"name": "前进营地 2",
+					"pack_progress": 0.0,
+					"pos": "(54.0, 12.0)",
+					"power": 8.0,
+					"power_capacity": 12.0,
+					"power_used": 4.0,
+					"priority": "production",
+					"recipe": "idle",
+					"recruit_queue": [],
+					"recruit_status": "idle",
+					"salvage": 175.999999999999,
+					"state": "active",
+					"supplies": 96.8775000000016
+				},
+				"label": "forward_exit_reserves",
+				"simulation_time": 1418.39999999926
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "clear_exit_approach",
+				"simulation_time": 1418.39999999926,
+				"target": [
+					68.0,
+					11.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 24.0
+				},
+				"kind": "road",
+				"label": "exit_power_road_ordered",
+				"simulation_time": 1483.3999999992,
+				"source_camp_id": 189,
+				"tile": [
+					68,
+					13
+				]
+			},
+			{
+				"label": "exit_power_road_complete",
+				"simulation_time": 1573.39999999912
+			},
+			{
+				"costs": {
+					"fuel": 5.0,
+					"materials": 30.0
+				},
+				"kind": "generator",
+				"label": "exit_local_generator_ordered",
+				"simulation_time": 1573.39999999912,
+				"source_camp_id": 189,
+				"tile": [
+					68,
+					13
+				]
+			},
+			{
+				"label": "exit_local_generator_complete",
+				"simulation_time": 1618.39999999908
+			},
+			{
+				"army_ids": [
+					6,
+					7,
+					8
+				],
+				"label": "capture_exit_site",
+				"simulation_time": 1618.39999999908,
+				"target": [
+					72.0,
+					10.0
+				]
+			},
+			{
+				"costs": {
+					"materials": 12.0
+				},
+				"kind": "road",
+				"label": "exit_construction_road_ordered",
+				"simulation_time": 1653.39999999904,
+				"source_camp_id": 189,
+				"tile": [
+					72,
+					10
+				]
+			},
+			{
+				"label": "exit_construction_road_complete",
+				"simulation_time": 1713.39999999899
+			},
+			{
+				"funded_job": {
+					"building_id": 19,
+					"costs": {
+						"fuel": 45.0,
+						"materials": 140.0,
+						"supplies": 30.0
+					},
+					"delivered": true,
+					"done": true,
+					"funded": true,
+					"id": 326,
+					"source_camp_id": 189
+				},
+				"label": "exit_funded_and_complete",
+				"simulation_time": 1766.34999999894
+			},
+			{
+				"evacuated": 6,
+				"label": "actual_victory",
+				"simulation_time": 1780.34999999893
+			}
+		],
+		"mission_id": "ridge",
+		"simulated_seconds": 1780.34999999893,
+		"success": true,
+		"west_gate_was_sealed": true
+	},
+	"scope": "SOURCE ONLY: same production route with actual Simulation.tick(0.05) in test observer; no native/render/Main-clock evidence or state/resource injection.",
+	"sources_after": {
+		"route": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+		"simulation": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a"
+	},
+	"sources_before": {
+		"route": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+		"simulation": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a"
+	},
+	"summary": {
+		"crude": 122.999999999971,
+		"evacuated": 6,
+		"exit_progress": 1.0,
+		"fuel": 21.5733000000127,
+		"materials": 139.00000000003,
+		"outcome": "victory",
+		"people": 6,
+		"phase": "evacuation",
+		"power": 14.0,
+		"power_capacity": 24.0,
+		"pursuit_eta": 480.625806450809,
+		"salvage": 175.999999999999,
+		"supplies": 40.5975000000016,
+		"time": 1780.34999999893,
+		"zombies": 100
+	},
+	"tick_seconds": 0.05,
+	"ticks": 35607,
+	"truck": {
+		"attack_interval": 0.85,
+		"attack_move": true,
+		"camp_id": 189,
+		"capacity": 180.0,
+		"cargo": {},
+		"cooldown": 0.0,
+		"damage": 0.0,
+		"escort_id": 0.0,
+		"evac_destination_id": 189.0,
+		"evac_origin_id": 46.0,
+		"formation_anchor": "(72.0, 10.0)",
+		"formation_slot": "(73.0, 10.0)",
+		"guard_pos": "(11.0, 30.0)",
+		"haul_site": 0,
+		"haul_stage": "",
+		"hp": 380.0,
+		"id": 13.0,
+		"job_id": 0,
+		"kind": "truck",
+		"manual": true,
+		"max_hp": 380.0,
+		"nav_wait": 0.0,
+		"order": "attack_move",
+		"path": [
+			"(55.0, 10.0)",
+			"(55.0, 9.0)",
+			"(56.0, 9.0)",
+			"(57.0, 9.0)",
+			"(58.0, 9.0)",
+			"(59.0, 9.0)",
+			"(59.0, 10.0)",
+			"(60.0, 10.0)",
+			"(61.0, 10.0)",
+			"(62.0, 10.0)",
+			"(63.0, 10.0)",
+			"(64.0, 10.0)",
+			"(65.0, 10.0)",
+			"(66.0, 10.0)",
+			"(67.0, 10.0)",
+			"(68.0, 10.0)",
+			"(69.0, 10.0)",
+			"(70.0, 10.0)",
+			"(71.0, 10.0)",
+			"(72.0, 10.0)",
+			"(73.0, 10.0)"
+		],
+		"path_index": 16,
+		"pos": "(67.00308, 9.99973)",
+		"pursuer": false,
+		"range": 0.0,
+		"repath": 0.0,
+		"speed": 1.75,
+		"squad": 0.0,
+		"state": "evacuated",
+		"target": "(73.0, 10.0)",
+		"team": "friendly"
+	},
+	"wall_seconds": 313.488514
+}

@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "WORKTREE_INVENTORY_AND_DISCLOSURE_DRAFT_NOT_RIGHTS_OR_RELEASE_SIGNOFF",
   "snapshot": {
-    "recorded_utc": "2026-10-31T04:50:44.377867+00:00",
-    "base_commit": "3f8a135d24df1114583e1da9e01695704aaaac07",
+    "recorded_utc": "2026-10-31T05:58:37.685572+00:00",
+    "base_commit": "ede3c504f74843ca36dce6bff75d5d9107cb76da",
     "working_tree_dirty": true,
     "scope": "Current source asset bytes, retained production inputs and player-facing script categories. Hashes must be refreshed at source freeze, then checked against the actual final export."
   },
@@ -75,7 +75,7 @@
         "reference_record_status": "UNKNOWN_BINARY_AND_EXACT_INPUT_IDENTITY_NOT_RETAINED",
         "evidence_limit": "Prompt/provenance are retained textual records, not a model execution receipt or proof of all source rights."
       },
-      "runtime_use": "world_view.gd loads fixed atlas regions; no runtime image-model call.",
+      "runtime_use": "world_view.gd loads fixed atlas regions; hud.gd reuses the same fixed regions for construction thumbnails, with no new image generation or runtime image-model call.",
       "rights": {
         "project_distribution_terms": "PENDING_OWNER_DECISION",
         "shipping_rights_signoff": "NOT_COMPLETED"
@@ -139,8 +139,8 @@
         {
           "path": "scripts/hud.gd",
           "status": "PRESENT",
-          "bytes": 50204,
-          "sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+          "bytes": 54147,
+          "sha256": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2",
           "role": "retained_source_or_generation_input"
         }
       ],
@@ -497,7 +497,7 @@
           "path": "project.godot",
           "status": "PRESENT",
           "bytes": 983,
-          "sha256": "34587ca98581f1a5569130efa8c9461f018576e4ef82a2afa64e7442680a5096",
+          "sha256": "10134aaa52ce93d1cec72ab1302cedcdc9e0d364cc4b0518f7ed7829286cf0b0",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -510,8 +510,8 @@
         {
           "path": "scripts/hud.gd",
           "status": "PRESENT",
-          "bytes": 50204,
-          "sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+          "bytes": 54147,
+          "sha256": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -531,8 +531,8 @@
         {
           "path": "scripts/campaign_simulation.gd",
           "status": "PRESENT",
-          "bytes": 119096,
-          "sha256": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2",
+          "bytes": 121417,
+          "sha256": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -642,8 +642,8 @@
   ],
   "pack_reference": {
     "last_frozen_linux_export_identity": {
-      "source_commit": "3f8a135d24df1114583e1da9e01695704aaaac07",
-      "pck_sha256": "2ee4ac4b1b8c0516eb1d45b10ca3cfd1464df701d2bdeb04919c2c6a20efcfd3",
+      "source_commit": "ede3c504f74843ca36dce6bff75d5d9107cb76da",
+      "pck_sha256": "673cedab795d548da1fb2db14680365d0bed847004a50d07d7fb8290a43827e1",
       "status": "EXISTING_EXPORT_IDENTITY_NOT_NEW_WORKTREE_ACCEPTANCE"
     },
     "prior_directory_audit": {
@@ -734,8 +734,8 @@
       {
         "path": "scripts/campaign_simulation.gd",
         "status": "PRESENT",
-        "bytes": 119096,
-        "sha256": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2",
+        "bytes": 121417,
+        "sha256": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a",
         "role": "retained_source_or_generation_input"
       },
       {
@@ -762,15 +762,15 @@
       {
         "path": "scripts/diagnostics/campaign_route.gd",
         "status": "PRESENT",
-        "bytes": 18804,
-        "sha256": "f12b5abd49c9274a94be3d62be95124005347f914050097fe7ede724650d1432",
+        "bytes": 21963,
+        "sha256": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
         "role": "retained_source_or_generation_input"
       },
       {
         "path": "scripts/diagnostics/campaign_runner.gd",
         "status": "PRESENT",
-        "bytes": 21048,
-        "sha256": "46cefd1eaf2d7cbeca0fb74284f9a1d8f6d8de1052bd4798733d543b827fbb29",
+        "bytes": 24436,
+        "sha256": "5d77408d5121609b0a5289a1fd921d80b460ff624d04be92d3f999ed2064e3c2",
         "role": "retained_source_or_generation_input"
       },
       {
@@ -790,8 +790,8 @@
       {
         "path": "scripts/hud.gd",
         "status": "PRESENT",
-        "bytes": 50204,
-        "sha256": "65bc22e036a405d7c0613f76649de103cef7c83fd5786b73244d0b11ef2a09d7",
+        "bytes": 54147,
+        "sha256": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2",
         "role": "retained_source_or_generation_input"
       },
       {

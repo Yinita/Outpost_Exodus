@@ -1,0 +1,813 @@
+{
+  "version": "0.8.0-dev",
+  "recorded_date": "2026-10-31",
+  "scope": "Frozen pre-export source candidate. Physical lines include comments/blanks. Gameplay, packaged diagnostics, GDScript tests/benchmarks, production build/generation tools, other helpers and Python test helpers are separate. Python tools/test_*.py files count only as test helpers. Engine, libraries, assets, caches, binaries, serialized scenes and copied evidence probes are excluded from source totals. Export/native reports supply actual commit/tree/EXE/PCK acceptance, not this source snapshot.",
+  "parent_commit_before_this_uncommitted_candidate": "ede3c504f74843ca36dce6bff75d5d9107cb76da",
+  "groups": {
+    "gameplay": {
+      "files": 16,
+      "physical_lines": 8236,
+      "nonblank_lines": 7500,
+      "entries": {
+        "scripts/actor_atlas.gd": {
+          "physical_lines": 98,
+          "nonblank_lines": 81,
+          "sha256": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1"
+        },
+        "scripts/actor_canvas.gd": {
+          "physical_lines": 121,
+          "nonblank_lines": 106,
+          "sha256": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda"
+        },
+        "scripts/campaign_catalog.gd": {
+          "physical_lines": 488,
+          "nonblank_lines": 447,
+          "sha256": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556"
+        },
+        "scripts/campaign_guide.gd": {
+          "physical_lines": 699,
+          "nonblank_lines": 619,
+          "sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda"
+        },
+        "scripts/campaign_save_store.gd": {
+          "physical_lines": 228,
+          "nonblank_lines": 204,
+          "sha256": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc"
+        },
+        "scripts/campaign_simulation.gd": {
+          "physical_lines": 2905,
+          "nonblank_lines": 2663,
+          "sha256": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a"
+        },
+        "scripts/cartoon_canvas.gd": {
+          "physical_lines": 215,
+          "nonblank_lines": 185,
+          "sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533"
+        },
+        "scripts/construction_rules.gd": {
+          "physical_lines": 207,
+          "nonblank_lines": 184,
+          "sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701"
+        },
+        "scripts/decoration_cache.gd": {
+          "physical_lines": 5,
+          "nonblank_lines": 5,
+          "sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da"
+        },
+        "scripts/game_audio.gd": {
+          "physical_lines": 201,
+          "nonblank_lines": 169,
+          "sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612"
+        },
+        "scripts/hud.gd": {
+          "physical_lines": 743,
+          "nonblank_lines": 704,
+          "sha256": "4af08fb1ff1cfe8ee607328cee029c48661902a2b9703da234aafb06f92b99f2"
+        },
+        "scripts/main.gd": {
+          "physical_lines": 1109,
+          "nonblank_lines": 1058,
+          "sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0"
+        },
+        "scripts/recruitment_rules.gd": {
+          "physical_lines": 180,
+          "nonblank_lines": 157,
+          "sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190"
+        },
+        "scripts/render_motion.gd": {
+          "physical_lines": 68,
+          "nonblank_lines": 52,
+          "sha256": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac"
+        },
+        "scripts/terrain_cache.gd": {
+          "physical_lines": 11,
+          "nonblank_lines": 10,
+          "sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2"
+        },
+        "scripts/world_view.gd": {
+          "physical_lines": 958,
+          "nonblank_lines": 856,
+          "sha256": "6cc0c6072f64b2d03e22691bc1a7ebe70f546a259611874f296ddfdd3439edda"
+        }
+      }
+    },
+    "diagnostics": {
+      "files": 3,
+      "physical_lines": 1504,
+      "nonblank_lines": 1360,
+      "entries": {
+        "scripts/diagnostics/campaign_route.gd": {
+          "physical_lines": 372,
+          "nonblank_lines": 321,
+          "sha256": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3"
+        },
+        "scripts/diagnostics/campaign_runner.gd": {
+          "physical_lines": 437,
+          "nonblank_lines": 382,
+          "sha256": "5d77408d5121609b0a5289a1fd921d80b460ff624d04be92d3f999ed2064e3c2"
+        },
+        "scripts/diagnostics/render_runner.gd": {
+          "physical_lines": 695,
+          "nonblank_lines": 657,
+          "sha256": "c64f4464eb5540bdafcc83eadcda0ba00a072876444a15dc4ab3e11839d7598c"
+        }
+      }
+    },
+    "tests_and_benchmarks": {
+      "files": 34,
+      "physical_lines": 9949,
+      "nonblank_lines": 9135,
+      "entries": {
+        "tests/benchmark_campaign.gd": {
+          "physical_lines": 326,
+          "nonblank_lines": 312,
+          "sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a"
+        },
+        "tests/benchmark_rendered.gd": {
+          "physical_lines": 562,
+          "nonblank_lines": 534,
+          "sha256": "548610b926bf0f81ea2410adaf454bb38fea258bd3552205a14773e997b12fdc"
+        },
+        "tests/render_fixture.gd": {
+          "physical_lines": 53,
+          "nonblank_lines": 47,
+          "sha256": "5dde89a1d150d3968144775b0b3eeeeb6239f77a2b05cf39f31a94ac783f459d"
+        },
+        "tests/test_actor_overlays.gd": {
+          "physical_lines": 262,
+          "nonblank_lines": 243,
+          "sha256": "b999cb0377635a15ee729e15c7ffa3d180ef9558e43f9910186490c38c91b37c"
+        },
+        "tests/test_arrival_staging.gd": {
+          "physical_lines": 147,
+          "nonblank_lines": 137,
+          "sha256": "f4cb01de09deece7b85445e26097ce72e693113d054cd7d91e66831e153f83e5"
+        },
+        "tests/test_campaign.gd": {
+          "physical_lines": 671,
+          "nonblank_lines": 639,
+          "sha256": "adb011d3eeb99b784df6efe934e95d26ab5ac6d9c460a3a75919958dbecd9886"
+        },
+        "tests/test_campaign_catalog.gd": {
+          "physical_lines": 258,
+          "nonblank_lines": 233,
+          "sha256": "be1cf7a4dc3d21e72e9ecb5dcdfa553bf84bcb0ca867e1df82fd48c0b2e6650a"
+        },
+        "tests/test_campaign_diagnostics.gd": {
+          "physical_lines": 201,
+          "nonblank_lines": 178,
+          "sha256": "da619b457d91c0239fd5ed65cc204a28518bd6afad9c6962ace717dac139536f"
+        },
+        "tests/test_campaign_record.gd": {
+          "physical_lines": 145,
+          "nonblank_lines": 121,
+          "sha256": "9e64ddd4b1b8a04425685c81b4ab1138689dc7965bde0b5529530c2a82a570c7"
+        },
+        "tests/test_campaign_selection.gd": {
+          "physical_lines": 276,
+          "nonblank_lines": 248,
+          "sha256": "ac04ee3e37f3f12d74c0fa331ac00d89f3d3c23695b1159a5a4556cf3628edad"
+        },
+        "tests/test_campaign_variants.gd": {
+          "physical_lines": 464,
+          "nonblank_lines": 438,
+          "sha256": "e82535eae7ef896270f116a90c9a45923732ad9e6aa386e285b4924270a83bd6"
+        },
+        "tests/test_cartoon_primitives.gd": {
+          "physical_lines": 91,
+          "nonblank_lines": 85,
+          "sha256": "98faf5ea3a460c5d319b410824625828542e4c4c0e9fe82abedcab24013b1cda"
+        },
+        "tests/test_construction_feedback.gd": {
+          "physical_lines": 325,
+          "nonblank_lines": 290,
+          "sha256": "24f2cf61baf88f5dab40e890b57d072670bd219bf0715672a005963016e030b5"
+        },
+        "tests/test_construction_ui.gd": {
+          "physical_lines": 161,
+          "nonblank_lines": 152,
+          "sha256": "2f08b49a868adbf5c807709ccb47586d5668f05044ca9500c5c3a68f817d2788"
+        },
+        "tests/test_cross_process.gd": {
+          "physical_lines": 336,
+          "nonblank_lines": 296,
+          "sha256": "3925172f867cc7ace2e6b96374bbce494f50abe01e6e85b202ec871ada6de2da"
+        },
+        "tests/test_exit_recovery.gd": {
+          "physical_lines": 261,
+          "nonblank_lines": 241,
+          "sha256": "3ea41ec9dbe3c16cff794b11c9b54ad62ba43dbe3b9676c7ba25c0b4f6702cd7"
+        },
+        "tests/test_focus_recovery.gd": {
+          "physical_lines": 325,
+          "nonblank_lines": 301,
+          "sha256": "4a7cfc57347059161e0255d721319ba627eaa5a9d486818b8d23455db6801b37"
+        },
+        "tests/test_game_audio.gd": {
+          "physical_lines": 284,
+          "nonblank_lines": 255,
+          "sha256": "5d40519f50f56e662c0a4050d2fa9c32ae69ecc61904b1244bc87f0c3a95970f"
+        },
+        "tests/test_guide.gd": {
+          "physical_lines": 465,
+          "nonblank_lines": 431,
+          "sha256": "9e93c60234713a182f9b59ec3227a5168365c929c481bd6b6f6dd8a105ea556a"
+        },
+        "tests/test_hud_layout_cache.gd": {
+          "physical_lines": 56,
+          "nonblank_lines": 53,
+          "sha256": "28a68928444eb5aa64d56c411f3fba911e90e3663675b400f5c2f763670fb0db"
+        },
+        "tests/test_input_dispatch.gd": {
+          "physical_lines": 350,
+          "nonblank_lines": 301,
+          "sha256": "9b432a2416ee1d64c7dd6b779810d5c49fd4829c613fc63cfb29e6d0000b0a44"
+        },
+        "tests/test_macro_controls.gd": {
+          "physical_lines": 409,
+          "nonblank_lines": 381,
+          "sha256": "eb62f12aa5b521e8fdaf7a1a7263833f5424c7e510565f75a454ddd4a4629255"
+        },
+        "tests/test_mission_guide.gd": {
+          "physical_lines": 277,
+          "nonblank_lines": 247,
+          "sha256": "4060cfb2df54c37402eb10f4db311938527a7a9e508e723f26dd8d8aca53bb9b"
+        },
+        "tests/test_mission_playthrough.gd": {
+          "physical_lines": 171,
+          "nonblank_lines": 164,
+          "sha256": "5a4d5a5468cb76894c3ba11a8280e30b3a16c18fa439a557a21c2de1eecc764d"
+        },
+        "tests/test_native_route_config.gd": {
+          "physical_lines": 79,
+          "nonblank_lines": 68,
+          "sha256": "28fcea8597a9d0fb09bf5f8d6631b2bf537dabf525d87d7ddd82e80f36eb155b"
+        },
+        "tests/test_navigation_combat.gd": {
+          "physical_lines": 701,
+          "nonblank_lines": 662,
+          "sha256": "158dd541899ec94938b9d95caf71bc13ba636cc6fbccf2278f8e46e34d354764"
+        },
+        "tests/test_preferences_recovery.gd": {
+          "physical_lines": 586,
+          "nonblank_lines": 527,
+          "sha256": "472ea1adc637648c92b1d92a0edcb0d2c27f05f076f159a5f766d3eb8c920a06"
+        },
+        "tests/test_recruitment_feedback.gd": {
+          "physical_lines": 381,
+          "nonblank_lines": 346,
+          "sha256": "97289a8e14bc3d187626f43a2e96c888a8eacecdaafcf966701293dc91d12458"
+        },
+        "tests/test_render_cache.gd": {
+          "physical_lines": 133,
+          "nonblank_lines": 127,
+          "sha256": "52e57d7e8fc81e1179dbf323267fc5d1d131434950e715939fcc965ea5ef2635"
+        },
+        "tests/test_render_diagnostics.gd": {
+          "physical_lines": 129,
+          "nonblank_lines": 121,
+          "sha256": "4cabbbfe26b18d49300243318066c9855914680403d127bb2cc948ae661fdec1"
+        },
+        "tests/test_render_motion.gd": {
+          "physical_lines": 186,
+          "nonblank_lines": 172,
+          "sha256": "9d2fe5435e12f6eab998b645abe438f60f91fd51151ea661add86c470fcc8f93"
+        },
+        "tests/test_save_store.gd": {
+          "physical_lines": 351,
+          "nonblank_lines": 295,
+          "sha256": "a18917490e6cb5bd2df8ed1c514ff003adc31cbc5fd2e6714f71bd7f275c56ca"
+        },
+        "tests/test_terminal_guide.gd": {
+          "physical_lines": 154,
+          "nonblank_lines": 138,
+          "sha256": "1c7fab8984be3cb8840cb491209532695757253739f02c1140e465d9225524d4"
+        },
+        "tests/test_ui.gd": {
+          "physical_lines": 373,
+          "nonblank_lines": 352,
+          "sha256": "4f47bf48fbe8a897f6dc11446ae42bb2c7b409020f6d843c099628c5d829d8fc"
+        }
+      }
+    },
+    "build_and_generation_tools": {
+      "files": 7,
+      "physical_lines": 1355,
+      "nonblank_lines": 1232,
+      "entries": {
+        "tools/export_release.sh": {
+          "physical_lines": 71,
+          "nonblank_lines": 71,
+          "sha256": "198c3be3cdec172f1677bb049017a93109af3977a59f9025fb9d8f11e3dc84f1"
+        },
+        "tools/generate_audio.py": {
+          "physical_lines": 82,
+          "nonblank_lines": 72,
+          "sha256": "a14ad2676a77df67afd4a304e52d4d9444d52cc2994e1627e60c755e0b936e32"
+        },
+        "tools/generate_sfx.py": {
+          "physical_lines": 142,
+          "nonblank_lines": 128,
+          "sha256": "b374e2284388b716151b3d5d54010684084038fb531b0de15ff0ddcfb4d12555"
+        },
+        "tools/package_builds.py": {
+          "physical_lines": 144,
+          "nonblank_lines": 131,
+          "sha256": "5856520c0d5514e1989acf3457dffd2fc402f48e574ff860b86a15be3b9b88a1"
+        },
+        "tools/patch_windows_resources.py": {
+          "physical_lines": 303,
+          "nonblank_lines": 265,
+          "sha256": "64ccbbe97b0235d4f37c1e3c086a9c7ea308fba4afc3f25e3a7f34fea099e255"
+        },
+        "tools/run_native_campaign.py": {
+          "physical_lines": 437,
+          "nonblank_lines": 403,
+          "sha256": "cba25029b489230d1000a8c37bf190bb58fc71fdcd57c84a6137c8f121f5fbcf"
+        },
+        "tools/smoke_native.py": {
+          "physical_lines": 176,
+          "nonblank_lines": 162,
+          "sha256": "e9080a7b9ed06c056fd3aaa190f94e24ed18f6b9e4c9b6b1b757ee4d2ddfcfad"
+        }
+      }
+    },
+    "other_source_helpers": {
+      "files": 2,
+      "physical_lines": 95,
+      "nonblank_lines": 91,
+      "entries": {
+        "run.sh": {
+          "physical_lines": 14,
+          "nonblank_lines": 14,
+          "sha256": "5f3533e607e00733b225d3525b703866091d5a7a20f4677a5b0623a0c7fbffec"
+        },
+        "tools/render_icon.gd": {
+          "physical_lines": 81,
+          "nonblank_lines": 77,
+          "sha256": "d34b25f6cf8ed466c121ecffdfa304d24def929979d2c15d5b77629fe182ebc2"
+        }
+      }
+    },
+    "python_test_helpers": {
+      "files": 3,
+      "physical_lines": 450,
+      "nonblank_lines": 405,
+      "entries": {
+        "tests/native_focus_helper.py": {
+          "physical_lines": 70,
+          "nonblank_lines": 65,
+          "sha256": "51d9708efe0f1285ca7af1a0d1baa1f654809f3960ca48b48b6d7c5547f0b636"
+        },
+        "tests/test_startup_rejection.py": {
+          "physical_lines": 142,
+          "nonblank_lines": 129,
+          "sha256": "9f40b20e8d1af194a2fc35408bd0e3fadceff93f2f9949b8eaf6f975195519bb"
+        },
+        "tools/test_native_campaign_launcher.py": {
+          "physical_lines": 238,
+          "nonblank_lines": 211,
+          "sha256": "c1629dc3801592aeab8eafa71b90e8cd984e552a60371b5338f16e25f8bfbb6b"
+        }
+      }
+    }
+  },
+  "all_own_source_physical_lines": 21589,
+  "all_own_source_nonblank_lines": 19723,
+  "configuration_sha256": {
+    "project.godot": "10134aaa52ce93d1cec72ab1302cedcdc9e0d364cc4b0518f7ed7829286cf0b0",
+    "main.tscn": "adf348911449e73f956fabed42b487d062ad633b7577a4c6d07018f59498341c",
+    "export_presets.cfg": "eb5e5a53077b1417b41bc600c376fa5600842cc0fc3bca4817f8ad8deacefc00"
+  },
+  "asset_sha256": {
+    "assets/audio/canyon_ambient.wav": "4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769",
+    "assets/audio/sfx_build.wav": "1e8ef2be5057c330760bf84c4a320fe7b611b973cfc63190f3f8af9f72763977",
+    "assets/audio/sfx_confirm.wav": "65cdda9a1997f596b40ed1fb021ed081701f0f98343d82b1d3181d290f544091",
+    "assets/audio/sfx_impact.wav": "49fcb7bf0d03229f8fc1a04454412f910869936420899e09b594b64c77e89661",
+    "assets/audio/sfx_loot.wav": "8d7e64549b23991d6851884619571e1dafb5b4d49429d79f5a565e545908e91c",
+    "assets/audio/sfx_reject.wav": "aba491d27649b3513e0603a5daba29f256dc4536bfc9f3ec450c330c7a5cf436",
+    "assets/audio/sfx_shot_a.wav": "67420ad0bc3a66fa5369867bd9685b555ac1a6ca0011739704676847703d4fba",
+    "assets/audio/sfx_shot_b.wav": "c3f780271090f978d14b85df9bb5cd4c0bd2a6325969150feda72a6064f0405f",
+    "assets/audio/sfx_warning.wav": "0fed177282618be9a9665ceca50c450e393f05339d4b45cfb3a086e6f7e9cd54",
+    "assets/buildings-atlas-prompt.txt": "35db6b5382c06aa2b69af3a0964063b2b450f28bf4e4437afb4577665795b06e",
+    "assets/buildings-atlas.png": "64b3410843505cbed18438f839b8e49d7242c1c3dbd944369a9a95a35906afc3",
+    "assets/fonts/NOTICE.txt": "8b639404a2f2fc480c4803f5a456cef6068f03c72ea323aab65a170f7a0d5cd9",
+    "assets/fonts/NotoSansCJK-Regular.ttc": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+    "assets/identity/icon-128.png": "ba1ea20f732c8300b58866a5d32b40ed9af4ac26a55626e87dff2b8d2093731e",
+    "assets/identity/icon-256.png": "72acb354c54ecdfe46d39f6b9923010b9c5c62d8c23bf51b73dd5305c3c5be52",
+    "assets/identity/icon-32.png": "27f2e4289f9fe4528b62da600be71385439bfa3ba46e12eb0b196e4d465a4bec",
+    "assets/identity/icon-64.png": "faa9854878494b2f1b75a826abde3eb8c8a8c49908bd5aa08ec9111745aee7e3",
+    "assets/identity/icon.ico": "31d28b1e0f941d9cb583f5f13261b83047041a4e0629fe5028398e0122f6531b",
+    "assets/identity/icon.png": "f776515a341ded7ae5bd2bbc38cf91a5ff682a132d15f3a61ef3c2215e46d98e",
+    "assets/identity/icon.svg": "22122b35647f834ec71870bced822f0d7471cb0f72be903824ee41fe79b11266"
+  },
+  "test_fixture_sha256": {
+    "tests/fixtures/delta-arrival-blocked.json": "06846340fad76c74e3c0684d0255b893bcd6751471f5d2287c9a31f7ab0a1f6c",
+    "tests/fixtures/delta-arrival-blocked.provenance.json": "531585d6419dcc36734183a85b1ee53ad15ce646dc3322d5fa6b57d40e355c8b",
+    "tests/fixtures/evacuation-return-blocked.json": "729245741c7458967e26a2ecf1f6c03c94c623d113a8e5e40c2f8a2227991ef0",
+    "tests/fixtures/native-exit-funded.json": "94f0b5e4c623cc23af1c47c637792b05d8d999c9c89d8e3965035754c0080e4a",
+    "tests/fixtures/native-exit-funded.provenance.json": "6c141bc6969880d3c2d9846678db9341740a5e63336f579ebc75dcb1ca6170f7"
+  },
+  "documentation_sha256": {
+    "README.md": "04b88d474d398051fc7d50248828a9afad61b366fa0ad356d6f8ef19866a6c9e",
+    "docs/current-checkpoint.md": "afdf1fef3425a6fe754b9466c9fe3296493b86793e9f6dd702231d7f7f47599a",
+    "docs/development-plan.md": "fced2162d7676bca66a997dd565c3d0048adc769a71221a6fd41b9ba5216768a",
+    "docs/validation-plan.md": "4cfd7859753d167bd10216ccb1d598343a277c57339507ea3d40a7bb3349446b",
+    "docs/release-gates.md": "77295f64a361da84fe4b19ed67662483ac8b13a182eabc3349dfb659c5252c1f",
+    "docs/asset-provenance.md": "a4543e8b5efbd8038e7362759193b828b0788fa401fd5005b55548516fffc36d",
+    "docs/asset-inventory.json": "3a6c7ab6e0dbe77cb67a5585b744e275be6c4ce60a8741c41c68c960962d5072",
+    "docs/steam-content-survey-draft.md": "0ef6300a85fb354e6de425bb442d597e7410ab277c4201589d0e020afd8c65e1",
+    "docs/evidence/v0.8/README.md": "1d8d90b02337fe15f0057af3fedf2bc844a3a56f33b98e1ce085bd06b7150300",
+    "docs/benchmarks/v0.8/README.md": "64d95462a1203576ae3ab9c85a48cdc84ea07fb4ff55146a27fed9ab5f49053d"
+  },
+  "raw_evidence_sha256": {
+    "arrival-baseline-replay.json": "fc4387e7225a919b809fc369f043dbe7574b7492bbcb1522c959b266583c8b12",
+    "arrival-baseline-replay.txt": "2899305d1fc79c47ee20978cbbd8e797269a1ec13e3cb9ca0c99d0322d51e046",
+    "arrival-baseline-simulation.gd.txt": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2",
+    "arrival-continuation-precision-probe.gd.txt": "121e705090a0b37042c37e2bf3567483983201ff76b3f55d5bbf8ce1e923c10f",
+    "arrival-continuation-precision-probe.txt": "6dafe1c7bb607f870cee0b13b52416efe4237971c9712f11214c739876f95f2d",
+    "arrival-precision-analysis.json": "e5f9701afca533696e1c61fcf3ea81d8d95383b2e99332c3f55c69b0762676c1",
+    "arrival-precision-mismatch-live.json": "00aef5c1a8851074197607d08302e147809e8d3d7e1fd652df5b59e8b0539914",
+    "arrival-precision-mismatch-loaded.json": "c10611edf34cf1d82815634eb4ce21e772c8e2a15211c729f5dcce46e05d5cd0",
+    "arrival-replay.gd.txt": "ea8c054f7c682652383c29f0e0e03806f1f5cd8f97972e8a7eec4abfc2c19039",
+    "arrival-staging-replay.json": "6dcc41ff96c2513cde4b987f85d3d812070ded3b3bc75c2bf923c91126024b83",
+    "arrival-staging-replay.txt": "f3418066f33e2e6fb8b5fe543912b68870c112006af489760b3cf473770cf479",
+    "arrival-staging-tests.txt": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842",
+    "campaign-final.txt": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e",
+    "campaign-record-final.txt": "7b8872d5fbc2f3e5fd12aa0c67c08b213dbdc724791371e1970b912ba0ff416c",
+    "canyon-guide-final.txt": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349",
+    "delta-dock-blocked-rejected.json": "a7fc015eaaf7c5d0e8f3086cd1a86025dd8af2b1e6cf2be906695966f7571456",
+    "delta-dock-blocked-rejected.txt": "54a63606db8d14abeb59232e9d9280798375e3ea54bd43e530e34a0431626fbb",
+    "delta-source-disk-checkpoint.json": "3da16771d59ebf024d3b4bc874cf24a39269255a7a261756cd4536cb26ce5c9d",
+    "delta-source-final-state.json": "c5138decb61a3bdaad39218928a854f0ced878815a1bc4be480ddec52fe2c208",
+    "delta-source-route.json": "7e149a0db74f851fb127e503e346c6291b5e7b413d855dc008767ec957ec37c3",
+    "delta-source-route.txt": "a9aeb2b378d9bd7e21c0a9665e96599f720233956bc5cf2baace0721db10f3a2",
+    "diagnostics-invocation-refused.txt": "a95a4587de2c343c09b48dbca2a84a4afd1dc6d5e24eb86aa421d5dc6543a131",
+    "diagnostics-preflight-stage.txt": "6ca4eb52af81f3ab4598aa8fc21c60eae805eccc733a4ee2d92de46186e6ccdb",
+    "historical-v07-automatic-cycle.json": "20088998b2c4bb48e3ff378ec710803b9bbf61e114fd8d33087b3f4e44abb7bc",
+    "historical-v07-native-campaign.json": "cf7b531576db6af9e1c38a494bfb313a5ce431a424ff477dfd925aa4fc5ad90c",
+    "historical-v07-native-verifier.json": "d20e2e285deb7b9332c40c8ebceeee437f454b885d56d81c71777b6b1e8de170",
+    "historical-v07-release-evidence.json": "3e1b0f0d5b83ace67caf92a38926b6d0908150d9fb0f7dc1a30102976ee70886",
+    "hud-layout-capture.gd.txt": "1532bbc1a2d883e31564cf90cae7d2afd3945febdd7bd13961ec2ebeacdde7a2",
+    "hud-layout-capture.txt": "8323c1d1a31a04ae3e04c8ad4c043461af9efbc0e9e02b61a5e5d393e18887ca",
+    "hud-layout-captures.json": "a6eae3627f976b6f872c38243632d2f4a0ad6a0b24ac9c92cef9a7588e246bdb",
+    "hud-layout-isolation-invocation-refused.txt": "8e979eab5cfea12ee8814beda41499499606f907f7b84b7e516aa34cb2ae0c32",
+    "hud-layout-teardown-rejected.txt": "ddf82e4a03524b158e5f5ff695f04376ff6ab0d0ed89fa0f35cd4cfa040c8ca0",
+    "hud-minimap-visibility-analysis.json": "4d16887c333d3d89175e9dcdf772d46e11b0a33b90c1f9e3dbb4688c4675e80a",
+    "hud-ui-final.txt": "a83ed06c5e51a56c044b922ee8a2570c38e39e4a7bf2a395abee7b5d261494d7",
+    "hud-ui-stage.txt": "49899bdd19a438d0ea2e446677bedd386b2a96593290c095e7d2c06cb4f3ee3a",
+    "import-final.txt": "fdaa108c6933629fb84f91a2434bb66522050c41e916e63cabbb9f9fff460c6e",
+    "launcher-unit-stage.txt": "1822e087313c63643806534667202591c83ac2d5a5db377f3c9f836e91dd8ad4",
+    "mission-identity-probe.gd.txt": "4d7d8cd2a2ec8e336ae234aa33daa473b79eaa1ac0ce0cf97ed3cecfee7d3d72",
+    "mission-identity-probe.txt": "2cf336e41732c32c70c129a69d69ceb5a5062de7554737e9767ab001b28797d1",
+    "navigation-final.txt": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853",
+    "ridge-source-disk-checkpoint.json": "0d7f32c75af953b4f0f4985d0fcac29e16c6c9812d59197081a59eef9422d915",
+    "ridge-source-final-state.json": "4fc289d17fae5847678292cb83479702734d9c06c83bb00e963922d694d995eb",
+    "ridge-source-mixed-snapshot-final-state.json": "a4bafcd709aa0955b0ea2f1cca1f845fdd9448b92f62f47a70cc552a31c33bc6",
+    "ridge-source-mixed-snapshot-rejected.json": "ea01add6e3325c4b206e48594c31a7290ba1ee572821b9809952a75116e9595c",
+    "ridge-source-mixed-snapshot-rejected.txt": "33e784149e238d234dc715b7fefc76800d62fb3393b3a7da87d4e75eb9f65283",
+    "ridge-source-route.json": "858eb8e31fdab8479c9630effdaf05d70129a4dea931bbad18749a9a3cda55f3",
+    "ridge-source-route.txt": "fd857c83a2c95d690632faa044c974bd33820ac1d9c51dedb42cef8b151d8948",
+    "route-config.txt": "c57b647ac39fe524612680eec1d0b280f3bbbdb111dfa4f39d93cb82fd92d123",
+    "source-route-probe.gd.txt": "aee205d1f28a47e56ebff2e392491d677ad4b13cf32651700be71fcda97b1a4b",
+    "terminal-guide-native-final.txt": "d6ac8adcf4008c2d473aee5798a4828890c2638e0ad27a8aa54f9c9d7397af16",
+    "variants-final.txt": "e9920598213fd1fefbeffc627bd53dd2f0d41e2b4690882e91b0c8b43524006c"
+  },
+  "verified_this_iteration": {
+    "arrival_staging": {
+      "checks": 2329,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "arrival-staging-tests.txt",
+      "fixture": "tests/fixtures/delta-arrival-blocked.json",
+      "fixture_bytes": 181732,
+      "fixture_sha256": "06846340fad76c74e3c0684d0255b893bcd6751471f5d2287c9a31f7ab0a1f6c",
+      "provenance": "tests/fixtures/delta-arrival-blocked.provenance.json",
+      "test_source_sha256": "f4cb01de09deece7b85445e26097ce72e693113d054cd7d91e66831e153f83e5",
+      "simulation_sha256": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a",
+      "baseline_replay_zero_progress_seconds": 60.0,
+      "candidate_complete_by_sample_seconds": 10.05,
+      "already_paid_material_cargo": 8.0,
+      "extra_camp_charge": false,
+      "scope": "Read-only replay of actual source-route failure followed by ordinary automatic path staging. Physical movement/static geometry, original cargo/costs, protected manual/guard/active crew/moving transport orders and actual disk continuation. No manual route workaround or native acceptance."
+    },
+    "complete_production_source_routes": {
+      "delta": {
+        "report": "delta-source-route.json",
+        "log": "delta-source-route.txt",
+        "exit_code": 0,
+        "checks": 33340,
+        "includes_per_tick_playing_checks": true,
+        "failures": 0,
+        "simulation_seconds": 1664.39999999903,
+        "tick_seconds": 0.05,
+        "ticks": 33288,
+        "evacuees": 5,
+        "truck_state": "evacuated",
+        "home_deliveries": 3,
+        "middle_deliveries": 4,
+        "disk_continuation": {
+          "file_sha256": "3da16771d59ebf024d3b4bc874cf24a39269255a7a261756cd4536cb26ce5c9d",
+          "label": "loaded_middle_withdrawal",
+          "mission_id": "delta",
+          "mission_tag": "wetland_escape_02",
+          "success": true,
+          "time": 964.499999999671
+        },
+        "funded_exit_job": {
+          "building_id": 19,
+          "costs": {
+            "fuel": 45.0,
+            "materials": 140.0,
+            "supplies": 30.0
+          },
+          "delivered": true,
+          "done": true,
+          "funded": true,
+          "id": 291,
+          "source_camp_id": 173
+        },
+        "exit_complete_simulation_seconds": 1650.19999999905,
+        "source_sha256_before_and_after": {
+          "route": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+          "simulation": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a"
+        },
+        "scope": "Full production public-command route through ignored test observer calling actual public Simulation.tick(0.05). Complete normalized simulation/RNG/mission equality through actual disk checkpoint. No Main instance, controller/UI continuation, normal native clock, rendering, FPS or human acceptance. All capture records rendered=false."
+      },
+      "ridge": {
+        "report": "ridge-source-route.json",
+        "log": "ridge-source-route.txt",
+        "exit_code": 0,
+        "checks": 35659,
+        "includes_per_tick_playing_checks": true,
+        "failures": 0,
+        "simulation_seconds": 1780.34999999893,
+        "tick_seconds": 0.05,
+        "ticks": 35607,
+        "evacuees": 6,
+        "truck_state": "evacuated",
+        "home_deliveries": 3,
+        "middle_deliveries": 4,
+        "disk_continuation": {
+          "file_sha256": "0d7f32c75af953b4f0f4985d0fcac29e16c6c9812d59197081a59eef9422d915",
+          "label": "loaded_middle_withdrawal",
+          "mission_id": "ridge",
+          "mission_tag": "ridge_escape_03",
+          "success": true,
+          "time": 998.44999999964
+        },
+        "funded_exit_job": {
+          "building_id": 19,
+          "costs": {
+            "fuel": 45.0,
+            "materials": 140.0,
+            "supplies": 30.0
+          },
+          "delivered": true,
+          "done": true,
+          "funded": true,
+          "id": 326,
+          "source_camp_id": 189
+        },
+        "exit_complete_simulation_seconds": 1766.34999999894,
+        "source_sha256_before_and_after": {
+          "route": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+          "simulation": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a"
+        },
+        "scope": "Full production public-command route through ignored test observer calling actual public Simulation.tick(0.05). Complete normalized simulation/RNG/mission equality through actual disk checkpoint. No Main instance, controller/UI continuation, normal native clock, rendering, FPS or human acceptance. All capture records rendered=false."
+      }
+    },
+    "navigation": {
+      "checks": 151,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "navigation-final.txt"
+    },
+    "campaign": {
+      "checks": 170,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "campaign-final.txt"
+    },
+    "variants": {
+      "checks": 115,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "variants-final.txt"
+    },
+    "canyon_full_source_guide": {
+      "checks": 211,
+      "failures": 0,
+      "exit_code": 0,
+      "actual_victory_simulation_seconds": 1590.0,
+      "evacuees": null,
+      "log": "canyon-guide-final.txt",
+      "scope": "Full scripted source guide route; raw log does not establish evacuee count. Not full native or human acceptance."
+    },
+    "encoded_job_record": {
+      "checks": 94,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "campaign-record-final.txt",
+      "scope": "Read-only diagnostic extraction against the retained actual historical failed native-save fixture; not a new native route."
+    },
+    "hud_rendered_interaction": {
+      "stage_checks": 124,
+      "final_combined_checks": 124,
+      "failures": 0,
+      "exit_codes": [
+        0,
+        0
+      ],
+      "logs": [
+        "hud-ui-stage.txt",
+        "hud-ui-final.txt"
+      ],
+      "scope": "Native-rendered source controller/HUD fixture interactions, not exported full campaign or physical-input human acceptance."
+    },
+    "terminal_guide_native_rendered": {
+      "checks": 78,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "terminal-guide-native-final.txt",
+      "simulation_sha256": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a",
+      "main_sha256": "889a4b7da4ec45f7fe23666d30ee3331d31537dac05a9b7c47ac6c7ebd89dca0",
+      "source_unchanged_before_after": true,
+      "scope": "Source-controller native X11 terminal-frame fixture, not exported full campaign or native clock/performance acceptance."
+    },
+    "hud_paused_source_captures": {
+      "captures": 5,
+      "exit_code": 0,
+      "capture_metadata": "hud-layout-captures.json",
+      "probe": "hud-layout-capture.gd.txt",
+      "log": "hud-layout-capture.txt",
+      "read_only_simulation": true,
+      "source_pngs_added": false,
+      "assistant_visual_inspection_only": true,
+      "minimap_visibility_changed_pixels": 75,
+      "visibility_analysis": "hud-minimap-visibility-analysis.json",
+      "scope": "Paused source rendering/assistant visual inspection and read-only pixel analysis. Title/1080/small120%/shown-hidden guide/atlas fallback. Not human playtest, full native campaign or FPS evidence."
+    },
+    "final_editor_import": {
+      "exit_code": 0,
+      "log": "import-final.txt",
+      "new_test_uid_files": 2,
+      "native_export_proof": false
+    },
+    "route_configuration_stage": {
+      "checks": 103,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "route-config.txt",
+      "scope": "Read-only source mission-route strategy/configuration checks, not route completion."
+    },
+    "diagnostic_preflight_stage": {
+      "checks": 79,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "diagnostics-preflight-stage.txt",
+      "scope": "Source diagnostic guard/configuration and observer checks, not complete native gameplay."
+    },
+    "mission_identity_probe_stage": {
+      "checks": 30,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "mission-identity-probe.txt",
+      "probe": "mission-identity-probe.gd.txt",
+      "scope": "Read-only real Simulation reset/save/load and mission helper checks across Canyon/Delta/Ridge. Headless; no Main/native/GPU/full route."
+    },
+    "python_launcher_stage": {
+      "tests": 10,
+      "failures": 0,
+      "exit_code": 0,
+      "log": "launcher-unit-stage.txt",
+      "test_source": "tools/test_native_campaign_launcher.py",
+      "test_source_sha256": "c1629dc3801592aeab8eafa71b90e8cd984e552a60371b5338f16e25f8bfbb6b",
+      "scope": "Synthetic verifier acceptance/rejection tests; no native launch or gameplay."
+    }
+  },
+  "precision_fixture_analysis": {
+    "record": "arrival-precision-analysis.json",
+    "original_probe": "arrival-continuation-precision-probe.txt",
+    "states": [
+      "arrival-precision-mismatch-live.json",
+      "arrival-precision-mismatch-loaded.json"
+    ],
+    "only_numeric_differences": 2,
+    "fields": [
+      "enemy251.nav_wait",
+      "enemy256.nav_wait"
+    ],
+    "binary_ulps_each": [
+      1,
+      1
+    ],
+    "immediate_normalized_state_and_assigned_paths_exact": true,
+    "subsequent_full_tagged_structure_entry_order_and_rng_checked": true,
+    "numeric_bound": {
+      "absolute": 1e-12,
+      "relative": 2e-15,
+      "formula": "abs(left-right) <= max(absolute,max(abs(left),abs(right))*relative)"
+    },
+    "scope": "Diagnosed existing JSON parser precision, separate from real depot blockage. No actual-Main diagnostic disk-oracle weakening."
+  },
+  "known_rejected_source_attempts": {
+    "delta_actual_product_blockage": {
+      "report": "delta-dock-blocked-rejected.json",
+      "log": "delta-dock-blocked-rejected.txt",
+      "source_sha256": {
+        "route": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+        "simulation": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2"
+      },
+      "simulated_seconds": 1330.09999999934,
+      "checks": 26644,
+      "failures": [
+        "simulation timeout: front_local_road actual completion",
+        "same production route wins at source0.05step",
+        "final exit alive completed and powered at unchanged6demand",
+        "actual living command truck and four survivors evacuated"
+      ],
+      "scope": "Actual source Simulation.tick(0.05) production route, not Main/native. Engineer carrying paid cargo blocked by idle destination arrivals; exact unchanged failed save is a permanent fixture."
+    },
+    "ridge_mixed_source_run": {
+      "report": "ridge-source-mixed-snapshot-rejected.json",
+      "log": "ridge-source-mixed-snapshot-rejected.txt",
+      "final_state": "ridge-source-mixed-snapshot-final-state.json",
+      "recorded_outcome": "victory",
+      "failures": [
+        "tested runtime sources unchanged during run"
+      ],
+      "sources_before": {
+        "route": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+        "simulation": "329f98a85813dce38dee82beade46fe6a5f4155d8a90312b2c5e5eb3953d33a2"
+      },
+      "sources_after": {
+        "route": "1f9b9e6c72b7cea4e61e55a04cc7bf55d386d8c5f500671ada3137ac3e84eaa3",
+        "simulation": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a"
+      },
+      "scope": "Correct overall rejection despite recorded victory because source changed during the preloaded-old-source run. Not a gameplay-loss claim or clean final candidate pass."
+    },
+    "hud_capture_teardown_fixture": {
+      "log": "hud-layout-teardown-rejected.txt",
+      "scope": "Ignored capture harness audio/resource teardown warnings; rejected fixture run, not shipping product failure or accepted clean capture."
+    },
+    "hud_capture_wrong_isolation_invocation": {
+      "log": "hud-layout-isolation-invocation-refused.txt",
+      "scope": "Wrong-isolation ignored probe invocation asserted; separate from clean final capture and product failures."
+    },
+    "diagnostics_missing_flag_invocation": {
+      "log": "diagnostics-invocation-refused.txt",
+      "exit_code": 2,
+      "scope": "Expected guard refusal for invocation missing --campaign-validation; corrected tool invocation, not product failure."
+    }
+  },
+  "historical_accepted_native_v07": {
+    "source_commit": "ede3c504f74843ca36dce6bff75d5d9107cb76da",
+    "release_record": "historical-v07-release-evidence.json",
+    "actual_unpacked_linux_canyon_complete": true,
+    "simulation_seconds": 1595.6499999990965,
+    "wall_seconds": 532.757052,
+    "main_loop": {
+      "fixed_step_seconds": 0.05,
+      "invalid_time_steps": 0,
+      "observed_frames": 26670,
+      "observed_sim_seconds": 1595.6499999990965,
+      "observed_ticks": 31913,
+      "raw_main_ticks": 31913,
+      "terminal_noop_ticks": 0
+    },
+    "evacuees": 5,
+    "full_simulation_rng_ui_disk_reload_equal": true,
+    "native_frame_mean_fps": [
+      59.7343464278487,
+      59.5384086408754
+    ],
+    "warmup_per_view": 120,
+    "measured_per_view": 3600,
+    "scope": "Unchanged accepted historical 0.7 payload evidence; never promoted to 0.8, other missions, minimum hardware, stable60FPS, Windows, human play or Steam acceptance."
+  },
+  "native_campaign_evidence": {
+    "status": "pending newly committed/exported 0.8 actual-Main per-mission runs",
+    "missions": [
+      "canyon",
+      "delta",
+      "ridge"
+    ],
+    "prepare_only_is_not_full_campaign": true,
+    "source_observer_is_not_native_main_proof": true
+  },
+  "native_performance": {
+    "status": "pending separately against exact actual 0.8 EXE/PCK",
+    "warmup_per_zoom": 120,
+    "measured_per_zoom": 3600,
+    "historical_fps_reused": false
+  },
+  "open_gates": [
+    "actual 0.8 exported full Main campaigns, loaded-withdrawal UI/disk continuation and exact-payload frame/soak acceptance",
+    "fresh-player playability, physical input and human listening",
+    "Windows, clean-machine installs and wider devices",
+    "minimum hardware and stable frame pacing",
+    "final own-code/art terms, asset/accessibility/localization acceptance",
+    "actual Steam account/store/content-survey/depot/review"
+  ]
+}

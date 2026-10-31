@@ -51,6 +51,11 @@ func _test_arguments() -> void:
 		_check(bounded.errors.is_empty() and int(bounded.max_seconds) == limit, "inclusive supported wall-time bound%d" % limit)
 	var prepared: Dictionary = Runner.parse_arguments(PackedStringArray(["--campaign-validation", "--prepare-only"]))
 	_check(prepared.errors.is_empty() and prepared.prepare_only, "explicit prepare-only mode is separate")
+	for mission: String in ["canyon", "delta", "ridge"]:
+		var full: Dictionary = Runner.parse_arguments(PackedStringArray(["--campaign-validation", "--mission=" + mission]))
+		_check(full.errors.is_empty() and full.mission == mission and not full.prepare_only, "full route accepts explicit supported mission:" + mission)
+		var prepare: Dictionary = Runner.parse_arguments(PackedStringArray(["--campaign-validation", "--mission=" + mission, "--prepare-only"]))
+		_check(prepare.errors.is_empty() and prepare.mission == mission and prepare.prepare_only, "prepare-only retains explicit supported mission:" + mission)
 	for arguments: PackedStringArray in [
 		PackedStringArray([]),
 		PackedStringArray(["--mission=canyon"]),
@@ -58,8 +63,8 @@ func _test_arguments() -> void:
 		PackedStringArray(["--campaign-validation", "--prepare-only", "--prepare-only"]),
 		PackedStringArray(["--campaign-validation", "--mission=canyon", "--mission=canyon"]),
 		PackedStringArray(["--campaign-validation", "--max-seconds=60", "--max-seconds=900"]),
-		PackedStringArray(["--campaign-validation", "--mission=delta"]),
-		PackedStringArray(["--campaign-validation", "--mission=ridge"]),
+		PackedStringArray(["--campaign-validation", "--mission=delta", "--mission=ridge"]),
+		PackedStringArray(["--campaign-validation", "--mission="]),
 		PackedStringArray(["--campaign-validation", "--mission=unknown"]),
 		PackedStringArray(["--campaign-validation", "--max-seconds=59"]),
 		PackedStringArray(["--campaign-validation", "--max-seconds=1801"]),

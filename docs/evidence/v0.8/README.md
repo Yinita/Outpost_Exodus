@@ -1,0 +1,24 @@
+# 0.8 candidate evidence boundary
+
+This is a frozen pre-export source candidate for multi-mission native verification, automatic depot staging and HUD information. Final inventory refresh precedes the candidate count/hash manifest. Current 0.8 exported complete-route and native-frame acceptance remain pending; the later actual export and outer release evidence must bind commit/tree/EXE/PCK. Python launcher tests count as test helpers, separately from production build tools; historical JSON and probe text copies do not enter source line totals.
+
+The production-route source observer calls actual public `Simulation.tick(0.05)` and retains these complete outcomes:
+
+| Mission | Simulated seconds | Steps | Evacuees plus truck | Actual disk checkpoint | Powered exit complete |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Delta | 1664.4 | 33,288 | 5 | 964.5 | 1650.2 |
+| Ridge | 1780.35 | 35,607 | 6 | 998.45 | 1766.35 |
+
+Each run records three home/four middle deliveries, complete normalized simulation/RNG/mission disk equality, both resources, sealing, real abandoned stock and paid 140/45/30 construction with six-power exit demand. Simulation `54e85c71…` and route `1f9b9e6c…` are unchanged before/after. Reports, logs, final states, actual checkpoints and observer source are retained. The source facade never instantiates Main; capture entries are `rendered=false`. These records do not prove UI/Main-clock/native/FPS behavior. An earlier Ridge victory is retained as rejected mixed-source verification because the on-disk simulation changed during that run.
+
+The actual Delta product blockage stays in `delta-dock-blocked-rejected.*` and the unchanged 181,732-byte fixture/sidecar under `tests/fixtures`. Its engineer already carried eight paid road materials but idle depot arrivals blocked the lane. Baseline replay leaves zero road progress through 60 simulated seconds; candidate automatic legal-path staging has completed it by the 10.05-second sample. The 2,329-check regression preserves physical movement, cargo/payment, protected orders and real disk continuation. This fixes the simulation rather than requiring a manual route workaround.
+
+Immediate normalized state/target/path equality is exact. Subsequent tagged fields/entry ordering and exact RNG remain compared, with numeric values under the existing `max(1e-12 absolute, 2e-15 relative)` JSON bound. The retained strict probe and full mismatch states differ only in two unrelated enemy `nav_wait` values, one ULP each; `arrival-precision-analysis.json` gives exact values and original-state digests. This diagnosed numeric fixture difference is separate from the real blockage and does not weaken the actual-Main disk oracle.
+
+Final navigation 151, campaign 170, variants 115, full Canyon guide 211, encoded-job extraction 94, combined rendered HUD interaction 124 and native-rendered terminal guide 78 pass with confirmed exit 0. Canyon's guide records actual victory at 1590.0 seconds without an asserted evacuee count. Terminal logs retain unchanged simulation/Main identities. Earlier route configuration 103, diagnostic preflight 79, read-only mission helper 30 and Python launcher 10 tests keep their own source/synthetic scopes. They are not full native routes. Final editor import exits 0.
+
+Five clean paused-source capture records cover title 1920×1080, Delta with guide at 1920×1080, visible/hidden guide at 1152×648/120% UI, and atlas fallback. Metadata records unchanged simulation; assistant visual inspection and a 75-pixel minimap-region comparison support marker visibility without a human-playtest claim. PNGs remain outside source. The initial capture harness's audio teardown warnings and a later wrong-isolation assertion are rejected fixture/invocation records. The omitted-flag preflight refusal is another invocation correction. These are separate from both the clean final capture and the Delta gameplay bug.
+
+The four `historical-v07-*` JSON files are unchanged accepted records for `ede3c504f74843ca36dce6bff75d5d9107cb76da`. Actual unpacked Linux Canyon completed in 1595.65 simulated seconds/532.757052 wall seconds, 31,913 actual Main ticks/zero invalid steps, complete loaded-withdrawal simulation/RNG/UI disk equality and five evacuees plus truck. Exact-payload busy means are 59.7343464278487/59.5384086408754 FPS with 120 warmup/3,600 measured frames and real hauling/construction/saves. Smoke, automatic files, archive checks and finalization passed. The committed v0.7 directory remains its original pre-export snapshot; these later release records supply acceptance without rewriting that history.
+
+Historical 0.7 results are not promoted to 0.8, another mission, stable 60 FPS, minimum hardware, Windows/clean machines, physical-input full play, human listening or Steam acceptance. Final own-code/art terms and Steam account/store/content-survey/depot/review remain open.

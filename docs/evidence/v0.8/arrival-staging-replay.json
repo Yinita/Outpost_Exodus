@@ -1,0 +1,1762 @@
+{
+	"fixture_sha256": "06846340fad76c74e3c0684d0255b893bcd6751471f5d2287c9a31f7ab0a1f6c",
+	"samples": [
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {
+					"materials": 8.0
+				},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 276.0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 142.349999999998,
+				"order": "construct",
+				"path": [
+					"(54.0, 27.0)",
+					"(55.0, 27.0)"
+				],
+				"path_index": 1,
+				"pos": "(53.29804, 27.29153)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "delivering",
+				"target": "(55.0, 27.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							8.0
+						]
+					]
+				},
+				"delivered": false,
+				"done": false,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 55.0,
+					"y": 27.0
+				},
+				"progress": 0.0,
+				"road_cursor": 1.0,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 1,
+			"time": 1330.14999999934,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(54.0, 26.0)",
+					"(54.0, 27.0)"
+				],
+				"path_index": 2.0,
+				"pos": "(54.49641, 27.02895)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(54.0, 27.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {
+					"materials": 4.0
+				},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 276.0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "construct",
+				"path": [
+					"(57.0, 27.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.94427, 27.0)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0999999999999997,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "building",
+				"target": "(57.0, 27.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							4.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": false,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 27.0
+				},
+				"progress": 0.64,
+				"road_cursor": 3,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 101,
+			"time": 1335.14999999934,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "move",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 5,
+				"pos": "(54.99836, 30.64911)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "moving",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 201,
+			"time": 1340.14999999933,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 301,
+			"time": 1345.14999999933,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 401,
+			"time": 1350.14999999932,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 501,
+			"time": 1355.14999999932,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 601,
+			"time": 1360.14999999931,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 701,
+			"time": 1365.14999999931,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 801,
+			"time": 1370.1499999993,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 901,
+			"time": 1375.1499999993,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 1001,
+			"time": 1380.14999999929,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 1101,
+			"time": 1385.14999999929,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		},
+		{
+			"engineer": {
+				"attack_interval": 1.1,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 18.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 7.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 0.0,
+				"evac_origin_id": 0.0,
+				"guard_pos": "(10.0, 11.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 65.0,
+				"id": 9.0,
+				"job_id": 0,
+				"kind": "engineer",
+				"manual": false,
+				"max_hp": 65.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(57.0, 28.0)"
+				],
+				"path_index": 1,
+				"pos": "(56.99763, 27.95744)",
+				"pursuer": false,
+				"range": 3.5,
+				"repath": 0.0,
+				"speed": 1.15,
+				"squad": 1.0,
+				"state": "idle",
+				"target": "(57.0, 28.0)",
+				"team": "friendly"
+			},
+			"job": {
+				"assigned": 9.0,
+				"building_id": 0.0,
+				"costs": {
+					"$type": "Dictionary",
+					"entries": [
+						[
+							"materials",
+							0.0
+						]
+					]
+				},
+				"delivered": true,
+				"done": true,
+				"funded": true,
+				"id": 276.0,
+				"kind": "road",
+				"picked_up": true,
+				"pos": {
+					"$type": "Vector2",
+					"x": 57.0,
+					"y": 28.0
+				},
+				"progress": 1.0,
+				"road_cursor": 4,
+				"road_tiles": [
+					{
+						"$type": "Vector2i",
+						"x": 54,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 55,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 56,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 27
+					},
+					{
+						"$type": "Vector2i",
+						"x": 57,
+						"y": 28
+					}
+				],
+				"source_camp_id": 173.0
+			},
+			"ticks": 1200,
+			"time": 1390.09999999929,
+			"truck": {
+				"attack_interval": 0.85,
+				"attack_move": false,
+				"camp_id": 173.0,
+				"capacity": 180.0,
+				"cargo": {},
+				"cooldown": 0.0,
+				"damage": 0.0,
+				"escort_id": 0.0,
+				"evac_destination_id": 173.0,
+				"evac_origin_id": 46.0,
+				"guard_pos": "(11.0, 13.0)",
+				"haul_site": 0.0,
+				"haul_stage": "",
+				"hp": 380.0,
+				"id": 13.0,
+				"job_id": 0.0,
+				"kind": "truck",
+				"manual": false,
+				"max_hp": 380.0,
+				"nav_wait": 0.0,
+				"order": "idle",
+				"path": [
+					"(55.0, 27.0)",
+					"(55.0, 28.0)",
+					"(55.0, 29.0)",
+					"(55.0, 30.0)",
+					"(55.0, 31.0)",
+					"(55.0, 32.0)"
+				],
+				"path_index": 6,
+				"pos": "(54.99994, 31.94847)",
+				"pursuer": false,
+				"range": 0.0,
+				"repath": 0.0,
+				"speed": 1.75,
+				"squad": 0.0,
+				"state": "idle",
+				"target": "(55.0, 32.0)",
+				"team": "friendly"
+			}
+		}
+	],
+	"source_sha256": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a"
+}

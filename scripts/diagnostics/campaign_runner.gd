@@ -3,6 +3,7 @@ extends Node
 ## Drives the real Main loop with public commands; no manual simulation steps.
 const RenderRunner = preload("res://scripts/diagnostics/render_runner.gd")
 const CampaignRoute = preload("res://scripts/diagnostics/campaign_route.gd")
+const Simulation = preload("res://scripts/campaign_simulation.gd")
 const STEP_SECONDS: float = 0.05
 
 var app: Node2D
@@ -33,6 +34,7 @@ var _previous_transport: bool = false
 var _deliveries: Dictionary = {}
 var _auto_hash: String = ""
 var _auto_changes: int = 0
+var _requested_mission_id: String = "canyon"
 
 
 static func parse_arguments(arguments: PackedStringArray) -> Dictionary:
@@ -53,7 +55,7 @@ static func parse_arguments(arguments: PackedStringArray) -> Dictionary:
 			else: result.max_seconds = int(value)
 		else: result.errors.append("unsupported or mixed campaign validation argument: " + argument)
 	if not seen.has("--campaign-validation"): result.errors.append("--campaign-validation is required")
-	if result.mission != "canyon": result.errors.append("this recorded public route supports canyon only")
+	if not Simulation.MISSION_SAVE_TAGS.has(result.mission): result.errors.append("campaign validation mission must be canyon, delta or ridge")
 	if not RenderRunner._filesystem_absolute(result.output_dir) or not RenderRunner._below(result.output_dir, isolation): result.errors.append("output must be a dedicated absolute isolation child")
 	return result
 
@@ -104,6 +106,7 @@ func _run() -> void:
 	# Main validated isolation before reading settings or constructing a campaign.
 	# Do not recheck freshness after Main's legitimate display/config initialization.
 	var config: Dictionary = parse_arguments(OS.get_cmdline_user_args())
+	_requested_mission_id = str(config.mission)
 	output_dir = str(config.output_dir)
 	_started_usec = Time.get_ticks_usec()
 	_deadline_usec = _started_usec + int(config.max_seconds) * 1000000
@@ -111,14 +114,14 @@ func _run() -> void:
 		printerr("CAMPAIGN_VALIDATION_REFUSED output directory cannot be created")
 		get_tree().quit(2)
 		return
-	report = {"schema_version": 1, "recorded_utc": Time.get_datetime_string_from_system(true, true) + "Z", "prepare_only": bool(config.prepare_only),
+	report = {"schema_version": 1, "recorded_utc": Time.get_datetime_string_from_system(true, true) + "Z", "prepare_only": bool(config.prepare_only), "requested_mission_id": _requested_mission_id,
 		"native_export_proof": not OS.has_feature("editor"), "complete_campaign_evidence": false, "errors": [], "checks": 0,
 		"runtime": Engine.get_version_info(), "display_server": DisplayServer.get_name(), "os": OS.get_name(),
 		"engine_command_line": engine_arguments(),
 		"time_scale": Engine.time_scale, "max_fps": Engine.max_fps, "user_data_dir": OS.get_user_data_dir(),
 		"rendering_method": RenderingServer.get_current_rendering_method(), "gpu_adapter": RenderingServer.get_video_adapter_name(),
 		"binaries_before": _binary_hashes(), "sources_before": _source_hashes(), "events": [], "captures": [], "save_reload": {"success": false},
-		"route": {"success": false, "not_run": true}, "scope": "Public-command automated Canyon route through actual Main20Hz fixed simulation, renderer and file save/load. No direct simulation step/state injection; standard3x UI speed. Not physical-mouse, human-playability, Windows, clean-machine or FPS evidence."}
+		"route": {"success": false, "not_run": true}, "scope": "Public-command automated selected campaign route through actual Main20Hz fixed simulation, renderer and file save/load. No direct simulation step/state injection; standard3x UI speed. Not physical-mouse, human-playability, Windows, clean-machine or FPS evidence."}
 	check(config.errors.is_empty(), "validation arguments accepted")
 	check(DisplayServer.get_name() != "headless", "complete campaign verification requires actual rendered native window")
 	check(is_equal_approx(Engine.time_scale, 1.0), "engine time scale remains normal")
@@ -127,6 +130,11 @@ func _run() -> void:
 		await _finish()
 		return
 	app.start_campaign(str(config.mission))
+	report["campaign_start"] = _live_mission_identity()
+	check(app.started and _mission_matches(report.campaign_start, true), "requested mission starts with matching live, selected and saved identities")
+	if not failures.is_empty():
+		await _finish()
+		return
 	app.ui_action("speed")
 	app.ui_action("speed")
 	check(is_equal_approx(app.speed, 3.0), "normal speed controls select3x")
@@ -134,7 +142,7 @@ func _run() -> void:
 	_last_time = float(app.sim.time)
 	_last_tick = int(app.tick_count)
 	_observing = true
-	event("campaign_started", {"mission": str(app.sim.mission_id), "speed": app.speed, "initial_state_sha256": _normalized(app.sim.save_state()).sha256_text()})
+	event("campaign_started", {"mission": str(app.sim.mission_id), "mission_tag": report.campaign_start.mission_tag, "speed": app.speed, "initial_state_sha256": _normalized(app.sim.save_state()).sha256_text()})
 	if config.prepare_only:
 		await advance(1.0, "prepare-only actual main-loop progress")
 		if failures.is_empty(): save_and_reload("prepare-only_initial_state")
@@ -168,6 +176,8 @@ func _process(_delta: float) -> void:
 		return
 	if _observing:
 		_frames += 1
+		if str(app.sim.mission_id) != _requested_mission_id or str(app.selected_mission_id) != _requested_mission_id:
+			check(false, "requested campaign identity remains unchanged during normal Main processing")
 		var delta_ticks: int = int(app.tick_count) - _last_tick
 		var elapsed: float = float(app.sim.time) - _last_time
 		var effective: int = roundi(elapsed / STEP_SECONDS)
@@ -263,6 +273,7 @@ func _observe_deliveries() -> void:
 
 
 func save_and_reload(label: String) -> bool:
+	var mission_before: Dictionary = _live_mission_identity()
 	var before_refresh: String = _normalized(app.sim.save_state())
 	# Main refreshes this derived read-only hint on load. Synchronize the saved
 	# hint too, so equality does not mistake its0.25second UI cache for lost state.
@@ -273,16 +284,20 @@ func save_and_reload(label: String) -> bool:
 	var wrote: bool = app.save_campaign()
 	var disk: Dictionary = app.save_store.read(app.SAVE_PATH)
 	var disk_valid: bool = bool(disk.get("ok", false)) and app._validate_save_payload(disk.get("data", {}))
+	var mission_on_disk: Dictionary = _saved_mission_identity(disk.get("data", {}))
 	var loaded: bool = app.load_campaign() if wrote and disk_valid else false
+	var mission_after: Dictionary = _live_mission_identity()
+	var mission_equal: bool = _mission_matches(mission_before, true) and _mission_matches(mission_on_disk, false, true) and _mission_matches(mission_after, true)
 	var simulation_equal: bool = loaded and simulation_before == _normalized(app.sim.save_state())
 	var ui_equal: bool = loaded and _normalized(before.ui) == _normalized(app._save_payload().ui)
 	var result: Dictionary = {"label": label, "write_success": wrote, "disk_schema_valid": disk_valid, "load_success": loaded,
+		"mission_before": mission_before, "mission_on_disk": mission_on_disk, "mission_after": mission_after, "mission_equal": mission_equal,
 		"read_only_guide_refreshed_before_save": true,
 		"full_simulation_equal": simulation_equal, "full_ui_equal": ui_equal, "simulation_sha256": simulation_before.sha256_text(),
 		"file_sha256": FileAccess.get_sha256(app.SAVE_PATH) if wrote else "", "simulation_time": float(app.sim.time),
-		"success": wrote and disk_valid and loaded and simulation_equal and ui_equal}
+		"success": wrote and disk_valid and loaded and simulation_equal and ui_equal and mission_equal}
 	report["save_reload"] = result
-	check(bool(result.success), "loaded withdrawal resumes byte-equivalent full simulation/RNG and UI from real disk")
+	check(bool(result.success), "loaded checkpoint resumes byte-equivalent full simulation/RNG, UI and mission from real disk")
 	event("actual_disk_roundtrip", result)
 	return bool(result.success)
 
@@ -311,14 +326,38 @@ func _observe_auto() -> void:
 func _write_progress() -> void:
 	if output_dir.is_empty() or not is_instance_valid(app) or app.sim == null: return
 	_write_json(output_dir.path_join("campaign-progress.json"), {"phase": phase, "simulation_time": app.sim.time, "outcome": app.sim.outcome,
+		"requested_mission_id": _requested_mission_id, "mission_id": str(app.sim.mission_id),
 		"wall_seconds": float(Time.get_ticks_usec() - _started_usec) / 1000000.0, "main_tick_count": app.tick_count,
 		"observed_ticks": _ticks, "deliveries": _deliveries, "errors": failures, "finished": finished, "last_event": report.get("events", []).back() if not report.get("events", []).is_empty() else {}})
 
 
 func _slot(path: String) -> Dictionary:
 	var read: Dictionary = app.save_store.read(path)
-	return {"path": ProjectSettings.globalize_path(path), "exists": FileAccess.file_exists(path), "schema_valid": bool(read.get("ok", false)) and app._validate_save_payload(read.get("data", {})),
-		"sha256": FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "", "simulation_time": CampaignRoute.serialized_dictionary(read.get("data", {}).get("payload")).get("time", null)}
+	var identity: Dictionary = _saved_mission_identity(read.get("data", {}))
+	identity.merge({"path": ProjectSettings.globalize_path(path), "exists": FileAccess.file_exists(path), "schema_valid": bool(read.get("ok", false)) and app._validate_save_payload(read.get("data", {})),
+		"sha256": FileAccess.get_sha256(path) if FileAccess.file_exists(path) else "", "simulation_time": CampaignRoute.serialized_dictionary(read.get("data", {}).get("payload")).get("time", null)})
+	return identity
+
+
+func _saved_mission_identity(state: Dictionary) -> Dictionary:
+	var tag: String = str(state.get("mission", ""))
+	var mission_id: String = ""
+	for candidate: String in Simulation.MISSION_SAVE_TAGS:
+		if Simulation.MISSION_SAVE_TAGS[candidate] == tag:
+			mission_id = candidate
+			break
+	return {"mission_id": mission_id, "mission_tag": tag, "payload_mission_id": CampaignRoute.serialized_dictionary(state.get("payload")).get("mission_id", "")}
+
+
+func _live_mission_identity() -> Dictionary:
+	return {"mission_id": str(app.sim.mission_id), "mission_tag": str(app.sim.save_state().get("mission", "")), "selected_mission_id": str(app.selected_mission_id)}
+
+
+func _mission_matches(identity: Dictionary, live: bool = false, saved: bool = false) -> bool:
+	if identity.get("mission_id") != _requested_mission_id or identity.get("mission_tag") != Simulation.MISSION_SAVE_TAGS.get(_requested_mission_id): return false
+	if live and identity.get("selected_mission_id") != _requested_mission_id: return false
+	if saved and identity.get("payload_mission_id") != ("" if _requested_mission_id == "canyon" else _requested_mission_id): return false
+	return true
 
 
 func _finish() -> void:
@@ -337,6 +376,8 @@ func _finish() -> void:
 	var truck: Dictionary = app.sim.get_unit(int(app.sim.main_truck_id))
 	report["final"] = {"outcome": app.sim.outcome, "exit_progress": app.sim.exit_progress, "exit_powered": exit_powered, "evacuated": app.sim.evacuated,
 		"truck_distance": Vector2(truck.get("pos", Vector2(-999, -999))).distance_to(exit_position), "truck_state": truck.get("state", "missing"), "summary": app.sim.get_summary()}
+	report.final.merge(_live_mission_identity())
+	check(_mission_matches(report.final, true), "final live campaign retains the requested mission identity")
 	report["main_loop"] = {"fixed_step_seconds": STEP_SECONDS, "observed_frames": _frames, "observed_ticks": _ticks, "raw_main_ticks": _raw_ticks,
 		"observed_sim_seconds": _sim_seconds, "invalid_time_steps": _invalid_steps, "terminal_noop_ticks": _terminal_noop_ticks}
 	report["automatic_saves"] = {"observed_file_changes": _auto_changes, "primary": _slot(app.AUTOSAVE_PATH), "backup": _slot(app.AUTOSAVE_PATH + ".bak")}
@@ -351,11 +392,17 @@ func _finish() -> void:
 		check(bool(report.route.get("success", false)) and bool(report.save_reload.get("success", false)), "full route and loaded withdrawal completed")
 		check(app.sim.outcome == "victory" and app.sim.evacuated >= 4 and app.sim.exit_progress >= 1.0 and exit_powered and float(report.final.truck_distance) <= 5.0, "truthful powered exit and truck/survivor victory")
 		check(_auto_changes >= 2 and report.automatic_saves.primary.schema_valid and report.automatic_saves.backup.schema_valid, "actual long campaign rotates valid automatic saves")
+		check(_mission_matches(report.automatic_saves.primary, false, true) and _mission_matches(report.automatic_saves.backup, false, true), "automatic save generations retain requested mission identity")
+	var final_state: Dictionary = app._save_payload()
+	var final_path: String = output_dir.path_join("final-campaign-state.json")
+	_write_json(final_path, final_state)
+	report["final_state"] = _saved_mission_identity(final_state)
+	report.final_state.merge({"path": final_path, "sha256": FileAccess.get_sha256(final_path)})
+	check(app._validate_save_payload(final_state) and _mission_matches(report.final_state, false, true), "final saved campaign proof has valid schema and requested mission identity")
 	report["checks"] = checks
 	report["errors"] = failures.duplicate()
 	report["wall_elapsed_seconds"] = float(Time.get_ticks_usec() - _started_usec) / 1000000.0
 	report["complete_campaign_evidence"] = full and report.native_export_proof and failures.is_empty()
-	_write_json(output_dir.path_join("final-campaign-state.json"), app._save_payload())
 	_write_json(output_dir.path_join("campaign-validation.json"), report)
 	_write_progress()
 	print("CAMPAIGN_VALIDATION_REPORT ", output_dir.path_join("campaign-validation.json"), " complete=", report.complete_campaign_evidence, " errors=", failures.size())

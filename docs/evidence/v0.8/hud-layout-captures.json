@@ -1,0 +1,55 @@
+{
+	"captures": [
+		{
+			"guide_visible": true,
+			"height": 1080,
+			"label": "title-1080",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/hud-v08-layout/title-1080.png",
+			"read_only_simulation": true,
+			"started": false,
+			"ui_scale": 1.0,
+			"width": 1920
+		},
+		{
+			"guide_visible": true,
+			"height": 1080,
+			"label": "delta-1080-guide",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/hud-v08-layout/delta-1080-guide.png",
+			"read_only_simulation": true,
+			"started": true,
+			"ui_scale": 1.0,
+			"width": 1920
+		},
+		{
+			"guide_visible": true,
+			"height": 648,
+			"label": "delta-small-guide",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/hud-v08-layout/delta-small-guide.png",
+			"read_only_simulation": true,
+			"started": true,
+			"ui_scale": 1.2,
+			"width": 1152
+		},
+		{
+			"guide_visible": false,
+			"height": 648,
+			"label": "delta-small-hidden",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/hud-v08-layout/delta-small-hidden.png",
+			"read_only_simulation": true,
+			"started": true,
+			"ui_scale": 1.2,
+			"width": 1152
+		},
+		{
+			"guide_visible": false,
+			"height": 1080,
+			"label": "atlas-fallback-1080",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/hud-v08-layout/atlas-fallback-1080.png",
+			"read_only_simulation": true,
+			"started": true,
+			"ui_scale": 1.0,
+			"width": 1920
+		}
+	],
+	"scope": "Paused source-render QA only, no native campaign/FPS/human claim"
+}

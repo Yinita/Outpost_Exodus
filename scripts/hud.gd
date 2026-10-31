@@ -2,6 +2,7 @@ extends Control
 
 const Catalog = preload("res://scripts/campaign_catalog.gd")
 const Cartoon = preload("res://scripts/cartoon_canvas.gd")
+const WorldView = preload("res://scripts/world_view.gd")
 
 const INK: Color = Color("1b292e")
 const PANEL: Color = Color("22363c")
@@ -26,6 +27,7 @@ var training_queue_rect: Rect2 = Rect2()
 var tooltip: String = ""
 var overlay_rects: Array[Rect2] = []
 var _campaign_previews: Dictionary = {}
+var _building_atlas: Texture2D
 # Cache only pure presentation work. Game state, geometry, hover and hotspots
 # are still read and drawn every frame; no simulation or input invalidation is
 # needed. Bounds also cover arbitrarily many guide texts and window sizes.
@@ -36,6 +38,8 @@ var _panel_styles: Dictionary = {}
 
 func _ready() -> void:
 	font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
+	if ResourceLoader.exists(WorldView.BUILDING_ATLAS_PATH):
+		_building_atlas = load(WorldView.BUILDING_ATLAS_PATH) as Texture2D
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _draw() -> void:
@@ -123,7 +127,7 @@ func _draw_camp_cards(screen: Vector2) -> void:
 		var chosen: bool = int(camp.get("id", -1)) == main.selected_camp
 		_panel(rect, Color(PANEL, 0.95), TEAL if chosen else Color("456065"))
 		var state: String = String(camp.get("state", "active"))
-		var states: Dictionary = {"active":"运作", "packing":"撤收中", "abandoned":"已撤空"}
+		var states: Dictionary = {"active":"运作", "packing":"撤收中", "abandoned":"已弃守"}
 		_text(rect.position + Vector2(12, 27), String(camp.get("name", "驻点")), 17, PAPER, 150)
 		_text(rect.position + Vector2(172, 26), states.get(state, state), 13, GOLD if state == "packing" else MUTED)
 		_text(rect.position + Vector2(12, 52), "材 %d  供 %d  油 %d" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0))], 14, MUTED)
@@ -164,7 +168,7 @@ func _draw_dock(screen: Vector2) -> void:
 		for i: int in range(items.size()):
 			var rect: Rect2 = Rect2(18 + i * (card_width + 6), top + 57, card_width, 112)
 			_button(rect, "", "build:" + items[i][0], items[i][3], main.build_kind == items[i][0])
-			_icon(rect.position + Vector2(card_width * 0.5, 31), i, GOLD if main.build_kind == items[i][0] else TEAL)
+			_draw_build_icon(rect, String(items[i][0]), i, main.build_kind == items[i][0])
 			_text(rect.position + Vector2(11, 75), items[i][1], 17, PAPER)
 			_text(rect.position + Vector2(11, 98), items[i][2], 12, MUTED)
 	elif main.current_tab == "orders":
@@ -237,6 +241,20 @@ func _draw_dock(screen: Vector2) -> void:
 		var stocks: String = "本营：材 %d / 供 %d / 油 %d · 指挥人口 %d/%d（含训练）" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0)), int(plan.get("population", 0)), int(plan.get("cap", 32))]
 		_text(Vector2(20, top + 184), stocks, 11, PAPER, width - 12)
 
+func _draw_build_icon(rect: Rect2, kind: String, fallback_index: int, active: bool) -> void:
+	# Match the actual world sprite, including the shared command/camp artwork.
+	# Roads and a missing/invalid optional atlas retain the established fallback.
+	var source_kind: String = "command" if kind == "camp" else kind
+	if _building_atlas != null and WorldView.BUILDING_REGIONS.has(source_kind):
+		var source: Rect2 = WorldView.BUILDING_REGIONS[source_kind]
+		if source.size.x > 0.0 and source.size.y > 0.0 and source.end.x <= _building_atlas.get_width() and source.end.y <= _building_atlas.get_height():
+			var area: Rect2 = Rect2(rect.position + Vector2(8, 6), Vector2(maxf(1, rect.size.x - 16), 49))
+			var ratio: float = minf(area.size.x / source.size.x, area.size.y / source.size.y)
+			var size: Vector2 = source.size * ratio
+			draw_texture_rect_region(_building_atlas, Rect2(area.position + (area.size - size) * 0.5, size), source)
+			return
+	_icon(rect.position + Vector2(rect.size.x * 0.5, 31), fallback_index, GOLD if active else TEAL)
+
 var _minimap_terrain_signature: int = -1
 var _minimap_terrain_texture: ImageTexture
 
@@ -267,17 +285,64 @@ func _draw_minimap(screen: Vector2) -> void:
 	for camp: Dictionary in main.sim.camps:
 		var p: Vector2 = camp.get("pos", Vector2.ZERO)
 		draw_circle(map_rect.position + p * scale_value, 4.0, TEAL if camp.get("state", "") != "abandoned" else MUTED)
+	for site: Dictionary in main.sim.sites:
+		var p: Vector2 = site.get("pos", Vector2.ZERO)
+		var point: Vector2 = map_rect.position + p * scale_value
+		point = point.clamp(map_rect.position + Vector2(7, 7), map_rect.end - Vector2(7, 7))
+		_draw_minimap_site(point, String(site.get("kind", "cache")), bool(site.get("captured", false)))
 	for unit: Dictionary in main.sim.units:
 		var p: Vector2 = unit.get("pos", Vector2.ZERO)
 		draw_circle(map_rect.position + p * scale_value, 1.5, RED if unit.get("team") == "enemy" else Color("f8f1d4"))
 	var pursuit: float = clampf(float(main.sim.pursuit_x), 0, map_size.x)
 	draw_line(map_rect.position + Vector2(pursuit * scale_value.x, 0), map_rect.position + Vector2(pursuit * scale_value.x, map_rect.size.y), RED, 2)
+	# Follow the same visibility rule as the world marker: no title-screen hint,
+	# and dismissing the guide also removes its minimap target.
+	if main.started:
+		var hint: Dictionary = main.guide.get_hint()
+		var target: Vector2 = hint.get("target", Vector2(-1, -1))
+		if bool(hint.get("visible", false)) and target.x >= 0.0 and target.y >= 0.0:
+			var point: Vector2 = (map_rect.position + target * scale_value).clamp(map_rect.position + Vector2(8, 8), map_rect.end - Vector2(8, 8))
+			_draw_minimap_target(point)
 	var view_size: Vector2 = get_viewport_rect().size / main.camera.zoom / 48.0
 	var camera_tile: Vector2 = main.camera.position / 48.0
 	var camera_rect: Rect2 = Rect2(map_rect.position + (camera_tile - view_size * 0.5) * scale_value, view_size * scale_value)
 	draw_rect(camera_rect.intersection(map_rect), PAPER, false, 1.5)
 	_text(map_rect.position + Vector2(7, 18), "战略地图", 12, INK)
-	hotspots.append({"rect":map_rect, "action":"minimap", "tip":"左键移动镜头，右键向此处下令"})
+	var tip: String = "左键定位，右键下令。菱形废料／油桶燃料／方箱补给／旗帜出口／准星引导"
+	hotspots.append({"rect":map_rect, "action":"minimap", "tip":tip})
+	if map_rect.has_point(get_viewport().get_mouse_position()) and main.capture_path.is_empty(): tooltip = tip
+
+func _draw_minimap_site(point: Vector2, kind: String, captured: bool) -> void:
+	# Geometry carries the meaning even without colour: diamond, barrel,
+	# crossed crate and exit flag stay distinct from camp and actor dots.
+	draw_circle(point, 6.0, Color(INK, 0.90))
+	var fill: Color = TEAL if captured else PAPER
+	match kind:
+		"quarry":
+			draw_colored_polygon(PackedVector2Array([point + Vector2(0, -4.5), point + Vector2(4.5, 0), point + Vector2(0, 4.5), point + Vector2(-4.5, 0)]), fill)
+		"fuel":
+			draw_rect(Rect2(point + Vector2(-3, -4.5), Vector2(6, 9)), fill)
+			draw_line(point + Vector2(-3, -2), point + Vector2(3, -2), INK, 1.0)
+			draw_line(point + Vector2(-3, 2), point + Vector2(3, 2), INK, 1.0)
+		"exit":
+			draw_line(point + Vector2(-3, 5), point + Vector2(-3, -5), PAPER, 1.5)
+			draw_colored_polygon(PackedVector2Array([point + Vector2(-2, -5), point + Vector2(5, -2), point + Vector2(-2, 1)]), PAPER)
+		_:
+			draw_rect(Rect2(point - Vector2(3.5, 3.5), Vector2(7, 7)), fill)
+			draw_line(point + Vector2(-2, -2), point + Vector2(2, 2), INK, 1.0)
+			draw_line(point + Vector2(2, -2), point + Vector2(-2, 2), INK, 1.0)
+
+func _draw_minimap_target(point: Vector2) -> void:
+	# Four open corners preserve the site/unit symbol at the target's centre.
+	for sign_x: int in [-1, 1]:
+		for sign_y: int in [-1, 1]:
+			var corner: Vector2 = point + Vector2(sign_x * 7, sign_y * 7)
+			var horizontal: Vector2 = corner - Vector2(sign_x * 4, 0)
+			var vertical: Vector2 = corner - Vector2(0, sign_y * 4)
+			draw_line(corner, horizontal, INK, 3.5)
+			draw_line(corner, vertical, INK, 3.5)
+			draw_line(corner, horizontal, GOLD, 1.5)
+			draw_line(corner, vertical, GOLD, 1.5)
 
 func _draw_menu(screen: Vector2) -> void:
 	draw_rect(Rect2(Vector2.ZERO, screen), Color(0.04, 0.08, 0.09, 0.78))

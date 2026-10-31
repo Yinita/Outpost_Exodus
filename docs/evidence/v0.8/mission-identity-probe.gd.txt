@@ -1,0 +1,48 @@
+extends SceneTree
+const Runner = preload("res://scripts/diagnostics/campaign_runner.gd")
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+class Facade:
+	extends Node2D
+	var sim: RefCounted
+	var selected_mission_id: String
+var checks: int = 0
+var failures: Array[String] = []
+func _initialize() -> void:
+	call_deferred("_run")
+func verify(ok: bool, label: String) -> void:
+	checks += 1
+	if not ok: failures.append(label)
+func _run() -> void:
+	var runner: Node = Runner.new()
+	var facade: Node2D = Facade.new()
+	runner.app = facade
+	facade.sim = Simulation.new()
+	for mission: String in ["canyon", "delta", "ridge"]:
+		runner._requested_mission_id = mission
+		facade.selected_mission_id = mission
+		verify(facade.sim.reset(42,mission), "mission reset succeeds")
+		var before: String = JSON.stringify(facade.sim.save_state())
+		var live: Dictionary = runner._live_mission_identity()
+		var saved: Dictionary = runner._saved_mission_identity(facade.sim.save_state())
+		verify(runner._mission_matches(live,true), "live mission proof matches " + mission)
+		verify(runner._mission_matches(saved,false,true), "encoded mission proof matches " + mission)
+		verify(JSON.stringify(facade.sim.save_state()) == before, "identity observation is read-only")
+		var state: Dictionary = facade.sim.save_state()
+		verify(facade.sim.load_state(state), "real save payload restores")
+		verify(runner._mission_matches(runner._live_mission_identity(),true), "restored mission identity matches")
+		var wrong: Dictionary = live.duplicate(true)
+		wrong.mission_id = "delta" if mission != "delta" else "ridge"
+		verify(not runner._mission_matches(wrong,true), "swapped live mission is rejected")
+		wrong = live.duplicate(true)
+		wrong.selected_mission_id = "delta" if mission != "delta" else "ridge"
+		verify(not runner._mission_matches(wrong,true), "swapped controller mission is rejected")
+		wrong = saved.duplicate(true)
+		wrong.mission_tag = "unknown"
+		verify(not runner._mission_matches(wrong,false,true), "swapped save tag is rejected")
+		wrong = saved.duplicate(true)
+		wrong.payload_mission_id = "unknown"
+		verify(not runner._mission_matches(wrong,false,true), "swapped saved payload identity is rejected")
+	print("MISSION_IDENTITY_PROBE ", JSON.stringify({"checks":checks,"failures":failures}))
+	runner.free()
+	facade.free()
+	quit(0 if failures.is_empty() else 1)
