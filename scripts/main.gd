@@ -6,6 +6,7 @@ const WorldView = preload("res://scripts/world_view.gd")
 const Hud = preload("res://scripts/hud.gd")
 const Guide = preload("res://scripts/campaign_guide.gd")
 const SaveStore = preload("res://scripts/campaign_save_store.gd")
+const GameAudio = preload("res://scripts/game_audio.gd")
 const TILE: float = 48.0
 const MIN_CAMERA_ZOOM: float = 0.35
 const MAX_CAMERA_ZOOM: float = 1.6
@@ -20,12 +21,18 @@ var camera: Camera2D
 var hud: Control
 var selected_ids: Array = []
 var selected_camp: int = 0
+var camp_page: int = 0
+var _camp_view_selected: int = -1
+var _camp_view_size: int = 0
 var current_tab: String = "build"
 var build_kind: String = ""
 var build_preview: Dictionary = {}
 var production_readout: Dictionary = {}
+var recruit_plans: Dictionary = {}
+var training_readout: Dictionary = {}
 var _build_preview_key: Array = []
 var _production_readout_key: Array = []
+var _training_readout_key: Array = []
 var _ui_revision: int = 0
 var attack_move: bool = false
 var pending_task: String = ""
@@ -60,15 +67,16 @@ var group_bindings: Dictionary = {}
 var waiting_binding: String = ""
 var accumulator: float = 0.0
 var autosave_time: float = 0.0
-var sound_cooldown: float = 0.0
 var capture_path: String = ""
 var capture_frames: int = 0
 var tick_count: int = 0
 var closing: bool = false
+var exit_return_menu: String = ""
 var feedback: String = ""
 var feedback_left: float = 0.0
 var sound_player: AudioStreamPlayer
 var music_player: AudioStreamPlayer
+var game_audio: Node
 var command_names: Dictionary = {
 	"camera_up": "镜头向上", "camera_down": "镜头向下", "camera_left": "镜头向左", "camera_right": "镜头向右",
 	"build_menu": "建设面板", "production_menu": "生产面板", "orders_menu": "小队指挥", "train_menu": "训练招募", "pause_game": "战术暂停",
@@ -154,13 +162,15 @@ func _setup_inputs() -> void:
 func _process(delta: float) -> void:
 	if menu == "settings": settings_page = clampi(settings_page, 0, (command_names.size() - 1) / settings_binding_page_size())
 	feedback_left = maxf(0.0, feedback_left - delta)
-	sound_cooldown = maxf(0.0, sound_cooldown - delta)
+	if is_instance_valid(game_audio):
+		game_audio.set_gameplay_active(started and menu.is_empty() and not sim.paused and sim.outcome == "playing", sim)
 	if started and menu.is_empty():
 		_move_camera(delta)
 		accumulator += minf(delta, 0.2) * speed
 		var steps: int = 0
 		while accumulator >= 0.05 and steps < 12:
 			sim.tick(0.05)
+			if is_instance_valid(game_audio): game_audio.observe_sim(sim, camera.position / TILE)
 			accumulator -= 0.05
 			steps += 1
 			tick_count += 1
@@ -170,9 +180,6 @@ func _process(delta: float) -> void:
 			save_campaign(false)
 		if sim.outcome != "playing":
 			menu = sim.outcome
-	if sim.effects.size() > 0 and sound_cooldown <= 0.0 and started and menu.is_empty() and not sim.paused:
-		_play_tone(115.0, 0.035, 0.10)
-		sound_cooldown = 0.28
 	selected_ids = selected_ids.filter(func(id: int) -> bool: return not sim.get_unit(id).is_empty() and float(sim.get_unit(id).get("hp", 0.0)) > 0.0)
 	guide_clock += delta
 	if started and guide_clock >= 0.25:
@@ -184,6 +191,7 @@ func _process(delta: float) -> void:
 	world.selected_ids = selected_ids
 	world.hover_tile = world.world_to_tile(get_global_mouse_position())
 	world.build_kind = build_kind
+	_sync_camp_page()
 	_refresh_context_readouts()
 	world.build_preview = build_preview
 	world.drag_selecting = dragging
@@ -237,6 +245,26 @@ func _refresh_context_readouts() -> void:
 	else:
 		production_readout = {}
 		_production_readout_key.clear()
+	if started and current_tab == "training":
+		var key: Array = [sim, sim.time, _ui_revision, selected_camp, sim.paused, menu]
+		if key != _training_readout_key:
+			recruit_plans = {}
+			for kind: String in ["rifle", "engineer", "worker", "truck"]:
+				recruit_plans[kind] = sim.query_recruit(selected_camp, kind)
+			training_readout = sim.get_training_status(selected_camp)
+			_training_readout_key = key
+	else:
+		recruit_plans = {}
+		training_readout = {}
+		_training_readout_key.clear()
+
+func _cancel_pointer_modes() -> void:
+	build_kind = ""
+	pending_task = ""
+	attack_move = false
+	dragging = false
+	selection_double_click = false
+	_build_preview_key.clear()
 
 func _place_build(tile: Vector2i) -> Dictionary:
 	var result: Dictionary = sim.try_build(build_kind, tile)
@@ -249,6 +277,12 @@ func _place_build(tile: Vector2i) -> Dictionary:
 	return result
 
 func _unhandled_input(event: InputEvent) -> void:
+	if menu == "exit_save_failed":
+		if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE:
+			ui_action("exit_cancel")
+		elif event is InputEventMouseButton:
+			hud.handle_mouse(event)
+		return
 	if (event is InputEventMouseButton and event.pressed) or (event is InputEventKey and event.pressed and not event.echo):
 		_ui_revision += 1
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -260,11 +294,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			_try_bind(waiting_binding, event)
 			return
 		if event.keycode == KEY_ESCAPE:
-			if not pending_task.is_empty() or attack_move:
-				pending_task = ""
-				attack_move = false
-			elif not build_kind.is_empty():
-				build_kind = ""
+			if not pending_task.is_empty() or attack_move or not build_kind.is_empty():
+				_cancel_pointer_modes()
 			elif menu == "campaigns":
 				ui_action("campaign_back")
 			elif menu == "restart":
@@ -282,10 +313,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("train_menu"): ui_action("tab:training")
 		elif event.is_action_pressed("quick_save"): save_campaign()
 		elif event.is_action_pressed("quick_load"): load_campaign()
-		elif event.is_action_pressed("focus_command"): focus_camp(selected_camp)
+		elif event.is_action_pressed("focus_command"):
+			if event.shift_pressed: cycle_camp()
+			else: focus_camp(selected_camp)
 		elif event.is_action_pressed("attack_move"):
-			attack_move = true
-			_notify("攻击移动：左键选择目标区域，右键取消。")
+			_cancel_pointer_modes()
+			if selected_ids.is_empty():
+				_notify("先选择执行攻击移动的小队。")
+				_play_sfx("reject")
+			else:
+				attack_move = true
+				_notify("攻击移动：左键选择目标区域，右键取消。")
 		elif event.is_action_pressed("next_squad"): _next_squad()
 		elif _group_action_index(event) > 0:
 			_group_key(_group_action_index(event), event.ctrl_pressed, event.shift_pressed)
@@ -341,6 +379,7 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 	var click: bool = rect.size.length() < 12.0 / camera.zoom.x
 	if not append: selected_ids.clear()
 	var closest: Dictionary = {}
+	var camp_picked: bool = false
 	var distance: float = 0.85
 	for unit: Dictionary in sim.units:
 		if unit.get("team", "") != "friendly" or float(unit.get("hp", 0.0)) <= 0: continue
@@ -357,18 +396,25 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 				if u.get("team") == "friendly" and u.get("kind") == closest.get("kind") and float(u.get("hp",0)) > 0 and get_viewport_rect().has_point(visible_position):
 					if not selected_ids.has(u.id): selected_ids.append(u.id)
 		elif not selected_ids.has(closest.id): selected_ids.append(closest.id)
-		if int(closest.get("camp_id", -1)) >= 0: selected_camp = int(closest.get("camp_id"))
+		if int(closest.get("camp_id", -1)) >= 0:
+			selected_camp = int(closest.get("camp_id"))
+			camp_picked = true
 	if click and closest.is_empty():
 		var best: float = 4.0
 		for camp: Dictionary in sim.camps:
 			var d: float = Vector2(camp.pos).distance_to(point / TILE)
-			if d < best: selected_camp = int(camp.id); best = d
+			if d < best:
+				selected_camp = int(camp.id)
+				best = d
+				camp_picked = true
+	if camp_picked: _sync_camp_page(true)
 	_play_tone(650.0, 0.025, 0.15)
 	guide.observe("selection", {"count": selected_ids.size()})
 
 func _issue_context(target: Vector2) -> void:
 	if selected_ids.is_empty():
 		_notify("先左键选择或拖框选择小队。")
+		_play_sfx("reject")
 		return
 	if not pending_task.is_empty():
 		guide.observe(pending_task, {"target": target})
@@ -433,10 +479,48 @@ func focus_camp(id: int) -> void:
 	if camp.is_empty(): return
 	selected_camp = id
 	camera.position = Vector2(camp.pos) * TILE
+	_sync_camp_page(true)
+
+func camp_page_size() -> int:
+	var height: float = get_viewport_rect().size.y
+	var without_pager: int = maxi(1, int((height - 269.0) / 102.0))
+	if sim.camps.size() <= without_pager: return without_pager
+	return maxi(1, int((height - 336.0) / 102.0))
+
+func camp_page_count() -> int:
+	return maxi(1, ceili(float(sim.camps.size()) / float(camp_page_size())))
+
+func _sync_camp_page(force: bool = false) -> void:
+	var page_size: int = camp_page_size()
+	if force or selected_camp != _camp_view_selected or page_size != _camp_view_size:
+		for index: int in range(sim.camps.size()):
+			if int(sim.camps[index].id) == selected_camp:
+				camp_page = index / page_size
+				break
+	_camp_view_selected = selected_camp
+	_camp_view_size = page_size
+	camp_page = clampi(camp_page, 0, camp_page_count() - 1)
+
+func cycle_camp() -> void:
+	var eligible: Array[int] = []
+	for camp: Dictionary in sim.camps:
+		if camp.get("state", "abandoned") != "abandoned": eligible.append(int(camp.id))
+	if eligible.is_empty():
+		_notify("暂无运作中或撤收中的驻点。")
+		return
+	focus_camp(eligible[posmod(eligible.find(selected_camp) + 1, eligible.size())])
 
 func ui_action(action: String) -> void:
+	if menu == "exit_save_failed":
+		if action == "exit_cancel": menu = exit_return_menu
+		elif action == "exit_retry":
+			menu = exit_return_menu
+			_on_close_requested()
+		elif action == "exit_discard": _quit_cleanly()
+		return
 	_ui_revision += 1
-	_play_tone(500.0, 0.04, 0.18)
+	if not action.begins_with("recruit:") and not action.begins_with("task:") and not action.begins_with("seal:") and action != "evacuate":
+		_play_tone(500.0, 0.04, 0.18)
 	if action == "new":
 		if started and sim.outcome == "playing":
 			pending_mission_id = String(sim.mission_id)
@@ -549,31 +633,51 @@ func ui_action(action: String) -> void:
 	elif action.begins_with("bind:"):
 		waiting_binding = action.trim_prefix("bind:")
 		settings_feedback = "请按一个新按键；Esc 取消。"
-	elif action.begins_with("tab:"): current_tab = action.trim_prefix("tab:"); build_kind = ""
-	elif action == "cancel_build": build_kind = ""
+	elif action.begins_with("tab:"):
+		current_tab = action.trim_prefix("tab:")
+		_cancel_pointer_modes()
+	elif action == "cancel_build": _cancel_pointer_modes()
 	elif action.begins_with("build:"):
-		pending_task = ""
-		attack_move = false
+		_cancel_pointer_modes()
 		build_kind = action.trim_prefix("build:")
 		_notify("在地图点击放置，右键取消；道路可以连续铺设。")
 	elif action.begins_with("camp:"): focus_camp(int(action.trim_prefix("camp:")))
+	elif action == "camp_page_prev": camp_page = maxi(0, camp_page - 1)
+	elif action == "camp_page_next": camp_page = mini(camp_page_count() - 1, camp_page + 1)
+	elif action == "camp_cycle": cycle_camp()
 	elif action.begins_with("recipe:"): sim.set_production(selected_camp, action.trim_prefix("recipe:"))
 	elif action.begins_with("priority:"): sim.set_priority(selected_camp, action.trim_prefix("priority:"))
 	elif action.begins_with("recruit:"):
-		var queued: bool = sim.recruit(selected_camp, action.trim_prefix("recruit:"))
-		_notify("已加入训练队列，需要本地设施和持续供能。" if queued else "无法招募：检查设施、电力、资源与人口上限。")
+		var result: Dictionary = sim.try_recruit(selected_camp, action.trim_prefix("recruit:"))
+		_notify(String(result.message))
+		_play_sfx("confirm" if result.ok else "reject")
 	elif action == "evacuate":
-		_notify("驻点开始撤收，请保护运输路线。" if sim.evacuate_camp(selected_camp) else "暂时不能撤收这个驻点。")
+		var camp: Dictionary = sim.get_camp(selected_camp)
+		var was_packing: bool = camp.get("state", "") == "packing"
+		var queued: int = Array(camp.get("recruit_queue", [])).size()
+		var evacuated: bool = sim.evacuate_camp(selected_camp)
+		var message: String = "暂时不能撤收这个驻点。"
+		if not evacuated:
+			if was_packing: message = "暂时不能紧急弃营，请检查前方接收驻点。"
+			else: message = "前方需有可达的接收营地，且指挥运输车必须空闲。" if camp.get("state", "") == "active" else "该驻点已经停止运作，无法再次撤收。"
+		if evacuated:
+			message = "紧急弃营：未装车物资留在原地；已出发的货物继续运输。" if was_packing else "驻点开始撤收，请保护运输路线。"
+			if queued > 0: message += " 已取消%d项训练，并返还一半费用。" % queued
+		_notify(message)
+		_play_sfx("confirm" if evacuated else "reject")
 	elif action.begins_with("seal:"):
-		_notify("已安排关口封锁。" if sim.seal_choke(int(action.trim_prefix("seal:"))) else "暂不能封锁：检查材料与尚未通过的友军。")
+		var sealed: bool = sim.seal_choke(int(action.trim_prefix("seal:")))
+		_notify("已安排关口封锁。" if sealed else "暂不能封锁：检查材料与尚未通过的友军。")
+		_play_sfx("confirm" if sealed else "reject")
 	elif action.begins_with("task:"):
+		_cancel_pointer_modes()
 		if selected_ids.is_empty():
 			_notify("先选择执行任务的小队。")
+			_play_sfx("reject")
 		else:
-			build_kind = ""
-			attack_move = false
 			pending_task = action.trim_prefix("task:")
 			_notify("在地图左键选择任务区域；也可在小地图右键指定。")
+			_play_sfx("confirm")
 
 func start_campaign(mission_id: String = "") -> void:
 	var requested: String = selected_mission_id if mission_id.is_empty() else mission_id
@@ -581,9 +685,12 @@ func start_campaign(mission_id: String = "") -> void:
 		_notify("无法选择此战役，当前进度保持不变。")
 		return
 	sim.reset(42, requested)
+	if is_instance_valid(game_audio): game_audio.prime(sim)
 	_ui_revision += 1
 	_build_preview_key.clear()
 	_production_readout_key.clear()
+	_training_readout_key.clear()
+	_camp_view_selected = -1
 	selected_mission_id = String(sim.mission_id)
 	pending_mission_id = ""
 	guide.reset(guide_enabled)
@@ -697,9 +804,12 @@ func load_campaign(slot: String = "manual") -> bool:
 	# Every metadata field and the complete simulation have been validated before
 	# touching the live run. Simulation.load_state is itself transactional.
 	if not sim.load_state(data): return false
+	if is_instance_valid(game_audio): game_audio.prime(sim)
 	_ui_revision += 1
 	_build_preview_key.clear()
 	_production_readout_key.clear()
+	_training_readout_key.clear()
+	_camp_view_selected = -1
 	selected_mission_id = String(sim.mission_id)
 	pending_mission_id = ""
 	guide = restored_guide
@@ -852,13 +962,18 @@ func _setup_audio() -> void:
 			AudioServer.set_bus_name(AudioServer.bus_count - 1, name_value)
 			AudioServer.set_bus_send(AudioServer.bus_count - 1, "Master")
 	sound_player.bus = "SFX"
+	game_audio = GameAudio.new()
+	add_child(game_audio)
+	game_audio.configure(sound_player)
+	game_audio.prime(sim)
 	music_player = AudioStreamPlayer.new()
 	music_player.bus = "Music"
 	if ResourceLoader.exists("res://assets/audio/canyon_ambient.wav"):
 		var music: AudioStreamWAV = load("res://assets/audio/canyon_ambient.wav") as AudioStreamWAV
 		music.loop_mode = AudioStreamWAV.LOOP_FORWARD
 		music.loop_begin = 0
-		music.loop_end = music.data.size() / 2
+		# Loop points count decoded sample frames, not compressed bytes/channels.
+		music.loop_end = roundi(music.get_length() * music.mix_rate)
 		music_player.stream = music
 	add_child(music_player)
 	_apply_audio_settings()
@@ -883,8 +998,18 @@ func guide_text(text: String) -> String:
 	return result
 
 func _on_close_requested() -> void:
-	if closing: return
-	if started and sim.outcome == "playing": save_campaign(false)
+	if closing or menu == "exit_save_failed": return
+	if started and sim.outcome == "playing" and not save_campaign(false):
+		exit_return_menu = menu
+		menu = "exit_save_failed"
+		closing = false
+		dragging = false
+		selection_double_click = false
+		pan_active = false
+		# Retire old minimap/hotspot actions before the first modal redraw.
+		hud.hotspots.clear()
+		hud.queue_redraw()
+		return
 	_quit_cleanly()
 
 func _quit_cleanly(exit_code: int = 0) -> void:
@@ -894,14 +1019,18 @@ func _quit_cleanly(exit_code: int = 0) -> void:
 	set_process_input(false)
 	set_process_unhandled_input(false)
 	_release_audio()
-	# Let the audio thread retire active WAV playbacks before engine shutdown.
-	await get_tree().create_timer(0.12).timeout
+	# The mixer retires stopped WAV playbacks on its own wall-clock thread.
+	# A SceneTree timer can finish too early with accelerated --fixed-fps runs.
+	var retirement_deadline: int = Time.get_ticks_usec() + 120000
+	while Time.get_ticks_usec() < retirement_deadline:
+		await get_tree().process_frame
 	get_tree().quit(exit_code)
 
 func _exit_tree() -> void:
 	_release_audio()
 
 func _release_audio() -> void:
+	if is_instance_valid(game_audio): game_audio.release()
 	if is_instance_valid(music_player):
 		music_player.stop()
 		music_player.stream = null
@@ -909,18 +1038,10 @@ func _release_audio() -> void:
 		sound_player.stop()
 		sound_player.stream = null
 
-func _play_tone(frequency: float, duration: float, gain: float = 0.25) -> void:
-	if sound_player == null or volume <= 0.001: return
-	var count: int = int(22050.0 * duration)
-	var data: PackedByteArray = PackedByteArray()
-	data.resize(count * 2)
-	for i: int in range(count):
-		var envelope: float = pow(1.0 - float(i) / maxf(count, 1), 2.0)
-		var sample: int = int(sin(float(i) * TAU * frequency / 22050.0) * envelope * gain * 18000.0)
-		data.encode_s16(i * 2, sample)
-	var stream: AudioStreamWAV = AudioStreamWAV.new()
-	stream.format = AudioStreamWAV.FORMAT_16_BITS
-	stream.mix_rate = 22050
-	stream.data = data
-	sound_player.stream = stream
-	sound_player.play()
+func _play_tone(frequency: float, _duration: float, gain: float = 0.25) -> void:
+	# Compatibility for established input handlers; no WAV allocation at runtime.
+	var cue: String = "reject" if frequency < 200.0 else ("build" if is_equal_approx(frequency, 460.0) else "confirm")
+	_play_sfx(cue, clampf(gain / 0.25, 0.3, 1.0))
+
+func _play_sfx(cue: String, gain: float = 1.0) -> void:
+	if is_instance_valid(game_audio): game_audio.play_ui(cue, gain)

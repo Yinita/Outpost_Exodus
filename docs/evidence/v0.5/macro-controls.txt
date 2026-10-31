@@ -1,0 +1,17 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+PASS _test_camp_pagination
+PASS _test_camp_selection_and_rebinding
+PASS _test_training_layout_and_status
+PASS _test_targeting_and_tabs
+PASS _test_small_range_toggle
+Macro control checks: 268; failures: 0
+Isolated user data: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls-data/godot/app_userdata/逐营突围 · Outpost Exodus
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls/camps-1600.png
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls/training-1600-100.png
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls/training-1152-100.png
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls/training-1152-120.png
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls/training-paused-960.png
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls/pending-task-persistent.png
+Screenshot: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/macro-controls/range-toggle-960.png

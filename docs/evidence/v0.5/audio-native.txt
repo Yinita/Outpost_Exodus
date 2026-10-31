@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+PASS _test_preloads_and_routing
+Music import: format=3 stereo=false bytes=214184 rate=22050 length=24.000000000 loop_end=529200 source_frames=529200 old_byte_endpoint=107092
+PASS _test_music_loop_sample_frames
+PASS _test_events_and_state_identity
+PASS _test_voices_and_ui_priority
+PASS _test_mute_and_boundaries
+PASS _test_inactive_and_reset
+PASS _test_load_primes_saved_effects
+Native SFX mixer peak dB: -28.5500946044922; driver: PulseAudio
+PASS _test_native_mixer_signal
+Audio checks: 200; failures: 0; driver=PulseAudio display=X11; voices=6+2; streams=8
+Audio play counts: { "shot": 6, "impact": 6, "loot": 3, "build": 1, "warning": 5, "confirm": 1, "reject": 1 }; peak world voices=4; dropped=206

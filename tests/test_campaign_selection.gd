@@ -124,6 +124,17 @@ func _run() -> void:
 	app.sim.paused = true
 	_check_mission("canyon")
 	await _test_zoom_boundary_saves()
+	# Stop before freeing Main, then let the real audio thread release its
+	# playbacks. Frame counts/SceneTree timers can elapse faster than wall time
+	# under --fixed-fps and previously retained canyon_ambient.wav at shutdown.
+	app.set_process(false)
+	app.set_process_input(false)
+	app.set_process_unhandled_input(false)
+	app._release_audio()
+	var retirement_started: int = Time.get_ticks_usec()
+	while Time.get_ticks_usec() - retirement_started < 120000:
+		await process_frame
+	print("Audio retirement wall milliseconds: ", (Time.get_ticks_usec() - retirement_started) / 1000.0)
 	app.queue_free()
 	await _frames(4)
 	root.content_scale_factor = 1.0

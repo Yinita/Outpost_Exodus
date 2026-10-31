@@ -1,0 +1,85 @@
+WorkerThreadPool: 28 threads, 8 max low-priority.
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+SDL: Init OK!
+Accessibility: AccessKit driver loaded.
+Xshape 1.1 detected.
+Xinerama 1.1 detected.
+Xrandr 1.6 detected.
+Xrender 0.11 detected.
+Xinput 2.2 detected.
+XInput: Refreshing devices.
+XInput: No touch devices found.
+Input method started.
+Detecting GPUs, set DRI_PRIME in the environment to override GPU detection logic.
+Only one GPU found, using default.
+Accessibility: window 0 adapter created.
+DBus 1.12.20 detected.
+FreeDesktopScreenSaver: Acquired screensaver inhibition cookie: 1223313853
+Using "default" pen tablet driver...
+Shader 'CanvasSdfShaderGLES3' SHA256: db7660b7321d49ee7a5655fb9038185100d7ff96b4a294021fe686758c623518
+Shader 'SkeletonShaderGLES3' SHA256: 8251f28c212027ed20fe474aed9c03a6cb9cbecb9e393c65763247831c2b5e75
+Shader 'ParticlesShaderGLES3' SHA256: 894d7a05a3308fc2cb006143a387c855be273763f1c8deb46bf90a1a66dcee7f
+Shader 'ParticlesCopyShaderGLES3' SHA256: 4a9b1a085ea56c68f595a8e9564a9326d3fe1f89c9cce71e2412a50a109a5b8b
+Shader 'CopyShaderGLES3' SHA256: 0d2135ef1c25d4af55bd97c72dacf58cf3c33a29f9769ea72eab70e138e92067
+Shader 'CubemapFilterShaderGLES3' SHA256: 389e69c581f5d639f1c45d07f23ec49ac124c4f9e8f70bb79a34fb60dfa9902c
+Shader 'GlowShaderGLES3' SHA256: 70815bed0ead21bad3931d085125a85596b29c9902703532585532502eabc7ae
+Shader 'PostShaderGLES3' SHA256: c096503f213e7ad88573629d9a6eb2edd0ba99b4ca724236a91d8c5501d336b6
+Shader 'FeedShaderGLES3' SHA256: 45ddde31799405c6f0b65bdb6d78de2bdb22cb66d267c0311bca31ea9954ba31
+Shader 'CanvasShaderGLES3' SHA256: 4310ceae36528a4889e022b773783e6b7d9e5554baeb1cc1c45857d96a97922f
+Shader 'CanvasOcclusionShaderGLES3' SHA256: 227d3d2fd0757ce6aa62e617cc4904e4cb7f445882305797a72054ae1517ceec
+Shader 'SceneShaderGLES3' SHA256: b2a9ba4606c778c33a776d64deee49f255faf37847868204a6a0c4b8edefe46a
+Shader 'SkyShaderGLES3' SHA256: 5c31633f96682c61fe5dee6494acb4b9af28d2337696744fe63a24c22ad18e56
+Shader 'TexBlitShaderGLES3' SHA256: e12ed47b75b44dac72e9c6e5f475093cd3f785f56546d5ddd1c21ba1c8bc0df6
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+CORE API HASH: 2004498165
+EDITOR API HASH: 1696660745
+Loading resource: res://work/audio_quit_wall_probe.gd remapped: res://work/audio_quit_wall_probe.gd
+Completed load for: 'res://work/audio_quit_wall_probe.gd' remapped 'res://work/audio_quit_wall_probe.gd' at thread -1
+SceneTreeFTI: traversal method DEFAULT
+Loaded system CA certificates
+Loading resource: res://main.tscn remapped: res://main.tscn
+Loading resource: res://scripts/main.gd remapped: res://scripts/main.gd
+Loading resource: res://assets/audio/sfx_shot_a.wav remapped: res://assets/audio/sfx_shot_a.wav
+Loading resource: res://.godot/imported/sfx_shot_a.wav-3fca00e93268becfb4df6ba83f89918a.sample remapped: res://.godot/imported/sfx_shot_a.wav-3fca00e93268becfb4df6ba83f89918a.sample
+Completed load for: 'res://assets/audio/sfx_shot_a.wav' remapped 'res://assets/audio/sfx_shot_a.wav' at thread -1
+Loading resource: res://assets/audio/sfx_shot_b.wav remapped: res://assets/audio/sfx_shot_b.wav
+Loading resource: res://.godot/imported/sfx_shot_b.wav-d667ce0f18c47757057b67081e35ab9b.sample remapped: res://.godot/imported/sfx_shot_b.wav-d667ce0f18c47757057b67081e35ab9b.sample
+Completed load for: 'res://assets/audio/sfx_shot_b.wav' remapped 'res://assets/audio/sfx_shot_b.wav' at thread -1
+Loading resource: res://assets/audio/sfx_impact.wav remapped: res://assets/audio/sfx_impact.wav
+Loading resource: res://.godot/imported/sfx_impact.wav-40a79849531e019baa840386a7ebe599.sample remapped: res://.godot/imported/sfx_impact.wav-40a79849531e019baa840386a7ebe599.sample
+Completed load for: 'res://assets/audio/sfx_impact.wav' remapped 'res://assets/audio/sfx_impact.wav' at thread -1
+Loading resource: res://assets/audio/sfx_loot.wav remapped: res://assets/audio/sfx_loot.wav
+Loading resource: res://.godot/imported/sfx_loot.wav-c28cca41d52085bb026c26959b360c08.sample remapped: res://.godot/imported/sfx_loot.wav-c28cca41d52085bb026c26959b360c08.sample
+Completed load for: 'res://assets/audio/sfx_loot.wav' remapped 'res://assets/audio/sfx_loot.wav' at thread -1
+Loading resource: res://assets/audio/sfx_confirm.wav remapped: res://assets/audio/sfx_confirm.wav
+Loading resource: res://.godot/imported/sfx_confirm.wav-ca52ac6b1cee1244748502d2be2bb05a.sample remapped: res://.godot/imported/sfx_confirm.wav-ca52ac6b1cee1244748502d2be2bb05a.sample
+Completed load for: 'res://assets/audio/sfx_confirm.wav' remapped 'res://assets/audio/sfx_confirm.wav' at thread -1
+Loading resource: res://assets/audio/sfx_reject.wav remapped: res://assets/audio/sfx_reject.wav
+Loading resource: res://.godot/imported/sfx_reject.wav-b68d64e03ab2ee9e552f92def9dc66ca.sample remapped: res://.godot/imported/sfx_reject.wav-b68d64e03ab2ee9e552f92def9dc66ca.sample
+Completed load for: 'res://assets/audio/sfx_reject.wav' remapped 'res://assets/audio/sfx_reject.wav' at thread -1
+Loading resource: res://assets/audio/sfx_build.wav remapped: res://assets/audio/sfx_build.wav
+Loading resource: res://.godot/imported/sfx_build.wav-c17301eae1aa4a77beaafe4519654c4d.sample remapped: res://.godot/imported/sfx_build.wav-c17301eae1aa4a77beaafe4519654c4d.sample
+Completed load for: 'res://assets/audio/sfx_build.wav' remapped 'res://assets/audio/sfx_build.wav' at thread -1
+Loading resource: res://assets/audio/sfx_warning.wav remapped: res://assets/audio/sfx_warning.wav
+Loading resource: res://.godot/imported/sfx_warning.wav-b4a192c5585fefaa45f4aee5d934624d.sample remapped: res://.godot/imported/sfx_warning.wav-b4a192c5585fefaa45f4aee5d934624d.sample
+Completed load for: 'res://assets/audio/sfx_warning.wav' remapped 'res://assets/audio/sfx_warning.wav' at thread -1
+Completed load for: 'res://scripts/main.gd' remapped 'res://scripts/main.gd' at thread -1
+Completed load for: 'res://main.tscn' remapped 'res://main.tscn' at thread -1
+Loading resource: res://assets/fonts/NotoSansCJK-Regular.ttc remapped: res://assets/fonts/NotoSansCJK-Regular.ttc
+Loading resource: res://.godot/imported/NotoSansCJK-Regular.ttc-bf6a5134ec173401ff9bd69115e437ec.fontdata remapped: res://.godot/imported/NotoSansCJK-Regular.ttc-bf6a5134ec173401ff9bd69115e437ec.fontdata
+Completed load for: 'res://assets/fonts/NotoSansCJK-Regular.ttc' remapped 'res://assets/fonts/NotoSansCJK-Regular.ttc' at thread -1
+Loading resource: res://assets/buildings-atlas.png remapped: res://assets/buildings-atlas.png
+Loading resource: res://.godot/imported/buildings-atlas.png-30f45c7e961a0e0b7f15bb9fe672271c.ctex remapped: res://.godot/imported/buildings-atlas.png-30f45c7e961a0e0b7f15bb9fe672271c.ctex
+Completed load for: 'res://assets/buildings-atlas.png' remapped 'res://assets/buildings-atlas.png' at thread -1
+Loading resource: res://assets/audio/canyon_ambient.wav remapped: res://assets/audio/canyon_ambient.wav
+Loading resource: res://.godot/imported/canyon_ambient.wav-9d1ec17f00866a1c10d8eee392566f65.sample remapped: res://.godot/imported/canyon_ambient.wav-9d1ec17f00866a1c10d8eee392566f65.sample
+Completed load for: 'res://assets/audio/canyon_ambient.wav' remapped 'res://assets/audio/canyon_ambient.wav' at thread -1
+QUIT_WALL_PROBE wall_ms=120.739 stopped_processing=true all_streams_released=true
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"
+Accessibility: window 0 adapter destroyed.

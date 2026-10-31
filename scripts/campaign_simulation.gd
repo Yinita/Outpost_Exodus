@@ -5,6 +5,7 @@ extends RefCounted
 const SAVE_VERSION: int = 1
 const CampaignCatalog = preload("res://scripts/campaign_catalog.gd")
 const ConstructionRules = preload("res://scripts/construction_rules.gd")
+const RecruitmentRules = preload("res://scripts/recruitment_rules.gd")
 const MISSION_SAVE_TAGS: Dictionary = {"canyon": "rift_escape_01", "delta": "wetland_escape_02", "ridge": "ridge_escape_03"}
 const BUILD_COSTS: Dictionary = {
 	"road": {"materials": 2.0},
@@ -25,6 +26,7 @@ const RECRUIT_COSTS: Dictionary = {
 }
 const RECRUIT_SECONDS: Dictionary = {"rifle": 20.0, "engineer": 26.0, "worker": 12.0, "truck": 40.0}
 const POPULATION_CAP: int = 32
+const RECRUIT_QUEUE_CAP: int = 4
 const EVAC_RESERVES: Dictionary = {"fuel": 50.0, "supplies": 40.0}
 const DIRECTIONS: Array[Vector2i] = [Vector2i(1, 0), Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0)]
 const RESOURCE_KEYS: Array[String] = ["materials", "supplies", "fuel", "salvage", "crude"]
@@ -1372,38 +1374,34 @@ func _update_production(delta: float) -> void:
 				camp["supplies"] = float(camp["supplies"]) + amount
 
 
+func query_recruit(camp_id: int, kind: String) -> Dictionary:
+	return RecruitmentRules.query_recruit(self, camp_id, kind, RECRUIT_COSTS, RECRUIT_SECONDS, POPULATION_CAP, RECRUIT_QUEUE_CAP)
+
+
 func recruit(camp_id: int, kind: String) -> bool:
-	if outcome != "playing" or not RECRUIT_COSTS.has(kind):
-		return false
+	return bool(try_recruit(camp_id, kind)["ok"])
+
+
+func try_recruit(camp_id: int, kind: String) -> Dictionary:
+	# A preview reserves neither inventory nor population; validate live state.
+	var result: Dictionary = query_recruit(camp_id, kind)
+	if not bool(result["ok"]):
+		_message(str(result["message"]))
+		return result
 	var camp: Dictionary = get_camp(camp_id)
-	if camp.is_empty() or str(camp["state"]) != "active":
-		return false
-	var population: int = 0
-	for unit in units:
-		if str(unit["team"]) == "friendly" and float(unit["hp"]) > 0.0:
-			population += 1
-	for other_camp in camps:
-		population += Array(other_camp.get("recruit_queue", [])).size()
-	if population >= POPULATION_CAP:
-		_message("已达到 32 单位指挥上限（含训练中的单位）。")
-		return false
 	var queue: Array = camp.get("recruit_queue", [])
-	if queue.size() >= 4:
-		_message("该营地的训练队列已满。")
-		return false
-	if not _training_power_available(camp, kind):
-		_message("训练需要正常供能的军营；工人需要营地供电，车辆需要供能工坊。")
-		return false
-	var costs: Dictionary = Dictionary(RECRUIT_COSTS[kind]).duplicate(true)
-	if not _can_pay(camp, costs):
-		_message("该营地缺少训练所需的材料、口粮或燃料。")
-		return false
+	var costs: Dictionary = Dictionary(result["costs"]).duplicate(true)
 	_pay(camp, costs)
 	queue.append({"kind": kind, "elapsed": 0.0, "progress": 0.0, "duration": float(RECRUIT_SECONDS[kind]), "costs": costs})
 	camp["recruit_queue"] = queue
 	camp["recruit_status"] = "training"
-	_message("%s已安排训练：%s。" % [str(camp.get("name", "营地")), str({"rifle": "步枪兵", "engineer": "工程师", "worker": "工人", "truck": "补给卡车"}[kind])])
-	return true
+	result["message"] = "%s已安排训练：%s。" % [str(camp.get("name", "营地")), str({"rifle": "步枪兵", "engineer": "工程师", "worker": "工人", "truck": "补给卡车"}[kind])]
+	_message(str(result["message"]))
+	return result
+
+
+func get_training_status(camp_id: int) -> Dictionary:
+	return RecruitmentRules.get_training_status(self, camp_id)
 
 
 func _training_power_available(camp: Dictionary, kind: String) -> bool:

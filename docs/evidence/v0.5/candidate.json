@@ -1,0 +1,364 @@
+{
+  "version": "0.5.0-dev",
+  "scope": "Candidate source snapshot before final export. Physical lines include comments and blanks. Runtime scripts, diagnostic scripts, tests/benchmarks and build tools are counted separately. Engine, libraries, assets, caches, builds and generated scene/serialized files excluded. Final binary/commit binding is supplied separately by export provenance and native release reports.",
+  "groups": {
+    "gameplay": {
+      "files": 15,
+      "physical_lines": 7919,
+      "nonblank_lines": 7216,
+      "entries": {
+        "scripts/actor_atlas.gd": {
+          "physical_lines": 98,
+          "nonblank_lines": 81,
+          "sha256": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1"
+        },
+        "scripts/actor_canvas.gd": {
+          "physical_lines": 121,
+          "nonblank_lines": 106,
+          "sha256": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda"
+        },
+        "scripts/campaign_catalog.gd": {
+          "physical_lines": 488,
+          "nonblank_lines": 447,
+          "sha256": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556"
+        },
+        "scripts/campaign_guide.gd": {
+          "physical_lines": 661,
+          "nonblank_lines": 583,
+          "sha256": "c883ad89733b7fbed34b254e99adbb2f038d12e466b79004259144d60d40f215"
+        },
+        "scripts/campaign_save_store.gd": {
+          "physical_lines": 228,
+          "nonblank_lines": 204,
+          "sha256": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc"
+        },
+        "scripts/campaign_simulation.gd": {
+          "physical_lines": 2832,
+          "nonblank_lines": 2594,
+          "sha256": "1e381e2fa0031c9ba67920caa1cbb5252eaf23052f827d99b9f9152e555851f7"
+        },
+        "scripts/cartoon_canvas.gd": {
+          "physical_lines": 215,
+          "nonblank_lines": 185,
+          "sha256": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533"
+        },
+        "scripts/construction_rules.gd": {
+          "physical_lines": 207,
+          "nonblank_lines": 184,
+          "sha256": "0f8f9178d97743a632dc7a1cde7ede18e4d8ea248bfccce3aed9091a474b9701"
+        },
+        "scripts/decoration_cache.gd": {
+          "physical_lines": 5,
+          "nonblank_lines": 5,
+          "sha256": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da"
+        },
+        "scripts/game_audio.gd": {
+          "physical_lines": 201,
+          "nonblank_lines": 169,
+          "sha256": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612"
+        },
+        "scripts/hud.gd": {
+          "physical_lines": 678,
+          "nonblank_lines": 642,
+          "sha256": "b3abf31c2971385e7ac5e00260ff3698a33fcdefafee481772249450e9e2789d"
+        },
+        "scripts/main.gd": {
+          "physical_lines": 1047,
+          "nonblank_lines": 1000,
+          "sha256": "83eff27f726b0928983f9e255c463fef1d4f53c21dc247f2c8a55f04de27fba3"
+        },
+        "scripts/recruitment_rules.gd": {
+          "physical_lines": 180,
+          "nonblank_lines": 157,
+          "sha256": "3f55c8483bb723d00345ffd3a7b1c923f95dcea7b99f40a636d2ef3987b28190"
+        },
+        "scripts/terrain_cache.gd": {
+          "physical_lines": 11,
+          "nonblank_lines": 10,
+          "sha256": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2"
+        },
+        "scripts/world_view.gd": {
+          "physical_lines": 947,
+          "nonblank_lines": 849,
+          "sha256": "0490ac39cc5e19e97cb58824403e29a94049dec889eebf817d92188e7eeada67"
+        }
+      }
+    },
+    "diagnostics": {
+      "files": 1,
+      "physical_lines": 671,
+      "nonblank_lines": 634,
+      "entries": {
+        "scripts/diagnostics/render_runner.gd": {
+          "physical_lines": 671,
+          "nonblank_lines": 634,
+          "sha256": "fd29fa839c26123d23ac3cf54328688b7658fd0c636917038750851e7193c9fc"
+        }
+      }
+    },
+    "tests_and_benchmarks": {
+      "files": 27,
+      "physical_lines": 8505,
+      "nonblank_lines": 7829,
+      "entries": {
+        "tests/benchmark_campaign.gd": {
+          "physical_lines": 326,
+          "nonblank_lines": 312,
+          "sha256": "e041e6ab5509e49354fe09e54eead820d1adede2f2159a522d19d0f28672a39a"
+        },
+        "tests/benchmark_rendered.gd": {
+          "physical_lines": 560,
+          "nonblank_lines": 532,
+          "sha256": "421bc1e180f4013eeae9925bcb638c2cc91c1dc8d2c1404469d249ae08ea940b"
+        },
+        "tests/render_fixture.gd": {
+          "physical_lines": 53,
+          "nonblank_lines": 47,
+          "sha256": "5dde89a1d150d3968144775b0b3eeeeb6239f77a2b05cf39f31a94ac783f459d"
+        },
+        "tests/test_actor_overlays.gd": {
+          "physical_lines": 262,
+          "nonblank_lines": 243,
+          "sha256": "b999cb0377635a15ee729e15c7ffa3d180ef9558e43f9910186490c38c91b37c"
+        },
+        "tests/test_campaign.gd": {
+          "physical_lines": 671,
+          "nonblank_lines": 639,
+          "sha256": "adb011d3eeb99b784df6efe934e95d26ab5ac6d9c460a3a75919958dbecd9886"
+        },
+        "tests/test_campaign_catalog.gd": {
+          "physical_lines": 258,
+          "nonblank_lines": 233,
+          "sha256": "be1cf7a4dc3d21e72e9ecb5dcdfa553bf84bcb0ca867e1df82fd48c0b2e6650a"
+        },
+        "tests/test_campaign_selection.gd": {
+          "physical_lines": 276,
+          "nonblank_lines": 248,
+          "sha256": "ac04ee3e37f3f12d74c0fa331ac00d89f3d3c23695b1159a5a4556cf3628edad"
+        },
+        "tests/test_campaign_variants.gd": {
+          "physical_lines": 464,
+          "nonblank_lines": 438,
+          "sha256": "e82535eae7ef896270f116a90c9a45923732ad9e6aa386e285b4924270a83bd6"
+        },
+        "tests/test_cartoon_primitives.gd": {
+          "physical_lines": 91,
+          "nonblank_lines": 85,
+          "sha256": "98faf5ea3a460c5d319b410824625828542e4c4c0e9fe82abedcab24013b1cda"
+        },
+        "tests/test_construction_feedback.gd": {
+          "physical_lines": 325,
+          "nonblank_lines": 290,
+          "sha256": "24f2cf61baf88f5dab40e890b57d072670bd219bf0715672a005963016e030b5"
+        },
+        "tests/test_construction_ui.gd": {
+          "physical_lines": 161,
+          "nonblank_lines": 152,
+          "sha256": "2f08b49a868adbf5c807709ccb47586d5668f05044ca9500c5c3a68f817d2788"
+        },
+        "tests/test_cross_process.gd": {
+          "physical_lines": 336,
+          "nonblank_lines": 296,
+          "sha256": "3925172f867cc7ace2e6b96374bbce494f50abe01e6e85b202ec871ada6de2da"
+        },
+        "tests/test_exit_recovery.gd": {
+          "physical_lines": 261,
+          "nonblank_lines": 241,
+          "sha256": "3ea41ec9dbe3c16cff794b11c9b54ad62ba43dbe3b9676c7ba25c0b4f6702cd7"
+        },
+        "tests/test_game_audio.gd": {
+          "physical_lines": 284,
+          "nonblank_lines": 255,
+          "sha256": "5d40519f50f56e662c0a4050d2fa9c32ae69ecc61904b1244bc87f0c3a95970f"
+        },
+        "tests/test_guide.gd": {
+          "physical_lines": 359,
+          "nonblank_lines": 331,
+          "sha256": "d360b9fb56f93f08fcf4cfd7da0dc49af7cc2c5b735bd13e746ee8803cfaf9ea"
+        },
+        "tests/test_hud_layout_cache.gd": {
+          "physical_lines": 56,
+          "nonblank_lines": 53,
+          "sha256": "28a68928444eb5aa64d56c411f3fba911e90e3663675b400f5c2f763670fb0db"
+        },
+        "tests/test_input_dispatch.gd": {
+          "physical_lines": 350,
+          "nonblank_lines": 301,
+          "sha256": "9b432a2416ee1d64c7dd6b779810d5c49fd4829c613fc63cfb29e6d0000b0a44"
+        },
+        "tests/test_macro_controls.gd": {
+          "physical_lines": 409,
+          "nonblank_lines": 381,
+          "sha256": "eb62f12aa5b521e8fdaf7a1a7263833f5424c7e510565f75a454ddd4a4629255"
+        },
+        "tests/test_mission_guide.gd": {
+          "physical_lines": 277,
+          "nonblank_lines": 247,
+          "sha256": "4060cfb2df54c37402eb10f4db311938527a7a9e508e723f26dd8d8aca53bb9b"
+        },
+        "tests/test_mission_playthrough.gd": {
+          "physical_lines": 171,
+          "nonblank_lines": 164,
+          "sha256": "5a4d5a5468cb76894c3ba11a8280e30b3a16c18fa439a557a21c2de1eecc764d"
+        },
+        "tests/test_navigation_combat.gd": {
+          "physical_lines": 602,
+          "nonblank_lines": 573,
+          "sha256": "99e6b6d06a0edce07ea44e92b119ec2ac5f5eddaf4b293e97b7c34437c12264d"
+        },
+        "tests/test_preferences_recovery.gd": {
+          "physical_lines": 586,
+          "nonblank_lines": 527,
+          "sha256": "472ea1adc637648c92b1d92a0edcb0d2c27f05f076f159a5f766d3eb8c920a06"
+        },
+        "tests/test_recruitment_feedback.gd": {
+          "physical_lines": 381,
+          "nonblank_lines": 346,
+          "sha256": "97289a8e14bc3d187626f43a2e96c888a8eacecdaafcf966701293dc91d12458"
+        },
+        "tests/test_render_cache.gd": {
+          "physical_lines": 133,
+          "nonblank_lines": 127,
+          "sha256": "52e57d7e8fc81e1179dbf323267fc5d1d131434950e715939fcc965ea5ef2635"
+        },
+        "tests/test_render_diagnostics.gd": {
+          "physical_lines": 129,
+          "nonblank_lines": 121,
+          "sha256": "4cabbbfe26b18d49300243318066c9855914680403d127bb2cc948ae661fdec1"
+        },
+        "tests/test_save_store.gd": {
+          "physical_lines": 351,
+          "nonblank_lines": 295,
+          "sha256": "a18917490e6cb5bd2df8ed1c514ff003adc31cbc5fd2e6714f71bd7f275c56ca"
+        },
+        "tests/test_ui.gd": {
+          "physical_lines": 373,
+          "nonblank_lines": 352,
+          "sha256": "4f47bf48fbe8a897f6dc11446ae42bb2c7b409020f6d843c099628c5d829d8fc"
+        }
+      }
+    },
+    "python_shell_tools": {
+      "files": 6,
+      "physical_lines": 875,
+      "nonblank_lines": 795,
+      "entries": {
+        "tools/export_release.sh": {
+          "physical_lines": 71,
+          "nonblank_lines": 71,
+          "sha256": "198c3be3cdec172f1677bb049017a93109af3977a59f9025fb9d8f11e3dc84f1"
+        },
+        "tools/generate_audio.py": {
+          "physical_lines": 39,
+          "nonblank_lines": 38,
+          "sha256": "0ea10f3e662713ec087c6183b77be44d900fd2b9ffde276dba80514a868cf1a6"
+        },
+        "tools/generate_sfx.py": {
+          "physical_lines": 142,
+          "nonblank_lines": 128,
+          "sha256": "b374e2284388b716151b3d5d54010684084038fb531b0de15ff0ddcfb4d12555"
+        },
+        "tools/package_builds.py": {
+          "physical_lines": 144,
+          "nonblank_lines": 131,
+          "sha256": "5856520c0d5514e1989acf3457dffd2fc402f48e574ff860b86a15be3b9b88a1"
+        },
+        "tools/patch_windows_resources.py": {
+          "physical_lines": 303,
+          "nonblank_lines": 265,
+          "sha256": "64ccbbe97b0235d4f37c1e3c086a9c7ea308fba4afc3f25e3a7f34fea099e255"
+        },
+        "tools/smoke_native.py": {
+          "physical_lines": 176,
+          "nonblank_lines": 162,
+          "sha256": "e9080a7b9ed06c056fd3aaa190f94e24ed18f6b9e4c9b6b1b757ee4d2ddfcfad"
+        }
+      }
+    },
+    "other_source_helpers": {
+      "files": 2,
+      "physical_lines": 95,
+      "nonblank_lines": 91,
+      "entries": {
+        "run.sh": {
+          "physical_lines": 14,
+          "nonblank_lines": 14,
+          "sha256": "5f3533e607e00733b225d3525b703866091d5a7a20f4677a5b0623a0c7fbffec"
+        },
+        "tools/render_icon.gd": {
+          "physical_lines": 81,
+          "nonblank_lines": 77,
+          "sha256": "d34b25f6cf8ed466c121ecffdfa304d24def929979d2c15d5b77629fe182ebc2"
+        }
+      }
+    }
+  },
+  "asset_sha256": {
+    "assets/audio/canyon_ambient.wav": "4dbbe8ca27b378938c893ff5c42e0cd58fbc01197a0fb5f334e1051638697769",
+    "assets/audio/sfx_build.wav": "1e8ef2be5057c330760bf84c4a320fe7b611b973cfc63190f3f8af9f72763977",
+    "assets/audio/sfx_confirm.wav": "65cdda9a1997f596b40ed1fb021ed081701f0f98343d82b1d3181d290f544091",
+    "assets/audio/sfx_impact.wav": "49fcb7bf0d03229f8fc1a04454412f910869936420899e09b594b64c77e89661",
+    "assets/audio/sfx_loot.wav": "8d7e64549b23991d6851884619571e1dafb5b4d49429d79f5a565e545908e91c",
+    "assets/audio/sfx_reject.wav": "aba491d27649b3513e0603a5daba29f256dc4536bfc9f3ec450c330c7a5cf436",
+    "assets/audio/sfx_shot_a.wav": "67420ad0bc3a66fa5369867bd9685b555ac1a6ca0011739704676847703d4fba",
+    "assets/audio/sfx_shot_b.wav": "c3f780271090f978d14b85df9bb5cd4c0bd2a6325969150feda72a6064f0405f",
+    "assets/audio/sfx_warning.wav": "0fed177282618be9a9665ceca50c450e393f05339d4b45cfb3a086e6f7e9cd54"
+  },
+  "raw_log_sha256": {
+    "recruitment-feedback.txt": "86cae725b791c2900f19141ee85105e2b572f870383a553dfc85f4d8365accc8",
+    "canyon-route.txt": "b0112cb6d0f7606d14c0bee212d2efbf10f5b7f7d3f9629f77223e3f44dd0a75",
+    "audio-native.txt": "94b16c73d5a4f17b53e32b3b47595c6b97fed8dfced53bbe23b3db4dde4965c3",
+    "sfx-reproduction.txt": "bd1dc89e96d2c038c1e72e11da0bfb0552b693afc09f6f638630b2e8f61358a6",
+    "ui.txt": "d28fbb8ed18ce1e8c576ca09842b52ee1155abc3729f3c8d8957e34d30c3f705",
+    "input.txt": "aff0d7fe42af963c8552e2e788479577c8aa9729ec0f228bea54bffb585813c1",
+    "preferences.txt": "d30284c15e1e6a5b294f9a25a85c983c11ef507a6b9b2ac355b97621c1c8d9a6",
+    "diagnostic-preflight.txt": "e428559909a3ecdbac3a8fc09a6e357afaa8987fa81dd74f8c947ae122a94148",
+    "construction-ui.txt": "14647271e760a5e43b798ed09ab5724edc3762fb86e22e1860b03ab8a790878a",
+    "macro-controls.txt": "3ef22b207438767817aca6d9775623806df7d966c5ec42a318682ff9384b5b2b",
+    "exit-recovery-after.txt": "cd2594f4b0fecd94e160340c53cf7ea7fa0d7df5fa5d11c65912f7e9356e967b",
+    "exit-recovery-baseline-failed.txt": "43c297f92dc450761b90a12457ce7f06d98ab53e197af12f292668196b271d46",
+    "audio-shutdown-baseline-leak.txt": "b42c67e25a533b91fdb8c65452f19186d6e5c39995c1903116674499b73c4a9b",
+    "selection-normal-after.txt": "56807a73e0eb4474620ad8895db7a6f71e914f03a59f29e2b8f412a884e2e62c",
+    "selection-accelerated-after.txt": "b929022a68561b9a6289d5d631e57960e521dd61ba2cc46153eb77654c06f86b",
+    "quit-wall-probe.txt": "1f82e410786f95e6f62cf82532554b25e31a0e062374e3cee161ffc1bdfda81a",
+    "quit-fixed-fps-smoke.txt": "8e1cb59860555d8089f2613a8196dad2b28b6715f4904c24dc8f32405fda146a",
+    "candidate-import.txt": "f15ffd4c558b01611d562c8c257508942bdc2dc542124f423ae2a592a46edfa6"
+  },
+  "verified_this_iteration": {
+    "recruitment_feedback": 219,
+    "original_canyon_full_guide": 102,
+    "native_audio": 200,
+    "rendered_ui": 124,
+    "engine_input": 48,
+    "preferences": 286,
+    "diagnostic_preflight": 40,
+    "construction_ui": 31,
+    "macro_controls": 268,
+    "exit_recovery": 43,
+    "selection_normal": 114,
+    "selection_accelerated": 114
+  },
+  "known_rejected_baselines": {
+    "exit_recovery": {
+      "checks": 11,
+      "failures": 2,
+      "log": "exit-recovery-baseline-failed.txt"
+    },
+    "accelerated_audio_shutdown": {
+      "checks": 114,
+      "assertion_failures": 0,
+      "objectdb_leaks": 2,
+      "resources_still_in_use": 1,
+      "log": "audio-shutdown-baseline-leak.txt"
+    }
+  },
+  "native_performance": "Not measured by these functional tests. Final 0.5 exported executable/PCK performance remains separate.",
+  "open_gates": [
+    "fresh-human playability and pacing",
+    "final audio listening/mix and art/accessibility acceptance",
+    "stable 60 FPS and minimum hardware",
+    "native Windows execution and clean installations",
+    "final license/asset audit",
+    "Steam account/store/depot/build review"
+  ]
+}

@@ -1,0 +1,11 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS _test_read_only_and_stale_plans
+PASS _test_admission_order_and_caps
+PASS _test_local_inventory
+PASS _test_power_and_facilities
+PASS _test_worker_fallback_and_snapshot
+PASS _test_training_status_and_completion
+PASS _test_existing_evacuation_policy
+PASS _test_save_continuation_and_legacy_pair
+Recruitment feedback checks: 219; failures: 0

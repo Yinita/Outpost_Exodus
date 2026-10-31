@@ -1,6 +1,15 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, **0.4.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
+Project: 逐营突围 / Outpost Exodus, **0.5.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
+
+## Current 0.5 work
+
+- Camp cards paginate when needed and keep actual selected camps visible. Shift plus the rebound camp-focus key cycles operating camps. Four training cards, local costs, queue progress and concrete paused/power/facility reasons fit the tested 960×540 logical view. Mode switches and tabs cancel old targeting; persistent cues identify an armed attack/task after short notifications expire.
+- Recruitment plans/status are read-only apart from transient navigation metadata, and actual clicks re-query. Legacy admission, costs, population/queue limits, training completion and queue save continuation are retained. Existing evacuation behavior remains queue cancellation plus a 50% cost refund, now disclosed in the UI.
+- Eight original precomputed sound effects replace the temporary generic feedback tone. A six-world/two-UI voice pool, cooldowns and camera attenuation bound playback. Audio observes actual effects and leaves complete simulation/RNG state identical. Menus, pause, load and mute retire old effects without stale bursts. Native PulseAudio checks verify a real mixer signal; human listening and final mix are still open.
+- The imported QOA ambient loop now uses decoded sample frames: 529,200 frames/24 seconds, rather than interpreting compressed bytes as PCM. Music/SFX release waits at least 120 milliseconds of actual wall time after stopping processing, fixing an audio-thread teardown leak exposed by accelerated fixed-FPS execution.
+- Failed exit autosaves keep the live campaign and show Return/Retry/Discard recovery. A real AUTO-path write failure verifies state/file preservation and input blocking. The test substitutes only the final quit call so it can inspect both success and failure paths; complete native OS close acceptance remains broader.
+- Focused recorded passes: recruitment219, macro controls268, native audio200, exit recovery43, renderedUI124, input48, preferences286, constructionUI31, diagnostic preflight40, campaign-selection114 in both ordinary and accelerated runs, and complete Canyon guide102 at1590.0seconds. Full raw logs, rejected baseline evidence and candidate source/asset hashes are in docs/evidence/v0.5. No new Delta/Ridge route, final 0.5 export performance or human-playability claim is inferred from these tests.
 
 ## Proven work
 
@@ -28,7 +37,7 @@ Project: 逐营突围 / Outpost Exodus, **0.4.0-dev**. The objective remains a h
 
 ## Evidence
 
-See docs/evidence/v0.4 and docs/benchmarks/v0.4 for this gameplay-feedback/performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Passing counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
+See docs/evidence/v0.5 for current functional evidence and docs/benchmarks/v0.5 for the pending final-export measurement protocol. See docs/evidence/v0.4 and docs/benchmarks/v0.4 for the preceding gameplay-feedback/performance iteration, plus earlier v0.3 evidence and validation-plan.md. Linux build bundles also carry the exact-payload native frame report; a measurement does not pass the60-FPS/minimum-hardware gate. Passing counts include campaign170, navigation132, file-store134, catalog152, variants115, new full routes116 each, original guide102, mission guide137, campaign-selection114, UI124, preferences286, separate-process90, GPU cache23, new HUD layout286, native oval5 and diagnostic preflight40. Fixture, synthetic event and scripted route scopes do not prove uncoached human playability.
 
 ## Still required
 
