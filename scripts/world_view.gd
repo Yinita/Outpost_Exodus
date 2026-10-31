@@ -24,6 +24,10 @@ const BUILDING_WIDTHS: Dictionary = {
 	"workshop": 142.0, "barracks": 145.0, "tower": 87.0,
 	"barricade": 140.0, "fuel": 125.0, "quarry": 108.0, "exit": 142.0
 }
+const LABEL_CELL_SIZE: float = 64.0
+const LABEL_GAP: float = 4.0
+const LABEL_OFFSETS: Array[Vector2] = [Vector2.ZERO, Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT,
+	Vector2(1, -1), Vector2(-1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(0, -2), Vector2(0, 2)]
 
 var selected_ids: Array = []
 var hover_tile: Vector2i = Vector2i(-1, -1)
@@ -48,6 +52,7 @@ var _terrain_viewport: SubViewport
 var _terrain_surface: Node2D
 var _terrain_signature: int = -1
 var motion: RefCounted = RenderMotion.new()
+var _world_labels: Array[Dictionary] = []
 
 
 func render_unit_position(unit: Dictionary) -> Vector2:
@@ -133,6 +138,7 @@ func world_to_tile(p: Vector2) -> Vector2i:
 
 
 func _draw() -> void:
+	_world_labels.clear()
 	if sim == null:
 		return
 	var size: Vector2i = sim.map_size
@@ -179,6 +185,7 @@ func _draw() -> void:
 	_draw_orders()
 	_draw_guide_target()
 	_draw_build_preview()
+	_draw_world_labels()
 	if drag_selecting:
 		draw_rect(drag_selection_rect.abs(), Color(CYAN, 0.10), true)
 		draw_rect(drag_selection_rect.abs(), Color(CYAN, 0.88), false, 2.0)
@@ -351,7 +358,7 @@ func _draw_sites() -> void:
 			_draw_crate(Vector2(23.0, 14.0), 0.8)
 		draw_set_transform(Vector2.ZERO)
 		var label: String = {"quarry": "废料场", "fuel": "油料仓库", "cache": "公路补给", "exit": "撤离站"}.get(kind, "资源点")
-		_badge(p + Vector2(0.0, 49.0), label, tint, 12)
+		_badge(p + Vector2(0.0, 49.0), label, tint, 12, p + Vector2(0.0, 32.0))
 		var progress: float = float(site.get("progress", 0.0))
 		if progress > 0.0 and progress < 1.0:
 			_progress_bar(p + Vector2(-27.0, 62.0), 54.0, progress, CYAN)
@@ -495,7 +502,7 @@ func _draw_building(building: Dictionary) -> void:
 		else:
 			_badge(p + Vector2(0.0, 18.0), "待修复", ORANGE, 10)
 	if kind == "barracks":
-		_badge(p + Vector2(0.0, -visual_size.y - 6.0), "军营", CYAN, 11)
+		_badge(p + Vector2(0.0, -visual_size.y - 6.0), "军营", CYAN, 11, p - Vector2(0.0, visual_size.y), 1)
 	if kind == "command" or kind == "camp":
 		var camp_id: int = int(building.get("camp_id", -1))
 		var camp_state: String = ""
@@ -511,7 +518,7 @@ func _draw_building(building: Dictionary) -> void:
 			label = "正在打包"
 		elif camp_state == "abandoned":
 			label = "已弃置"
-		_badge(p + Vector2(0.0, -visual_size.y - 6.0), label, CYAN if camp_state == "active" else ORANGE, 11)
+		_badge(p + Vector2(0.0, -visual_size.y - 6.0), label, CYAN if camp_state == "active" else ORANGE, 11, p - Vector2(0.0, visual_size.y), 0)
 
 
 func _building_visual_size(kind: String) -> Vector2:
@@ -869,7 +876,7 @@ func _draw_guide_target() -> void:
 	draw_arc(point, 24.0 + pulse * 5.0, 0, TAU, 32, Color(ORANGE, 0.75), 2.0)
 	draw_colored_polygon(PackedVector2Array([point+Vector2(-9,-47), point+Vector2(9,-47), point+Vector2(0,-34)]), ORANGE)
 	if world_font != null:
-		draw_string(world_font, point+Vector2(-14,-55), "目标", HORIZONTAL_ALIGNMENT_LEFT, -1, 14, ORANGE)
+		_badge(point + Vector2(0, -55), "目标", ORANGE, 14, point + Vector2(0, -47), 1)
 
 func _draw_build_preview() -> void:
 	if build_kind.is_empty() or hover_tile.x < 0 or hover_tile.y < 0:
@@ -949,10 +956,86 @@ func _label(draw_position: Vector2, text: String, color: Color, font_size: int =
 	draw_string(font, draw_position - Vector2(size.x * 0.5, 0.0), text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, font_size, color)
 
 
-func _badge(draw_position: Vector2, text: String, accent: Color, font_size: int = 12) -> void:
+func _badge(draw_position: Vector2, text: String, accent: Color, font_size: int = 12, leader_origin: Vector2 = Vector2.INF, priority: int = 2) -> void:
+	# Only this frame's annotations are retained. Bodies, hit tests and commands
+	# continue using their original world coordinates and depth ordering.
+	_world_labels.append({"position": draw_position, "text": text, "accent": accent, "font_size": maxi(12, font_size),
+		"leader_origin": draw_position if leader_origin == Vector2.INF else leader_origin, "priority": priority, "order": _world_labels.size()})
+
+
+func _sort_world_labels(a: Dictionary, b: Dictionary) -> bool:
+	if int(a.priority) != int(b.priority): return int(a.priority) < int(b.priority)
+	return int(a.order) < int(b.order)
+
+
+func _draw_world_labels() -> void:
+	var canvas: Transform2D = get_global_transform_with_canvas()
+	var viewport: Rect2 = get_viewport_rect().grow(-4.0)
+	var occupied: Dictionary = {}
+	var placed: Array[Dictionary] = []
 	var font: Font = _font()
-	var text_size: Vector2 = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, font_size)
-	var rectangle: Rect2 = Rect2(draw_position - Vector2(text_size.x * 0.5 + 6.0, float(font_size) + 2.0), Vector2(text_size.x + 12.0, float(font_size) + 8.0))
-	draw_rect(rectangle, Color("334747"))
-	draw_line(rectangle.position, rectangle.position + Vector2(0.0, rectangle.size.y), accent, 3.0)
-	_label(draw_position, text, accent.lightened(0.15), font_size)
+	_world_labels.sort_custom(_sort_world_labels)
+	# Cancel only the drawing transform so badge text keeps a readable screen
+	# size at strategic zoom. This never changes the Node/camera/input transform.
+	draw_set_transform_matrix(canvas.affine_inverse())
+	for label: Dictionary in _world_labels:
+		var preferred: Vector2 = canvas * Vector2(label.position)
+		if not viewport.grow(64.0).has_point(preferred): continue
+		var font_size: int = int(label.font_size)
+		var text: String = str(label.text)
+		var ascent: float = font.get_ascent(font_size)
+		var text_size: Vector2 = font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, font_size)
+		var size: Vector2 = Vector2(text_size.x + 12.0, ascent + font.get_descent(font_size) + 8.0)
+		var natural: Vector2 = preferred - Vector2(size.x * 0.5, ascent + 4.0)
+		var rectangle: Rect2 = Rect2()
+		for offset: Vector2 in LABEL_OFFSETS:
+			var candidate_position: Vector2 = natural + offset * (size + Vector2.ONE * (LABEL_GAP + 2.0))
+			candidate_position = candidate_position.clamp(viewport.position, viewport.end - size)
+			var candidate: Rect2 = Rect2(candidate_position, size)
+			if not _world_label_overlaps(candidate, occupied):
+				rectangle = candidate
+				break
+		# The fixed local search never lets a dense group become a quadratic
+		# layout pass. If no slot fits, lower-priority text yields to camp status.
+		if not rectangle.has_area(): continue
+		_reserve_world_label(rectangle.grow(LABEL_GAP), occupied)
+		placed.append({"label": label, "rectangle": rectangle, "natural": natural, "ascent": ascent})
+	# Leaders stay below every badge, including ones placed earlier, so a moved
+	# guide label cannot draw a line through the packing text it avoided.
+	for placement: Dictionary in placed:
+		var label: Dictionary = placement.label
+		var rectangle: Rect2 = placement.rectangle
+		if rectangle.position.distance_squared_to(Vector2(placement.natural)) > 1.0:
+			var origin: Vector2 = canvas * Vector2(label.leader_origin)
+			var end: Vector2 = origin.clamp(rectangle.position, rectangle.end)
+			draw_line(origin, end, Color("334747"), 3.0)
+			draw_line(origin, end, label.accent, 1.0)
+	for placement: Dictionary in placed:
+		var label: Dictionary = placement.label
+		var rectangle: Rect2 = placement.rectangle
+		var accent: Color = label.accent
+		draw_rect(rectangle, Color("334747"))
+		draw_line(rectangle.position, rectangle.position + Vector2(0.0, rectangle.size.y), accent, 3.0)
+		draw_string(font, rectangle.position + Vector2(6.0, float(placement.ascent) + 4.0), str(label.text), HORIZONTAL_ALIGNMENT_LEFT, -1.0, int(label.font_size), accent.lightened(0.15))
+	draw_set_transform(Vector2.ZERO)
+	_world_labels.clear()
+
+
+func _world_label_overlaps(rectangle: Rect2, occupied: Dictionary) -> bool:
+	var first: Vector2i = Vector2i((rectangle.position / LABEL_CELL_SIZE).floor())
+	var last: Vector2i = Vector2i((rectangle.end / LABEL_CELL_SIZE).floor())
+	for y: int in range(first.y, last.y + 1):
+		for x: int in range(first.x, last.x + 1):
+			for other: Rect2 in occupied.get(Vector2i(x, y), []):
+				if rectangle.intersects(other): return true
+	return false
+
+
+func _reserve_world_label(rectangle: Rect2, occupied: Dictionary) -> void:
+	var first: Vector2i = Vector2i((rectangle.position / LABEL_CELL_SIZE).floor())
+	var last: Vector2i = Vector2i((rectangle.end / LABEL_CELL_SIZE).floor())
+	for y: int in range(first.y, last.y + 1):
+		for x: int in range(first.x, last.x + 1):
+			var cell: Vector2i = Vector2i(x, y)
+			if not occupied.has(cell): occupied[cell] = []
+			occupied[cell].append(rectangle)

@@ -581,24 +581,30 @@ func _draw_guide(screen: Vector2) -> void:
 		_draw_construction_preview(screen)
 		return
 	var hint: Dictionary = main.guide.get_hint()
-	if screen.y < 690:
+	var guide_top: float = 397.0
+	var available_height: float = screen.y - 190.0 - guide_top - 12.0
+	if available_height < 145.0:
 		var compact: Rect2 = Rect2(340, 186, minf(300, screen.x - 620), 34)
 		overlay_rects.append(compact)
 		var visible_hint: bool = bool(hint.get("visible", false))
 		_button(compact, "战役引导 · 展开查看" if visible_hint else "显示战役引导", "guide_more" if visible_hint else "guide_toggle", "暂停查看当前目标与资源路线")
 		return
 	if not bool(hint.get("visible", false)):
-		_button(Rect2(18,397,300,34), "显示战役引导", "guide_toggle", "提示会跟随当前真实战役进度")
+		_button(Rect2(18,guide_top,300,34), "显示战役引导", "guide_toggle", "提示会跟随当前真实战役进度")
 		return
-	var height: float = clampf(screen.y - 599, 145, 248)
-	var rect: Rect2 = Rect2(18,397,300,height)
+	var maximum_height: float = minf(available_height,248.0)
+	var lines: Array[String] = _wrap_text(main.guide_text(String(hint.get("text",""))),276,14)
+	# Preserve the viewport's original line budget before fitting the card.
+	var limit: int = clampi(int((maximum_height-112)/20),2,6)
+	var visible_lines: int = mini(limit,lines.size())
+	# Keep the existing header/button allowance, without reserving empty rows.
+	var height: float = minf(maximum_height,maxf(145.0,112.0+visible_lines*20.0))
+	var rect: Rect2 = Rect2(18,guide_top,300,height)
 	overlay_rects.append(rect)
 	_panel(rect, Color(PANEL,0.97), GOLD)
 	_text(rect.position+Vector2(12,27), "%d/%d  %s" % [int(hint.get("step",1)),int(hint.get("total",11)),String(hint.get("title","当前目标"))],15,GOLD,276)
 	_bar(Rect2(rect.position+Vector2(12,39),Vector2(276,4)),float(hint.get("step",1))/float(hint.get("total",11)),TEAL)
-	var lines: Array[String] = _wrap_text(main.guide_text(String(hint.get("text",""))),276,14)
-	var limit: int = clampi(int((height-112)/20),2,6)
-	for i: int in range(mini(limit,lines.size())):
+	for i: int in range(visible_lines):
 		var line: String = lines[i]+("…" if i == limit-1 and lines.size()>limit else "")
 		_text(rect.position+Vector2(12,67+i*20),line,14,PAPER)
 	var bottom: float = rect.end.y-38
