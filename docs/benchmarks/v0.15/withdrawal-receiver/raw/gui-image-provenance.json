@@ -1,0 +1,120 @@
+{
+  "status": "SOURCE_UI_CONTROLLED_FIXTURE_NOT_NATIVE_RELEASE",
+  "source_commit": "4d1b81aeb047c1c13b5e1163f3b6b8feeb4ac58d",
+  "canonical_integration_commit": "33aedc567f08da1e2dc02947bfb48554f35db621",
+  "images": [
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/01-selected-b-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/01-selected-b-actual-a.png",
+      "sha256": "9f6b412e77adcffa30135a35da724e52ce066836e2d12462fba16635d347d5de",
+      "bytes": 335750,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/02-focus-home.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/02-focus-home.png",
+      "sha256": "7ee8712d3db79aa885d05786799184113ade5da95aec2b76068c0345bbe7b468",
+      "bytes": 295493,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/03-expanded-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/03-expanded-actual-a.png",
+      "sha256": "e0a84b726a6efcf7f659e13d5be205bc922505e60aa044b136dc733e9cdcac81",
+      "bytes": 258232,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/04-unavailable-truck.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/04-unavailable-truck.png",
+      "sha256": "d57c1468f5fccf5425ff8046288870ff1d6a6c990919de1019714c8d6a3b3368",
+      "bytes": 296861,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/01-selected-b-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/01-selected-b-actual-a.png",
+      "sha256": "6a00ab65be073b6e6e0e3620ddaf0f8db5b6b1e07a44608051a534dafa5a5e4f",
+      "bytes": 319492,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/02-focus-home.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/02-focus-home.png",
+      "sha256": "9168f03338af711e6bb1821a78e5a8ccb5f887b620f2942d147475d7a53d3385",
+      "bytes": 305326,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/03-expanded-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/03-expanded-actual-a.png",
+      "sha256": "7b3196ddcec69666b48174cecadf6efaf9f3de9ef20597793cacdf2bd1ae00b3",
+      "bytes": 258324,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/04-unavailable-truck.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/04-unavailable-truck.png",
+      "sha256": "4534470938eb1451cf5265a13f010e9010804523f72150efe501e7edc6bee5cb",
+      "bytes": 297825,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    }
+  ],
+  "scope": "Eight raw source-window PNGs copied after completed tests. No image editing or rerender. No full campaign/hour/FPS/human/rights/Steam acceptance."
+}

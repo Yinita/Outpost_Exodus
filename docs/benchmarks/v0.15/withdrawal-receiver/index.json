@@ -1,0 +1,687 @@
+{
+  "schema_version": 1,
+  "collection": "v0.15 withdrawal receiver guidance source functional evidence",
+  "status": "SOURCE_FUNCTIONAL_AND_CONTROLLED_GUI_VERIFIED",
+  "candidate_commit": "4d1b81aeb047c1c13b5e1163f3b6b8feeb4ac58d",
+  "canonical_cherry_pick_commit": "33aedc567f08da1e2dc02947bfb48554f35db621",
+  "base_and_accepted_v014_tag_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+  "source_hashes": {
+    "original_guide": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+    "final_guide": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+    "final_test": "ffb9c5e99d19566644b4ade60af704b1c63fb3b11b4d36076f7dd6eb1568df4f",
+    "test_uid": "91f986facd6fd75dacf5708b91c64a67de1ef305a9d001a6310010a83e416a02",
+    "simulation_unchanged": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c"
+  },
+  "change_scope": "Only Guide._transfer_hint changed: packing observes the assigned matching real origin/receiver records; unavailable records are explained without new transport rules, automatic retarget or selection. dx>5 stage/busy-truck branch remains existing behavior.",
+  "fixture_scope": "Initial supplied Home/A layout is an explicitly controlled valid-save fixture. Public evacuation fixes receiver A, public build pays A for B, and normal0.05ticks physically finish B. This is not a full native mission or organic-playthrough claim.",
+  "actual_results": {
+    "final_same_test_bytes": {
+      "checks": 116,
+      "baseline_actual_child_returncode": 1,
+      "baseline_failures": 33,
+      "baseline_failure_expected": true,
+      "candidate_actual_child_returncode": 0,
+      "candidate_failures": 0
+    },
+    "related_passes": {
+      "camp_action_guidance": 32,
+      "mission_guide": 137,
+      "camp_readout_correct_isolation": 189,
+      "save_store": 134,
+      "full_guide": 211
+    },
+    "passing_headless_checks": 819,
+    "all_accepted_headless_child_exits": 0,
+    "preserved_initial_setup_refusal": {
+      "test": "camp_readout",
+      "checks": 176,
+      "failures": 1,
+      "actual_child_returncode": 1,
+      "scope": "Missing required XDG_DATA_HOME. Test guard correctly refused Main integration. No product/test/gate change; corrected isolated launch passed189/0."
+    },
+    "controlled_GUI": {
+      "v01": {
+        "checks": 38,
+        "failures": 0,
+        "actual_child_returncode": 0
+      },
+      "v02": {
+        "checks": 38,
+        "failures": 0,
+        "actual_child_returncode": 0
+      },
+      "window_pixels": [
+        1600,
+        900
+      ],
+      "scope": "Source Godot Main/HUD with programmatically dispatched rendered HUD input and camera-focus checks, not physical-mouse human playtest or native-export release proof."
+    }
+  },
+  "history": {
+    "draft": "Original DRAFT_UNEXECUTED.json/source-before-run snapshots retained verbatim as preparation history; they are not labeled passed.",
+    "test_header": "Draft test9c1c... first run, then only historical DRAFT header updated; final testffb9... reran baseline/candidate with identical final bytes. Raw snapshots and both run sets retained.",
+    "GUI_v01": "Original images and probe retained with hover tooltip obstruction. No product failure inferred from a cursor parked on controls.",
+    "GUI_v02": "New probe moves cursor before readback and refreshes derived camp-card cache after explicit missing-truck fixture injection. Prior probe/logs/images untouched.",
+    "python_orchestration": "Subprocess orchestration was inline tool Python; no original standalone runner.py file existed. Actual child argv/wait metadata and logs are retained; no reconstructed script is mislabeled original."
+  },
+  "screenshots": [
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/01-selected-b-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/01-selected-b-actual-a.png",
+      "sha256": "9f6b412e77adcffa30135a35da724e52ce066836e2d12462fba16635d347d5de",
+      "bytes": 335750,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/02-focus-home.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/02-focus-home.png",
+      "sha256": "7ee8712d3db79aa885d05786799184113ade5da95aec2b76068c0345bbe7b468",
+      "bytes": 295493,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/03-expanded-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/03-expanded-actual-a.png",
+      "sha256": "e0a84b726a6efcf7f659e13d5be205bc922505e60aa044b136dc733e9cdcac81",
+      "bytes": 258232,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/04-unavailable-truck.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v01/04-unavailable-truck.png",
+      "sha256": "d57c1468f5fccf5425ff8046288870ff1d6a6c990919de1019714c8d6a3b3368",
+      "bytes": 296861,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v01",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse remains over last clicked controls; ordinary hover tooltip obscures some text; retained original"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/01-selected-b-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/01-selected-b-actual-a.png",
+      "sha256": "6a00ab65be073b6e6e0e3620ddaf0f8db5b6b1e07a44608051a534dafa5a5e4f",
+      "bytes": 319492,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/02-focus-home.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/02-focus-home.png",
+      "sha256": "9168f03338af711e6bb1821a78e5a8ccb5f887b620f2942d147475d7a53d3385",
+      "bytes": 305326,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/03-expanded-actual-a.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/03-expanded-actual-a.png",
+      "sha256": "7b3196ddcec69666b48174cecadf6efaf9f3de9ef20597793cacdf2bd1ae00b3",
+      "bytes": 258324,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/04-unavailable-truck.png",
+      "retained_copy": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/v02/04-unavailable-truck.png",
+      "sha256": "4534470938eb1451cf5265a13f010e9010804523f72150efe501e7edc6bee5cb",
+      "bytes": 297825,
+      "pixels": [
+        1600,
+        900
+      ],
+      "probe_version": "v02",
+      "transformation": "None; unedited byte-identical PNG copy",
+      "scope": "Controlled source Main/HUD fixture, not exported campaign/Steam gameplay gallery",
+      "capture_conditions": "Mouse moved to neutral screen position before readback; derived card cache explicitly refreshed after controlled missing-truck field injection"
+    }
+  ],
+  "external_image_manifest": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/provenance.json",
+    "sha256": "53f1be41ec71d7d9db266582732ab425ec7f71d2772254fa8d1786706a8e6e8a"
+  },
+  "native_export_full_campaign_evidence": false,
+  "new_one_hour_evidence": false,
+  "performance_acceptance": "not_assessed",
+  "steam_ready": false,
+  "source_runtime_or_rules_changed_beyond_Guide": false,
+  "not_verified_by_this_collection": [
+    "candidate native-export full route/hour",
+    "Windows execution",
+    "minimum hardware or FPS/frame pacing",
+    "fresh-player/human usability/audio/accessibility",
+    "Steam submission/rights/review"
+  ],
+  "files": [
+    {
+      "archive": "raw/validation/campaign_guide.gd.draft-before-run.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/campaign_guide.gd.draft-before-run.txt",
+      "bytes": 39378,
+      "sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/evidence-index.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/evidence-index.json",
+      "bytes": 22118,
+      "sha256": "40261f6b59316ee298539fda6ef1e31488d0a5c062590d572c1b12cb2db90583",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/final-fixture-processes-v02.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/final-fixture-processes-v02.json",
+      "bytes": 2034,
+      "sha256": "6c8884ea234ff84a3b0b7f69e4964c4e18dc63a6c0453d56bf4ff9f33cac021d",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui-process-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-process-v01.json",
+      "bytes": 1279,
+      "sha256": "1818c0765236242afda4fbc51a433b9f71e40e1e4bb62545f458a2e7e194fa18",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui-process-v02.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-process-v02.json",
+      "bytes": 1384,
+      "sha256": "eee5a75af77e47fad14820814072e31f5d2049f2124e0e922d910033ad8a4de1",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui-result.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-result.json",
+      "bytes": 5426,
+      "sha256": "41165cf9a053f4f9e481fdebac5bbe62ceac7fb3a9a0b8b331b87648f8ec3a68",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v01.log",
+      "bytes": 207,
+      "sha256": "1d18863f931716269fe4507f0b31ea55a2fc44165ecb3f7c9c83d32ac7c4a09d",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui-v02.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02.log",
+      "bytes": 207,
+      "sha256": "1d18863f931716269fe4507f0b31ea55a2fc44165ecb3f7c9c83d32ac7c4a09d",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui_probe.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui_probe.gd",
+      "bytes": 10914,
+      "sha256": "373aaf10347832420d6521a2023d11b27b377d7d35f35bfd65d5b32d0daaa214",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui_probe_v02.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui_probe_v02.gd",
+      "bytes": 11286,
+      "sha256": "48f6f5c5c150d134d90ba5267d7ffa9046f20110d1f03b3c0530d1ac83be0633",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/import-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/import-v01.log",
+      "bytes": 9408,
+      "sha256": "bdafff5b000dca55b0b2173a7ea8c8456902a329dc7bede1905cab70cd8c218e",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/receiver-baseline-final-v02.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-baseline-final-v02.log",
+      "bytes": 2231,
+      "sha256": "289dbfd3896560da7822784ed52d7aed28a7eb50954fbc08bfc689702dc635d4",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/receiver-baseline-v01-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-baseline-v01-process.json",
+      "bytes": 711,
+      "sha256": "912db4976f27b25046bfb20b49a0b77c865b2a3b79e4bdee05088eb87e84ebdd",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/receiver-baseline-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-baseline-v01.log",
+      "bytes": 2231,
+      "sha256": "289dbfd3896560da7822784ed52d7aed28a7eb50954fbc08bfc689702dc635d4",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/receiver-candidate-final-v02.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-candidate-final-v02.log",
+      "bytes": 127,
+      "sha256": "0b6129b50606ba19881ec7791978de13164e410f11da58e6f37e5f6c42fb4626",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/receiver-candidate-v01-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-candidate-v01-process.json",
+      "bytes": 594,
+      "sha256": "cfa2f55c75a9b8fbeca44562f4a92f0d4ec9984d68fbc53b4bb98ce6cc99555c",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/receiver-candidate-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-candidate-v01.log",
+      "bytes": 127,
+      "sha256": "0b6129b50606ba19881ec7791978de13164e410f11da58e6f37e5f6c42fb4626",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/receiver-guidance.patch",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-guidance.patch",
+      "bytes": 17814,
+      "sha256": "7616b27bbfc23d5aa8a1ea4f65523cade4ed92b5ceed37b4db3be02bdf629769",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/related-regression-isolated-processes-v02.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/related-regression-isolated-processes-v02.json",
+      "bytes": 4138,
+      "sha256": "8b8f5d0a5cea707f66034826d255d5fe76bae8d59fa39779c0696f0af877ed60",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/related-regression-processes.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/related-regression-processes.json",
+      "bytes": 2558,
+      "sha256": "17c0a6f9cd068705e99fe9a4dbee7d97b69867a3d8e7a15a836cc97033a42bd2",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/test_camp_action_guidance.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_camp_action_guidance.log",
+      "bytes": 118,
+      "sha256": "c6ab462a974368e2103bc98b5b06e7ad476cd682085d8e5e91c39edfec134453",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/test_camp_readout-isolated-v02.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_camp_readout-isolated-v02.log",
+      "bytes": 467,
+      "sha256": "2f3fb5e726318b6fd782370f3fa1649bc6a63adcf4a1c35bf0d14dfa8c2e951d",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/test_camp_readout.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_camp_readout.log",
+      "bytes": 522,
+      "sha256": "c410ca7760d4186a573abbff7eff7091b280797723eff4a7e18a7d05e7f5e6c7",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/test_guide.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_guide.log",
+      "bytes": 1184,
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/test_mission_guide.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_mission_guide.log",
+      "bytes": 345,
+      "sha256": "0d60733806d5dacec8ab3d972be87f23b475de0ae89628243a6f6840810d8d87",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/test_save_store.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_save_store.log",
+      "bytes": 419,
+      "sha256": "5966fd9c5beb15adf4977cc21425b99d127732a4bc2406b697420046038efd92",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/test_withdrawal_receiver_guidance.gd.draft-before-run.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_withdrawal_receiver_guidance.gd.draft-before-run.txt",
+      "bytes": 13425,
+      "sha256": "9c1c23a56389ec5447681170107c845b42f874a6e2575f98f0510fa886e74994",
+      "scope": "Original validation/probe/log/process/index bytes, including expected failures and setup refusal",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/validation/gui-v02/gui-result.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/gui-result.json",
+      "bytes": 5458,
+      "sha256": "908c461f599d12b8b69f8740974c66490d8b7ab7978094c2b050b3a3122c78f2",
+      "scope": "Original final neutral-cursor controlled source-Main GUI result",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/preparation/DRAFT_UNEXECUTED.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-v01/DRAFT_UNEXECUTED.json",
+      "bytes": 2923,
+      "sha256": "44ed6500300a9ee1eefd9ec7e0069a2547af7a6faea22432dde43c6e4637c49e",
+      "scope": "Historical DRAFT_UNEXECUTED preparation only; not relabeled as runtime success",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/preparation/guide-before.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-v01/guide-before.gd",
+      "bytes": 37295,
+      "sha256": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+      "scope": "Historical DRAFT_UNEXECUTED preparation only; not relabeled as runtime success",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/preparation/guide-before.gd.uid.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-v01/guide-before.gd.uid",
+      "bytes": 19,
+      "sha256": "d6299a36beab0bc2c8ecb8383e5147c01c6647e3a946c61c101a56b2b8172d72",
+      "scope": "Historical DRAFT_UNEXECUTED preparation only; not relabeled as runtime success",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/preparation/guide-source-draft.patch",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-v01/guide-source-draft.patch",
+      "bytes": 3671,
+      "sha256": "9c0a22a895734f09ecbd500cee9a5918cfbc0612d2232496e24751c97bab46ed",
+      "scope": "Historical DRAFT_UNEXECUTED preparation only; not relabeled as runtime success",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/isolated-engine-logs/validation/gui-isolation/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-isolation/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "bytes": 207,
+      "sha256": "1d18863f931716269fe4507f0b31ea55a2fc44165ecb3f7c9c83d32ac7c4a09d",
+      "scope": "Original engine logfile from this task isolation; not an additional test or acceptance",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/isolated-engine-logs/validation/gui-v02/gui-isolation/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/gui-isolation/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "bytes": 207,
+      "sha256": "1d18863f931716269fe4507f0b31ea55a2fc44165ecb3f7c9c83d32ac7c4a09d",
+      "scope": "Original engine logfile from this task isolation; not an additional test or acceptance",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/isolated-engine-logs/validation/test_guide-data/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_guide-data/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "bytes": 1184,
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349",
+      "scope": "Original engine logfile from this task isolation; not an additional test or acceptance",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/isolated-engine-logs/validation/test_save_store-data/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_save_store-data/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "bytes": 419,
+      "sha256": "5966fd9c5beb15adf4977cc21425b99d127732a4bc2406b697420046038efd92",
+      "scope": "Original engine logfile from this task isolation; not an additional test or acceptance",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/isolated-engine-logs/camp-readout-data/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/camp-readout-data/data/godot/app_userdata/逐营突围 · Outpost Exodus/logs/godot.log",
+      "bytes": 467,
+      "sha256": "2f3fb5e726318b6fd782370f3fa1649bc6a63adcf4a1c35bf0d14dfa8c2e951d",
+      "scope": "Engine log from corrected isolated camp-readout invocation",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1634281/campaign-save.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1634281/campaign-save.json",
+      "bytes": 23578,
+      "sha256": "988882fd94b5e0c9d4ddf4edf199f26f6bf0251f5d3c0f4cf2f9ac0ca912af8c",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1634281/campaign-save.json.bak",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1634281/campaign-save.json.bak",
+      "bytes": 23578,
+      "sha256": "988882fd94b5e0c9d4ddf4edf199f26f6bf0251f5d3c0f4cf2f9ac0ca912af8c",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1637702/campaign-save.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1637702/campaign-save.json",
+      "bytes": 23676,
+      "sha256": "6d1dc067b51d9277fbc5b896c638b304abe123f3ce6f0db01e1f49576c7443d0",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1637702/campaign-save.json.bak",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1637702/campaign-save.json.bak",
+      "bytes": 23676,
+      "sha256": "6d1dc067b51d9277fbc5b896c638b304abe123f3ce6f0db01e1f49576c7443d0",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1654969/campaign-save.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1654969/campaign-save.json",
+      "bytes": 23578,
+      "sha256": "988882fd94b5e0c9d4ddf4edf199f26f6bf0251f5d3c0f4cf2f9ac0ca912af8c",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1654969/campaign-save.json.bak",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1654969/campaign-save.json.bak",
+      "bytes": 23578,
+      "sha256": "988882fd94b5e0c9d4ddf4edf199f26f6bf0251f5d3c0f4cf2f9ac0ca912af8c",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1655028/campaign-save.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1655028/campaign-save.json",
+      "bytes": 23676,
+      "sha256": "6d1dc067b51d9277fbc5b896c638b304abe123f3ce6f0db01e1f49576c7443d0",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/supplemental-test-disk/receiver-guide-test-1655028/campaign-save.json.bak",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-test-1655028/campaign-save.json.bak",
+      "bytes": 23676,
+      "sha256": "6d1dc067b51d9277fbc5b896c638b304abe123f3ce6f0db01e1f49576c7443d0",
+      "scope": "Original PID-named controlled SaveStore test output. Existing process records do not independently bind each directory to a baseline/candidate role; no role inferred",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/scripts/campaign_guide.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/scripts/campaign_guide.gd",
+      "bytes": 39378,
+      "sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/scripts/campaign_simulation.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/scripts/campaign_simulation.gd",
+      "bytes": 124416,
+      "sha256": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/scripts/main.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/scripts/main.gd",
+      "bytes": 49385,
+      "sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/scripts/camp_readout.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/scripts/camp_readout.gd",
+      "bytes": 10733,
+      "sha256": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/scripts/campaign_save_store.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/scripts/campaign_save_store.gd",
+      "bytes": 8319,
+      "sha256": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/scripts/construction_rules.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/scripts/construction_rules.gd",
+      "bytes": 11122,
+      "sha256": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/scripts/recruitment_rules.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/scripts/recruitment_rules.gd",
+      "bytes": 9653,
+      "sha256": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/tests/test_withdrawal_receiver_guidance.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/tests/test_withdrawal_receiver_guidance.gd",
+      "bytes": 13430,
+      "sha256": "ffb9c5e99d19566644b4ade60af704b1c63fb3b11b4d36076f7dd6eb1568df4f",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/tests/test_withdrawal_receiver_guidance.gd.uid.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/tests/test_withdrawal_receiver_guidance.gd.uid",
+      "bytes": 20,
+      "sha256": "91f986facd6fd75dacf5708b91c64a67de1ef305a9d001a6310010a83e416a02",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/tests/test_camp_action_guidance.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/tests/test_camp_action_guidance.gd",
+      "bytes": 9175,
+      "sha256": "113fa41287f42f92cd0a92db3287b69f95f34263fff098fa68aea7850f787ab6",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/tests/test_mission_guide.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/tests/test_mission_guide.gd",
+      "bytes": 14196,
+      "sha256": "0ad8b6381e5dcda32658b6a0012dd6d9d02712871f5b85e2158042440fbcd4ed",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/tests/test_camp_readout.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/tests/test_camp_readout.gd",
+      "bytes": 22083,
+      "sha256": "6364cbe3b525515064a0246757633852bcd5dc165a15004908cb4aca1760231e",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/tests/test_save_store.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/tests/test_save_store.gd",
+      "bytes": 19171,
+      "sha256": "a18917490e6cb5bd2df8ed1c514ff003adc31cbc5fd2e6714f71bd7f275c56ca",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/tested-source/tests/test_guide.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/tests/test_guide.gd",
+      "bytes": 24197,
+      "sha256": "9e93c60234713a182f9b59ec3227a5168365c929c481bd6b6f6dd8a105ea556a",
+      "scope": "Actual source dependency/test bytes from the verified isolated branch; canonical cherry-pick bytes independently match",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "raw/gui-image-provenance.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v015-receiver/provenance.json",
+      "bytes": 6941,
+      "sha256": "53f1be41ec71d7d9db266582732ab425ec7f71d2772254fa8d1786706a8e6e8a",
+      "scope": "Exact external raw-PNG copy manifest",
+      "transformation": "None; byte-identical copy; script suffix .txt is archival naming only"
+    },
+    {
+      "archive": "root-process-observations.json",
+      "original_path": null,
+      "bytes": 1484,
+      "sha256": "5f118eb82f463e2cb4b6281dedf14215e93fbc0dc9ec37b6daeace2f476919fc",
+      "scope": "New authored actual-tool observation summary; original child receipts remain verbatim",
+      "transformation": "Authored summary, not an original process-generated raw"
+    }
+  ]
+}

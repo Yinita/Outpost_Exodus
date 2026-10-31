@@ -1,0 +1,49 @@
+{
+  "status": "DRAFT_UNEXECUTED",
+  "base_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+  "branch": "fix/withdrawal-receiver-guidance",
+  "source": {
+    "path": "scripts/campaign_guide.gd",
+    "sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+    "baseline_sha256": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+    "only_changed_method": [
+      "_transfer_hint"
+    ]
+  },
+  "test": {
+    "path": "tests/test_withdrawal_receiver_guidance.gd",
+    "sha256": "9c1c23a56389ec5447681170107c845b42f874a6e2575f98f0510fa886e74994",
+    "engine_compile": "NOT_RUN",
+    "execution": "NOT_RUN",
+    "checks_passed": null,
+    "test_uid": "not generated; import is prohibited in current window"
+  },
+  "static_only": [
+    "git diff --check",
+    "method extraction: every Guide method except_transfer_hint is byte-identical",
+    "quoted-string/comment-aware delimiter balance; not a GDScript parser or compilation"
+  ],
+  "scope": [
+    "No canonical source or frozen native0.14 payload/evidence changed.",
+    "Packing requires its assigned alive friendly truck and matching origin/destination records; unavailable records are explained, never repaired.",
+    "Geographical front/rear selection, actual evacuation/retarget/build/cost/movement rules and stage priority are unchanged.",
+    "Normal counterexample initial two-camp layout is a controlled save-valid fixture; after evacuation begins only public query/build/normal0.05ticks create B, with immediate actual A cost deduction.",
+    "dx4 build eligibility does not imply A-to-B evacuation eligibility; dx5 reaches only the receiver x threshold and the main truck remains busy.",
+    "dx>5 original active-rear A/busy-truck guidance is explicitly outside this patch."
+  ],
+  "pending_cases": [
+    "public paid B construction during Home-to-A packing at dx4",
+    "dx5 strict Guide rear boundary versus Sim receiver x threshold",
+    "dx6 unchanged active-rear negative branch; actual busy truck still rejects second evacuation",
+    "actual SaveStore disk write/read and Guide-state load keep original receiver A",
+    "missing/wrong-kind/wrong-order/wrong-origin/wrong-destination-binding vehicle records",
+    "missing and nonactive receiver do not fabricate new B",
+    "each Guide query preserves complete encoded Sim entry order and exact RNG"
+  ],
+  "future_commands_not_executed": [
+    "Godot_v4.7.2-stable_linux.x86_64 --headless --editor --path <receiver-guide-worktree> --import",
+    "Godot_v4.7.2-stable_linux.x86_64 --headless --path <receiver-guide-worktree> --script res://tests/test_withdrawal_receiver_guidance.gd -- --baseline",
+    "Godot_v4.7.2-stable_linux.x86_64 --headless --path <receiver-guide-worktree> --script res://tests/test_withdrawal_receiver_guidance.gd"
+  ],
+  "integration": "No commit/merge; root grants headless functional window only after full0.14 strict collection."
+}

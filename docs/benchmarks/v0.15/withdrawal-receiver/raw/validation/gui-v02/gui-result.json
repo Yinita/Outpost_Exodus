@@ -1,0 +1,189 @@
+{
+	"actions": [
+		{
+			"action": "camp:47",
+			"camera_position": [
+				2592.0,
+				1056.0
+			],
+			"menu": "",
+			"point": [
+				1457.0,
+				331.5
+			],
+			"selected_camp": 47
+		},
+		{
+			"action": "guide_focus",
+			"camera_position": [
+				432.0,
+				1056.0
+			],
+			"menu": "",
+			"point": [
+				72.0,
+				584.5
+			],
+			"selected_camp": 47
+		},
+		{
+			"action": "guide_more",
+			"camera_position": [
+				432.0,
+				1056.0
+			],
+			"menu": "guide",
+			"point": [
+				166.0,
+				584.5
+			],
+			"selected_camp": 47
+		},
+		{
+			"action": "guide_focus",
+			"camera_position": [
+				432.0,
+				1056.0
+			],
+			"menu": "",
+			"point": [
+				584.5,
+				709.0
+			],
+			"selected_camp": 47
+		}
+	],
+	"captures": [
+		{
+			"camera_position": [
+				2592.0,
+				1056.0
+			],
+			"hint": {
+				"action": "focus",
+				"complete": false,
+				"dismissed": false,
+				"enabled": true,
+				"label": "定位提示目标",
+				"step": 8,
+				"target": "(9.0, 22.0)",
+				"text": "接收营「实际接收营A」当前：建材450、燃料100。可继续等待搬运；若需立即撤出，先选中「撤收原营」，打开{orders}点击“紧急弃营”。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。",
+				"title": "后营撤收：等待运输或紧急弃营",
+				"total": 11,
+				"visible": true
+			},
+			"image_pixels": [
+				1600,
+				900
+			],
+			"label": "01-selected-b-actual-a",
+			"menu": "",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/01-selected-b-actual-a.png",
+			"selected_camp": 47,
+			"sha256": "6a00ab65be073b6e6e0e3620ddaf0f8db5b6b1e07a44608051a534dafa5a5e4f"
+		},
+		{
+			"camera_position": [
+				432.0,
+				1056.0
+			],
+			"hint": {
+				"action": "focus",
+				"complete": false,
+				"dismissed": false,
+				"enabled": true,
+				"label": "定位提示目标",
+				"step": 8,
+				"target": "(9.0, 22.0)",
+				"text": "接收营「实际接收营A」当前：建材450、燃料100。可继续等待搬运；若需立即撤出，先选中「撤收原营」，打开{orders}点击“紧急弃营”。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。",
+				"title": "后营撤收：等待运输或紧急弃营",
+				"total": 11,
+				"visible": true
+			},
+			"image_pixels": [
+				1600,
+				900
+			],
+			"label": "02-focus-home",
+			"menu": "",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/02-focus-home.png",
+			"selected_camp": 47,
+			"sha256": "9168f03338af711e6bb1821a78e5a8ccb5f887b620f2942d147475d7a53d3385"
+		},
+		{
+			"camera_position": [
+				432.0,
+				1056.0
+			],
+			"hint": {
+				"action": "focus",
+				"complete": false,
+				"dismissed": false,
+				"enabled": true,
+				"label": "定位提示目标",
+				"step": 8,
+				"target": "(9.0, 22.0)",
+				"text": "接收营「实际接收营A」当前：建材450、燃料100。可继续等待搬运；若需立即撤出，先选中「撤收原营」，打开{orders}点击“紧急弃营”。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。",
+				"title": "后营撤收：等待运输或紧急弃营",
+				"total": 11,
+				"visible": true
+			},
+			"image_pixels": [
+				1600,
+				900
+			],
+			"label": "03-expanded-actual-a",
+			"menu": "guide",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/03-expanded-actual-a.png",
+			"selected_camp": 47,
+			"sha256": "7b3196ddcec69666b48174cecadf6efaf9f3de9ef20597793cacdf2bd1ae00b3"
+		},
+		{
+			"camera_position": [
+				432.0,
+				1056.0
+			],
+			"hint": {
+				"action": "focus",
+				"complete": false,
+				"dismissed": false,
+				"enabled": true,
+				"label": "定位提示目标",
+				"step": 8,
+				"target": "(9.0, 22.0)",
+				"text": "「撤收原营」已在撤收，但指定运输车当前不可用或未在执行本营运输，不能确认这趟运输状态。请检查原车队；新建营地不会自动改写原撤收目的地。",
+				"title": "检查撤收运输车",
+				"total": 11,
+				"visible": true
+			},
+			"image_pixels": [
+				1600,
+				900
+			],
+			"label": "04-unavailable-truck",
+			"menu": "",
+			"path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/04-unavailable-truck.png",
+			"selected_camp": 47,
+			"sha256": "4534470938eb1451cf5265a13f010e9010804523f72150efe501e7edc6bee5cb"
+		}
+	],
+	"checks": 38,
+	"display_server": "X11",
+	"engine": {
+		"build": "official",
+		"hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+		"hex": 263938,
+		"major": 4,
+		"minor": 7,
+		"patch": 2,
+		"status": "stable",
+		"string": "4.7.2-stable (official)",
+		"timestamp": 0
+	},
+	"failures": [],
+	"guide_sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+	"ok": true,
+	"probe_sha256": "48f6f5c5c150d134d90ba5267d7ffa9046f20110d1f03b3c0530d1ac83be0633",
+	"scope": "Controlled source Main1600x900 fixture after actual public evacuation/paid new-camp construction and normal ticks. Real rendered HUD input dispatch and camera-focus checks; paused source fixture, not exported/native full route, physical mouse/human playtest or performance evidence.",
+	"test_sha256": "ffb9c5e99d19566644b4ade60af704b1c63fb3b11b4d36076f7dd6eb1568df4f"
+}

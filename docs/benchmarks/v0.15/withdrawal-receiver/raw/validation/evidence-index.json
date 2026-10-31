@@ -1,0 +1,523 @@
+{
+  "status": "FUNCTIONAL_AND_CONTROLLED_GUI_VERIFIED",
+  "candidate_commit": "4d1b81aeb047c1c13b5e1163f3b6b8feeb4ac58d",
+  "branch": "fix/withdrawal-receiver-guidance",
+  "base_commit": "cb82c33596dfb0ffffb11d133e1e7e0c706b7cfa",
+  "guide_sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+  "test_sha256": "ffb9c5e99d19566644b4ade60af704b1c63fb3b11b4d36076f7dd6eb1568df4f",
+  "uid_sha256": "91f986facd6fd75dacf5708b91c64a67de1ef305a9d001a6310010a83e416a02",
+  "simulation_sha256_unchanged": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+  "only_changed_guide_method": "_transfer_hint",
+  "baseline_guide": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-v01/guide-before.gd",
+    "sha256": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa"
+  },
+  "import": {
+    "actual_child_returncode": 0,
+    "initial_tool_chunk": "514dfd",
+    "session": 27462,
+    "completion_tool_chunk": "416680",
+    "log_sha256": "bdafff5b000dca55b0b2173a7ea8c8456902a329dc7bede1905cab70cd8c218e"
+  },
+  "same_final_test_bytes": {
+    "test_sha256": "ffb9c5e99d19566644b4ade60af704b1c63fb3b11b4d36076f7dd6eb1568df4f",
+    "baseline": {
+      "actual_child_returncode": 1,
+      "checks": 116,
+      "failures": 33,
+      "expected_failure": true
+    },
+    "candidate": {
+      "actual_child_returncode": 0,
+      "checks": 116,
+      "failures": 0
+    },
+    "records": [
+      {
+        "role": "baseline",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide",
+          "--script",
+          "res://tests/test_withdrawal_receiver_guidance.gd",
+          "--",
+          "--baseline"
+        ],
+        "actual_child_returncode": 1,
+        "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-baseline-final-v02.log",
+        "log_sha256": "289dbfd3896560da7822784ed52d7aed28a7eb50954fbc08bfc689702dc635d4",
+        "guide_sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+        "baseline_sha256": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+        "test_sha256": "ffb9c5e99d19566644b4ade60af704b1c63fb3b11b4d36076f7dd6eb1568df4f"
+      },
+      {
+        "role": "candidate",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide",
+          "--script",
+          "res://tests/test_withdrawal_receiver_guidance.gd"
+        ],
+        "actual_child_returncode": 0,
+        "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/receiver-candidate-final-v02.log",
+        "log_sha256": "0b6129b50606ba19881ec7791978de13164e410f11da58e6f37e5f6c42fb4626",
+        "guide_sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d",
+        "baseline_sha256": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+        "test_sha256": "ffb9c5e99d19566644b4ade60af704b1c63fb3b11b4d36076f7dd6eb1568df4f"
+      }
+    ]
+  },
+  "passing_related_regressions": {
+    "counts": {
+      "test_camp_action_guidance": 32,
+      "test_mission_guide": 137,
+      "test_camp_readout": 189,
+      "test_save_store": 134,
+      "test_guide": 211
+    },
+    "actual_child_returncodes": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "records": [
+      {
+        "test": "test_camp_action_guidance",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide",
+          "--script",
+          "res://tests/test_camp_action_guidance.gd"
+        ],
+        "actual_child_returncode": 0,
+        "error_text_present": false,
+        "test_sha256": "113fa41287f42f92cd0a92db3287b69f95f34263fff098fa68aea7850f787ab6",
+        "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_camp_action_guidance.log",
+        "log_sha256": "c6ab462a974368e2103bc98b5b06e7ad476cd682085d8e5e91c39edfec134453"
+      },
+      {
+        "test": "test_mission_guide",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide",
+          "--script",
+          "res://tests/test_mission_guide.gd"
+        ],
+        "actual_child_returncode": 0,
+        "error_text_present": false,
+        "test_sha256": "0ad8b6381e5dcda32658b6a0012dd6d9d02712871f5b85e2158042440fbcd4ed",
+        "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_mission_guide.log",
+        "log_sha256": "0d60733806d5dacec8ab3d972be87f23b475de0ae89628243a6f6840810d8d87"
+      },
+      {
+        "test": "test_camp_readout",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide",
+          "--script",
+          "res://tests/test_camp_readout.gd"
+        ],
+        "isolated_environment": {
+          "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/camp-readout-data/data",
+          "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/camp-readout-data/config",
+          "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/camp-readout-data/cache"
+        },
+        "actual_child_returncode": 0,
+        "error_text_present": false,
+        "test_sha256": "6364cbe3b525515064a0246757633852bcd5dc165a15004908cb4aca1760231e",
+        "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_camp_readout-isolated-v02.log",
+        "log_sha256": "2f3fb5e726318b6fd782370f3fa1649bc6a63adcf4a1c35bf0d14dfa8c2e951d"
+      },
+      {
+        "test": "test_save_store",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide",
+          "--script",
+          "res://tests/test_save_store.gd"
+        ],
+        "isolated_environment": {
+          "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_save_store-data/data",
+          "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_save_store-data/config",
+          "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_save_store-data/cache"
+        },
+        "actual_child_returncode": 0,
+        "error_text_present": false,
+        "test_sha256": "a18917490e6cb5bd2df8ed1c514ff003adc31cbc5fd2e6714f71bd7f275c56ca",
+        "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_save_store.log",
+        "log_sha256": "5966fd9c5beb15adf4977cc21425b99d127732a4bc2406b697420046038efd92"
+      },
+      {
+        "test": "test_guide",
+        "argv": [
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide",
+          "--script",
+          "res://tests/test_guide.gd"
+        ],
+        "isolated_environment": {
+          "XDG_DATA_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_guide-data/data",
+          "XDG_CONFIG_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_guide-data/config",
+          "XDG_CACHE_HOME": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_guide-data/cache"
+        },
+        "actual_child_returncode": 0,
+        "error_text_present": false,
+        "test_sha256": "9e93c60234713a182f9b59ec3227a5168365c929c481bd6b6f6dd8a105ea556a",
+        "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/test_guide.log",
+        "log_sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349"
+      }
+    ]
+  },
+  "total_passing_headless_checks": 819,
+  "preserved_setup_refusal": {
+    "test": "test_camp_readout",
+    "actual_child_returncode": 1,
+    "checks": 176,
+    "failures": 1,
+    "reason": "Initial invocation omitted the test-required isolated XDG_DATA_HOME. Original guard refused Main integration. Original logs/process retained, source/gate unchanged; corrected isolated invocation passed189/0."
+  },
+  "controlled_GUI": {
+    "actual_child_returncode": 0,
+    "checks": 38,
+    "failures": [],
+    "report": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/gui-result.json",
+    "report_sha256": "908c461f599d12b8b69f8740974c66490d8b7ab7978094c2b050b3a3122c78f2",
+    "scope": "Controlled source Main1600x900 fixture after actual public evacuation/paid new-camp construction and normal ticks. Real rendered HUD input dispatch and camera-focus checks; paused source fixture, not exported/native full route, physical mouse/human playtest or performance evidence.",
+    "actions": [
+      {
+        "action": "camp:47",
+        "camera_position": [
+          2592.0,
+          1056.0
+        ],
+        "menu": "",
+        "point": [
+          1457.0,
+          331.5
+        ],
+        "selected_camp": 47
+      },
+      {
+        "action": "guide_focus",
+        "camera_position": [
+          432.0,
+          1056.0
+        ],
+        "menu": "",
+        "point": [
+          72.0,
+          584.5
+        ],
+        "selected_camp": 47
+      },
+      {
+        "action": "guide_more",
+        "camera_position": [
+          432.0,
+          1056.0
+        ],
+        "menu": "guide",
+        "point": [
+          166.0,
+          584.5
+        ],
+        "selected_camp": 47
+      },
+      {
+        "action": "guide_focus",
+        "camera_position": [
+          432.0,
+          1056.0
+        ],
+        "menu": "",
+        "point": [
+          584.5,
+          709.0
+        ],
+        "selected_camp": 47
+      }
+    ],
+    "captures": [
+      {
+        "camera_position": [
+          2592.0,
+          1056.0
+        ],
+        "hint": {
+          "action": "focus",
+          "complete": false,
+          "dismissed": false,
+          "enabled": true,
+          "label": "定位提示目标",
+          "step": 8,
+          "target": "(9.0, 22.0)",
+          "text": "接收营「实际接收营A」当前：建材450、燃料100。可继续等待搬运；若需立即撤出，先选中「撤收原营」，打开{orders}点击“紧急弃营”。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。",
+          "title": "后营撤收：等待运输或紧急弃营",
+          "total": 11,
+          "visible": true
+        },
+        "image_pixels": [
+          1600,
+          900
+        ],
+        "label": "01-selected-b-actual-a",
+        "menu": "",
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/01-selected-b-actual-a.png",
+        "selected_camp": 47,
+        "sha256": "6a00ab65be073b6e6e0e3620ddaf0f8db5b6b1e07a44608051a534dafa5a5e4f"
+      },
+      {
+        "camera_position": [
+          432.0,
+          1056.0
+        ],
+        "hint": {
+          "action": "focus",
+          "complete": false,
+          "dismissed": false,
+          "enabled": true,
+          "label": "定位提示目标",
+          "step": 8,
+          "target": "(9.0, 22.0)",
+          "text": "接收营「实际接收营A」当前：建材450、燃料100。可继续等待搬运；若需立即撤出，先选中「撤收原营」，打开{orders}点击“紧急弃营”。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。",
+          "title": "后营撤收：等待运输或紧急弃营",
+          "total": 11,
+          "visible": true
+        },
+        "image_pixels": [
+          1600,
+          900
+        ],
+        "label": "02-focus-home",
+        "menu": "",
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/02-focus-home.png",
+        "selected_camp": 47,
+        "sha256": "9168f03338af711e6bb1821a78e5a8ccb5f887b620f2942d147475d7a53d3385"
+      },
+      {
+        "camera_position": [
+          432.0,
+          1056.0
+        ],
+        "hint": {
+          "action": "focus",
+          "complete": false,
+          "dismissed": false,
+          "enabled": true,
+          "label": "定位提示目标",
+          "step": 8,
+          "target": "(9.0, 22.0)",
+          "text": "接收营「实际接收营A」当前：建材450、燃料100。可继续等待搬运；若需立即撤出，先选中「撤收原营」，打开{orders}点击“紧急弃营”。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。",
+          "title": "后营撤收：等待运输或紧急弃营",
+          "total": 11,
+          "visible": true
+        },
+        "image_pixels": [
+          1600,
+          900
+        ],
+        "label": "03-expanded-actual-a",
+        "menu": "guide",
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/03-expanded-actual-a.png",
+        "selected_camp": 47,
+        "sha256": "7b3196ddcec69666b48174cecadf6efaf9f3de9ef20597793cacdf2bd1ae00b3"
+      },
+      {
+        "camera_position": [
+          432.0,
+          1056.0
+        ],
+        "hint": {
+          "action": "focus",
+          "complete": false,
+          "dismissed": false,
+          "enabled": true,
+          "label": "定位提示目标",
+          "step": 8,
+          "target": "(9.0, 22.0)",
+          "text": "「撤收原营」已在撤收，但指定运输车当前不可用或未在执行本营运输，不能确认这趟运输状态。请检查原车队；新建营地不会自动改写原撤收目的地。",
+          "title": "检查撤收运输车",
+          "total": 11,
+          "visible": true
+        },
+        "image_pixels": [
+          1600,
+          900
+        ],
+        "label": "04-unavailable-truck",
+        "menu": "",
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-receiver-guide/work/receiver-guide-validation-v01/gui-v02/04-unavailable-truck.png",
+        "selected_camp": 47,
+        "sha256": "4534470938eb1451cf5265a13f010e9010804523f72150efe501e7edc6bee5cb"
+      }
+    ],
+    "visual_review": "All four final raw PNGs viewed. Actual A inventory and empty new B distinguishable; Home focus preserves B selection; expanded receiver text fits; unavailable vehicle Guide and refreshed camp card agree. No visible blocker. Initial hovering-cursor screenshots retained separately."
+  },
+  "scope_limits": [
+    "Controlled valid-save fixture plus actual public evacuation, paid B construction and normal ticks; no new transport rules or automatic retarget/selection.",
+    "Every tested Guide query preserves full encoded Sim entry order and exact RNG.",
+    "Native window/HUD input is programmatically dispatched controlled input, not a physical-mouse human playtest.",
+    "No candidate native-export full route, one-hour soak, Windows, Steam or FPS/performance acceptance claim.",
+    "Historical DRAFT_UNEXECUTED.json and before-run source bytes are retained unchanged as preparation history."
+  ],
+  "engine_windows_released": true,
+  "performance_acceptance": "not_assessed",
+  "files": {
+    "01-selected-b-actual-a.png": {
+      "bytes": 335750,
+      "sha256": "9f6b412e77adcffa30135a35da724e52ce066836e2d12462fba16635d347d5de"
+    },
+    "02-focus-home.png": {
+      "bytes": 295493,
+      "sha256": "7ee8712d3db79aa885d05786799184113ade5da95aec2b76068c0345bbe7b468"
+    },
+    "03-expanded-actual-a.png": {
+      "bytes": 258232,
+      "sha256": "e0a84b726a6efcf7f659e13d5be205bc922505e60aa044b136dc733e9cdcac81"
+    },
+    "04-unavailable-truck.png": {
+      "bytes": 296861,
+      "sha256": "d57c1468f5fccf5425ff8046288870ff1d6a6c990919de1019714c8d6a3b3368"
+    },
+    "campaign_guide.gd.draft-before-run.txt": {
+      "bytes": 39378,
+      "sha256": "53bcb82402bc82333f565f86c7c0a5d7aaad2d9fd3269d1a47924e578bf6067d"
+    },
+    "final-fixture-processes-v02.json": {
+      "bytes": 2034,
+      "sha256": "6c8884ea234ff84a3b0b7f69e4964c4e18dc63a6c0453d56bf4ff9f33cac021d"
+    },
+    "gui-process-v01.json": {
+      "bytes": 1279,
+      "sha256": "1818c0765236242afda4fbc51a433b9f71e40e1e4bb62545f458a2e7e194fa18"
+    },
+    "gui-process-v02.json": {
+      "bytes": 1384,
+      "sha256": "eee5a75af77e47fad14820814072e31f5d2049f2124e0e922d910033ad8a4de1"
+    },
+    "gui-result.json": {
+      "bytes": 5426,
+      "sha256": "41165cf9a053f4f9e481fdebac5bbe62ceac7fb3a9a0b8b331b87648f8ec3a68"
+    },
+    "gui-v01.log": {
+      "bytes": 207,
+      "sha256": "1d18863f931716269fe4507f0b31ea55a2fc44165ecb3f7c9c83d32ac7c4a09d"
+    },
+    "gui-v02/01-selected-b-actual-a.png": {
+      "bytes": 319492,
+      "sha256": "6a00ab65be073b6e6e0e3620ddaf0f8db5b6b1e07a44608051a534dafa5a5e4f"
+    },
+    "gui-v02/02-focus-home.png": {
+      "bytes": 305326,
+      "sha256": "9168f03338af711e6bb1821a78e5a8ccb5f887b620f2942d147475d7a53d3385"
+    },
+    "gui-v02/03-expanded-actual-a.png": {
+      "bytes": 258324,
+      "sha256": "7b3196ddcec69666b48174cecadf6efaf9f3de9ef20597793cacdf2bd1ae00b3"
+    },
+    "gui-v02/04-unavailable-truck.png": {
+      "bytes": 297825,
+      "sha256": "4534470938eb1451cf5265a13f010e9010804523f72150efe501e7edc6bee5cb"
+    },
+    "gui-v02/gui-result.json": {
+      "bytes": 5458,
+      "sha256": "908c461f599d12b8b69f8740974c66490d8b7ab7978094c2b050b3a3122c78f2"
+    },
+    "gui-v02.log": {
+      "bytes": 207,
+      "sha256": "1d18863f931716269fe4507f0b31ea55a2fc44165ecb3f7c9c83d32ac7c4a09d"
+    },
+    "gui_probe.gd": {
+      "bytes": 10914,
+      "sha256": "373aaf10347832420d6521a2023d11b27b377d7d35f35bfd65d5b32d0daaa214"
+    },
+    "gui_probe_v02.gd": {
+      "bytes": 11286,
+      "sha256": "48f6f5c5c150d134d90ba5267d7ffa9046f20110d1f03b3c0530d1ac83be0633"
+    },
+    "import-v01.log": {
+      "bytes": 9408,
+      "sha256": "bdafff5b000dca55b0b2173a7ea8c8456902a329dc7bede1905cab70cd8c218e"
+    },
+    "receiver-baseline-final-v02.log": {
+      "bytes": 2231,
+      "sha256": "289dbfd3896560da7822784ed52d7aed28a7eb50954fbc08bfc689702dc635d4"
+    },
+    "receiver-baseline-v01-process.json": {
+      "bytes": 711,
+      "sha256": "912db4976f27b25046bfb20b49a0b77c865b2a3b79e4bdee05088eb87e84ebdd"
+    },
+    "receiver-baseline-v01.log": {
+      "bytes": 2231,
+      "sha256": "289dbfd3896560da7822784ed52d7aed28a7eb50954fbc08bfc689702dc635d4"
+    },
+    "receiver-candidate-final-v02.log": {
+      "bytes": 127,
+      "sha256": "0b6129b50606ba19881ec7791978de13164e410f11da58e6f37e5f6c42fb4626"
+    },
+    "receiver-candidate-v01-process.json": {
+      "bytes": 594,
+      "sha256": "cfa2f55c75a9b8fbeca44562f4a92f0d4ec9984d68fbc53b4bb98ce6cc99555c"
+    },
+    "receiver-candidate-v01.log": {
+      "bytes": 127,
+      "sha256": "0b6129b50606ba19881ec7791978de13164e410f11da58e6f37e5f6c42fb4626"
+    },
+    "receiver-guidance.patch": {
+      "bytes": 17814,
+      "sha256": "7616b27bbfc23d5aa8a1ea4f65523cade4ed92b5ceed37b4db3be02bdf629769"
+    },
+    "related-regression-isolated-processes-v02.json": {
+      "bytes": 4138,
+      "sha256": "8b8f5d0a5cea707f66034826d255d5fe76bae8d59fa39779c0696f0af877ed60"
+    },
+    "related-regression-processes.json": {
+      "bytes": 2558,
+      "sha256": "17c0a6f9cd068705e99fe9a4dbee7d97b69867a3d8e7a15a836cc97033a42bd2"
+    },
+    "test_camp_action_guidance.log": {
+      "bytes": 118,
+      "sha256": "c6ab462a974368e2103bc98b5b06e7ad476cd682085d8e5e91c39edfec134453"
+    },
+    "test_camp_readout-isolated-v02.log": {
+      "bytes": 467,
+      "sha256": "2f3fb5e726318b6fd782370f3fa1649bc6a63adcf4a1c35bf0d14dfa8c2e951d"
+    },
+    "test_camp_readout.log": {
+      "bytes": 522,
+      "sha256": "c410ca7760d4186a573abbff7eff7091b280797723eff4a7e18a7d05e7f5e6c7"
+    },
+    "test_guide.log": {
+      "bytes": 1184,
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349"
+    },
+    "test_mission_guide.log": {
+      "bytes": 345,
+      "sha256": "0d60733806d5dacec8ab3d972be87f23b475de0ae89628243a6f6840810d8d87"
+    },
+    "test_save_store.log": {
+      "bytes": 419,
+      "sha256": "5966fd9c5beb15adf4977cc21425b99d127732a4bc2406b697420046038efd92"
+    },
+    "test_withdrawal_receiver_guidance.gd.draft-before-run.txt": {
+      "bytes": 13425,
+      "sha256": "9c1c23a56389ec5447681170107c845b42f874a6e2575f98f0510fa886e74994"
+    }
+  }
+}

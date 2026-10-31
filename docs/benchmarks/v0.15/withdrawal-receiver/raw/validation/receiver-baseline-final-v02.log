@@ -1,0 +1,36 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Withdrawal receiver guidance checks: 116; failures: 33
+ - packing hint reads actual A inventory instead of geometric front B
+ - funding decision uses funded A rather than empty B
+ - actual source action stays focused on Home without changing selected camp
+ - packing hint reads actual A inventory instead of geometric front B
+ - funding decision uses funded A rather than empty B
+ - actual source action stays focused on Home without changing selected camp
+ - packing hint reads actual A inventory instead of geometric front B
+ - funding decision uses funded A rather than empty B
+ - actual source action stays focused on Home without changing selected camp
+ - loaded guidance still names A
+ - missing_vehicle: unconfirmed transport is explicit
+ - missing_vehicle: unavailable records never fabricate B as receiver
+ - wrong_order: unconfirmed transport is explicit
+ - wrong_order: unavailable records never fabricate B as receiver
+ - wrong_origin: unconfirmed transport is explicit
+ - wrong_origin: unavailable records never fabricate B as receiver
+ - wrong_receiver_binding: unconfirmed transport is explicit
+ - wrong_receiver_binding: unavailable records never fabricate B as receiver
+ - wrong_kind: unconfirmed transport is explicit
+ - wrong_kind: unavailable records never fabricate B as receiver
+ - missing_receiver: unconfirmed transport is explicit
+ - missing_receiver: unavailable records never fabricate B as receiver
+ - inactive_receiver: unconfirmed transport is explicit
+ - inactive_receiver: unavailable records never fabricate B as receiver
+ - packing hint reads actual A inventory instead of geometric front B
+ - funding decision uses funded A rather than empty B
+ - actual source action stays focused on Home without changing selected camp
+ - packing hint reads actual A inventory instead of geometric front B
+ - funding decision uses funded A rather than empty B
+ - actual source action stays focused on Home without changing selected camp
+ - packing hint reads actual A inventory instead of geometric front B
+ - funding decision uses funded A rather than empty B
+ - actual source action stays focused on Home without changing selected camp

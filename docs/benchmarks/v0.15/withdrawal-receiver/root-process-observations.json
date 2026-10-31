@@ -1,0 +1,46 @@
+{
+  "scope": "Recorded actual tool and child-wait observations from this task. No detached/unobserved exit inferred. This summary is newly authored; original per-child receipts/logs are separately retained unchanged.",
+  "observations": [
+    {
+      "operation": "headless editor import",
+      "session": 27462,
+      "initial_tool_chunk": "514dfd",
+      "completion_tool_chunk": "416680",
+      "actual_exit": 0
+    },
+    {
+      "operation": "first related-regression wrapper",
+      "session": 39387,
+      "initial_tool_chunk": "70b29a",
+      "completion_tool_chunk": "ef1db1",
+      "actual_exit": 1,
+      "reason": "Original camp-readout required-XDG guard refused integration; logs retained"
+    },
+    {
+      "operation": "isolated camp-readout, SaveStore and fullGuide wrapper",
+      "session": 18452,
+      "initial_tool_chunk": "4a71c3",
+      "completion_tool_chunk": "a45ee9",
+      "actual_exit": 0
+    },
+    {
+      "operation": "same final fixture bytes baseline/candidate then first controlled GUI wrapper",
+      "session": 11390,
+      "initial_tool_chunk": "ba79ba",
+      "completion_tool_chunk": "3bf3d1",
+      "actual_exit": 0,
+      "child_exits": {
+        "expected_baseline": 1,
+        "candidate": 0,
+        "gui_v01": 0
+      }
+    },
+    {
+      "operation": "neutral-cursor controlled GUI v02 wrapper",
+      "session": 58736,
+      "initial_tool_chunk": "90e47d",
+      "completion_tool_chunk": "10663c",
+      "actual_exit": 0
+    }
+  ]
+}

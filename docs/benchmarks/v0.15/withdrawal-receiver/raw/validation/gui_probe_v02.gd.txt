@@ -1,0 +1,223 @@
+extends SceneTree
+## Controlled source Main/HUD window and dispatched GUI-input fixture.
+## No native export/full route/human playtest/physical mouse/FPS proof.
+const Main = preload("res://scripts/main.gd")
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+const STEP: float = 0.05
+const SOURCE_POSITION: Vector2 = Vector2(50, 22)
+const OUT: String = "res://work/receiver-guide-validation-v01/gui-v02"
+var app: Variant
+var checks: int = 0
+var failures: Array[String] = []
+var captures: Array[Dictionary] = []
+var saved_mouse: Vector2i
+var context: Dictionary = {}
+var action_records: Array[Dictionary] = []
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+func _check(ok: bool, label: String) -> bool:
+	checks += 1
+	if not ok: failures.append(label)
+	return ok
+
+func _encoded(sim: Variant) -> String:
+	return JSON.stringify(sim.save_state(), "", false, true)
+
+func _valid_saved(data: Dictionary) -> bool:
+	return Simulation.new().load_state(data)
+
+func _frames(amount: int = 3) -> void:
+	for frame: int in range(amount):
+		if is_instance_valid(app):
+			app._process(0.0)
+			app.hud.queue_redraw()
+			app.world.queue_redraw()
+		await process_frame
+	await RenderingServer.frame_post_draw
+
+func _capture(label: String) -> void:
+	# Move away from the last operated control before the unedited readback.
+	var point: Vector2 = Vector2(1000, 600)
+	root.warp_mouse(point)
+	var motion: InputEventMouseMotion = InputEventMouseMotion.new()
+	motion.position = point
+	motion.global_position = point
+	Input.parse_input_event(motion)
+	Input.flush_buffered_events()
+	await _frames(4)
+	var image: Image = root.get_texture().get_image()
+	var path: String = OUT + "/" + label + ".png"
+	_check(image.get_size() == Vector2i(1600, 900), "actual image readback is1600x900")
+	_check(image.save_png(path) == OK, "controlled Main capture writes " + label)
+	captures.append({"label":label,"path":ProjectSettings.globalize_path(path),"sha256":FileAccess.get_sha256(path),"image_pixels":[image.get_width(),image.get_height()],"selected_camp":app.selected_camp,"camera_position":[app.camera.position.x,app.camera.position.y],"hint":app.guide.get_hint(),"menu":app.menu})
+
+func _click_action(action: String) -> void:
+	await _frames()
+	var found: Dictionary = {}
+	for item: Dictionary in app.hud.hotspots:
+		if String(item.action) == action: found = item
+	if not _check(not found.is_empty(), "rendered HUD action exists: " + action): return
+	_check(app.get_viewport_rect().encloses(found.rect), "HUD action is inside actual viewport: " + action)
+	var point: Vector2 = found.rect.get_center()
+	root.warp_mouse(point)
+	for pressed: bool in [true, false]:
+		var event: InputEventMouseButton = InputEventMouseButton.new()
+		event.position = point
+		event.global_position = point
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.button_mask = MOUSE_BUTTON_MASK_LEFT if pressed else 0
+		event.pressed = pressed
+		root.push_input(event, true)
+		await _frames(2)
+	app.guide.update(app.sim, app.selected_ids, app.selected_camp)
+	action_records.append({"action":action,"point":[point.x,point.y],"selected_camp":app.selected_camp,"menu":app.menu,"camera_position":[app.camera.position.x,app.camera.position.y]})
+
+func _run() -> void:
+	if DisplayServer.get_name() == "headless" or not OS.get_user_data_dir().begins_with(ProjectSettings.globalize_path(OUT + "/gui-isolation") + "/"):
+		printerr("GUI fixture requires rendered display and fresh dedicated userdata")
+		quit(2)
+		return
+	saved_mouse = DisplayServer.mouse_get_position()
+	root.mode = Window.MODE_WINDOWED
+	root.size = Vector2i(1600, 900)
+	root.content_scale_size = root.size
+	root.content_scale_factor = 1.0
+	AudioServer.set_bus_mute(0, true)
+	context = _public_overlap(4)
+	if context.is_empty():
+		await _finish()
+		return
+	app = Main.new()
+	root.add_child(app)
+	await _frames(4)
+	app.set_process(false)
+	app.start_campaign("canyon")
+	_check(app.sim.load_state(context.sim.save_state()), "real Main accepts the paid public-order fixture")
+	app.world.motion.reset(app.sim)
+	app.guide.reset(true)
+	app.menu = ""
+	app.edge_scroll = false
+	app.feedback_left = 0.0
+	app.selected_ids = []
+	app.camera.position = (SOURCE_POSITION + Vector2(1, 0)) * app.TILE
+	app.camera.zoom = Vector2.ONE * 0.75
+	app.guide.update(app.sim, app.selected_ids, app.selected_camp)
+	app._refresh_camp_readouts(0.0, true)
+	root.grab_focus()
+	for frame: int in range(60):
+		await _frames(1)
+		if root.has_focus() and not app._window_suspended: break
+	_check(root.has_focus() and not app._window_suspended, "real native window has focus without clearing suspension flags")
+	if not app.sim.paused: app.ui_action("pause")
+	_check(app.sim.paused, "controlled visual fixture is paused through the public action")
+	await _click_action("camp:%d" % int(context.newest))
+	_check(app.selected_camp == int(context.newest), "actual HUD click selects new B")
+	_check(String(app.guide.get_hint().text).contains("接收营「实际接收营A」"), "rendered Guide names actual A while B is selected")
+	await _capture("01-selected-b-actual-a")
+	var before: String = _encoded(app.sim)
+	var selected: int = int(app.selected_camp)
+	await _click_action("guide_focus")
+	_check(app.camera.position == Vector2(app.sim.get_camp(int(context.origin)).pos) * app.TILE, "Guide focus dispatch moves camera to actual Home action source")
+	_check(app.selected_camp == selected and _encoded(app.sim) == before, "Guide focus changes neither selection nor full Sim/RNG/orders")
+	await _capture("02-focus-home")
+	await _click_action("guide_more")
+	_check(app.menu == "guide", "actual expand action opens complete Guide text")
+	await _capture("03-expanded-actual-a")
+	await _click_action("guide_focus")
+	_check(app.menu.is_empty(), "Guide dialog focus returns to the campaign")
+	app.sim.get_camp(int(context.origin)).evac_truck_id = 0
+	app._refresh_camp_readouts(0.0, true)
+	app.guide.update(app.sim, app.selected_ids, app.selected_camp)
+	before = _encoded(app.sim)
+	await _capture("04-unavailable-truck")
+	_check(String(app.guide.get_hint().title) == "检查撤收运输车" and _encoded(app.sim) == before, "controlled unavailable record is explained without repairing simulation")
+	await _finish()
+
+func _finish() -> void:
+	var data: Dictionary = {"ok":failures.is_empty(),"checks":checks,"failures":failures,"scope":"Controlled source Main1600x900 fixture after actual public evacuation/paid new-camp construction and normal ticks. Real rendered HUD input dispatch and camera-focus checks; paused source fixture, not exported/native full route, physical mouse/human playtest or performance evidence.","actions":action_records,"captures":captures,"guide_sha256":FileAccess.get_sha256("res://scripts/campaign_guide.gd"),"test_sha256":FileAccess.get_sha256("res://tests/test_withdrawal_receiver_guidance.gd"),"probe_sha256":FileAccess.get_sha256(get_script().resource_path),"display_server":DisplayServer.get_name(),"engine":Engine.get_version_info()}
+	var file: FileAccess = FileAccess.open(OUT + "/gui-result.json",FileAccess.WRITE)
+	if file != null:
+		file.store_string(JSON.stringify(data,"\t",true,true)+"\n")
+		file.close()
+	else: failures.append("GUI result write failed")
+	if is_instance_valid(app):
+		app._release_audio()
+		app.queue_free()
+		app = null
+	for frame: int in range(12): await process_frame
+	DisplayServer.warp_mouse(saved_mouse)
+	print("RECEIVER_GUI checks=",checks," failures=",failures.size())
+	for failure: String in failures: printerr(" - ",failure)
+	quit(0 if failures.is_empty() else 1)
+
+
+func _public_overlap(dx: int) -> Dictionary:
+	var sim: Variant = Simulation.new()
+	if not _check(sim.reset(42), "controlled Canyon initialization"): return {}
+	# Fixture-only setup: flat terrain, no combat/exit, genuine camp markers,
+	# supplied A and a crew at A. No fixture edits occur after evacuation starts.
+	for row: Array in sim.terrain: row.fill(0)
+	sim.ramps = {}
+	sim.sites = []
+	sim.chokes = []
+	sim.effects = []
+	sim.exit_building_id = 0
+	sim.exit_site_id = 0
+	sim.pursuit_start = 1000000.0
+	sim.pursuit_x = -10000.0
+	sim.units = sim.units.filter(func(unit: Dictionary) -> bool: return unit.team == "friendly")
+	var home: Dictionary = sim.camps[0]
+	home.name = "撤收原营"
+	home.materials = 3000.0
+	home.supplies = 2000.0
+	home.fuel = 1000.0
+	home.salvage = 0.0
+	home.crude = 0.0
+	home.recipe = "idle"
+	var command: Dictionary = sim.buildings[0]
+	sim.buildings = [command]
+	var receiver: Dictionary = sim._make_camp(SOURCE_POSITION, "实际接收营A", 500.0, 200.0, 100.0)
+	receiver.recipe = "idle"
+	sim._add_building("camp", SOURCE_POSITION, int(receiver.id), 1.0)
+	sim.roads = {}
+	for x: int in range(9, 58): sim.roads[Vector2i(x, 22)] = {"progress": 1.0, "camp_id": int(home.id)}
+	for unit: Dictionary in sim.units:
+		if unit.kind == "engineer":
+			unit.camp_id = int(receiver.id)
+			unit.pos = SOURCE_POSITION + Vector2(0, -2)
+			unit.target = unit.pos
+			unit.guard_pos = unit.pos
+			unit.path = []
+			unit.path_index = 0
+			unit.order = "idle"
+			unit.manual = false
+	var home_id: int = int(home.id)
+	var receiver_id: int = int(receiver.id)
+	if not _check(sim.load_state(sim.save_state().duplicate(true)), "initial controlled fixture passes public save validation"): return {}
+	home = sim.get_camp(home_id)
+	receiver = sim.get_camp(receiver_id)
+	if not _check(sim.evacuate_camp(home_id), "public evacuation starts before new B exists"): return {}
+	var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+	_check(home.state == "packing" and int(home.evac_target_id) == receiver_id and int(truck.evac_destination_id) == receiver_id, "public order records actual receiver A")
+	var at: Vector2i = Vector2i(SOURCE_POSITION) + Vector2i(dx, 0)
+	var plan: Dictionary = sim.query_build("camp", at)
+	if not _check(bool(plan.ok) and int(plan.camp_id) == receiver_id, "active A can genuinely supply B while Home packs"): return {}
+	var materials_before: float = float(receiver.materials)
+	var supplies_before: float = float(receiver.supplies)
+	if not _check(sim.build("camp", at), "new B is ordered with public paid build"): return {}
+	_check(float(receiver.materials) == materials_before - float(Simulation.BUILD_COSTS.camp.materials) and float(receiver.supplies) == supplies_before - float(Simulation.BUILD_COSTS.camp.supplies), "A immediately pays the real camp cost; Home stock cannot substitute")
+	_check(sim.camps.size() == 2, "unfinished B is not a receiving inventory")
+	var newest: Dictionary = {}
+	for tick: int in range(1200):
+		sim.tick(STEP)
+		for camp: Dictionary in sim.camps:
+			if Vector2(camp.pos) == Vector2(at): newest = camp
+		if not newest.is_empty() or sim.outcome != "playing": break
+	if not _check(not newest.is_empty() and sim.outcome == "playing", "ordinary ticks physically deliver and complete paid B"): return {}
+	_check(home.state == "packing" and int(home.evac_target_id) == receiver_id and int(truck.evac_destination_id) == receiver_id, "building B never retargets the still-packing real convoy")
+	_check(float(newest.materials) == 0.0 and float(newest.fuel) == 0.0, "completed B has no invented receiving stock")
+	_check(_valid_saved(sim.save_state()), "completed overlapping state is a valid public save")
+	return {"sim": sim, "origin": home_id, "receiver": receiver_id, "newest": int(newest.id), "newest_name": String(newest.name), "dx": dx}
+
