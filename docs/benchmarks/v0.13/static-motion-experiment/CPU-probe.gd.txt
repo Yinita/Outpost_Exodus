@@ -1,0 +1,370 @@
+extends SceneTree
+## Source CPU fixture only, using two actual0.11 Ridge native autosaves.
+## Fixed 0.05 steps, real retained bytes, no new orders/rules or Main/render/FPS claim.
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+const Guide = preload("res://scripts/campaign_guide.gd")
+const SaveStore = preload("res://scripts/campaign_save_store.gd")
+const FIXTURE_ROOT: String = "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-v011-ridge-full/data/godot/app_userdata/逐营突围 · Outpost Exodus"
+const FIXTURES: Array[Dictionary] = [
+	{"label": "ridge_exit_not_started_1533", "file": "campaign-autosave.json.bak", "sha256": "e20b44915d41b2a01edd3b03bc68d9aa0a0c6cf4debfd584f0f5bc921f1d6ff6", "living_enemies": 100, "unit_count": 107},
+	{"label": "ridge_late_exit_not_started_1669", "file": "campaign-autosave.json", "sha256": "95f465417f7601f4e956600bc67343adb4688651e4aac03e97f84d0b1c5f41b8", "living_enemies": 100, "unit_count": 107}
+]
+const STEP: float = 0.05
+const STEPS: int = 400
+const GUIDE_EVERY_TICKS: int = 15
+const SOURCES: Array[String] = ["res://scripts/campaign_simulation.gd", "res://scripts/campaign_guide.gd",
+	"res://scripts/campaign_catalog.gd", "res://scripts/construction_rules.gd", "res://scripts/recruitment_rules.gd",
+	"res://scripts/campaign_save_store.gd", "res://scripts/main.gd"]
+
+class ProfiledSimulation:
+	extends "res://scripts/campaign_simulation.gd"
+	var profiling: bool = false
+	var metrics: Dictionary = {}
+	var counters: Dictionary = {}
+
+	func reset_profile() -> void:
+		profiling = false
+		metrics.clear()
+		for name: String in ["tick", "_update_units", "_update_enemy", "_find_path", "_move_unit", "_separate_bodies"]:
+			metrics[name] = {"calls": 0, "inclusive_wall_usec": 0, "max_call_usec": 0, "first_call_usec": null}
+		counters = {"body_move_attempts": 0, "body_move_rejections": 0, "empty_path_results": 0,
+			"move_wait_increases": 0, "move_path_clears": 0, "enemy_rethink_calls": 0, "set_target_calls": 0,
+			"navigation_index_calls": 0, "forced_navigation_index_calls": 0, "walk_component_rebuilds": 0}
+
+	func record(name: String, elapsed: int) -> void:
+		var metric: Dictionary = metrics[name]
+		metric.calls += 1
+		metric.inclusive_wall_usec += elapsed
+		metric.max_call_usec = maxi(int(metric.max_call_usec), elapsed)
+		if metric.first_call_usec == null: metric.first_call_usec = elapsed
+
+	func tick(delta: float) -> void:
+		if not profiling:
+			super.tick(delta)
+			return
+		var start: int = Time.get_ticks_usec()
+		super.tick(delta)
+		record("tick", Time.get_ticks_usec() - start)
+
+	func _update_units(delta: float) -> void:
+		if not profiling:
+			super._update_units(delta)
+			return
+		var start: int = Time.get_ticks_usec()
+		super._update_units(delta)
+		record("_update_units", Time.get_ticks_usec() - start)
+
+	func _update_enemy(unit: Dictionary, delta: float, rethink: bool, barrier_attackers: Dictionary) -> void:
+		if not profiling:
+			super._update_enemy(unit, delta, rethink, barrier_attackers)
+			return
+		if rethink: counters.enemy_rethink_calls += 1
+		var start: int = Time.get_ticks_usec()
+		super._update_enemy(unit, delta, rethink, barrier_attackers)
+		record("_update_enemy", Time.get_ticks_usec() - start)
+
+	func _find_path(origin: Vector2, destination: Vector2, team: String = "friendly") -> Array:
+		if not profiling: return super._find_path(origin, destination, team)
+		var start: int = Time.get_ticks_usec()
+		var path: Array = super._find_path(origin, destination, team)
+		record("_find_path", Time.get_ticks_usec() - start)
+		if path.is_empty(): counters.empty_path_results += 1
+		return path
+
+	func _move_unit(unit: Dictionary, delta: float) -> void:
+		if not profiling:
+			super._move_unit(unit, delta)
+			return
+		var wait_before: float = float(unit.get("nav_wait", 0.0))
+		var path_before: bool = not Array(unit.get("path", [])).is_empty()
+		var start: int = Time.get_ticks_usec()
+		super._move_unit(unit, delta)
+		record("_move_unit", Time.get_ticks_usec() - start)
+		if float(unit.get("nav_wait", 0.0)) > wait_before: counters.move_wait_increases += 1
+		if path_before and Array(unit.get("path", [])).is_empty(): counters.move_path_clears += 1
+
+	func _separate_bodies() -> void:
+		if not profiling:
+			super._separate_bodies()
+			return
+		var start: int = Time.get_ticks_usec()
+		super._separate_bodies()
+		record("_separate_bodies", Time.get_ticks_usec() - start)
+
+	func _try_body_move(unit: Dictionary, destination: Vector2) -> bool:
+		var accepted: bool = super._try_body_move(unit, destination)
+		if profiling:
+			counters.body_move_attempts += 1
+			if not accepted: counters.body_move_rejections += 1
+		return accepted
+
+	func _set_target(unit: Dictionary, destination: Vector2) -> void:
+		if profiling: counters.set_target_calls += 1
+		super._set_target(unit, destination)
+
+	func _ensure_navigation_index(force: bool = false) -> void:
+		if profiling:
+			counters.navigation_index_calls += 1
+			if force: counters.forced_navigation_index_calls += 1
+		super._ensure_navigation_index(force)
+
+	func _rebuild_walk_components() -> void:
+		if profiling: counters.walk_component_rebuilds += 1
+		super._rebuild_walk_components()
+
+class ProfiledGuide:
+	extends "res://scripts/campaign_guide.gd"
+	var observing: bool = false
+	var branch_trace: Array[String] = []
+
+	func _forward_hint(sim: Variant, camps: Array[Dictionary], front: Dictionary, exit_site: Dictionary, exit_building: Dictionary, selected_camp: int) -> void:
+		if observing: branch_trace.append("_forward_hint")
+		super._forward_hint(sim, camps, front, exit_site, exit_building, selected_camp)
+
+	func _infrastructure_hint(sim: Variant, camp: Dictionary, step_number: int) -> bool:
+		if observing: branch_trace.append("_infrastructure_hint")
+		return super._infrastructure_hint(sim, camp, step_number)
+
+	func _exit_hint(sim: Variant, exit_site: Dictionary, exit_building: Dictionary) -> void:
+		if observing: branch_trace.append("_exit_hint")
+		super._exit_hint(sim, exit_site, exit_building)
+
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+
+func _state(sim: Variant) -> String:
+	# Keep encoded entry order and full numeric text; no tolerance/normalization.
+	return JSON.stringify(sim.save_state(), "", false, true)
+
+
+func _sources() -> Dictionary:
+	var result: Dictionary = {}
+	for path: String in SOURCES: result[path] = FileAccess.get_sha256(path)
+	return result
+
+
+func _living_enemies(sim: Variant) -> int:
+	var count: int = 0
+	for unit: Dictionary in sim.units:
+		if str(unit.get("team", "")) == "enemy" and float(unit.get("hp", 0.0)) > 0.0: count += 1
+	return count
+
+
+func _actor_counts(sim: Variant) -> Dictionary:
+	var result: Dictionary = {"units_total": sim.units.size(), "living_by_team": {}, "collision_bodies": 0}
+	for unit: Dictionary in sim.units:
+		if float(unit.get("hp", 0.0)) <= 0.0: continue
+		var team: String = str(unit.get("team", ""))
+		result.living_by_team[team] = int(result.living_by_team.get(team, 0)) + 1
+		if str(unit.get("state", "")) != "evacuated": result.collision_bodies += 1
+	return result
+
+
+func _selected(sim: Variant, saved_ids: Array) -> Array:
+	var result: Array = []
+	for value: Variant in saved_ids:
+		var unit: Dictionary = sim.get_unit(int(value))
+		if not unit.is_empty() and float(unit.get("hp", 0.0)) > 0.0: result.append(int(value))
+	return result
+
+
+func _exit_flags(sim: Variant) -> Dictionary:
+	for building: Dictionary in sim.buildings:
+		if int(building.get("id", 0)) == int(sim.exit_building_id):
+			return {"id": building.id, "construction_started": bool(building.get("construction_started", false)),
+				"progress": float(building.get("progress", 0.0)), "powered": bool(building.get("powered", false)), "hp": float(building.get("hp", 0.0))}
+	return {"missing": true}
+
+
+func _sample(fixture: Dictionary, mode: String, sample_index: int) -> Dictionary:
+	var path: String = FIXTURE_ROOT.path_join(str(fixture.file))
+	var result: Dictionary = {"fixture": fixture.label, "mode": mode, "sample_index": sample_index, "path": path, "ok": false,
+		"sha256_before": FileAccess.get_sha256(path), "expected_sha256": fixture.sha256}
+	if result.sha256_before != fixture.sha256:
+		result["error"] = "actual retained fixture missing or bytes changed"
+		return result
+	var read: Dictionary = SaveStore.new().read(path)
+	if not bool(read.get("ok", false)) or not read.get("data", {}).get("ui") is Dictionary:
+		result["error"] = "actual save/UI context could not be read"
+		return result
+	var data: Dictionary = read.data
+	var ui: Dictionary = data.ui.duplicate(true)
+	var selected_ids: Array = ui.get("selected_ids", []).duplicate()
+	var selected_camp: int = int(ui.get("selected_camp", 0))
+	var with_guide: bool = mode == "sim_guide"
+	# Guide reflects BUILD_COSTS from sim.get_script(); a subclass's constant map
+	# omits inherited constants. Keep the linked mode's actual Sim unwrapped.
+	var sim: Variant = Simulation.new() if with_guide else ProfiledSimulation.new()
+	var guide: ProfiledGuide = ProfiledGuide.new() if with_guide else null
+	if not sim.load_state(data.duplicate(true)) or (with_guide and not guide.load_state(ui.get("guide", {}).duplicate(true))):
+		result["error"] = "same-source profiled Simulation/Guide rejected actual save"
+		return result
+	var initial: String = _state(sim)
+	var initial_rng: String = str(sim._rng.state)
+	var start_time: float = float(sim.time)
+	var enemies_before: int = _living_enemies(sim)
+	result.merge({"simulation_time_before": start_time, "living_enemies_before": enemies_before, "unit_count_before": sim.units.size(),
+		"mission_id": str(sim.mission_id), "actor_counts_before": _actor_counts(sim),
+		"initial_state_sha256": initial.sha256_text(), "initial_rng_state": initial_rng, "ui_context": ui,
+		"actual_exit_before": _exit_flags(sim), "guide_schedule_ticks": GUIDE_EVERY_TICKS if with_guide else 0})
+	if enemies_before != int(fixture.living_enemies) or sim.units.size() != int(fixture.unit_count) or str(sim.mission_id) != "ridge":
+		result["error"] = "actual mission/actor counts differ from retained Ridge fixture identity"
+		return result
+	if not with_guide: sim.reset_profile()
+	var plain_tick_metrics: Dictionary = {"calls": 0, "inclusive_wall_usec": 0, "max_call_usec": 0, "first_call_usec": null}
+	var work_samples_usec: Array[int] = []
+	var rng_trajectory: Array[String] = []
+	var guide_samples: Array[Dictionary] = []
+	var first_tick_metrics: Dictionary = {}
+	for index: int in range(STEPS):
+		var guide_due: bool = with_guide and (index + 1) % GUIDE_EVERY_TICKS == 0
+		if with_guide:
+			guide.branch_trace.clear()
+			guide.observing = guide_due
+		if not with_guide: sim.profiling = true
+		var start: int = Time.get_ticks_usec()
+		sim.tick(STEP)
+		var tick_elapsed: int = Time.get_ticks_usec() - start
+		var guide_usec: int = 0
+		if guide_due:
+			var selection: Array = _selected(sim, selected_ids)
+			var guide_start: int = Time.get_ticks_usec()
+			guide.update(sim, selection, selected_camp)
+			guide_usec = Time.get_ticks_usec() - guide_start
+		var elapsed: int = Time.get_ticks_usec() - start
+		if not with_guide: sim.profiling = false
+		if with_guide: guide.observing = false
+		plain_tick_metrics.calls += 1
+		plain_tick_metrics.inclusive_wall_usec += tick_elapsed
+		plain_tick_metrics.max_call_usec = maxi(int(plain_tick_metrics.max_call_usec), tick_elapsed)
+		if plain_tick_metrics.first_call_usec == null: plain_tick_metrics.first_call_usec = tick_elapsed
+		work_samples_usec.append(elapsed)
+		rng_trajectory.append(str(sim._rng.state))
+		if index == 0: first_tick_metrics = {"tick": plain_tick_metrics.duplicate(true)} if with_guide else sim.metrics.duplicate(true)
+		if guide_due:
+			guide_samples.append({"after_tick": index + 1, "guide_wall_usec": guide_usec, "actual_branch_trace": guide.branch_trace.duplicate(),
+				"actual_exit": _exit_flags(sim), "guide_state": guide.save_state()})
+	var profiled_final: String = _state(sim)
+	var profiled_rng: String = str(sim._rng.state)
+	# The unwrapped same-source oracle is loaded/run only AFTER every timed
+	# sample. It executes the same tick/Guide schedule, without orders or timers.
+	var oracle: RefCounted = Simulation.new()
+	var oracle_guide: RefCounted = Guide.new() if with_guide else null
+	if not oracle.load_state(data.duplicate(true)) or (with_guide and not oracle_guide.load_state(ui.get("guide", {}).duplicate(true))):
+		result["error"] = "plain same-source oracle rejected actual save"
+		return result
+	var initial_equal: bool = _state(oracle) == initial and str(oracle._rng.state) == initial_rng
+	var profiled_costs: Dictionary = (sim.get_script() as Script).get_script_constant_map().get("BUILD_COSTS", {})
+	var oracle_costs: Dictionary = (oracle.get_script() as Script).get_script_constant_map().get("BUILD_COSTS", {})
+	var cost_introspection_equal: bool = profiled_costs == oracle_costs
+	var guide_equal: bool = true
+	var rng_trajectory_equal: bool = true
+	var guide_index: int = 0
+	for index: int in range(STEPS):
+		oracle.tick(STEP)
+		if with_guide and (index + 1) % GUIDE_EVERY_TICKS == 0:
+			oracle_guide.update(oracle, _selected(oracle, selected_ids), selected_camp)
+			guide_equal = guide_equal and JSON.stringify(oracle_guide.save_state(), "", false, true) == JSON.stringify(guide_samples[guide_index].guide_state, "", false, true)
+			guide_index += 1
+		rng_trajectory_equal = rng_trajectory_equal and rng_trajectory[index] == str(oracle._rng.state)
+	var oracle_final: String = _state(oracle)
+	var exact_equal: bool = initial_equal and profiled_final == oracle_final and profiled_rng == str(oracle._rng.state) and rng_trajectory_equal
+	var total: int = 0
+	var maximum: int = 0
+	for value: int in work_samples_usec:
+		total += value
+		maximum = maxi(maximum, value)
+	result.merge({"timed_tick_calls": STEPS, "requested_simulation_seconds": STEP * STEPS,
+		"actual_simulation_seconds": float(sim.time) - start_time, "outcome_after": str(sim.outcome),
+		"living_enemies_after": _living_enemies(sim), "unit_count_after": sim.units.size(), "actual_exit_after": _exit_flags(sim),
+		"actor_counts_after": _actor_counts(sim), "rng_state_equal_at_every_tick": rng_trajectory_equal, "rng_trajectory": rng_trajectory,
+		"work_samples_usec": work_samples_usec, "work_total_wall_usec": total, "max_work_sample_usec": maximum,
+		"cold_first_tick_usec": work_samples_usec[0], "cold_first_tick_method_metrics": first_tick_metrics,
+		"first_scheduled_guide_wall_usec": guide_samples[0].guide_wall_usec if not guide_samples.is_empty() else null,
+		"method_metrics_inclusive": {"tick": plain_tick_metrics} if with_guide else sim.metrics,
+		"count_only_observations": {} if with_guide else sim.counters, "guide_samples": guide_samples,
+		"method_counter_scope": "Plain actual Simulation plus observed Guide; only outer tick/Guide/work timing, no internal method counters, preserving Guide's exact script-constant reflection." if with_guide else "Private Simulation overrides measure six inclusive methods and count-only movement/navigation observations; no Guide is called on this subclass.",
+		"initial_plain_oracle_equal": initial_equal, "full_serialized_final_simulation_and_rng_equal": exact_equal,
+		"guide_cost_script_introspection_equal": cost_introspection_equal,
+		"guide_state_equal_at_every_scheduled_update": guide_equal, "final_profiled_state_sha256": profiled_final.sha256_text(),
+		"final_plain_oracle_state_sha256": oracle_final.sha256_text(), "final_profiled_rng_state": profiled_rng,
+		"final_plain_oracle_rng_state": str(oracle._rng.state), "sha256_after": FileAccess.get_sha256(path)})
+	if not exact_equal:
+		result["mismatched_profiled_state"] = sim.save_state()
+		result["mismatched_plain_oracle_state"] = oracle.save_state()
+	result["ok"] = exact_equal and guide_equal and (not with_guide or cost_introspection_equal) and result.sha256_after == result.sha256_before
+	return result
+
+
+func _run() -> void:
+	var output: String = ""
+	var label: String = ""
+	var mode: String = "both"
+	var samples: int = 1
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--output="): output = arg.trim_prefix("--output=")
+		elif arg.begins_with("--label="): label = arg.trim_prefix("--label=")
+		elif arg.begins_with("--mode="): mode = arg.trim_prefix("--mode=")
+		elif arg.begins_with("--samples=") and arg.trim_prefix("--samples=").is_valid_int(): samples = int(arg.trim_prefix("--samples="))
+		else:
+			printerr("SIMULATION_CPU_PROFILE_REFUSED invalid argument: ", arg)
+			quit(2)
+			return
+	if not output.is_absolute_path() or not output.simplify_path().contains("/work/") or FileAccess.file_exists(output) or label.is_empty() or not mode in ["sim_only", "sim_guide", "both"] or samples < 1 or samples > 3:
+		printerr("SIMULATION_CPU_PROFILE_REFUSED require fresh absolute work JSON, label, mode=sim_only|sim_guide|both, samples=1..3")
+		quit(2)
+		return
+	if not is_equal_approx(Engine.time_scale, 1.0):
+		printerr("SIMULATION_CPU_PROFILE_REFUSED engine time scale must remain1")
+		quit(2)
+		return
+	var before: Dictionary = _sources()
+	var probe_before: String = FileAccess.get_sha256(get_script().resource_path)
+	var modes: Array[String] = []
+	if mode == "both": modes.assign(["sim_only", "sim_guide"])
+	else: modes.append(mode)
+	var records: Array[Dictionary] = []
+	var ok: bool = true
+	for fixture: Dictionary in FIXTURES:
+		for selected_mode: String in modes:
+			for sample_index: int in range(samples):
+				var result: Dictionary = _sample(fixture, selected_mode, sample_index)
+				records.append(result)
+				ok = ok and bool(result.get("ok", false))
+				print("SIMULATION_CPU_PROFILE_SAMPLE ", fixture.label, " ", selected_mode, " sample=", sample_index, " ok=", result.get("ok", false))
+	var after: Dictionary = _sources()
+	var probe_after: String = FileAccess.get_sha256(get_script().resource_path)
+	ok = ok and before == after and probe_before == probe_after
+	var report: Dictionary = {"schema_version": 1, "label": label, "ok": ok,
+		"optimization_acceptance": "not_assessed",
+		"scope": "Retained actual native checkpoint source CPU fixture. No actual Main loop, wall cadence, renderer, gameplay FPS, minimum hardware or optimization acceptance claim.",
+		"method": "Fixed 400 calls of tick(0.05), no new orders/rate/unit/AI/rule changes. Method timers are inclusive monotonic wall microseconds with observer overhead, not process CPU accounting; nested methods must NOT be summed. Whole work windows include tick plus scheduled Guide/selection work. Loading, oracle execution, state serialization and output writing are outside all work windows. Cold first tick/first method calls are retained; no warmup discarded.",
+		"guide_schedule_scope": "Optional actual saved Guide/UI context, update every 15 ticks (0.75 sim seconds). This approximates 0.25 real seconds at 3x only; no real-time cadence is exercised. Actual guide branch traces and exit flags are observed, never inferred from hint step number. Plain Guide outputs are checked after every identical scheduled update.",
+		"cold_scope": "First tick/first method call after a fresh instance load, not a cold engine/OS cache claim. No warmup ticks or initial samples are discarded.",
+		"oracle_scope": "Fresh unwrapped same-source Simulation/Guide loaded and run after the measured pass. Exact complete encoded final Sim/RNG, RNG after every tick and all scheduled Guide states must match, preserving dictionary-entry order and numeric text. This does not test against a different source revision.",
+		"engine": Engine.get_version_info(), "engine_time_scale": Engine.time_scale, "project_root": ProjectSettings.globalize_path("res://"),
+		"probe_path": get_script().resource_path, "probe_sha256_before": probe_before, "probe_sha256_after": probe_after,
+		"sources_before": before, "sources_after": after, "sources_unchanged": before == after,
+		"fixture_source_commit": "be4998004f19b22c6c868f813644cca5704f84ed", "fixture_scope": "Exact0.11 Ridge actual native isolated autosave bytes, SHA-bound to original files and accepted collector copies. Both exits are not started at load; actual Guide branches are observed during the bounded continuation.",
+		"records": records}
+	if DirAccess.make_dir_recursive_absolute(output.get_base_dir()) != OK:
+		printerr("SIMULATION_CPU_PROFILE_WRITE_FAILED directory")
+		quit(1)
+		return
+	var file: FileAccess = FileAccess.open(output, FileAccess.WRITE)
+	if file == null:
+		printerr("SIMULATION_CPU_PROFILE_WRITE_FAILED file")
+		quit(1)
+		return
+	file.store_string(JSON.stringify(report, "\t", true, true) + "\n")
+	file.flush()
+	var write_error: Error = file.get_error()
+	file.close()
+	if write_error != OK:
+		printerr("SIMULATION_CPU_PROFILE_WRITE_FAILED data")
+		quit(1)
+		return
+	print("SIMULATION_CPU_PROFILE ok=", ok, " output=", output)
+	quit(0 if ok else 1)

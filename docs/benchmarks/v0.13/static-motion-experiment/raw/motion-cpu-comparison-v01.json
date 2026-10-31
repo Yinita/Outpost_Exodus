@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "scope": "One sequential source fixture pair, inclusive monotonic wall timing with cold sample retained. Does not prove native FPS or minimum hardware/release acceptance.",
+  "baseline": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/motion-cpu-baseline-v01.json",
+    "sha256": "80c366f83dd115479254320533c1af4a1fa8cd88fca1da83a19a70838b6f61f7",
+    "actual_exit": 0,
+    "completion_tool_chunk": "b08019"
+  },
+  "candidate": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-cpu-candidate-v01.json",
+    "sha256": "ed5d1634b254645edeb442ebea4386f79deed32d579cfc77f937ee1f892b6e3a",
+    "actual_exit": 0,
+    "completion_tool_chunk": "51fd75"
+  },
+  "rows": [
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_only",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 10.2188475,
+      "candidate_mean_tick_ms": 10.215425,
+      "tick_time_reduction_pct": 0.03349203518302479,
+      "baseline_mean_work_ms": 10.2203225,
+      "candidate_mean_work_ms": 10.216895,
+      "baseline_navigation_index_calls": 408973,
+      "candidate_navigation_index_calls": 380111,
+      "_move_unit": {
+        "baseline_inclusive_ms": 2502.939,
+        "candidate_inclusive_ms": 2492.419
+      },
+      "_separate_bodies": {
+        "baseline_inclusive_ms": 764.855,
+        "candidate_inclusive_ms": 767.854
+      }
+    },
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_guide",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 13.63064,
+      "candidate_mean_tick_ms": 13.78865,
+      "tick_time_reduction_pct": -1.1592265660306467,
+      "baseline_mean_work_ms": 13.98766,
+      "candidate_mean_work_ms": 14.147425
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_only",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 9.7207325,
+      "candidate_mean_tick_ms": 9.7598775,
+      "tick_time_reduction_pct": -0.4026959902455829,
+      "baseline_mean_work_ms": 9.7221175,
+      "candidate_mean_work_ms": 9.76122,
+      "baseline_navigation_index_calls": 399329,
+      "candidate_navigation_index_calls": 371085,
+      "_move_unit": {
+        "baseline_inclusive_ms": 2386.291,
+        "candidate_inclusive_ms": 2394.182
+      },
+      "_separate_bodies": {
+        "baseline_inclusive_ms": 700.273,
+        "candidate_inclusive_ms": 701.675
+      }
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_guide",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 12.970425,
+      "candidate_mean_tick_ms": 13.052865,
+      "tick_time_reduction_pct": -0.6355998357802539,
+      "baseline_mean_work_ms": 13.239725,
+      "candidate_mean_work_ms": 13.323235
+    }
+  ]
+}

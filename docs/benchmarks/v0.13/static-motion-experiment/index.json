@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "collection": "v0.13 unmerged static-motion experiment",
+  "scope": "SOURCE_ONLY_FUNCTIONAL_AND_SEQUENTIAL_PAIRED_WALL_TIMING; no native FPS/minimum hardware/release acceptance",
+  "decision": {
+    "candidate_merged": false,
+    "candidate_commit": "d19d4ce262ff2b26c9ea6e73cafd059d8554fa05",
+    "candidate_simulation_sha256": "2190a1c679554d560203d4bb02a09793f6990e39125e2997af404e1c4bd9db1b",
+    "retained_baseline_simulation_sha256": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+    "reason": "Functional checks and802 complete serialized state rows matched, but this one sequential paired source measurement did not confirm a CPU benefit. Retain8f80. Small signed differences do not establish a statistically significant regression.",
+    "code_or_invariant_failure": false,
+    "performance_acceptance": "not_assessed"
+  },
+  "final_candidate_manifest": false,
+  "workload": {
+    "actual_retained_Ridge_fixtures": 2,
+    "actors_each": 107,
+    "enemies_each": 100,
+    "friendlies_each": 7,
+    "ticks_each": 400,
+    "tick_delta_seconds": 0.05,
+    "guide_every_ticks": 15,
+    "cold_first_samples_retained": true,
+    "rules_commands_actor_counts_step_sizes_unchanged": true
+  },
+  "measurement_limits": [
+    "Inclusive monotonic wall microseconds with observer overhead, not process CPU accounting. Nested method times must not be added.",
+    "Sim-only is wrapped for method counters; plain Simulation+Guide is a separate mode. Do not subtract these modes.",
+    "Tick-only timings exclude subsequent scheduled Guide/selection; whole-work includes it.",
+    "Navigation-index call counts fell only about7%; a count reduction alone is not a demonstrated speedup.",
+    "One sequential pair provides no statistical significance claim, no whole-campaign/FPS result and no minimum-hardware acceptance."
+  ],
+  "comparison_rows": [
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_only",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 10.2188475,
+      "candidate_mean_tick_ms": 10.215425,
+      "tick_time_reduction_pct": 0.03349203518302479,
+      "baseline_mean_work_ms": 10.2203225,
+      "candidate_mean_work_ms": 10.216895,
+      "baseline_navigation_index_calls": 408973,
+      "candidate_navigation_index_calls": 380111,
+      "_move_unit": {
+        "baseline_inclusive_ms": 2502.939,
+        "candidate_inclusive_ms": 2492.419
+      },
+      "_separate_bodies": {
+        "baseline_inclusive_ms": 764.855,
+        "candidate_inclusive_ms": 767.854
+      },
+      "tick_scope": "tick elapsed only, excluding subsequent scheduled Guide/selection",
+      "work_scope": "tick plus scheduled Guide/selection in sim_guide mode; same400-tick denominator",
+      "observed_navigation_index_call_reduction_pct": 7.057189594423107
+    },
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_guide",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 13.63064,
+      "candidate_mean_tick_ms": 13.78865,
+      "tick_time_reduction_pct": -1.1592265660306467,
+      "baseline_mean_work_ms": 13.98766,
+      "candidate_mean_work_ms": 14.147425,
+      "tick_scope": "tick elapsed only, excluding subsequent scheduled Guide/selection",
+      "work_scope": "tick plus scheduled Guide/selection in sim_guide mode; same400-tick denominator"
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_only",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 9.7207325,
+      "candidate_mean_tick_ms": 9.7598775,
+      "tick_time_reduction_pct": -0.4026959902455829,
+      "baseline_mean_work_ms": 9.7221175,
+      "candidate_mean_work_ms": 9.76122,
+      "baseline_navigation_index_calls": 399329,
+      "candidate_navigation_index_calls": 371085,
+      "_move_unit": {
+        "baseline_inclusive_ms": 2386.291,
+        "candidate_inclusive_ms": 2394.182
+      },
+      "_separate_bodies": {
+        "baseline_inclusive_ms": 700.273,
+        "candidate_inclusive_ms": 701.675
+      },
+      "tick_scope": "tick elapsed only, excluding subsequent scheduled Guide/selection",
+      "work_scope": "tick plus scheduled Guide/selection in sim_guide mode; same400-tick denominator",
+      "observed_navigation_index_call_reduction_pct": 7.072864730585559
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_guide",
+      "complete_state_rng_guide_equal": true,
+      "baseline_mean_tick_ms": 12.970425,
+      "candidate_mean_tick_ms": 13.052865,
+      "tick_time_reduction_pct": -0.6355998357802539,
+      "baseline_mean_work_ms": 13.239725,
+      "candidate_mean_work_ms": 13.323235,
+      "tick_scope": "tick elapsed only, excluding subsequent scheduled Guide/selection",
+      "work_scope": "tick plus scheduled Guide/selection in sim_guide mode; same400-tick denominator"
+    }
+  ],
+  "functional_checks": {
+    "test": 289,
+    "path-cache": 194,
+    "navigation": 151,
+    "arrival": 2329,
+    "campaign": 170
+  },
+  "functional_failures": 0,
+  "functional_evidence": "raw/static-motion-evidence-index.json",
+  "exact_complete_state_trace": {
+    "rows": 802,
+    "root_compared_actual_full_serialized_rows_byte_for_byte": true,
+    "sha_only_comparison": false,
+    "raw_comparison": "raw/motion-cross-source-trace-comparison-v01.json",
+    "scope": "Complete Simulation/RNG/Guide source-state equality, not timing or native campaign acceptance"
+  },
+  "root_observed_processes": {
+    "scope": "Root direct tool observations supplied for this archival task; no engine or comparison was rerun by the collector.",
+    "baseline_CPU": {
+      "actual_exit": 0,
+      "completion_tool_chunk": "b08019"
+    },
+    "candidate_CPU": {
+      "actual_exit": 0,
+      "completion_tool_chunk": "51fd75"
+    },
+    "candidate_trace": {
+      "actual_exit": 0,
+      "completion_tool_chunk": "3c0a70"
+    },
+    "completed_comparison": {
+      "actual_exit": 0,
+      "completion_tool_chunk": "1f3f3f"
+    },
+    "full_state_comparison": {
+      "root_initial_tool_chunk": "f75567",
+      "root_reported_comparison_passed": true,
+      "command_scope": "Full-byte comparison was the initial pure-Python part before the subsequent baseline engine run. Do not call f75567 a terminal engine receipt; that subsequent baseline process actually completed0 at b08019."
+    }
+  },
+  "external_complete_traces": [
+    {
+      "role": "baseline",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v02.jsonl",
+      "bytes": 276677815,
+      "sha256": "11ce1ff2c6acc951f6063f1a199c8fa765a836321037bb53106ca2e07412d45c",
+      "actual_sha256_verified_at_collection": true,
+      "copied_into_git": false,
+      "scope": "Complete serialized source Sim/RNG/Guide per-tick trace. Baseline trace is reused from the already recorded8f80 source; CPU baseline measurement is a fresh separate run."
+    },
+    {
+      "role": "candidate",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-candidate-trace-v01.jsonl",
+      "bytes": 276677815,
+      "sha256": "11ce1ff2c6acc951f6063f1a199c8fa765a836321037bb53106ca2e07412d45c",
+      "actual_sha256_verified_at_collection": true,
+      "copied_into_git": false,
+      "scope": "Complete serialized source Sim/RNG/Guide per-tick trace. Baseline trace is reused from the already recorded8f80 source; CPU baseline measurement is a fresh separate run."
+    }
+  ],
+  "external_functional_logs_and_processes": [
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/test.log",
+      "bytes": 123,
+      "sha256": "7416e069a818a120c1a02c16779b880210fbd7f5fd196d36d88f2f8d24af14b0",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/test-process.json",
+      "bytes": 473,
+      "sha256": "4bcb4182228b803c38cc41cfbf0ee5065c81667682d132cb93b1ce5a3bf1c98d",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/path-cache.log",
+      "bytes": 115,
+      "sha256": "4c77811b3508bc76f542d2b44e9c8a73869c6f11e8436ed757b0a06686c7c4b3",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/path-cache-process.json",
+      "bytes": 465,
+      "sha256": "1bd9f921ddaeac01e147d224f060c70025e4beae8f821d78507e18ddecd6fa82",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/navigation.log",
+      "bytes": 1394,
+      "sha256": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/navigation-process.json",
+      "bytes": 466,
+      "sha256": "60daab0cc25986b51596e14e2f7c2eb57c9c2fbfb83e0057b75af54d42da9f56",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/arrival.log",
+      "bytes": 117,
+      "sha256": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/arrival-process.json",
+      "bytes": 464,
+      "sha256": "7ab942d6319e10fcc28c126cd384f15cd5a05dc96f9b739e424496d556d2f7ab",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/campaign.log",
+      "bytes": 472,
+      "sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/campaign-process.json",
+      "bytes": 457,
+      "sha256": "3a587217c900e803065ce47d96781517efda1c4e74300ab18eab675c67bbee48",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/import.log",
+      "bytes": 9834,
+      "sha256": "db18fec8a5ded06561fa2ab26eeda84e3e5d28ffdc8b00842bd1026db0ca1f1c",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    },
+    {
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/import-process.json",
+      "bytes": 437,
+      "sha256": "7bc382819950eddb50114a58bd328121dd9eaba6845ddee5e1165fe43d6f3932",
+      "copied_into_git": false,
+      "scope": "Original headless correctness/import proof; no CPU/native/FPS claim"
+    }
+  ],
+  "source_only": true,
+  "new_native_FPS_validation": false,
+  "new_full_route_or_hour_acceptance": false,
+  "steam_ready": false,
+  "collection_method": "Verbatim copy, source identity and SHA checks only; no engine/CPU/native/GPU job or checker rerun. No PNG or large raw trace added.",
+  "files": [
+    {
+      "path": "raw/motion-cpu-baseline-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/motion-cpu-baseline-v01.json",
+      "bytes": 136283,
+      "sha256": "80c366f83dd115479254320533c1af4a1fa8cd88fca1da83a19a70838b6f61f7",
+      "verbatim_copy": true,
+      "kind": "original source wall-time result/log"
+    },
+    {
+      "path": "raw/motion-cpu-baseline-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/motion-cpu-baseline-v01.log",
+      "bytes": 559,
+      "sha256": "827801c0ddafcd5f682db4595f1c439d06df84a40ae944867f9e791c9a63b3ef",
+      "verbatim_copy": true,
+      "kind": "original source wall-time result/log"
+    },
+    {
+      "path": "raw/motion-cpu-candidate-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-cpu-candidate-v01.json",
+      "bytes": 136312,
+      "sha256": "ed5d1634b254645edeb442ebea4386f79deed32d579cfc77f937ee1f892b6e3a",
+      "verbatim_copy": true,
+      "kind": "original source wall-time result/log"
+    },
+    {
+      "path": "raw/motion-cpu-candidate-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-cpu-candidate-v01.log",
+      "bytes": 572,
+      "sha256": "0d9941e6da4e17156268936376a27d39aaf36182ed8d43cc98e64edd728099bc",
+      "verbatim_copy": true,
+      "kind": "original source wall-time result/log"
+    },
+    {
+      "path": "raw/motion-cpu-comparison-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-cpu-comparison-v01.json",
+      "bytes": 2885,
+      "sha256": "fd5e0fe1835745203ccb6a4b9c8a4b2c9cd8a812209028c41a8ec3263eb9bd76",
+      "verbatim_copy": true,
+      "kind": "original comparison result"
+    },
+    {
+      "path": "raw/motion-cross-source-trace-comparison-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-cross-source-trace-comparison-v01.json",
+      "bytes": 4863,
+      "sha256": "c6e0bffddccf19d94083468acb854673d8cf9b3a06e9224e9885adee09265817",
+      "verbatim_copy": true,
+      "kind": "original comparison result"
+    },
+    {
+      "path": "raw/path-candidate-trace-v02.jsonl.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v02.jsonl.json",
+      "bytes": 1757,
+      "sha256": "e7ef54a67dff46eb533a397ad1e34c5fd7dc83a529fc6c136c0fbf0c1a78137f",
+      "verbatim_copy": true,
+      "kind": "original reused8f80 baseline complete-state trace metadata"
+    },
+    {
+      "path": "raw/motion-candidate-trace-v01.jsonl.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-candidate-trace-v01.jsonl.json",
+      "bytes": 1757,
+      "sha256": "6e253486ee5165d6eee8e8320553243cdae0b68bf78c9e2cefc9e63d0edc604e",
+      "verbatim_copy": true,
+      "kind": "original2190 candidate complete-state trace metadata"
+    },
+    {
+      "path": "raw/static-motion-evidence-index.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/static-motion-v01/evidence-index.json",
+      "bytes": 3849,
+      "sha256": "dd9f0ca296ad1eaa24ce4ab7bb830a3bc7a983c5907d999d87c243c4db47b006",
+      "verbatim_copy": true,
+      "kind": "original headless correctness/import evidence index"
+    },
+    {
+      "path": "CPU-probe.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path_cpu_profile_v01.gd",
+      "bytes": 20658,
+      "sha256": "e5807e8947e91fabb37446e2c16d0cc935d90b89404e6f7868ecd6d16c9897c0",
+      "verbatim_copy": true,
+      "kind": "original unchanged e580 source CPU wall-time probe retained as text"
+    }
+  ],
+  "checksum_scope": "SHA256SUMS covers every retained file including index.json, excluding itself."
+}

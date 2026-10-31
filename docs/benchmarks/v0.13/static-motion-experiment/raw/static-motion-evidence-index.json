@@ -1,0 +1,98 @@
+{
+  "scope": "Light headless correctness/import only; no performance/native/GPU acceptance",
+  "source_hashes": {
+    "scripts/campaign_simulation.gd": "2190a1c679554d560203d4bb02a09793f6990e39125e2997af404e1c4bd9db1b",
+    "tests/test_static_motion_navigation.gd": "838fc49cbe65fd12f693bae6df8ea53c92839b418a07d35e8f7a45b255ee04ef",
+    "tests/test_static_motion_navigation.gd.uid": "1d20f43b7b1a80efba00810a247d1f5ad8f667a9e3db90cdebb54d164449c590"
+  },
+  "checks": {
+    "test": 289,
+    "path-cache": 194,
+    "navigation": 151,
+    "arrival": 2329,
+    "campaign": 170
+  },
+  "failures": 0,
+  "processes": {
+    "test": {
+      "command": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf",
+        "--script",
+        "tests/test_static_motion_navigation.gd"
+      ],
+      "returncode": 0,
+      "scope": "Headless correctness only, no CPU/native/frame measurement",
+      "log_sha256": "7416e069a818a120c1a02c16779b880210fbd7f5fd196d36d88f2f8d24af14b0"
+    },
+    "path-cache": {
+      "command": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf",
+        "--script",
+        "tests/test_path_query_cache.gd"
+      ],
+      "returncode": 0,
+      "scope": "Headless correctness only, no CPU/native/frame measurement",
+      "log_sha256": "4c77811b3508bc76f542d2b44e9c8a73869c6f11e8436ed757b0a06686c7c4b3"
+    },
+    "navigation": {
+      "command": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf",
+        "--script",
+        "tests/test_navigation_combat.gd"
+      ],
+      "returncode": 0,
+      "scope": "Headless correctness only, no CPU/native/frame measurement",
+      "log_sha256": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853"
+    },
+    "arrival": {
+      "command": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf",
+        "--script",
+        "tests/test_arrival_staging.gd"
+      ],
+      "returncode": 0,
+      "scope": "Headless correctness only, no CPU/native/frame measurement",
+      "log_sha256": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842"
+    },
+    "campaign": {
+      "command": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf",
+        "--script",
+        "tests/test_campaign.gd"
+      ],
+      "returncode": 0,
+      "scope": "Headless correctness only, no CPU/native/frame measurement",
+      "log_sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e"
+    },
+    "import": {
+      "command": [
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf",
+        "--editor",
+        "--import"
+      ],
+      "returncode": 0,
+      "scope": "Headless import/UID generation only; not measurement",
+      "log_sha256": "db18fec8a5ded06561fa2ab26eeda84e3e5d28ffdc8b00842bd1026db0ca1f1c"
+    }
+  },
+  "body_geometry_text_unchanged": true,
+  "public_can_step_text_unchanged": true
+}

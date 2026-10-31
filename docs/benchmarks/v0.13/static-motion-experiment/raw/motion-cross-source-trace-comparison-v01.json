@@ -1,0 +1,118 @@
+{
+  "ok": true,
+  "scope": "Actual byte-for-byte full serialized Simulation/RNG/Guide at every tick from two real retained native Ridge saves, 400 ticks each plus initial; no timing/FPS claim.",
+  "trace_rows": 802,
+  "exact_trace_bytes_equal": true,
+  "baseline": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v02.jsonl",
+    "metadata": {
+      "engine": {
+        "build": "official",
+        "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+        "hex": 263938,
+        "major": 4,
+        "minor": 7,
+        "patch": 2,
+        "status": "stable",
+        "string": "4.7.2-stable (official)",
+        "timestamp": 0
+      },
+      "ok": true,
+      "probe_sha256": "acfb1cb3f51ee7e9119e21f405404fee3ba5a2d6b946bca9310b50b9a0e9834c",
+      "records": [
+        {
+          "final_time": 1553.7999999991346,
+          "fixture": {
+            "file": "campaign-autosave.json.bak",
+            "sha": "e20b44915d41b2a01edd3b03bc68d9aa0a0c6cf4debfd584f0f5bc921f1d6ff6"
+          },
+          "guide_updates": 26,
+          "initial_time": 1533.7999999991528,
+          "input_unchanged": true,
+          "living_enemies_at_load": 100,
+          "ticks": 400,
+          "units_at_load": 107
+        },
+        {
+          "final_time": 1688.9999999990116,
+          "fixture": {
+            "file": "campaign-autosave.json",
+            "sha": "95f465417f7601f4e956600bc67343adb4688651e4aac03e97f84d0b1c5f41b8"
+          },
+          "guide_updates": 26,
+          "initial_time": 1668.9999999990298,
+          "input_unchanged": true,
+          "living_enemies_at_load": 100,
+          "ticks": 400,
+          "units_at_load": 107
+        }
+      ],
+      "scope": "Exact serialized per-tick plain Simulation/RNG/Guide trace from two actual native Ridge saves, no orders or rule/rate/actor changes. No timing or FPS claim.",
+      "sources": {
+        "res://scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+        "res://scripts/campaign_guide.gd": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+        "res://scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+        "res://scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb"
+      },
+      "trace_sha256": "11ce1ff2c6acc951f6063f1a199c8fa765a836321037bb53106ca2e07412d45c"
+    },
+    "actual_engine_exit": 0,
+    "completion_tool_chunk": "634489"
+  },
+  "candidate": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-motion-perf/work/motion-candidate-trace-v01.jsonl",
+    "metadata": {
+      "engine": {
+        "build": "official",
+        "hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+        "hex": 263938,
+        "major": 4,
+        "minor": 7,
+        "patch": 2,
+        "status": "stable",
+        "string": "4.7.2-stable (official)",
+        "timestamp": 0
+      },
+      "ok": true,
+      "probe_sha256": "acfb1cb3f51ee7e9119e21f405404fee3ba5a2d6b946bca9310b50b9a0e9834c",
+      "records": [
+        {
+          "final_time": 1553.7999999991346,
+          "fixture": {
+            "file": "campaign-autosave.json.bak",
+            "sha": "e20b44915d41b2a01edd3b03bc68d9aa0a0c6cf4debfd584f0f5bc921f1d6ff6"
+          },
+          "guide_updates": 26,
+          "initial_time": 1533.7999999991528,
+          "input_unchanged": true,
+          "living_enemies_at_load": 100,
+          "ticks": 400,
+          "units_at_load": 107
+        },
+        {
+          "final_time": 1688.9999999990116,
+          "fixture": {
+            "file": "campaign-autosave.json",
+            "sha": "95f465417f7601f4e956600bc67343adb4688651e4aac03e97f84d0b1c5f41b8"
+          },
+          "guide_updates": 26,
+          "initial_time": 1668.9999999990298,
+          "input_unchanged": true,
+          "living_enemies_at_load": 100,
+          "ticks": 400,
+          "units_at_load": 107
+        }
+      ],
+      "scope": "Exact serialized per-tick plain Simulation/RNG/Guide trace from two actual native Ridge saves, no orders or rule/rate/actor changes. No timing or FPS claim.",
+      "sources": {
+        "res://scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+        "res://scripts/campaign_guide.gd": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+        "res://scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+        "res://scripts/campaign_simulation.gd": "2190a1c679554d560203d4bb02a09793f6990e39125e2997af404e1c4bd9db1b"
+      },
+      "trace_sha256": "11ce1ff2c6acc951f6063f1a199c8fa765a836321037bb53106ca2e07412d45c"
+    },
+    "actual_engine_exit": 0,
+    "completion_tool_chunk": "3c0a70"
+  }
+}
