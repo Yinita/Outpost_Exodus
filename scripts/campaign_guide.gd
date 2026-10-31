@@ -237,8 +237,7 @@ func _optional_seal_hint(sim: Variant, camp: Dictionary) -> bool:
 
 
 func _transfer_hint(sim: Variant, origin: Dictionary, destination: Dictionary, step_number: int, selected_camp: int) -> void:
-	var destination_id: int = int(destination["id"])
-	var transfer: Dictionary = _transfer_truck(sim, destination_id)
+	var transfer: Dictionary = {}
 	var target: Vector2 = destination.get("pos", UNKNOWN_TARGET)
 	if not origin.is_empty() and String(origin.get("state", "")) == "active":
 		target = origin.get("pos", target)
@@ -246,6 +245,26 @@ func _transfer_hint(sim: Variant, origin: Dictionary, destination: Dictionary, s
 		var selection_note: String = "先选中「%s」。" % origin_name if selected_camp != int(origin["id"]) else "当前已选中「%s」。" % origin_name
 		_set_hint(step_number, "先撤收旧营，给新营运入资金", selection_note + "打开{orders}点击“撤收驻点”。新营不会凭空获得库存；运输车实际卸货后，再在新营建设发电机和工坊。", target)
 		return
+	if not origin.is_empty() and String(origin.get("state", "")) == "packing":
+		# A newer geographical front does not change an existing public order.
+		# Packing uses matching camp/vehicle destination records; do not infer
+		# an incoming convoy from another camp or silently repair stale records.
+		transfer = sim.get_unit(int(origin.get("evac_truck_id", 0)))
+		if transfer.is_empty() or float(transfer.get("hp", 0.0)) <= 0.0 or String(transfer.get("team", "")) != "friendly" or String(transfer.get("kind", "")) != "truck" or String(transfer.get("order", "")) != "evacuate_transport" or int(transfer.get("evac_origin_id", 0)) != int(origin["id"]):
+			_set_hint(step_number, "检查撤收运输车", "「%s」已在撤收，但指定运输车当前不可用或未在执行本营运输，不能确认这趟运输状态。请检查原车队；新建营地不会自动改写原撤收目的地。" % String(origin.get("name", "后方营地")), origin.get("pos", target))
+			return
+		if int(transfer.get("evac_destination_id", 0)) != int(origin.get("evac_target_id", 0)):
+			_set_hint(step_number, "检查撤收记录", "「%s」的营地与运输车接收营记录不一致，不能确认这趟运输的接收点。请检查原车队与接收营；新建营地不会自动接管这趟运输。" % String(origin.get("name", "后方营地")), origin.get("pos", target))
+			return
+		destination = sim.get_camp(int(transfer.get("evac_destination_id", 0)))
+		if destination.is_empty():
+			_set_hint(step_number, "检查撤收接收营", "「%s」这趟运输记录的接收营已不存在。请检查车队与原接收点；新建营地不会自动接管这趟运输。" % String(origin.get("name", "后方营地")), origin.get("pos", target))
+			return
+		if String(destination.get("state", "")) != "active":
+			_set_hint(step_number, "检查撤收接收营", "这趟运输记录的接收营「%s」当前不是运作中的驻点。请检查原接收营与车队；新建营地不会自动改写这趟运输的目的地。" % String(destination.get("name", "原接收营")), origin.get("pos", target))
+			return
+	else:
+		transfer = _transfer_truck(sim, int(destination["id"]))
 	if not transfer.is_empty():
 		target = transfer.get("pos", target)
 	var stock_text: String = "接收营「%s」当前：建材%d、燃料%d。" % [String(destination.get("name", "前方营地")), int(destination.get("materials", 0.0)), int(destination.get("fuel", 0.0))]
