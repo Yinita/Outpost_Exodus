@@ -201,6 +201,7 @@ func _test_focused_targets(mission: String) -> void:
 		if building["kind"] == "exit":
 			exit_building = building
 	exit_building["construction_started"] = true
+	exit_building["camp_id"] = int(camp["id"])
 	exit_building["powered"] = false
 	_site(sim, "exit", points["exit"])["captured"] = true
 	_fixture_road(sim, camp["pos"], points["exit"], int(camp["id"]))

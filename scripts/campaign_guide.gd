@@ -242,16 +242,19 @@ func _transfer_hint(sim: Variant, origin: Dictionary, destination: Dictionary, s
 	var target: Vector2 = destination.get("pos", UNKNOWN_TARGET)
 	if not origin.is_empty() and String(origin.get("state", "")) == "active":
 		target = origin.get("pos", target)
-		var selection_note: String = "先选中后方营地。" if selected_camp != int(origin["id"]) else "当前已选中要撤收的后营。"
-		_set_hint(step_number, "先撤收旧营，给新营运入资金", selection_note + "打开{orders}选择撤营。新营不会凭空获得库存；运输车实际卸货后，再在新营建设发电机和工坊。", target)
+		var origin_name: String = String(origin.get("name", "后方营地"))
+		var selection_note: String = "先选中「%s」。" % origin_name if selected_camp != int(origin["id"]) else "当前已选中「%s」。" % origin_name
+		_set_hint(step_number, "先撤收旧营，给新营运入资金", selection_note + "打开{orders}点击“撤收驻点”。新营不会凭空获得库存；运输车实际卸货后，再在新营建设发电机和工坊。", target)
 		return
 	if not transfer.is_empty():
 		target = transfer.get("pos", target)
-	var stock_text: String = "接收营当前：建材%d、燃料%d。" % [int(destination.get("materials", 0.0)), int(destination.get("fuel", 0.0))]
+	var stock_text: String = "接收营「%s」当前：建材%d、燃料%d。" % [String(destination.get("name", "前方营地")), int(destination.get("materials", 0.0)), int(destination.get("fuel", 0.0))]
 	if not origin.is_empty() and String(origin.get("state", "")) == "packing":
 		var pursuit_gap: float = Vector2(origin.get("pos", UNKNOWN_TARGET)).x - float(sim.pursuit_x)
 		if _setup_funded(sim, destination) or pursuit_gap < 10.0:
-			_set_hint(step_number, "后营撤收：等待运输或紧急弃营", stock_text + "可继续等待搬运；也可再次点击{orders}里的“撤收驻点”紧急弃营。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。", target)
+			var origin_name: String = String(origin.get("name", "后方营地"))
+			var selection_note: String = "先选中「%s」，" % origin_name if selected_camp != int(origin["id"]) else "当前已选中「%s」，" % origin_name
+			_set_hint(step_number, "后营撤收：等待运输或紧急弃营", stock_text + "可继续等待搬运；若需立即撤出，" + selection_note + "打开{orders}点击“紧急弃营”。未装车物资会留在旧营，车上货物继续送达；封关前确认人员已通过。", origin.get("pos", target))
 			return
 	var safety: String = "等人员和车都到关口东侧，再考虑{orders}封关；也可自行选择分兵留守。"
 	var choke_index: int = _rear_choke_index(sim, destination)
@@ -333,20 +336,31 @@ func _exit_hint(sim: Variant, exit_site: Dictionary, exit_building: Dictionary) 
 	if not bool(exit_site.get("captured", false)):
 		_set_hint(10, "先清理撤离站守卫", "带战斗小队清理东部撤离站并留人在附近占领。此时仍可{pause}整队；军营与{train}用于补充兵力，别把指挥车送进未清理的敌群。", target)
 		return
-	var active_camp: Dictionary = _east_active_camp(sim)
+	var started: bool = bool(exit_building.get("construction_started", false))
+	var supply_position: Vector2 = exit_building.get("pos", target)
+	# Use the same read-only owner selection as actual automatic commissioning.
+	# A funded job keeps its recorded owner even when another camp is built later.
+	var active_camp: Dictionary = sim.get_camp(int(exit_building.get("camp_id", -1))) if started else sim._nearest_camp(supply_position)
+	if started and (active_camp.is_empty() or String(active_camp.get("state", "")) != "active"):
+		var owner_name: String = String(active_camp.get("name", "原供料营地"))
+		_set_hint(10, "检查撤离站所属营地", "撤离站已立项，所属的「%s」已停止运作；新建其他营地不会自动接管本工程。检查当前战况，若无法继续，可读取存档或重新开始。" % owner_name, target)
+		return
 	if active_camp.is_empty():
 		_set_hint(10, "为撤离站保留接收营地", "撤离站已清理，但需要一个可用营地提供本地物资、工程师与道路。先建立或保住东侧营地，别提前弃掉最后一个补给点。", target)
 		return
-	if not bool(sim.road_connected(Vector2(active_camp["pos"]), target)):
-		_set_hint(10, "把前营道路接到撤离站", "用{build}把道路接到撤离站。守卫清理、道路完成并且本营物资足够后，工程会自动立项；无需重复建造出口。", target)
+	var camp_name: String = String(active_camp.get("name", "供料营地"))
+	if not bool(sim.road_connected(Vector2(active_camp["pos"]), supply_position)):
+		var road_text: String = "用{build}把「%s」的道路接到撤离站。" % camp_name
+		road_text += "恢复本工程所属营地的道路，让工程师继续到场施工。" if started else "守卫清理、道路完成并且该营物资足够后，工程会自动立项；无需重复建造出口。"
+		_set_hint(10, "把供料营道路接到撤离站", road_text, target)
 		return
-	if exit_building.is_empty() or not bool(exit_building.get("construction_started", false)):
+	if not started:
 		var exit_cost: Dictionary = _cost(sim, "exit")
 		var cost_text: String = "需要本营建材%d、燃料%d、口粮%d。" % [int(exit_cost.get("materials", 140.0)), int(exit_cost.get("fuel", 45.0)), int(exit_cost.get("supplies", 30.0))]
-		_set_hint(10, "备齐撤离站施工物资", cost_text + "物资必须实际进入前营。用{production}加工原料并保留燃料；达到条件后会自动扣费立项，随后由工程师施工。", active_camp.get("pos", target))
+		_set_hint(10, "备齐撤离站施工物资", cost_text + "物资必须实际进入「%s」。" % camp_name + "用{production}加工原料并保留燃料；达到条件后会自动扣费立项，随后由工程师施工。", active_camp.get("pos", target))
 		return
 	if not bool(exit_building.get("powered", false)):
-		_set_hint(10, "为出口施工提供本地电力", "撤离站工程已立项，需要附近发电机持续提供6电力。用{build}在出口附近接路建发电机，确保所属营地有成品燃料，并在{production}优先保障撤离供能。", _landmark("exit_power"))
+		_set_hint(10, "为出口施工提供本地电力", "撤离站工程已立项，需要附近发电机持续提供6电力。用{build}在出口附近接路建发电机，确保所属营地「%s」有成品燃料，并在{production}优先保障撤离供能。" % camp_name, _landmark("exit_power"))
 		return
 	_set_hint(10, "保护工程师，等待撤离站完工", "道路、资金和供能已就绪，工程师仍需实际到场施工。守住出口与运输线；可以整队、修理，等真实建造进度完成后再全员到场。", target)
 
@@ -404,14 +418,6 @@ func _ordered_camps(sim: Variant) -> Array[Dictionary]:
 	for value: Variant in camps:
 		result.append(value)
 	result.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return Vector2(a["pos"]).x < Vector2(b["pos"]).x)
-	return result
-
-
-func _east_active_camp(sim: Variant) -> Dictionary:
-	var result: Dictionary = {}
-	for camp: Dictionary in _ordered_camps(sim):
-		if String(camp.get("state", "")) == "active":
-			result = camp
 	return result
 
 

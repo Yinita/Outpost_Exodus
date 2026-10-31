@@ -1,0 +1,15 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+Camp action guidance checks: 32; failures: 12
+ - active withdrawal names the actual source when the receiver is selected
+ - active source guidance uses the actual initial button name
+ - wrong-camp packing guidance explicitly selects its actual source first
+ - local funding readout names the actual receiving camp
+ - packing guidance uses the current emergency button label
+ - emergency action focus returns to source instead of in-transit truck
+ - source-selected packing guidance acknowledges actual selection
+ - planned exit inspects real supplier connection instead of unrelated eastern camp
+ - funding guidance names and focuses the actual nearest supply camp
+ - bound exit bypasses unrelated later-camp road blockers
+ - bound exit power guidance names recorded job owner
+ - lost-owner guidance explains existing project instead of promising another camp can fund it

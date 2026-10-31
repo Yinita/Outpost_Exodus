@@ -1,0 +1,9 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS focused guide fixtures canyon
+PASS paid opening canyon t=77.1999999999999
+PASS focused guide fixtures delta
+PASS paid opening delta t=79.8999999999997
+PASS focused guide fixtures ridge
+PASS paid opening ridge t=84.0999999999995
+Mission guide checks: 137; failures: 0

@@ -1,0 +1,150 @@
+{
+  "base_commit": "07ce02111d32df262342393b4bb48637c4a79ed1",
+  "branch": "fix/camp-action-guidance",
+  "recorded_utc": "2026-10-31T16:15:24.299147+00:00",
+  "scope": "Source project functional checks and controlled native UI captures; not exported-build acceptance, a performance experiment or human playtest.",
+  "changed_runtime_sha256": {
+    "scripts/campaign_guide.gd": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+    "scripts/hud.gd": "444a96a2d02a938e7a3d60a8cffc733fea27756ec122e3353a51ad3d7e35d368"
+  },
+  "unchanged_runtime_sha256": {
+    "scripts/campaign_simulation.gd": {
+      "sha256": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+      "byte_identical_to_base": true
+    },
+    "scripts/main.gd": {
+      "sha256": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+      "byte_identical_to_base": true
+    }
+  },
+  "tests": [
+    {
+      "log": "guidance-before.txt",
+      "sha256": "61835e2ce9181e50af65b0eab78a83a80d9574b726c02a3e99fb2f4231391bcd",
+      "checks": 32,
+      "failures": 12,
+      "actual_process_exit_code": 1,
+      "scope": "Same final regression file against original 07ce021 guide copied to work/guide-before.gd; expected failure retained."
+    },
+    {
+      "log": "guidance-after.txt",
+      "sha256": "c6ab462a974368e2103bc98b5b06e7ad476cd682085d8e5e91c39edfec134453",
+      "checks": 32,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Final changed runtime sources; after supply-position alignment."
+    },
+    {
+      "log": "pause-after.txt",
+      "sha256": "a24aab5347d56e2c8bc463427b39cccaeb8da301b854b9593ca8df598a57f2d2",
+      "checks": 16,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Final HUD bytes and unchanged Main/Simulation; headless input/text, no pixels."
+    },
+    {
+      "log": "guide-quick.txt",
+      "sha256": "2cd20c82a62dedb41499b3532e9811a315d48901d406dbba577d0de13f8e50cf",
+      "checks": 154,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Before final exit-position alignment; retained intermediate source run."
+    },
+    {
+      "log": "mission-guide.txt",
+      "sha256": "0d60733806d5dacec8ab3d972be87f23b475de0ae89628243a6f6840810d8d87",
+      "checks": 137,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Before final exit-position alignment; retained intermediate source run with three paid openings."
+    },
+    {
+      "log": "campaign.txt",
+      "sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e",
+      "checks": 170,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Unchanged Simulation bytes; baseline rules regression, no performance inference."
+    },
+    {
+      "log": "native-ui.txt",
+      "sha256": "4e2af8bfc99e942b12967b763bb4da00cef520565e6d660322f693ee5c078820",
+      "checks": 124,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Final HUD bytes; preceding guide before final exit-position alignment. Original native UI regression, not an exact-final-guide acceptance."
+    },
+    {
+      "log": "native-guidance-ui.txt",
+      "sha256": "06a70587e622ab42c3da06eb35a853f5a0623d793f5a199d90ce9e977ae5640d",
+      "checks": 54,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Final guide and HUD bytes; controlled native 1152x648 at 120% source-project input/captures."
+    },
+    {
+      "log": "guide-full-final.txt",
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349",
+      "checks": 211,
+      "failures": 0,
+      "actual_process_exit_code": 0,
+      "scope": "Final changed runtime sources. Original actual canyon guide route wins at 1589.99999999965 simulation seconds; headless functional run."
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "packing-source-action-small.png",
+      "sha256": "fcb68321ab0551be592b39e938585b52e1b49b6525ed85955e0c5ae15259f992",
+      "width": 1152,
+      "height": 648,
+      "source_sha256": {
+        "scripts/campaign_guide.gd": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+        "scripts/hud.gd": "444a96a2d02a938e7a3d60a8cffc733fea27756ec122e3353a51ad3d7e35d368"
+      }
+    },
+    {
+      "path": "packing-wrong-camp-guide-small.png",
+      "sha256": "b0a0557b27fd987286bcb4aa318e00de5f35c548316874f4fb4f00d8efbbb35d",
+      "width": 1152,
+      "height": 648,
+      "source_sha256": {
+        "scripts/campaign_guide.gd": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+        "scripts/hud.gd": "444a96a2d02a938e7a3d60a8cffc733fea27756ec122e3353a51ad3d7e35d368"
+      }
+    },
+    {
+      "path": "pause-backspace-small.png",
+      "sha256": "5469a61ebca2cddc891e180d2404128fd4e4e60a8b94744c3a96d7b886b4805e",
+      "width": 1152,
+      "height": 648,
+      "source_sha256": {
+        "scripts/campaign_guide.gd": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+        "scripts/hud.gd": "444a96a2d02a938e7a3d60a8cffc733fea27756ec122e3353a51ad3d7e35d368"
+      }
+    },
+    {
+      "path": "pause-j-small.png",
+      "sha256": "7c4a24147a4b8195fe70ed26feb02443fe83dd1ac02b51a7fbecb487f8ce0497",
+      "width": 1152,
+      "height": 648,
+      "source_sha256": {
+        "scripts/campaign_guide.gd": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+        "scripts/hud.gd": "444a96a2d02a938e7a3d60a8cffc733fea27756ec122e3353a51ad3d7e35d368"
+      }
+    }
+  ],
+  "visual_review": {
+    "all_four_images_viewed": true,
+    "reviewer": "assistant",
+    "observations": [
+      "J and Backspace pause banners are complete and use the actual current binding.",
+      "Compact tooltip changes pause/continue wording with actual simulation pause state.",
+      "Long Backspace name wraps within the tooltip; no clipping.",
+      "Complete wrong-camp guide names source and receiver, and visibly directs source selection before emergency abandonment.",
+      "Source-selected orders screenshot shows the actual emergency-abandon action."
+    ]
+  },
+  "exported_build_acceptance": false,
+  "human_playtest": false,
+  "performance_measurement": false
+}

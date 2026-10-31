@@ -1,0 +1,8 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SKIP full mission in explicitly requested --quick run
+PASS _test_read_only_observation
+PASS _test_persistence_and_bad_states
+PASS _test_opening_casualties
+PASS _test_combat_recovery_guidance
+Guide checks: 154; failures: 0

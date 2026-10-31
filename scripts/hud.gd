@@ -63,8 +63,11 @@ func _draw() -> void:
 		_panel(notification, Color("253d40"), TEAL)
 		_text(notification.position + Vector2(14, 27), main.feedback, 16, PAPER, notification.size.x - 28)
 	if main.sim.paused and main.menu.is_empty() and main.build_kind.is_empty():
-		_panel(Rect2(screen.x * 0.5 - 110, 138, 220, 40), INK, GOLD)
-		_text(Vector2(screen.x * 0.5 - 86, 165), "战术暂停 · 空格继续", 18, GOLD)
+		var pause_text: String = _pause_banner_text()
+		var pause_width: float = maxf(220, font.get_string_size(pause_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
+		var pause_left: float = (screen.x - pause_width) * 0.5
+		_panel(Rect2(pause_left, 138, pause_width, 40), INK, GOLD)
+		_text(Vector2(pause_left + 16, 165), pause_text, 18, GOLD)
 	if not main.menu.is_empty(): _draw_menu(screen)
 	elif not tooltip.is_empty() and main.capture_path.is_empty():
 		var mouse: Vector2 = get_viewport().get_mouse_position()
@@ -83,6 +86,14 @@ func _draw() -> void:
 		var pos: Vector2 = Vector2(clampf(mouse.x - 160, 16, screen.x - 376), maxf(80, mouse.y - 90))
 		_panel(Rect2(pos, Vector2(360, 72)), INK, GOLD)
 		_lines(pos + Vector2(12, 24), tooltip, 15, PAPER)
+
+func _pause_banner_text() -> String:
+	return "战术暂停 · %s 继续" % main.binding_label("pause_game")
+
+func _compact_tab_tip() -> String:
+	var status: String = "战术已暂停" if main.sim.paused else "地图继续运行"
+	var action: String = "继续" if main.sim.paused else "暂停"
+	return "切换面板或显示范围；%s，可用 %s %s" % [status, main.binding_label("pause_game"), action]
 
 func _draw_top(screen: Vector2, summary: Dictionary) -> void:
 	_panel(Rect2(0, 0, screen.x, 64), INK, Color("456065"))
@@ -185,7 +196,7 @@ func _draw_dock(screen: Vector2) -> void:
 		var tab_width: float = (screen.x - 342) / 6.0
 		var tabs: Array = [["建设 [%s]" % main.binding_label("build_menu"), "tab:build", main.current_tab == "build"], ["指挥 [%s]" % main.binding_label("orders_menu"), "tab:orders", main.current_tab == "orders"], ["生产 [%s]" % main.binding_label("production_menu"), "tab:production", main.current_tab == "production"], ["训练 [%s]" % main.binding_label("train_menu"), "tab:training", main.current_tab == "training"], ["补给线", "logistics", main.world.show_logistics], ["范围", "ranges", main.world.show_ranges]]
 		for index: int in range(tabs.size()):
-			_button(Rect2(18 + index * (tab_width + 8), top + 12, tab_width, 33), tabs[index][0], tabs[index][1], "切换面板或显示范围；地图继续运行，可用空格暂停", tabs[index][2])
+			_button(Rect2(18 + index * (tab_width + 8), top + 12, tab_width, 33), tabs[index][0], tabs[index][1], _compact_tab_tip(), tabs[index][2])
 	else:
 		_button(Rect2(18, top + 12, 125, 33), "建设 [%s]" % main.binding_label("build_menu"), "tab:build", "道路、营地、工坊与防守设施", main.current_tab == "build")
 		_button(Rect2(153, top + 12, 125, 33), "指挥 [%s]" % main.binding_label("orders_menu"), "tab:orders", "给所选小队委派任务", main.current_tab == "orders")
