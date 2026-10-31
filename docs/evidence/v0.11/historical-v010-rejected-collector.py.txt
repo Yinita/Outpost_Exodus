@@ -1,0 +1,611 @@
+#!/usr/bin/env python3
+"""Post-success collector for this exact immutable 0.10 native/frame-timing soak.
+
+Prepare only while the real run is live. Root must explicitly invoke --collect
+AFTER it has observed terminal success. No Godot/native/GPU jobs are launched.
+All acceptance and artifact checks finish before any outer output is created.
+"""
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import importlib.util
+import json
+import math
+import os
+from pathlib import Path, PurePosixPath
+import shutil
+import stat
+import subprocess
+import sys
+import tempfile
+import zipfile
+
+PROJECT = Path(__file__).resolve().parents[1]
+OUTPUT = PROJECT.parent
+VERSION = "0.10.0-dev"
+PREFIX = f"outpost-exodus-{VERSION}"
+COMMIT = "b3f0033a8df1c51d2d43f625133e87c227c4c5eb"
+SUPERVISOR_PID = 4160799
+SUPERVISOR_START_TICKS = 9216905
+LAUNCHER_PID = 4160804
+LAUNCHER_START_TICKS = 9216907
+NATIVE_PID = 4160805
+NATIVE_START_TICKS = 9216915
+RUN = PROJECT / "work/native-soak-v010-full"
+BUILD = PROJECT / "work/native-soak-v010-unpacked/outpost-exodus-linux"
+BENCH = PROJECT / "work/benchmarks/native-v010-full/output"
+START = PROJECT / "work/v010-native-soak-start.json"
+LAUNCHER_LOG = PROJECT / "work/v010-native-soak.log"
+SUPERVISOR_SOURCE = PROJECT / "work/run_v010_soak_supervisor.py"
+SUPERVISOR_RESULT = PROJECT / "work/v010-native-soak-supervisor-result.json"
+SUPERVISOR_SOURCE_SHA256 = "fc8473eb66c980b0a4e194534122d188aef6f027f66986f31ba5a00ae2a913c1"
+START_SHA256 = "60638ed7af451514ffc6b66d7f0ce337da2765c7d625f47c0bb3186c433f21c0"
+FRAME_VERIFIER = PROJECT / "work/verify_frame_timing.py"
+FRAME_VERIFIER_SHA256 = "b0dec342534265e6469d4d7acc907e03470695abfd2113806722e4a82c0e8161"
+AUTO_PROBE = PROJECT / "work/verify-v010-autosave.gd"
+AUTO_PROBE_SHA256 = "569b504e0df4721898964ef84de72197e538aa5e9c5f4adfaeafdd314647f7da"
+AUTO_LOG = PROJECT / "work/v010-automatic-cycle.log"
+AUTO_PROCESS = PROJECT / "work/v010-automatic-cycle-process.json"
+PREPARE = PROJECT / "work/native-v010-prepare"
+BENCHMARK_SUMMARY = PROJECT / "work/v010-benchmark-summary.json"
+ENGINE = PROJECT.parent.parent / "work/runtime/Godot_v4.7.2-stable_linux.x86_64"
+EXPECTED_ARCHIVES = {
+    f"outpost-exodus-source-{VERSION}.zip": "9990d8e099ec25808e26206b30c15e59c6e930e11272bc94750ab9ded094afe6",
+    f"outpost-exodus-linux-{VERSION}.zip": "32b7231ca17e47dbc7eb9b3b4177a4c8d2a44e72a5ff90e6ca8abb5600561822",
+    f"outpost-exodus-windows-{VERSION}.zip": "d2ab0fa7e2bd9fdc6f1697a395e69067eebf90a62c39fb6e68500c9036a01809"}
+GALLERY_SELECTION = ((1, "middle_infrastructure"), (1, "withdrawal_after_disk_load"),
+                     (2, "middle_infrastructure"), (2, "withdrawal_after_disk_load"),
+                     (3, "middle_infrastructure"))
+sys.path.insert(0, str(PROJECT / "tools"))
+import run_native_campaign as verifier  # Pure Python verification; no main().
+
+
+class Refused(RuntimeError):
+    pass
+
+
+def require(condition, message):
+    if not condition:
+        raise Refused(message)
+
+
+def read(path):
+    return json.loads(Path(path).read_text(encoding="utf-8"))
+
+
+def sha(path):
+    return verifier.sha256(Path(path))
+
+
+def blob_sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def record(path, relative_to=None):
+    path = Path(path)
+    require(path.is_file() and not path.is_symlink(), f"Missing/plain-file proof: {path}")
+    return {"path": str(path.relative_to(relative_to)) if relative_to else str(path),
+            "sha256": sha(path), "bytes": path.stat().st_size}
+
+
+def git(*args):
+    return subprocess.check_output(["git", "-C", str(PROJECT), *args], text=True).strip()
+
+
+def proc(pid):
+    try:
+        fields = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+        return {"pid": pid, "state": fields[0], "live": fields[0] != "Z", "start_ticks": int(fields[19])}
+    except (FileNotFoundError, ProcessLookupError):
+        return None
+
+
+def png_dimensions(path):
+    with Path(path).open("rb") as image:
+        header = image.read(24)
+    require(header[:16] == b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR", f"Invalid PNG: {path}")
+    return [int.from_bytes(header[16:20], "big"), int.from_bytes(header[20:24], "big")]
+
+
+def same_payload(report, expected, stages=("binaries_before", "binaries_after")):
+    for stage in stages:
+        for key in ("executable", "adjacent_pck"):
+            actual = report.get(stage, {}).get(key, {})
+            require(actual.get("available") is True and actual.get("sha256") == expected[key]["sha256"],
+                    f"Stale {stage}/{key} payload evidence")
+
+
+def terminal_soak():
+    require(sha(SUPERVISOR_SOURCE) == SUPERVISOR_SOURCE_SHA256 and sha(START) == START_SHA256,
+            "Exact supervisor/start proof changed")
+    start = read(START)
+    require(start["source_commit"] == COMMIT and start["launcher_pid"] == LAUNCHER_PID
+            and start["launcher_start_ticks"] == LAUNCHER_START_TICKS
+            and start["supervisor_pid"] == SUPERVISOR_PID and start["supervisor_start_ticks"] == SUPERVISOR_START_TICKS
+            and Path(start["isolation_root"]) == RUN and Path(start["build_dir"]) == BUILD
+            and Path(start["launcher_log"]) == LAUNCHER_LOG, "Run-start identity differs from this exact soak")
+    observations = {}
+    for name, pid, ticks in (("supervisor", SUPERVISOR_PID, SUPERVISOR_START_TICKS),
+                             ("launcher", LAUNCHER_PID, LAUNCHER_START_TICKS), ("native", NATIVE_PID, NATIVE_START_TICKS)):
+        observations[name] = proc(pid)
+        live = observations[name]
+        require(not live or not live["live"] or live["start_ticks"] != ticks,
+                f"REFUSED: original {name} is still live; progress is not terminal acceptance")
+    supervisor = read(SUPERVISOR_RESULT)
+    require(all(supervisor.get(key) == value for key, value in start.items())
+            and type(supervisor.get("launcher_returncode")) is int and supervisor["launcher_returncode"] == 0
+            and supervisor.get("launcher_exit_observed_by") == "supervisor subprocess.Popen.wait"
+            and supervisor.get("finished_utc"), "Supervisor did not actually wait for successful strict launcher exit")
+    proof = read(RUN / "verification.json")
+    require(all(proof.get(k) is True for k in ("success", "complete_campaign_evidence", "one_hour_soak_evidence", "soak_mode"))
+            and proof.get("prepare_only") is False and proof.get("performance_evidence") is False
+            and type(proof.get("returncode")) is int and proof.get("returncode") == 0 and proof.get("timed_out") is False and proof.get("errors") == []
+            and proof.get("source_commit") == COMMIT and proof.get("pid") == NATIVE_PID
+            and proof.get("requested_mission_id") == "canyon" and proof.get("finished_utc"),
+            "REFUSED: current terminal strict launcher verifier has not accepted this full soak")
+    require(Path(proof["build_dir"]) == BUILD and Path(proof["isolation_root"]) == RUN and Path(proof["cwd"]) == BUILD,
+            "Soak was not the actual dedicated unpacked Linux package")
+    expected_argv = [str(BUILD / verifier.EXECUTABLE_NAME), "--", "--campaign-validation", "--mission=canyon", "--max-seconds=5400", "--soak"]
+    require(proof.get("argv") == expected_argv, "Actual native launch differs from pinned normal-clock soak")
+    launch_stdout = read(LAUNCHER_LOG)
+    require(all(launch_stdout.get(k) is True for k in ("success", "complete_campaign_evidence", "one_hour_soak_evidence", "soak_mode"))
+            and launch_stdout.get("errors") == [] and launch_stdout.get("prepare_only") is False
+            and Path(launch_stdout.get("verification_path", "")) == RUN / "verification.json",
+            "Completed strict launcher output did not report terminal acceptance")
+    actual = verifier.binary_snapshot(BUILD)
+    metadata = verifier.verify_export_metadata(BUILD, actual)
+    require(metadata == proof.get("export_metadata") and metadata["source_commit"] == COMMIT,
+            "Actual unpacked metadata differs from the launcher's immutable export proof")
+    require(proof.get("binaries_before") == actual == proof.get("binaries_after"), "Unpacked executable/PCK changed")
+    require(os.access(BUILD / verifier.EXECUTABLE_NAME, os.X_OK), "Actual unpacked Linux executable lost its run permission")
+    native_output_before_validation = output_manifest(RUN/"output")
+    native_report = read(RUN / "output/campaign-validation.json")
+    final_state = read(RUN / "output/final-campaign-state.json")
+    require(proof.get("native_report", {}).get("sha256") == sha(RUN / "output/campaign-validation.json")
+            and proof["native_report"].get("data") == native_report
+            and proof.get("final_campaign_state", {}).get("sha256") == sha(RUN / "output/final-campaign-state.json"),
+            "Finished native report/final state differ from strict launcher proof")
+    log = RUN / "native-process.log"
+    plain = verifier.ANSI.sub("", log.read_text(encoding="utf-8", errors="replace"))
+    require(not verifier.BAD_OUTPUT.search(plain) and proof.get("log", {}).get("sha256") == sha(log)
+            and proof["log"].get("error_or_leak_output") is False, "Native log changed or contains error/leak output")
+    errors, independent = verifier.validate_soak_report(native_report, actual, actual, expected_argv, "canyon",
+        RUN / "output", NATIVE_PID, proof.get("native_process_wall_seconds"), final_state)
+    require(not errors, "Pure strict full-soak revalidation failed: " + repr(errors))
+    require(independent == proof.get("soak_validation"), "Independent seven-cycle re-read differs from launcher results")
+    require(native_report.get("process_id") == NATIVE_PID and native_report.get("wall_elapsed_seconds", 0) >= 3600
+            and proof.get("native_process_wall_seconds", 0) >= 3600, "Both actual independent elapsed-hour clocks are required")
+    require(supervisor.get("launcher_wall_elapsed_seconds", 0) >= proof["native_process_wall_seconds"],
+            "Supervisor's actual launcher lifetime is shorter than its native child")
+    cycles = []
+    for index, mission in enumerate(verifier.soak_missions("canyon"), 1):
+        directory = RUN / f"output/cycle-{index:02d}-{mission}"
+        cycle = read(directory / "campaign-validation.json")
+        state = read(directory / "final-campaign-state.json")
+        # Preserve all prior 0.8 full-route/economic/clock/arrival gates per cycle.
+        cycle_errors = verifier.validate_report(cycle, actual, actual, False, expected_argv, mission, state, launch_mission="canyon")
+        cycle_errors += verifier.cycle_economic_errors(cycle, state)
+        require(not cycle_errors, f"Cycle {index}/{mission} failed unchanged ordinary/economic gates: {cycle_errors}")
+        require(cycle["final"].get("truck_state") == "evacuated", f"Cycle {index} truck was not actually evacuated")
+        cycles.append(cycle)
+    return proof, native_report, cycles, actual, independent, {"process_observations": observations,
+        "native_output_before_validation":native_output_before_validation,
+        "expected_start_ticks": {"supervisor": SUPERVISOR_START_TICKS, "launcher": LAUNCHER_START_TICKS, "native": NATIVE_START_TICKS},
+        "original_launcher_returncode": supervisor["launcher_returncode"],
+        "original_launcher_exit_observer": supervisor["launcher_exit_observed_by"],
+        "supervisor_own_exit_status": "not independently observed or inferred from its child's exit",
+        "supervisor_result": record(SUPERVISOR_RESULT),
+        "native_child_returncode": proof["returncode"],
+        "native_child_exit_observer": "original strict launcher Popen.wait",
+        "collector_exit_status": "must be retained separately by the foreground tool after this collector completes"}
+
+
+def render_and_smoke(payload):
+    performance = read(BENCH / "rendered-benchmark.json")
+    require(all(performance.get(k) is True for k in ("native_export_proof", "performance_evidence", "valid_workload"))
+            and performance.get("errors") == [] and performance.get("binaries_changed_during_run") is False
+            and performance.get("source_changed_during_run") is False and performance.get("debug_build") is False
+            and performance.get("editor_capable_runtime") is False, "Full current native render proof is missing/invalid")
+    same_payload(performance, payload)
+    require(performance.get("sources_before") == performance.get("sources_after")
+            and verifier.source_map_valid(performance.get("sources_before")), "Native frame report source availability changed")
+    method = performance["method"]
+    require(method.get("prepare_only") is False and method.get("quick_check_only") is False
+            and method.get("fixed_simulation_step_seconds") == .05, "Performance proof is prepare/quick or uses changed simulation clock")
+    require({z["name"] for z in performance["zooms"]} == {"normal", "strategic"} and len(performance["zooms"]) == 2,
+            "Both native render zooms are required")
+    for zoom in performance["zooms"]:
+        intervals = zoom["frame_intervals_usec"]
+        n = zoom["measured_frames"]
+        require(n == 3600 and zoom["warmup_frames"] >= 120 and len(intervals) == n
+                and all(verifier.number(v) and v > 0 for v in intervals)
+                and zoom["valid_workload"] is True and zoom["speed"] == 1.0
+                and zoom["actual_fixed_step_hz"] == 20.0, "Full raw frame coverage/normal clock is incomplete")
+        frame = zoom["frame_ms"]
+        ordered = sorted(intervals)
+        require(frame["samples"] == n and math.isclose(frame["observed_fps"], n * 1e6 / sum(intervals), rel_tol=1e-12)
+                and math.isclose(frame["mean_ms"], sum(intervals) / n / 1000, rel_tol=1e-12), "FPS/mean do not match actual raw frame intervals")
+        for field, fraction in (("p50_ms", .5), ("p95_ms", .95), ("p99_ms", .99)):
+            require(math.isclose(frame[field], ordered[math.ceil(fraction*n)-1]/1000, rel_tol=1e-12), f"Raw frame percentile differs: {field}")
+        require(math.isclose(frame["mean"]/1000, frame["mean_ms"], rel_tol=1e-12),
+                "Legacy frame_ms.mean is microseconds; corrected mean_ms must be milliseconds")
+        workload = zoom["workload"]
+        require(workload["friendly_min"] == workload["friendly_max"] == 32
+                and workload["enemy_min"] == workload["enemy_max"] == 100
+                and workload["hauling_deliveries"] >= 1 and workload["combat_effect_samples"] > 0
+                and workload["completed_ordered_buildings"] == 3 and workload["construction_max_progress_delta"] >= 1,
+                "Canonical native workload lost actors/combat/actual hauling/paid construction")
+        require(zoom["save_measurements"] and all(s.get("write_and_read_valid") is True
+                and s.get("save_returned_success") is True and s.get("after_measured_frame") == 300
+                and s.get("included_in_wall_frame_interval") == 301 for s in zoom["save_measurements"]),
+                "Full render measurement lacks the actual mid-frame verified disk save")
+        require(png_dimensions(zoom["screenshot"]) == [1920,1080], "Native frame proof screenshot dimensions differ")
+    correction = read(BENCHMARK_SUMMARY)
+    require(correction.get("raw_report_sha256") == sha(BENCH/"rendered-benchmark.json")
+            and len(correction.get("zooms", [])) == 2 and {z["name"] for z in correction.get("zooms", [])} == {"normal", "strategic"},
+            "Corrected benchmark units summary is missing or refers to another report")
+    for zoom in performance["zooms"]:
+        corrected = next(z for z in correction["zooms"] if z["name"] == zoom["name"])
+        for target, source in (("fps", "observed_fps"), ("p95_ms", "p95_ms"), ("p99_ms", "p99_ms"), ("max_ms", "max_ms")):
+            require(math.isclose(corrected[target], zoom["frame_ms"][source], rel_tol=1e-12), "Corrected benchmark units/value differ")
+        require(corrected["frames"] == zoom["measured_frames"] and corrected["warmup"] == zoom["warmup_frames"],
+                "Corrected benchmark frame coverage differs")
+    automatic, auto_paths = verify_automatic_cycle(payload)
+    smoke = read(PROJECT / "work/native-smoke/result.json")
+    require(smoke.get("success") is True and smoke.get("export_provenance", {}).get("source_commit") == COMMIT,
+            "Current native smoke did not succeed")
+    for key, member in (("executable", verifier.EXECUTABLE_NAME), ("adjacent_pck", verifier.PACK_NAME)):
+        require(smoke["payload_sha256"].get(member) == payload[key]["sha256"], "Smoke executable/PCK proof is stale")
+    require({case["name"] for case in smoke["runs"]} == {"headless", "rendered"}, "Both smoke modes are required")
+    for case in smoke["runs"]:
+        require(case.get("success") is True and case.get("returncode") == 0 and case.get("timed_out") is False
+                and case.get("error_or_leak_output") is False and case.get("expected_marker") is True,
+                "Smoke did not cleanly complete")
+        require(Path(case["log_path"]).read_text() == case["runtime_output"]
+                and not verifier.BAD_OUTPUT.search(verifier.ANSI.sub("", case["runtime_output"])), "Smoke actual logs changed")
+    require(sha(smoke["capture"]["path"]) == smoke["capture"]["sha256"], "Smoke preview bytes changed")
+    return performance, automatic, smoke, auto_paths
+
+
+def verify_automatic_cycle(payload):
+    require(sha(AUTO_PROBE) == AUTO_PROBE_SHA256, "Private0.10 automatic-cycle probe changed")
+    report_path = BENCH/"automatic-cycle-verification.json"
+    automatic = read(report_path)
+    require(automatic.get("actual_automatic_cycle") is True and automatic.get("errors") == []
+            and type(automatic.get("checks")) is int and automatic["checks"] > 0
+            and automatic.get("requested_source_commit") == COMMIT and automatic.get("packaged_source_commit") == COMMIT
+            and len(automatic.get("files", [])) == 2, "New independent0.10 automatic-cycle verification is missing/failed;0.9 cannot substitute")
+    expected_sources = {"res://"+name: sha(PROJECT/name) for name in
+        ("scripts/main.gd", "scripts/campaign_simulation.gd", "scripts/campaign_save_store.gd", "work/verify-v010-autosave.gd")}
+    require(automatic.get("sources_before") == expected_sources == automatic.get("sources_after"), "Automatic-cycle source/schema/probe proof changed")
+    require(automatic.get("native_benchmark_report", {}).get("sha256") == sha(BENCH/"rendered-benchmark.json")
+            and automatic.get("unpacked_build_info", {}).get("sha256") == sha(BUILD/"build-info.json")
+            and automatic.get("soak_terminal_verdict_sha256") == sha(RUN/"verification.json"), "Automatic-cycle proof is not bound to this native benchmark/package/terminal soak")
+    require(automatic.get("native_payload_sha256") == {verifier.EXECUTABLE_NAME:payload["executable"]["sha256"], verifier.PACK_NAME:payload["adjacent_pck"]["sha256"]},
+            "Independent automatic-cycle proof has stale native payload")
+    process = read(AUTO_PROCESS)
+    expected_argv = [str(ENGINE), "--headless", "--path", str(PROJECT), "--script", str(AUTO_PROBE)]
+    require(process.get("source_commit") == COMMIT and process.get("argv") == expected_argv and process.get("cwd") == str(PROJECT)
+            and type(process.get("returncode")) is int and process["returncode"] == 0 and process.get("finished_utc")
+            and process.get("probe_sha256") == AUTO_PROBE_SHA256 and process.get("report_sha256") == sha(report_path)
+            and process.get("log_path") == str(AUTO_LOG) and process.get("log_sha256") == sha(AUTO_LOG),
+            "Independent automatic-cycle tool process has no actual exit0/source/report/log binding")
+    plain = verifier.ANSI.sub("", AUTO_LOG.read_text(encoding="utf-8", errors="replace"))
+    require("NATIVE_AUTOMATIC_CYCLE_VERIFIED" in plain and not verifier.BAD_OUTPUT.search(plain), "Automatic-cycle probe log contains errors/leaks or no completed result")
+    auto_paths = {}
+    for item in automatic["files"]:
+        require(item["name"] in ("campaign-autosave.json", "campaign-autosave.json.bak")
+                and item.get("schema_valid") is True and item.get("load_success") is True and item.get("mission_id") == "canyon",
+                "Automatic save schema/decode proof is incomplete")
+        matches = list((BENCH.parent/"data").rglob(item["name"]))
+        require(len(matches) == 1 and str(matches[0]) == item.get("source_path")
+                and sha(matches[0]) == item.get("sha256_before") == item.get("sha256"), "Actual automatic native file bytes/path changed")
+        state = read(matches[0])
+        require(not verifier.mission_identity_errors(verifier.saved_mission_identity(state), "canyon", "benchmark actual autosave", saved=True)
+                and verifier.close_number(verifier.saved_dictionary(state["payload"])["time"], item["simulation_time"])
+                and verifier.close_number(state["ui"]["zoom"], item["camera_zoom"])
+                and verifier.close_number(item["camera_zoom"], 0.3499999940395355), "Actual automatic save mission/time/strategic float32 zoom differs")
+        auto_paths[item["name"]] = matches[0]
+    require(len(auto_paths) == 2, "Actual automatic primary and backup must be distinct")
+    times = {item["name"]: item["simulation_time"] for item in automatic["files"]}
+    require(44 < times["campaign-autosave.json"] < 46 and 5 < times["campaign-autosave.json.bak"] < 15,
+            "Actual native periodic45s save did not rotate the earlier frame300 checkpoint")
+    return automatic, auto_paths
+
+
+def verify_all_cycle_frames(native_report, cycles):
+    require(sha(FRAME_VERIFIER) == FRAME_VERIFIER_SHA256, "Independent frame verifier differs from the reviewed save-span/max revision")
+    spec = importlib.util.spec_from_file_location("private_v010_frame_verifier", FRAME_VERIFIER)
+    require(spec is not None and spec.loader is not None, "Cannot load reviewed independent frame verifier")
+    checker = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(checker)
+    results = []
+    for index, cycle in enumerate(cycles, 1):
+        path = RUN/f"output/cycle-{index:02d}-{cycle['requested_mission_id']}/campaign-validation.json"
+        result = checker.verify(path, RUN/"verification.json", COMMIT)
+        require(result.get("verified") is True and result.get("arithmetic_verified") is True
+                and result.get("native_full_route_revalidated") is True and result.get("performance_acceptance") == "not_assessed"
+                and result.get("expected_source_commit") == COMMIT and result.get("process_id") == NATIVE_PID
+                and result.get("entire_run_proof", {}).get("selected_cycle_index") == index,
+                f"Actual cycle {index} has no complete independent frame arithmetic/provenance proof")
+        results.append(result)
+    require(len(results) == 7, "All seven actual cycle frame reports are required, not three representative missions")
+    global_timing = checker.timing(native_report.get("rendered_frame_timing"))
+    checker.conserved(global_timing["active"], [c["rendered_frame_timing"]["active"] for c in cycles], "global active=seven cycle active")
+    for phase in checker.PHASES:
+        checker.conserved(global_timing["phases"][phase], [c["rendered_frame_timing"]["phases"][phase] for c in cycles], "global phase="+phase)
+    cycle_all = [c["rendered_frame_timing"]["all"] for c in cycles]
+    require(global_timing["all"]["count"] >= sum(c["count"] for c in cycle_all)
+            and global_timing["all"]["sum_usec"] >= sum(c["sum_usec"] for c in cycle_all)
+            and all(global_timing["all"]["histogram"][i] >= sum(c["histogram"][i] for c in cycle_all) for i in range(257)),
+            "Whole-process frame accounting lost cycle intervals")
+    global_summary = {"performance_acceptance":"not_assessed", "all":checker.summarize(global_timing["all"]),
+        "active":checker.summarize(global_timing["active"]),
+        "phases":{name:checker.summarize(global_timing["phases"][name]) for name in checker.PHASES},
+        "excluded":{name:checker.summarize(global_timing["excluded"][name]) for name in checker.EXCLUDED},
+        "endpoint_count":global_timing["endpoint_count"], "phase_boundary_count":global_timing["phase_boundary_count"],
+        "state_boundary_count":global_timing["state_boundary_count"], "histogram_spec":global_timing["histogram_spec"],
+        "scope":global_timing["scope"], "active_policy":global_timing["active_policy"], "phase_attribution":global_timing["phase_attribution"],
+        "active_exactly_equals_all_seven_cycles":True}
+    require(sha(FRAME_VERIFIER) == FRAME_VERIFIER_SHA256, "Independent frame verifier changed during collection")
+    return results, global_summary
+
+
+def verify_prepare(payload):
+    verdict = read(PREPARE/"verification.json")
+    report = read(PREPARE/"output/campaign-validation.json")
+    state = read(PREPARE/"output/final-campaign-state.json")
+    require(verdict.get("success") is True and verdict.get("prepare_only") is True
+            and verdict.get("complete_campaign_evidence") is False and verdict.get("one_hour_soak_evidence") is False
+            and verdict.get("returncode") == 0 and verdict.get("errors") == [] and verdict.get("source_commit") == COMMIT,
+            "Exact0.10 native prepare proof is missing or misclassified as full/hour")
+    same_payload(verdict, payload)
+    require(verdict.get("native_report", {}).get("sha256") == sha(PREPARE/"output/campaign-validation.json")
+            and verdict["native_report"].get("data") == report
+            and verdict.get("final_campaign_state", {}).get("sha256") == sha(PREPARE/"output/final-campaign-state.json"),
+            "Native prepare report/final proof changed")
+    errors = verifier.validate_report(report, verdict["binaries_before"], verdict["binaries_after"], True, verdict.get("argv"), "canyon", state)
+    for name in ("timing_display_start", "timing_display_final"):
+        errors += verifier.soak_display_errors(report.get(name), name)
+    require(not errors, "Prepare setup/readback/disk continuation verification failed: "+repr(errors))
+    return {"success":True, "prepare_only":True, "complete_campaign_evidence":False, "one_hour_soak_evidence":False,
+        "scope":"Separate native setup/1080readback/signal/disk-continuation proof only; actual full seven-cycle and frame arithmetic are independently checked elsewhere.",
+        "verdict":record(PREPARE/"verification.json"), "report":record(PREPARE/"output/campaign-validation.json"),
+        "timing_display_start":report["timing_display_start"], "timing_display_final":report["timing_display_final"]}
+
+
+def archive_checks(payload, performance, smoke):
+    manifest = read(OUTPUT / f"{PREFIX}-checksums.json")
+    require(manifest.get("version") == VERSION and manifest.get("source_commit") == COMMIT,
+            "Current archive manifest source/version differs")
+    names = {f"outpost-exodus-{kind}-{VERSION}.zip" for kind in ("source", "linux", "windows")}
+    require(set(manifest["artifacts"]) == names, "Exactly source/Linux/Windows archives are required")
+    require({name: data["sha256"] for name, data in manifest["artifacts"].items()} == EXPECTED_ARCHIVES,
+            "Published0.10 archives differ from the pinned original bytes")
+    source_files = set(subprocess.check_output(["git", "-C", str(PROJECT), "ls-files", "-z"]).decode().rstrip("\0").split("\0"))
+    checks = []
+    for name, expected in manifest["artifacts"].items():
+        path = OUTPUT / name
+        require(sha(path) == expected["sha256"] and path.stat().st_size == expected["bytes"], f"Archive bytes/hash changed: {name}")
+        with zipfile.ZipFile(path) as archive:
+            members = archive.namelist()
+            require(len(members) == len(set(members)), "Archive contains duplicate paths")
+            for member in members:
+                relative = PurePosixPath(member)
+                require(not relative.is_absolute() and ".." not in relative.parts and "\\" not in member
+                        and not stat.S_ISLNK(archive.getinfo(member).external_attr >> 16), "Archive has unsafe paths/symlinks")
+            require(archive.testzip() is None, f"Archive CRC failure: {name}")
+            if "-source-" in name:
+                require(all(not {"work", "builds", "dist", ".godot", ".git", "__pycache__"}.intersection(PurePosixPath(n).parts) for n in members),
+                        "Source archive contains excluded runtime/work directories")
+                require(set(members) == {"outpost-exodus/"+n for n in source_files}, "Source archive is not exactly the frozen tracked tree")
+                for relative in source_files:
+                    require(archive.read("outpost-exodus/"+relative) == (PROJECT/relative).read_bytes(), f"Source archive file differs: {relative}")
+            else:
+                platform = "linux" if "-linux-" in name else "windows"
+                base = f"outpost-exodus-{platform}/"
+                info = json.loads(archive.read(base+"build-info.json"))
+                require(info["source_commit"] == COMMIT and info["source_tree"] == git("rev-parse", "HEAD^{tree}")
+                        and info["version"] == VERSION and info["steam_ready"] is False, "Packaged build provenance differs")
+                for member, digest in info["sha256"].items():
+                    require(blob_sha(archive.read(base+member)) == digest, f"Packaged {platform}/{member} proof changed")
+                for packaged, source in (("FONT-NOTICE.txt", "assets/fonts/NOTICE.txt"), ("GODOT-LICENSE.txt", "licenses/GODOT-LICENSE.txt"),
+                                         ("GODOT-COPYRIGHT.txt", "licenses/GODOT-COPYRIGHT.txt")):
+                    require(archive.read(base+packaged) == (PROJECT/source).read_bytes(), f"Packaged notice differs: {platform}/{packaged}")
+                if platform == "linux":
+                    require((archive.getinfo(base+verifier.EXECUTABLE_NAME).external_attr >> 16) & 0o111,
+                            "Linux archive lost executable permission")
+                    for member in members:
+                        relative = member.removeprefix(base)
+                        require(relative != member and archive.read(member) == (BUILD/relative).read_bytes(),
+                                "Actual unpacked Linux payload differs from the exact published archive")
+                    for key, member in (("executable", verifier.EXECUTABLE_NAME), ("adjacent_pck", verifier.PACK_NAME)):
+                        require(blob_sha(archive.read(base+member)) == payload[key]["sha256"], "Archive does not bind actual soak/benchmark/smoke payload")
+                    require(json.loads(archive.read(base+"native-render-measurement.json")) == performance,
+                            "Packaged native frame report differs")
+                else:
+                    pe = read(PROJECT / "work/windows-pe-resources.json")
+                    require(pe.get("verified") is True and pe.get("native_windows_execution_tested") is False
+                            and pe.get("output_sha256") == blob_sha(archive.read(base+"outpost-exodus.exe")),
+                            "Windows structural resource record is stale or misclaims execution")
+            checks.append({"archive": name, "sha256": expected["sha256"], "bytes": expected["bytes"],
+                           "crc_paths_contents_and_provenance_verified": True})
+    notices = read(PROJECT / "work/v010-unpack-verification.json")
+    require(notices.get("source_commit") == COMMIT and notices.get("build") == str(BUILD)
+            and notices.get("metadata_filename") == "build-info.json"
+            and all(notices.get(key) is True for key in ("all_unpacked_linux_files_match_archive", "export_metadata_valid", "matches_measured_export", "notices_byte_identical", "linux_archived_execute_permission")),
+            "Retained0.10 unpacked payload/notices proof is stale")
+    require(len(notices.get("archives", [])) == 3 and {item["archive"]:item["sha256"] for item in notices.get("archives", [])} == EXPECTED_ARCHIVES
+            and all(item.get("crc_valid") is True for item in notices["archives"]), "Retained archive CRC/hash proof differs from original0.10 archives")
+    return checks, manifest
+
+
+def copy_verified(source, target):
+    require(Path(source).is_file() and not Path(source).is_symlink(), f"Refuse non-file/symlink evidence: {source}")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, target)
+    require(sha(source) == sha(target), f"Copied evidence differs: {target}")
+
+
+def output_manifest(directory):
+    return [record(path, directory) for path in sorted(directory.rglob("*")) if path.is_file()]
+
+
+def collect():
+    require(git("rev-parse", "HEAD") == COMMIT and not git("status", "--porcelain"), "Frozen source commit/tree changed")
+    # Refuse live/partial/unaccepted runs before archive decompression or writes.
+    proof, native, cycles, payload, independent, terminal = terminal_soak()
+    frame_results, global_frame_summary = verify_all_cycle_frames(native, cycles)
+    prepare = verify_prepare(payload)
+    performance, automatic, smoke, auto_paths = render_and_smoke(payload)
+    archives, checksums = archive_checks(payload, performance, smoke)
+    bundle = OUTPUT / f"{PREFIX}-native-soak-evidence"
+    gallery = OUTPUT / f"{PREFIX}-steam-gallery"
+    thin = OUTPUT / f"{PREFIX}-release-evidence.json"
+    temporary = thin.with_name("."+thin.name+".tmp")
+    require(all(not path.exists() for path in (bundle, gallery, thin, temporary)), "Refuse to replace an existing release collection")
+    staged_bundle = Path(tempfile.mkdtemp(prefix=f".{PREFIX}-native-evidence-", dir=OUTPUT))
+    staged_gallery = Path(tempfile.mkdtemp(prefix=f".{PREFIX}-gallery-", dir=OUTPUT))
+    try:
+        for source in sorted((RUN/"output").rglob("*")):
+            require(not source.is_symlink(), "Refuse symlink inside native output")
+            if source.is_file(): copy_verified(source, staged_bundle / "output" / source.relative_to(RUN/"output"))
+        sources = {"verification.json": RUN/"verification.json", "native-process.log": RUN/"native-process.log",
+                   "launcher-terminal-output.json": LAUNCHER_LOG, "launcher-start.json": START,
+                   "launcher-supervisor-result.json": SUPERVISOR_RESULT, "launcher-supervisor.py.txt": SUPERVISOR_SOURCE,
+                   "supervisor-stdout-stderr.log": PROJECT/"work/v010-supervisor.log",
+                   "independent-frame-verifier.py.txt": FRAME_VERIFIER,
+                   "rendered-benchmark.json": BENCH/"rendered-benchmark.json",
+                   "automatic-cycle-verification.json": BENCH/"automatic-cycle-verification.json",
+                   "automatic-cycle-process.json": AUTO_PROCESS, "automatic-cycle.log": AUTO_LOG, "automatic-cycle-probe.gd.txt": AUTO_PROBE,
+                   "corrected-benchmark-summary.json": BENCHMARK_SUMMARY,
+                   "prepare-verification.json": PREPARE/"verification.json", "prepare-campaign-report.json": PREPARE/"output/campaign-validation.json",
+                   "prepare-final-state.json": PREPARE/"output/final-campaign-state.json", "prepare-native-process.log": PREPARE/"native-process.log",
+                   "performance-launch.log": PROJECT/"work/v010-performance.log", "smoke-launch.log": PROJECT/"work/v010-smoke.log",
+                   "package-command.log": PROJECT/"work/v010-package.log",
+                   "smoke-result.json": PROJECT/"work/native-smoke/result.json",
+                   "archive-notice-verification.json": PROJECT/"work/v010-unpack-verification.json",
+                   "windows-pe-resources.json": PROJECT/"work/windows-pe-resources.json",
+                   "checksums.json": OUTPUT/f"{PREFIX}-checksums.json", "collector.py.txt": Path(__file__)}
+        for name, source in sources.items(): copy_verified(source, staged_bundle/name)
+        (staged_bundle/"post-terminal-process-observations.json").write_text(json.dumps(terminal,indent=2)+"\n")
+        for index, result in enumerate(frame_results, 1):
+            destination = staged_bundle/"frame-verification"/f"cycle-{index:02d}-{result['mission_id']}.json"
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_text(json.dumps(result,ensure_ascii=False,indent=2)+"\n")
+        (staged_bundle/"global-frame-summary.json").write_text(json.dumps(global_frame_summary,ensure_ascii=False,indent=2)+"\n")
+        for name, source in auto_paths.items(): copy_verified(source, staged_bundle/"benchmark-autosaves"/name)
+        for zoom in performance["zooms"]: copy_verified(zoom["screenshot"], staged_bundle/"benchmark-captures"/f"{zoom['name']}.png")
+        for case in smoke["runs"]: copy_verified(case["log_path"], staged_bundle/"smoke"/f"{case['name']}.log")
+        copy_verified(smoke["capture"]["path"], staged_bundle/"smoke/preview.png")
+        selected = []
+        for ordinal, (index, label) in enumerate(GALLERY_SELECTION, 1):
+            cycle = cycles[index-1]
+            mission = cycle["requested_mission_id"]
+            capture = next(item for item in cycle["captures"] if item["label"] == label)
+            source = Path(capture["path"])
+            require(sha(source) == capture["sha256"] and png_dimensions(source) == [1920,1080], "Selected native gameplay PNG differs")
+            name = f"{ordinal:02d}-{mission}-{label}.png"
+            copy_verified(source, staged_gallery/name)
+            selected.append({"path": name, "sha256": capture["sha256"], "bytes": source.stat().st_size,
+                "dimensions": [1920,1080], "source_path": str(source), "source_cycle": index, "mission_id": mission,
+                "route_capture_label": label, "simulation_time": capture["simulation_time"], "display": capture["display"],
+                "source_report_sha256": sha(RUN/f"output/cycle-{index:02d}-{mission}/campaign-validation.json"),
+                "transformation": "None: byte-identical PNG copy from actual accepted native gameplay route"})
+        require(len(selected) == 5 and {item["mission_id"] for item in selected} == {"canyon","delta","ridge"}, "Gallery must cover all three maps")
+        gallery_proof = {"version": VERSION, "source_commit": COMMIT, "status": "draft_not_submitted",
+            "actual_native_gameplay_captures": True, "concept_art_or_controlled_source_fixtures": False,
+            "process_id": NATIVE_PID, "main_instance_id": native["main_instance_id"], "images": selected,
+            "scope": "Unedited 1920x1080 infrastructure/withdrawal gameplay captures from the accepted same-process public routes. No title/settings/victory-menu selection. Manual visual/store/rights approval remains separate; no Steam submission or approval is claimed."}
+        (staged_gallery/"provenance.json").write_text(json.dumps(gallery_proof,ensure_ascii=False,indent=2)+"\n")
+        representative = {}
+        for cycle in cycles:
+            mission = cycle["requested_mission_id"]
+            if mission not in representative:
+                representative[mission] = {"cycle_index": cycle["cycle_index"], "campaign_start": cycle["campaign_start"],
+                    "simulation_seconds": cycle["main_loop"]["observed_sim_seconds"], "wall_seconds": cycle["wall_elapsed_seconds"],
+                    "main_loop": cycle["main_loop"], "save_reload": cycle["save_reload"], "route": cycle["route"],
+                    "final": cycle["final"], "automatic_saves": cycle["automatic_saves"]}
+        bundle_files = output_manifest(staged_bundle)
+        evidence = {"schema_version": 1, "version": VERSION, "source_commit": COMMIT, "steam_ready": False, "performance_acceptance":"not_assessed",
+            "recorded_utc": datetime.now(timezone.utc).isoformat(), "archive_checks": archives,
+            "artifact_checksum_manifest": checksums,
+            "native_soak": {"accepted": True, "one_hour_soak_evidence": True, "cycles_completed": 7,
+                "from_actual_unpacked_linux_package": True,
+                "planned_missions": native["planned_missions"], "native_process_id": NATIVE_PID,
+                "launcher_pid": LAUNCHER_PID, "launcher_start_ticks": LAUNCHER_START_TICKS,
+                "main_instance_id": native["main_instance_id"], "native_wall_seconds": native["wall_elapsed_seconds"],
+                "launcher_observed_native_process_wall_seconds": proof["native_process_wall_seconds"],
+                "native_returncode": proof["returncode"], "terminal_process_observations": terminal,
+                "actual_native_argv": proof["argv"], "startup_display": native["startup_display"], "final_display": native["final_display"],
+                "source_proof": {"requested_commit": COMMIT, "clean_worktree_commit": git("rev-parse","HEAD"),
+                    "launcher_export_metadata": proof["export_metadata"], "runtime_source_availability": native["sources_before"],
+                    "scope": "Source commit comes from exact packaged build-info and independent launcher checks. Compiled/imported runtime scripts have no invented source-text hash; actual EXE/PCK hashes bind all seven routes."},
+                "independent_strict_revalidation": independent, "stability_samples": native["stability_samples"],
+                "metric_scope": native["stability_scope"], "representative_missions": representative,
+                "each_cycle": [{"cycle_index": c["cycle_index"], "mission_id": c["requested_mission_id"],
+                    "main_loop": c["main_loop"], "final": c["final"], "wall_seconds": c["wall_elapsed_seconds"],
+                    "save_reload_success": c["save_reload"]["success"], "stability_after": c["stability_after"]} for c in cycles]},
+            "native_performance": {"performance_acceptance":"not_assessed", "scope": "Separate actual native canonical busy-scene 3600-frame measurements; not measured during the campaign soak or proof of stable 60 FPS/minimum hardware.",
+                "payload": payload, "host": {k:performance.get(k) for k in ("cpu","gpu_adapter","system_memory","display_server","window_size","viewport_size","screen_refresh_hz")},
+                "unit_correction":read(BENCHMARK_SUMMARY),
+                "zooms": [{"name":z["name"], "observed_fps":z["frame_ms"]["observed_fps"],
+                    **{key:z["frame_ms"][key] for key in ("mean_ms","p50_ms","p95_ms","p99_ms","max_ms")},
+                    **{key:z[key] for key in ("workload","measured_frames","warmup_frames","save_measurements")}} for z in performance["zooms"]]},
+            "actual_campaign_frame_timing": {"performance_acceptance":"not_assessed", "all_seven_cycles_independently_verified":True,
+                "frame_verifier_sha256":FRAME_VERIFIER_SHA256, "global":global_frame_summary,
+                "cycles":[{"cycle_index":i, "mission_id":result["mission_id"], "performance_acceptance":"not_assessed",
+                    "all":result["all"], "active":result["active"], "phases":result["phases"], "excluded":result["excluded"],
+                    "recorded_readback_display":result["recorded_readback_display"], "actual_save_load_operation_span":result["actual_save_load_operation_span"],
+                    "method":result["method"]} for i,result in enumerate(frame_results,1)]},
+            "automatic_cycle": automatic, "automatic_cycle_process":read(AUTO_PROCESS), "linux_smoke": smoke, "native_prepare":prepare,
+            "evidence_bundle": {"path": bundle.name, "files": bundle_files, "native_output_byte_identical": True},
+            "steam_gallery": {"path": gallery.name, "provenance_sha256": sha(staged_gallery/"provenance.json"), "images": selected,
+                "submitted": False, "manual_visual_store_and_rights_approval": False},
+            "not_verified": ["fresh-player usability or physical-mouse full playthrough", "native Windows execution",
+                "clean-machine installation", "minimum hardware, stable frame pacing or universal leak freedom",
+                "human audio listening/accessibility acceptance", "asset rights approval and Steam account/store/depot/review"]}
+        # Recheck immutable source and finished acceptance files immediately before publication.
+        require(git("rev-parse","HEAD") == COMMIT and not git("status","--porcelain"), "Source changed during collection")
+        require(sha(RUN/"verification.json") == sha(staged_bundle/"verification.json")
+                and sha(RUN/"output/campaign-validation.json") == sha(staged_bundle/"output/campaign-validation.json"),
+                "Terminal evidence changed during copy")
+        require(output_manifest(RUN/"output") == terminal["native_output_before_validation"] == output_manifest(staged_bundle/"output"),
+                "Any native output changed between validation and its byte-identical collection")
+        require(sha(SUPERVISOR_RESULT) == terminal["supervisor_result"]["sha256"] == sha(staged_bundle/"launcher-supervisor-result.json")
+                and sha(SUPERVISOR_SOURCE) == SUPERVISOR_SOURCE_SHA256 and sha(START) == START_SHA256
+                and sha(FRAME_VERIFIER) == FRAME_VERIFIER_SHA256 and sha(AUTO_PROBE) == AUTO_PROBE_SHA256,
+                "Reviewed independent validator/supervisor/probe proof changed during collection")
+        require(read(staged_bundle/"automatic-cycle-process.json")["report_sha256"] == sha(staged_bundle/"automatic-cycle-verification.json")
+                and read(staged_bundle/"automatic-cycle-process.json")["log_sha256"] == sha(staged_bundle/"automatic-cycle.log"),
+                "Independent automatic-cycle report/log changed during collection")
+        staged_bundle.rename(bundle)
+        staged_gallery.rename(gallery)
+        temporary.write_text(json.dumps(evidence,ensure_ascii=False,indent=2)+"\n")
+        temporary.rename(thin)
+        return {"accepted": True, "source_commit": COMMIT, "evidence": str(thin), "native_bundle": str(bundle),
+                "steam_gallery": str(gallery), "cycles": 7, "native_wall_seconds": native["wall_elapsed_seconds"]}
+    finally:
+        for staged in (staged_bundle, staged_gallery):
+            if staged.exists(): shutil.rmtree(staged)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--collect", action="store_true", help="Root's explicit post-terminal collection request")
+    options = parser.parse_args()
+    if not options.collect:
+        parser.error("Preparation only. Collection requires root's explicit --collect after terminal success.")
+    try:
+        result = collect()
+    except (Refused, OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError, zipfile.BadZipFile) as error:
+        print(json.dumps({"accepted":False,"finalized":False,"reason":str(error)},ensure_ascii=False),file=sys.stderr)
+        return 1
+    print(json.dumps(result,ensure_ascii=False,indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

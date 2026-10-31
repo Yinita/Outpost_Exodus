@@ -1,0 +1,81 @@
+{
+  "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+  "source_mtime_ns": 1793443736925931222,
+  "source_inode": 3556810,
+  "byte_count": 155795,
+  "sha256": "b73caf2ab7517dcd8cd49a2fa5a78fb6b05f3ebc34a6a44d0654153b4a4cd7c4",
+  "captured_utc": "2026-10-31T10:49:01.018560+00:00",
+  "commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+  "native": {
+    "pid": 4160805,
+    "startticks": 9216915,
+    "state": "S",
+    "exe": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-unpacked/outpost-exodus-linux/outpost-exodus.x86_64",
+    "cmdline": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-unpacked/outpost-exodus-linux/outpost-exodus.x86_64 -- --campaign-validation --mission=canyon --max-seconds=5400 --soak"
+  },
+  "observer": {
+    "pid": 87822,
+    "startticks": 9390661,
+    "state": "R",
+    "exe": "/usr/bin/python3.10",
+    "cmdline": "python3 -u /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/observe_guide_autosave.py"
+  },
+  "progress": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/campaign-progress.json",
+    "sha256": "a3aab6f8d99d06e8df02be3d18024b18bff88b8cde9cc134906d0ace9aac97c5",
+    "data": {
+      "cycle_index": 4,
+      "cycles_completed": 3,
+      "deliveries": {
+        "1": 3
+      },
+      "errors": [],
+      "finished": false,
+      "last_event": {
+        "event": "wait_started",
+        "label": "quarry_road minimum construction window",
+        "main_tick_count": 108740,
+        "simulation_deadline": 450.5000000000511,
+        "simulation_time": 375.5000000000511,
+        "wall_seconds": 1822.436056
+      },
+      "main_tick_count": 109545,
+      "mission_id": "canyon",
+      "observed_ticks": 8315,
+      "outcome": "playing",
+      "phase": "quarry_road minimum construction window",
+      "requested_mission_id": "canyon",
+      "simulation_time": 415.75000000006025,
+      "soak_mode": true,
+      "starting_mission_id": "canyon",
+      "wall_seconds": 1835.811812
+    }
+  },
+  "guide_state": {
+    "bound": true,
+    "campaign_seed": 42,
+    "dismissed": false,
+    "enabled": true,
+    "hint": {
+      "action": "focus",
+      "complete": false,
+      "label": "定位提示目标",
+      "step": 6,
+      "target": [
+        35.0,
+        31.0
+      ],
+      "text": "北线废料可加工建材，南线原油可加工燃料，先后顺序由你决定。带队清剿后还要连路，让工人实际运回，再用{production}选择配方。",
+      "title": "选择资源支线：南部油库",
+      "total": 11
+    },
+    "last_sim_time": 404.70000000005774,
+    "mission_id": "canyon",
+    "observed": [],
+    "preferred_branch": "any",
+    "version": 1
+  },
+  "retained_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-performance-real-snapshots/stage-06-autosave.json",
+  "capture_kind": "existing automatic save exact original bytes",
+  "scope": "Read-only save observation during an unfinished native soak; no game orders or new save command. Step 5 is a separate observation and is not an infrastructure-complete positive case. No FPS, acceptance or whole-run completion conclusion."
+}

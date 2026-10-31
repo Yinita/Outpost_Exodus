@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "prepare_only": false,
+  "requested_mission_id": "canyon",
+  "soak_mode": true,
+  "one_hour_soak_evidence": true,
+  "complete_campaign_evidence": true,
+  "verification_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/verification.json",
+  "errors": []
+}

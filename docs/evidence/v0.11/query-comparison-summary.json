@@ -1,0 +1,91 @@
+{
+  "scope": "Source-only Time.get_ticks_usec monotonic synchronous wall intervals including observer overhead; NOT process CPU accounting, actual Main/rendered FPS or optimization acceptance. First cold update retained; component inclusive time is inside Guide total, never added.",
+  "baseline_source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+  "candidate_guide_sha256": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+  "cases": [
+    {
+      "label": "canyon_front_infrastructure",
+      "classification": "infrastructure_path_positive",
+      "iterations": 8,
+      "fixture_sha256": "3b5f79b5b41c149ec1ed115332c0d8de2db5b12a64be98b4aa230315ac808974",
+      "complete_simulation_rng_and_guide_equal": true,
+      "baseline_mean_synchronous_wall_ms": 33.21425,
+      "candidate_mean_synchronous_wall_ms": 8.5855,
+      "baseline_force_queries_per_update": 13.0,
+      "candidate_force_queries_per_update": 3.0,
+      "baseline_component_rebuilds_per_update": 13.0,
+      "candidate_component_rebuilds_per_update": 3.0
+    },
+    {
+      "label": "canyon_exit_started",
+      "classification": "infrastructure_bypass_negative",
+      "iterations": 8,
+      "fixture_sha256": "20b278c4ecbc42720d8463912584053d8760986d6cb30ff4429784e6c97ea89a",
+      "complete_simulation_rng_and_guide_equal": true,
+      "baseline_mean_synchronous_wall_ms": 2.866875,
+      "candidate_mean_synchronous_wall_ms": 2.91775,
+      "baseline_force_queries_per_update": 1.0,
+      "candidate_force_queries_per_update": 1.0,
+      "baseline_component_rebuilds_per_update": 1.0,
+      "candidate_component_rebuilds_per_update": 1.0
+    },
+    {
+      "label": "canyon_middle_withdrawal",
+      "classification": "infrastructure_bypass_negative",
+      "iterations": 8,
+      "fixture_sha256": "90efa8c724665a20d6fa3b2aebf64fe73490720cc3a724ca7e068b6d9f7e1e3e",
+      "complete_simulation_rng_and_guide_equal": true,
+      "baseline_mean_synchronous_wall_ms": 0.04975,
+      "candidate_mean_synchronous_wall_ms": 0.054,
+      "baseline_force_queries_per_update": 0.0,
+      "candidate_force_queries_per_update": 0.0,
+      "baseline_component_rebuilds_per_update": 0.0,
+      "candidate_component_rebuilds_per_update": 0.0
+    },
+    {
+      "label": "delta_front_infrastructure",
+      "classification": "infrastructure_path_positive",
+      "iterations": 8,
+      "fixture_sha256": "1182402a2863d8aad727eff540fd23047c7c97962d93f693c4889b5094f139ea",
+      "complete_simulation_rng_and_guide_equal": true,
+      "baseline_mean_synchronous_wall_ms": 30.392625,
+      "candidate_mean_synchronous_wall_ms": 5.677875,
+      "baseline_force_queries_per_update": 12.0,
+      "candidate_force_queries_per_update": 2.0,
+      "baseline_component_rebuilds_per_update": 12.0,
+      "candidate_component_rebuilds_per_update": 2.0
+    },
+    {
+      "label": "ridge_front_infrastructure",
+      "classification": "infrastructure_path_positive",
+      "iterations": 8,
+      "fixture_sha256": "eb59c26345c0f2756de111e550bef1f41efa29c3301fcdacc62a1b5d72a6b335",
+      "complete_simulation_rng_and_guide_equal": true,
+      "baseline_mean_synchronous_wall_ms": 29.655875,
+      "candidate_mean_synchronous_wall_ms": 5.526375,
+      "baseline_force_queries_per_update": 12.0,
+      "candidate_force_queries_per_update": 2.0,
+      "baseline_component_rebuilds_per_update": 12.0,
+      "candidate_component_rebuilds_per_update": 2.0
+    },
+    {
+      "label": "retained_real_step_6",
+      "classification": "infrastructure_path_positive",
+      "iterations": 8,
+      "fixture_sha256": "b73caf2ab7517dcd8cd49a2fa5a78fb6b05f3ebc34a6a44d0654153b4a4cd7c4",
+      "complete_simulation_rng_and_guide_equal": true,
+      "baseline_mean_synchronous_wall_ms": 66.053125,
+      "candidate_mean_synchronous_wall_ms": 8.651375,
+      "baseline_force_queries_per_update": 26.0,
+      "candidate_force_queries_per_update": 3.0,
+      "baseline_component_rebuilds_per_update": 26.0,
+      "candidate_component_rebuilds_per_update": 3.0
+    }
+  ],
+  "unaffected_negative_control_labels": [
+    "canyon_exit_started",
+    "canyon_middle_withdrawal"
+  ],
+  "fps_inferred": false,
+  "performance_acceptance": "not_assessed"
+}

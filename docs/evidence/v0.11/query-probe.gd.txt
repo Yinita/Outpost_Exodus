@@ -1,0 +1,254 @@
+extends SceneTree
+## Prepared observer only. Run after the live native soak has ended.
+## Fixed saved state; no Main loop, tick, render, orders or FPS conclusions.
+
+const Guide = preload("res://scripts/campaign_guide.gd")
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+const SaveStore = preload("res://scripts/campaign_save_store.gd")
+const FIXTURE_ROOT: String = "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output"
+const FIXTURES: Array[Dictionary] = [
+	{"label": "canyon_front_infrastructure", "file": "cycle-01-canyon/autosave-backup.json", "expect_infrastructure_visit": true, "sha256": "3b5f79b5b41c149ec1ed115332c0d8de2db5b12a64be98b4aa230315ac808974"},
+	{"label": "canyon_exit_started", "file": "cycle-01-canyon/autosave-primary.json", "expect_infrastructure_visit": false, "sha256": "20b278c4ecbc42720d8463912584053d8760986d6cb30ff4429784e6c97ea89a"},
+	{"label": "canyon_middle_withdrawal", "file": "cycle-01-canyon/checkpoint-save.json", "expect_infrastructure_visit": false, "sha256": "90efa8c724665a20d6fa3b2aebf64fe73490720cc3a724ca7e068b6d9f7e1e3e"},
+	{"label": "delta_front_infrastructure", "file": "cycle-02-delta/autosave-backup.json", "expect_infrastructure_visit": true, "sha256": "1182402a2863d8aad727eff540fd23047c7c97962d93f693c4889b5094f139ea"},
+	{"label": "ridge_front_infrastructure", "file": "cycle-03-ridge/autosave-backup.json", "expect_infrastructure_visit": true, "sha256": "eb59c26345c0f2756de111e550bef1f41efa29c3301fcdacc62a1b5d72a6b335"}
+]
+const SOURCES: Array[String] = [
+	"res://scripts/campaign_guide.gd", "res://scripts/campaign_simulation.gd",
+	"res://scripts/campaign_catalog.gd", "res://scripts/construction_rules.gd",
+	"res://scripts/recruitment_rules.gd", "res://scripts/main.gd"
+]
+
+class ObservedSimulation:
+	extends "res://scripts/campaign_simulation.gd"
+	var observing: bool = false
+	var force_queries: int = 0
+	var component_rebuilds: int = 0
+	var component_cpu_usec: int = 0
+
+	func _ensure_navigation_index(force: bool = false) -> void:
+		if observing and force: force_queries += 1
+		super._ensure_navigation_index(force)
+
+	func _rebuild_walk_components() -> void:
+		if not observing:
+			super._rebuild_walk_components()
+			return
+		component_rebuilds += 1
+		var begin: int = Time.get_ticks_usec()
+		super._rebuild_walk_components()
+		component_cpu_usec += Time.get_ticks_usec() - begin
+
+
+class ObservedGuide:
+	extends "res://scripts/campaign_guide.gd"
+	var infrastructure_camps: Array[int] = []
+	var suggestion_calls: int = 0
+
+	func _infrastructure_hint(sim: Variant, camp: Dictionary, step_number: int) -> bool:
+		infrastructure_camps.append(int(camp.id))
+		return super._infrastructure_hint(sim, camp, step_number)
+
+	func _suggest_build_tile(sim: Variant, preferred: Vector2) -> Vector2:
+		suggestion_calls += 1
+		return super._suggest_build_tile(sim, preferred)
+
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+
+func _sources() -> Dictionary:
+	var result: Dictionary = {}
+	for path: String in SOURCES: result[path] = FileAccess.get_sha256(path)
+	return result
+
+
+func _state(sim: Variant) -> String:
+	# Compare the complete encoded state, including exact numeric text and RNG.
+	return JSON.stringify(sim.save_state(), "", true, true)
+
+
+func _world_facts(sim: Variant) -> Dictionary:
+	var exit_building: Dictionary = {}
+	for building: Dictionary in sim.buildings:
+		if str(building.kind) == "exit" and float(building.hp) > 0.0:
+			exit_building = {"id": building.id, "construction_started": bool(building.get("construction_started", false)),
+				"progress": float(building.get("progress", 0.0)), "powered": bool(building.get("powered", false))}
+			break
+	var active_camps: Array[Dictionary] = []
+	for camp: Dictionary in sim.camps:
+		if str(camp.state) != "active": continue
+		var facilities: Array[Dictionary] = []
+		for building: Dictionary in sim.buildings:
+			if int(building.camp_id) != int(camp.id) or not ["generator", "workshop"].has(str(building.kind)): continue
+			facilities.append({"id": building.id, "kind": building.kind, "hp": building.hp,
+				"progress": float(building.get("progress", 0.0)), "complete": float(building.get("progress", 0.0)) >= 1.0,
+				"powered": bool(building.get("powered", false))})
+		var at: Vector2 = camp.pos
+		active_camps.append({"id": camp.id, "state": camp.state, "position": [at.x, at.y], "facilities": facilities})
+	return {"exit_building": exit_building, "active_camps": active_camps}
+
+
+func _observe_fixture(fixture: Dictionary, iterations: int) -> Dictionary:
+	var path: String = str(fixture.get("path", FIXTURE_ROOT.path_join(str(fixture.get("file", "")))))
+	var result: Dictionary = {"label": fixture.label, "path": path, "expected_sha256": fixture.sha256, "ok": false}
+	if fixture.has("provenance"): result["capture_provenance"] = fixture.provenance
+	result["sha256_before"] = FileAccess.get_sha256(path)
+	if result.sha256_before != fixture.sha256:
+		result["error"] = "retained fixture missing or bytes changed"
+		return result
+	var read: Dictionary = SaveStore.new().read(path)
+	if not bool(read.get("ok", false)):
+		result["error"] = str(read.get("error", "fixture read failed"))
+		return result
+	var data: Dictionary = read.data
+	if not data.get("ui") is Dictionary:
+		result["error"] = "fixture has no saved UI context"
+		return result
+	var ui: Dictionary = data.ui.duplicate(true)
+	if fixture.has("expected_step") and int(ui.get("guide", {}).get("hint", {}).get("step", -1)) != int(fixture.expected_step):
+		result["error"] = "retained bytes do not contain the expected real guide step"
+		return result
+	var sim: ObservedSimulation = ObservedSimulation.new()
+	var guide: ObservedGuide = ObservedGuide.new()
+	if not sim.load_state(data) or not ui.get("guide") is Dictionary or not guide.load_state(ui.guide):
+		result["error"] = "same-source Simulation or Guide rejected fixture"
+		return result
+	var selected_ids: Array = []
+	for id: Variant in ui.get("selected_ids", []):
+		if not sim.get_unit(int(id)).is_empty(): selected_ids.append(int(id))
+	var selected_camp: int = int(ui.get("selected_camp", 0))
+	if sim.get_camp(selected_camp).is_empty(): selected_camp = int(sim.camps[0].id)
+	var state_before: String = _state(sim)
+	var rng_before: String = str(sim._rng.state)
+	# Subclass instrumentation must not alter source-script introspection or hints.
+	# Run an unwrapped same-source oracle outside every measured interval.
+	var plain_sim: RefCounted = Simulation.new()
+	var plain_guide: RefCounted = Guide.new()
+	if not plain_sim.load_state(data) or not plain_guide.load_state(ui.guide):
+		result["error"] = "unwrapped source oracle rejected fixture"
+		return result
+	var plain_before: String = _state(plain_sim)
+	plain_guide.update(plain_sim, selected_ids, selected_camp)
+	var plain_guide_state: Dictionary = plain_guide.save_state()
+	var oracle_unchanged: bool = _state(plain_sim) == plain_before and plain_before == state_before and str(plain_sim._rng.state) == rng_before
+	result.merge({"ui_context": ui, "selected_ids": selected_ids, "selected_camp": selected_camp,
+		"mission_id": sim.mission_id, "simulation_time": sim.time, "guide_before": guide.save_state(),
+		"actual_world_state": _world_facts(sim),
+		"simulation_sha256_before": state_before.sha256_text(), "rng_before": rng_before,
+		"unwrapped_guide_state": plain_guide_state, "unwrapped_simulation_and_rng_unchanged": oracle_unchanged})
+	var samples: Array[Dictionary] = []
+	var total_cpu_usec: int = 0
+	var unchanged: bool = true
+	var hint_stable: bool = true
+	var first_guide_state: String = ""
+	for index: int in range(iterations):
+		var force_before: int = sim.force_queries
+		var rebuild_before: int = sim.component_rebuilds
+		var component_before: int = sim.component_cpu_usec
+		var infrastructure_before: int = guide.infrastructure_camps.size()
+		var suggestions_before: int = guide.suggestion_calls
+		sim.observing = true
+		var begin: int = Time.get_ticks_usec()
+		guide.update(sim, selected_ids, selected_camp)
+		var elapsed: int = Time.get_ticks_usec() - begin
+		sim.observing = false
+		total_cpu_usec += elapsed
+		var guide_state: Dictionary = guide.save_state()
+		var encoded_guide: String = JSON.stringify(guide_state, "", true, true)
+		if index == 0: first_guide_state = encoded_guide
+		else: hint_stable = hint_stable and encoded_guide == first_guide_state
+		var sample_unchanged: bool = _state(sim) == state_before and str(sim._rng.state) == rng_before
+		unchanged = unchanged and sample_unchanged
+		samples.append({"index": index, "guide_cpu_usec": elapsed,
+			"force_queries": sim.force_queries - force_before, "component_rebuilds": sim.component_rebuilds - rebuild_before,
+			"component_cpu_usec_inclusive": sim.component_cpu_usec - component_before,
+			"infrastructure_camp_ids": guide.infrastructure_camps.slice(infrastructure_before),
+			"suggestion_calls": guide.suggestion_calls - suggestions_before,
+			"simulation_and_rng_unchanged": sample_unchanged, "guide_state": guide_state})
+	var visited_infrastructure: bool = not guide.infrastructure_camps.is_empty()
+	var expected_visit: bool = bool(fixture.get("expect_infrastructure_visit", visited_infrastructure))
+	result.merge({"samples": samples, "iterations": iterations, "guide_total_cpu_usec": total_cpu_usec,
+		"force_queries": sim.force_queries, "component_rebuilds": sim.component_rebuilds,
+		"component_total_cpu_usec_inclusive": sim.component_cpu_usec,
+		"simulation_sha256_after": _state(sim).sha256_text(), "rng_after": str(sim._rng.state),
+		"simulation_and_rng_unchanged": unchanged, "guide_stable_after_first_update": hint_stable,
+		"subclass_matches_unwrapped_guide": first_guide_state == JSON.stringify(plain_guide_state, "", true, true),
+		"infrastructure_camp_ids": guide.infrastructure_camps, "suggestion_calls": guide.suggestion_calls,
+		"classification": "infrastructure_path_positive" if visited_infrastructure else "infrastructure_bypass_negative",
+		"expected_infrastructure_visit": expected_visit, "observed_infrastructure_visit": visited_infrastructure,
+		"classification_matches_expected_path": visited_infrastructure == expected_visit,
+		"guide_after": guide.save_state(), "sha256_after": FileAccess.get_sha256(path)})
+	result["ok"] = unchanged and oracle_unchanged and hint_stable and bool(result.subclass_matches_unwrapped_guide) and visited_infrastructure == expected_visit and result.sha256_after == result.sha256_before
+	return result
+
+
+func _run() -> void:
+	var output: String = ""
+	var label: String = ""
+	var iterations: int = 8
+	var optional_fixture: String = ""
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--output="): output = arg.trim_prefix("--output=")
+		elif arg.begins_with("--label="): label = arg.trim_prefix("--label=")
+		elif arg.begins_with("--fixture="): optional_fixture = arg.trim_prefix("--fixture=")
+		elif arg.begins_with("--iterations=") and arg.trim_prefix("--iterations=").is_valid_int():
+			iterations = int(arg.trim_prefix("--iterations="))
+		else:
+			push_error("Unknown or invalid probe argument: " + arg)
+			quit(2)
+			return
+	if not output.is_absolute_path() or not output.simplify_path().contains("/work/") or FileAccess.file_exists(output) or label.is_empty() or iterations < 1 or iterations > 128:
+		push_error("Require --output=NEW_ABSOLUTE_WORK_JSON --label=baseline_or_candidate [--iterations=1..128] [--fixture=RETAINED_STEP6_JSON]; refuses overwrite")
+		quit(2)
+		return
+	var before: Dictionary = _sources()
+	var fixtures: Array[Dictionary] = FIXTURES.duplicate(true)
+	if not optional_fixture.is_empty():
+		var provenance_path: String = optional_fixture.get_basename() + ".provenance.json"
+		var provenance_read: Dictionary = SaveStore.new().read(provenance_path)
+		var provenance: Dictionary = provenance_read.get("data", {})
+		if not optional_fixture.is_absolute_path() or not bool(provenance_read.get("ok", false)) or str(provenance.get("sha256", "")) != FileAccess.get_sha256(optional_fixture) or int(provenance.get("guide_state", {}).get("hint", {}).get("step", -1)) != 6:
+			push_error("Optional fixture requires exact retained step-6 bytes and its matching .provenance.json")
+			quit(2)
+			return
+		fixtures.append({"label": "retained_real_step_6", "path": optional_fixture,
+			"sha256": provenance.sha256, "expected_step": 6, "expect_infrastructure_visit": true, "provenance": {"path": provenance_path,
+				"sha256": FileAccess.get_sha256(provenance_path), "record": provenance}})
+	var records: Array[Dictionary] = []
+	var ok: bool = true
+	for fixture: Dictionary in fixtures:
+		var record: Dictionary = _observe_fixture(fixture, iterations)
+		records.append(record)
+		ok = ok and bool(record.get("ok", false))
+	var after: Dictionary = _sources()
+	ok = ok and before == after
+	var report: Dictionary = {"schema_version": 1, "label": label, "ok": ok,
+		"scope": "Fixed real saved-state source-only Guide CPU observation; no tick, Main loop, render, gameplay FPS or optimization acceptance.",
+		"measurement": "Monotonic wall-clock microseconds around synchronous Guide.update and component rebuild; not process CPU accounting. Sim counters/timers and two Guide path counters add observer overhead. Cold first update retained; serialization/state inspection excluded. Component inclusive time is a subset of guide time and must not be added to it.",
+		"fixture_scope": "Classify by actual saved exit/camp state and observed infrastructure call path, never hint step alone. Three pre-construction front-infrastructure saves are positive cases; Canyon's started-exit save and withdrawal save are bypass controls. Optional retained step-6 bytes/provenance are separate. No gameplay FPS or optimization acceptance claim.",
+		"engine": Engine.get_version_info(), "recorded_utc": Time.get_datetime_string_from_system(true),
+		"probe_path": get_script().resource_path, "probe_sha256": FileAccess.get_sha256(get_script().resource_path),
+		"project_root": ProjectSettings.globalize_path("res://"), "sources_before": before, "sources_after": after,
+		"sources_unchanged": before == after, "fixtures": records}
+	var error: Error = DirAccess.make_dir_recursive_absolute(output.get_base_dir())
+	if error != OK:
+		push_error("Cannot create probe output directory: " + str(error))
+		quit(1)
+		return
+	var file: FileAccess = FileAccess.open(output, FileAccess.WRITE)
+	if file == null:
+		push_error("Cannot write probe report: " + str(FileAccess.get_open_error()))
+		quit(1)
+		return
+	file.store_string(JSON.stringify(report, "\t", true, true) + "\n")
+	file.flush()
+	var write_error: Error = file.get_error()
+	file.close()
+	if write_error != OK:
+		push_error("Probe report write failed: " + str(write_error))
+		quit(1)
+		return
+	print("GUIDE_QUERY_PROFILE prepared-source-observer ok=", ok, " output=", output)
+	quit(0 if ok else 1)

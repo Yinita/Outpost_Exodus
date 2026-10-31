@@ -1,0 +1,528 @@
+{
+  "verified": true,
+  "native_full_route_revalidated": true,
+  "arithmetic_verified": true,
+  "performance_acceptance": "not_assessed",
+  "expected_source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+  "mission_id": "canyon",
+  "process_id": 4160805,
+  "main_instance_id": "32195478883",
+  "entire_run_proof": {
+    "mode": "selected_cycle_after_terminal_full_hour_soak",
+    "one_hour_soak_required": true,
+    "entire_run_revalidated": true,
+    "top_level_report": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/campaign-validation.json",
+      "sha256": "b4690ba5d119b138e7df87116e1ba9a99e42deb6a2349edd4491b8430a0e29c0",
+      "bytes": 82601
+    },
+    "selected_cycle_index": 4,
+    "entire_run_validation_scope": "Existing seven-cycle route/clock/disk/economy/hour proof; rendered-frame arithmetic below applies only to the selected cycle",
+    "cycles_completed": 7,
+    "starting_mission_id": "canyon",
+    "native_wall_seconds": 3909.8776,
+    "launcher_observed_native_process_wall_seconds": 3911.885100437008
+  },
+  "inputs": {
+    "campaign_report": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/campaign-validation.json",
+      "sha256": "261f35a128cdb7eca1f9f00bfbfb50351036604470982904337ac1134776a953",
+      "bytes": 116222
+    },
+    "strict_verification": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/verification.json",
+      "sha256": "84a37b98cbc9239c8e9928aaacce4053d1e97defb7400f07607bcaed60887411",
+      "bytes": 141803
+    },
+    "actual_final_state": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/final-campaign-state.json",
+      "sha256": "e326ad10824cf820e3633a2af807ee307ed08c0a61b29cd0df674f7c428a19db",
+      "bytes": 503692
+    },
+    "native_process_log": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/native-process.log",
+      "sha256": "0f8103df11bfebd76a90a7a4ae6426d76eaecb293405ecf5f439bf33c3a55e68",
+      "bytes": 1675
+    }
+  },
+  "payload": {
+    "executable": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-unpacked/outpost-exodus-linux/outpost-exodus.x86_64",
+      "available": true,
+      "bytes": 73519416,
+      "sha256": "d9f79ab89b5ae369aeed11c6052d402e8218cd503bf85b4a235f9c30c46a7c63"
+    },
+    "adjacent_pck": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-unpacked/outpost-exodus-linux/outpost-exodus.pck",
+      "available": true,
+      "bytes": 18493412,
+      "sha256": "67dd3b4439a8fb2ab7cec12d818e1087ec499c9cb12b15e6a8fca7a56b1fde39"
+    }
+  },
+  "actual_export_metadata": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-unpacked/outpost-exodus-linux/build-info.json",
+    "sha256": "27519feb325646fb417a28d9088de6eb602af213213f7ffa87172029b6b82065",
+    "source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+    "source_tree": "1cac26f7131cf2b81298f8197e414987079a24cc",
+    "format": "build-info.json"
+  },
+  "method": {
+    "signal": "RenderingServer.frame_post_draw",
+    "clock": "Time.get_ticks_usec",
+    "interval": "(previous_post_draw,current_post_draw]",
+    "phase_attribution": "Entire interval uses the previous endpoint phase; phase-boundary intervals are counted without interpolation.",
+    "active_policy": "Both endpoints must be active; mixed states go to excluded.transition. Excluded intervals remain in all. No time rebase, clamp or exclusion around normal save/load.",
+    "histogram_spec": {
+      "bin_width_usec": 1000,
+      "finite_bins": 256,
+      "overflow_lower_usec_inclusive": 256000,
+      "percentiles": "Nearest-rank histogram bin bounds, not exact sample percentiles. Overflow upper bound is the exact observed max."
+    },
+    "units": "sum/max/interval bounds use microseconds; mean_ms uses milliseconds; observed_frames_per_second uses frames/second; count/tail/overflow fields count frame intervals",
+    "tail_counter_limit": "Exact recorded integer counters are checked jointly against order, histogram, sum and raw max. Fixed 1ms bins cannot independently reconstruct each within-bin sample.",
+    "scope": "Independent re-read of accepted actual native route proof and fixed-histogram arithmetic. No new game run, stable 60 FPS/minimum-hardware/performance acceptance or physical scanout claim."
+  },
+  "endpoint_count": 25391,
+  "first_endpoint_usec": 1698224631,
+  "last_endpoint_usec": 2228186806,
+  "phase_boundary_count": 7,
+  "state_boundary_count": 3,
+  "all": {
+    "count": 25390,
+    "sum_usec": 529962175,
+    "mean_ms": 20.872870224497834,
+    "observed_frames_per_second": 47.909079548931956,
+    "p50_interval": {
+      "lower_usec_inclusive": 16000,
+      "overflow_bin": false,
+      "upper_usec_exclusive": 17000
+    },
+    "p95_interval": {
+      "lower_usec_inclusive": 41000,
+      "overflow_bin": false,
+      "upper_usec_exclusive": 42000
+    },
+    "p99_interval": {
+      "lower_usec_inclusive": 74000,
+      "overflow_bin": false,
+      "upper_usec_exclusive": 75000
+    },
+    "max_usec": 196536,
+    "over_33333_usec": 2203,
+    "over_50000_usec": 958,
+    "over_100000_usec": 6,
+    "overflow_count": 0
+  },
+  "active": {
+    "count": 25375,
+    "sum_usec": 529642168,
+    "mean_ms": 20.87259775369458,
+    "observed_frames_per_second": 47.909704953854806,
+    "p50_interval": {
+      "lower_usec_inclusive": 16000,
+      "overflow_bin": false,
+      "upper_usec_exclusive": 17000
+    },
+    "p95_interval": {
+      "lower_usec_inclusive": 41000,
+      "overflow_bin": false,
+      "upper_usec_exclusive": 42000
+    },
+    "p99_interval": {
+      "lower_usec_inclusive": 74000,
+      "overflow_bin": false,
+      "upper_usec_exclusive": 75000
+    },
+    "max_usec": 196536,
+    "over_33333_usec": 2202,
+    "over_50000_usec": 957,
+    "over_100000_usec": 5,
+    "overflow_count": 0
+  },
+  "phases": {
+    "opening": {
+      "count": 2494,
+      "sum_usec": 41672185,
+      "mean_ms": 16.708975541299118,
+      "observed_frames_per_second": 59.84807372111638,
+      "p50_interval": {
+        "lower_usec_inclusive": 16000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 17000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 17000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 18000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 17000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 18000
+      },
+      "max_usec": 90423,
+      "over_33333_usec": 2,
+      "over_50000_usec": 1,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "home_transfer": {
+      "count": 1500,
+      "sum_usec": 25040395,
+      "mean_ms": 16.693596666666668,
+      "observed_frames_per_second": 59.903208395873946,
+      "p50_interval": {
+        "lower_usec_inclusive": 16000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 17000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 17000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 18000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 18000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 19000
+      },
+      "max_usec": 40016,
+      "over_33333_usec": 1,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "middle_economy": {
+      "count": 10734,
+      "sum_usec": 235087052,
+      "mean_ms": 21.90116005217067,
+      "observed_frames_per_second": 45.65968184415363,
+      "p50_interval": {
+        "lower_usec_inclusive": 16000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 17000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 67000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 68000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 76000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 77000
+      },
+      "max_usec": 108264,
+      "over_33333_usec": 1097,
+      "over_50000_usec": 804,
+      "over_100000_usec": 2,
+      "overflow_count": 0
+    },
+    "middle_withdrawal": {
+      "count": 2098,
+      "sum_usec": 35717809,
+      "mean_ms": 17.02469447092469,
+      "observed_frames_per_second": 58.73820535856497,
+      "p50_interval": {
+        "lower_usec_inclusive": 16000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 17000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 19000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 20000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 25000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 26000
+      },
+      "max_usec": 196536,
+      "over_33333_usec": 3,
+      "over_50000_usec": 2,
+      "over_100000_usec": 2,
+      "overflow_count": 0
+    },
+    "forward_rebuild": {
+      "count": 3411,
+      "sum_usec": 73157664,
+      "mean_ms": 21.447570800351805,
+      "observed_frames_per_second": 46.62532691038358,
+      "p50_interval": {
+        "lower_usec_inclusive": 17000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 18000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 40000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 41000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 50000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 51000
+      },
+      "max_usec": 83469,
+      "over_33333_usec": 331,
+      "over_50000_usec": 41,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "exit_build": {
+      "count": 4913,
+      "sum_usec": 114831292,
+      "mean_ms": 23.372947689802565,
+      "observed_frames_per_second": 42.78450511555683,
+      "p50_interval": {
+        "lower_usec_inclusive": 23000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 24000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 41000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 42000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 52000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 53000
+      },
+      "max_usec": 91817,
+      "over_33333_usec": 763,
+      "over_50000_usec": 105,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "exit_arrival": {
+      "count": 225,
+      "sum_usec": 4135771,
+      "mean_ms": 18.381204444444442,
+      "observed_frames_per_second": 54.403399027654096,
+      "p50_interval": {
+        "lower_usec_inclusive": 16000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 17000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 26000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 27000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 70000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 71000
+      },
+      "max_usec": 157893,
+      "over_33333_usec": 5,
+      "over_50000_usec": 4,
+      "over_100000_usec": 1,
+      "overflow_count": 0
+    },
+    "other": {
+      "count": 0,
+      "sum_usec": 0,
+      "mean_ms": null,
+      "observed_frames_per_second": null,
+      "p50_interval": null,
+      "p95_interval": null,
+      "p99_interval": null,
+      "max_usec": 0,
+      "over_33333_usec": 0,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    }
+  },
+  "excluded": {
+    "not_started": {
+      "count": 0,
+      "sum_usec": 0,
+      "mean_ms": null,
+      "observed_frames_per_second": null,
+      "p50_interval": null,
+      "p95_interval": null,
+      "p99_interval": null,
+      "max_usec": 0,
+      "over_33333_usec": 0,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "menu": {
+      "count": 12,
+      "sum_usec": 175399,
+      "mean_ms": 14.616583333333335,
+      "observed_frames_per_second": 68.41544136511611,
+      "p50_interval": {
+        "lower_usec_inclusive": 16000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 17000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 17000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 18000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 17000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 18000
+      },
+      "max_usec": 17079,
+      "over_33333_usec": 0,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "non_playing": {
+      "count": 0,
+      "sum_usec": 0,
+      "mean_ms": null,
+      "observed_frames_per_second": null,
+      "p50_interval": null,
+      "p95_interval": null,
+      "p99_interval": null,
+      "max_usec": 0,
+      "over_33333_usec": 0,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "paused": {
+      "count": 0,
+      "sum_usec": 0,
+      "mean_ms": null,
+      "observed_frames_per_second": null,
+      "p50_interval": null,
+      "p95_interval": null,
+      "p99_interval": null,
+      "max_usec": 0,
+      "over_33333_usec": 0,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "unfocused": {
+      "count": 0,
+      "sum_usec": 0,
+      "mean_ms": null,
+      "observed_frames_per_second": null,
+      "p50_interval": null,
+      "p95_interval": null,
+      "p99_interval": null,
+      "max_usec": 0,
+      "over_33333_usec": 0,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "outside_cycle": {
+      "count": 0,
+      "sum_usec": 0,
+      "mean_ms": null,
+      "observed_frames_per_second": null,
+      "p50_interval": null,
+      "p95_interval": null,
+      "p99_interval": null,
+      "max_usec": 0,
+      "over_33333_usec": 0,
+      "over_50000_usec": 0,
+      "over_100000_usec": 0,
+      "overflow_count": 0
+    },
+    "transition": {
+      "count": 3,
+      "sum_usec": 144608,
+      "mean_ms": 48.202666666666666,
+      "observed_frames_per_second": 20.745740208010623,
+      "p50_interval": {
+        "lower_usec_inclusive": 16000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 17000
+      },
+      "p95_interval": {
+        "lower_usec_inclusive": 113000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 114000
+      },
+      "p99_interval": {
+        "lower_usec_inclusive": 113000,
+        "overflow_bin": false,
+        "upper_usec_exclusive": 114000
+      },
+      "max_usec": 113766,
+      "over_33333_usec": 1,
+      "over_50000_usec": 1,
+      "over_100000_usec": 1,
+      "overflow_count": 0
+    }
+  },
+  "recorded_readback_display": {
+    "start": {
+      "client_size": [
+        1920,
+        1080
+      ],
+      "ready": true,
+      "requested_client_size": [
+        1920,
+        1080
+      ],
+      "requested_ui_scale": 1.0,
+      "texture_reported_size": [
+        2304,
+        1296
+      ],
+      "ui_scale": 1.0,
+      "viewport_pixel_size": [
+        1920,
+        1080
+      ],
+      "viewport_pixel_size_source": "viewport_texture_get_image",
+      "viewport_visible_size": [
+        1600,
+        900
+      ],
+      "window_content_scale_factor": 1.0,
+      "windowed": true
+    },
+    "final": {
+      "client_size": [
+        1920,
+        1080
+      ],
+      "ready": true,
+      "requested_client_size": [
+        1920,
+        1080
+      ],
+      "requested_ui_scale": 1.0,
+      "texture_reported_size": [
+        2304,
+        1296
+      ],
+      "ui_scale": 1.0,
+      "viewport_pixel_size": [
+        1920,
+        1080
+      ],
+      "viewport_pixel_size_source": "viewport_texture_get_image",
+      "viewport_visible_size": [
+        1600,
+        900
+      ],
+      "window_content_scale_factor": 1.0,
+      "windowed": true
+    }
+  },
+  "actual_save_load_operation_span": {
+    "elapsed_usec": 131875,
+    "end_usec": 2002897144,
+    "scope": "Actual save/read/load and equality observation wall span. Frame sampler continues across it; no I/O pause is hidden or clock rebased.",
+    "start_usec": 2002765269
+  }
+}

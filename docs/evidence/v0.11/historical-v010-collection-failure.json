@@ -1,0 +1,6 @@
+{
+  "observed_exit_code": 1,
+  "exec_chunk_id": "d71dcc",
+  "reason": "Frame endpoint count/time conservation failed",
+  "scope": "No final outer outputs published; raw native run and collector/checker bytes retained unchanged"
+}

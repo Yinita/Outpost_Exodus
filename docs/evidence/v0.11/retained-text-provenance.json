@@ -1,0 +1,327 @@
+{
+  "status": "PREPARED_NOT_FINAL_FREEZE",
+  "scope": "Original text/JSON/log/probe bytes copied without alteration. No PNG/import files; no new engine run by this preparation. Historical0.10 route/hour components and per-cycle checks do not supply an accepted complete global collection or new0.11 native evidence.",
+  "copies": [
+    {
+      "path": "query-setup-before-run.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-query-before-run/setup.json",
+      "sha256": "74db990e8bd3ff7d90216590d314922b83a123cfa90cfd81d14f63fe12f76819",
+      "bytes": 1714
+    },
+    {
+      "path": "query-probe.gd.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-query-before-run/probe.gd",
+      "sha256": "958bebc1b5fd0a09fbca14566162c1002285615c3eeddb9c16f53b5b689df544",
+      "bytes": 14740
+    },
+    {
+      "path": "query-baseline-guide.gd.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-query-before-run/baseline-guide.gd",
+      "sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda",
+      "bytes": 36060
+    },
+    {
+      "path": "query-candidate-guide.gd.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-query-before-run/candidate-guide.gd",
+      "sha256": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+      "bytes": 36061
+    },
+    {
+      "path": "query-baseline-v2.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-profile-baseline-v2.json",
+      "sha256": "2c864ad11be5a2fc77e7881b45093a96d23c7fcf0aeeece5b3b2cf7ad97d787a",
+      "bytes": 86804
+    },
+    {
+      "path": "query-candidate-v2.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-profile-candidate-v2.json",
+      "sha256": "92f0231d36876e3cb92209f8e9380965fa3c16ab0a0a93cb5aee444b02bfcd97",
+      "bytes": 86672
+    },
+    {
+      "path": "query-baseline-v2.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-profile-baseline-v2.log",
+      "sha256": "cd6da0b295216897c18131722e0840118a01db2dcc38dd6034c9d6cca8671a61",
+      "bytes": 246
+    },
+    {
+      "path": "query-candidate-v2.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-profile-candidate-v2.log",
+      "sha256": "8265f89768335a7baeafb1c1945afef7b32899154fa07409f8e69cdb32aad382",
+      "bytes": 247
+    },
+    {
+      "path": "query-process-observations-v2.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-query-process-observations-v2.json",
+      "sha256": "b1ee6f5b1a5a17d471d4acb0b7ed6a74816b401868db58943f108acf48005d2f",
+      "bytes": 303
+    },
+    {
+      "path": "fixture-canyon_front_infrastructure.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/autosave-backup.json",
+      "sha256": "3b5f79b5b41c149ec1ed115332c0d8de2db5b12a64be98b4aa230315ac808974",
+      "bytes": 208526
+    },
+    {
+      "path": "fixture-canyon_exit_started.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/autosave-primary.json",
+      "sha256": "20b278c4ecbc42720d8463912584053d8760986d6cb30ff4429784e6c97ea89a",
+      "bytes": 192311
+    },
+    {
+      "path": "fixture-canyon_middle_withdrawal.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/checkpoint-save.json",
+      "sha256": "90efa8c724665a20d6fa3b2aebf64fe73490720cc3a724ca7e068b6d9f7e1e3e",
+      "bytes": 116232
+    },
+    {
+      "path": "fixture-delta_front_infrastructure.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/autosave-backup.json",
+      "sha256": "1182402a2863d8aad727eff540fd23047c7c97962d93f693c4889b5094f139ea",
+      "bytes": 250794
+    },
+    {
+      "path": "fixture-ridge_front_infrastructure.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/autosave-backup.json",
+      "sha256": "eb59c26345c0f2756de111e550bef1f41efa29c3301fcdacc62a1b5d72a6b335",
+      "bytes": 298751
+    },
+    {
+      "path": "fixture-retained_real_step_6.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-performance-real-snapshots/stage-06-autosave.json",
+      "sha256": "b73caf2ab7517dcd8cd49a2fa5a78fb6b05f3ebc34a6a44d0654153b4a4cd7c4",
+      "bytes": 155795
+    },
+    {
+      "path": "fixture-step6-capture-provenance.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/guide-performance-real-snapshots/stage-06-autosave.provenance.json",
+      "sha256": "34a7f54cf06e1ee21cf92537400a49a4729909e02df8be3e168c8f3b7c02bb49",
+      "bytes": 3399
+    },
+    {
+      "path": "sampler-alias-results.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/frame-sampler-alias-v01/results.json",
+      "sha256": "bbf51caf2ccf38b58c0727ca5d72f44b906e5813bdba5d49e787ce3761e82776",
+      "bytes": 2867
+    },
+    {
+      "path": "sampler-candidate-process.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/frame-sampler-alias-v01/candidate-process.json",
+      "sha256": "e8114065f3aad66166b474a6cd11bb4ce0d02b6aec80a05b2424151dd5796143",
+      "bytes": 664
+    },
+    {
+      "path": "sampler-candidate.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/frame-sampler-alias-v01/candidate.log",
+      "sha256": "9f291201e5e1b39667249896cbc871a0c529dfbe249e88865faecab085c9ed70",
+      "bytes": 123
+    },
+    {
+      "path": "sampler-preedit-source-hashes.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/frame-sampler-alias-v01/source-before-hashes.json",
+      "sha256": "7e365d3dcdaf1351a4160e11c86599321a37c2e4020668ea9f39668109ea3320",
+      "bytes": 214
+    },
+    {
+      "path": "sampler-baseline.gd.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/frame-sampler-alias-v01/source-before/scripts/diagnostics/frame_sampler.gd",
+      "sha256": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+      "bytes": 8041
+    },
+    {
+      "path": "sampler-candidate.gd.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/frame-sampler-alias-v01/source-after/scripts/diagnostics/frame_sampler.gd",
+      "sha256": "72d8b6d7eca4b3e30000046dd6462718b96921de72845a9426991204ebdfc34b",
+      "bytes": 8038
+    },
+    {
+      "path": "sampler-regression-test.gd.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/frame-sampler-alias-v01/source-after/tests/test_frame_sampler.gd",
+      "sha256": "d47be0f93bc2772ee359d8c4a8c46312da1aa7cd6ac63936e597be90ac15a6da",
+      "bytes": 11730
+    },
+    {
+      "path": "sampler-baseline-process.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/frame-sampler-alias-regression-v01/baseline-process.json",
+      "sha256": "74f31258b2d6b1090fdfc809ecf12ac45f8db8ad902039f21199ff5355789055",
+      "bytes": 676
+    },
+    {
+      "path": "sampler-baseline.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/frame-sampler-alias-regression-v01/baseline-observed.log",
+      "sha256": "2c21d6b8e12aa9349bc43bf9665748505dfd9cc319f43f80e8df53b59db9b159",
+      "bytes": 433
+    },
+    {
+      "path": "sampler-baseline-source-hashes.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/frame-sampler-alias-regression-v01/source-hashes.json",
+      "sha256": "81a8c664aeb26e78f88b28f6dfdbff2165e9ae6363b13e8e2ff347b365162320",
+      "bytes": 302
+    },
+    {
+      "path": "historical-v010-index.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/index.json",
+      "sha256": "7818edde7d5b0f75ef20886e7db1b2d30629c724721734d8f16850f536832fe4",
+      "bytes": 41066
+    },
+    {
+      "path": "historical-v010-scope.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/scope.json",
+      "sha256": "20b097ede4d1ce96f1d7b2bc1309edce3c382fe28b19373acc56dc2ebb14b98a",
+      "bytes": 4437
+    },
+    {
+      "path": "historical-v010-strict-verification.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/native/verification.json",
+      "sha256": "84a37b98cbc9239c8e9928aaacce4053d1e97defb7400f07607bcaed60887411",
+      "bytes": 141803
+    },
+    {
+      "path": "historical-v010-native-report.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/native/output/campaign-validation.json",
+      "sha256": "b4690ba5d119b138e7df87116e1ba9a99e42deb6a2349edd4491b8430a0e29c0",
+      "bytes": 82601
+    },
+    {
+      "path": "historical-v010-supervisor-start.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/supervisor/start.json",
+      "sha256": "60638ed7af451514ffc6b66d7f0ce337da2765c7d625f47c0bb3186c433f21c0",
+      "bytes": 1123
+    },
+    {
+      "path": "historical-v010-supervisor-result.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/supervisor/result.json",
+      "sha256": "ea18c9a496c1f304de7d346f18ad060ccd511f1b0ad84f987abdd5da11138f31",
+      "bytes": 1505
+    },
+    {
+      "path": "historical-v010-live-identities.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/supervisor/observed-live-identities.json",
+      "sha256": "8102d44d490b60efc7592c963101b6d96e82a6e345a97d369130766b52d0e083",
+      "bytes": 1540
+    },
+    {
+      "path": "historical-v010-supervisor.py.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/supervisor/source.py.txt",
+      "sha256": "fc8473eb66c980b0a4e194534122d188aef6f027f66986f31ba5a00ae2a913c1",
+      "bytes": 2603
+    },
+    {
+      "path": "historical-v010-launcher-terminal-output.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/supervisor/launcher-terminal-output.json",
+      "sha256": "d80b32a8d982f17654a1cd308043a8470f108175ecbbf5231c8700aa78ee61a3",
+      "bytes": 329
+    },
+    {
+      "path": "historical-v010-collection-failure.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/collection-failure/failure.json",
+      "sha256": "2dadddfc62a2b5aa77b5c03a475dd3a709229ed95507090ad49dc0f551350ed2",
+      "bytes": 230
+    },
+    {
+      "path": "historical-v010-collection-failure.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/collection-failure/v010-finalize.log",
+      "sha256": "62c61815fb305695ae79330ac803fa18febe962f6af57daa63885b89a31295ec",
+      "bytes": 99
+    },
+    {
+      "path": "historical-v010-rejected-collector.py.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/collection-failure/finalize_v010.py",
+      "sha256": "ce3d6990bfe812a1ca2e0ffc0315b92f7e81500d6a8fa5c12bd8bcb286375663",
+      "bytes": 47082
+    },
+    {
+      "path": "historical-v010-frame-checker.py.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/collection-failure/verify_frame_timing.py",
+      "sha256": "b0dec342534265e6469d4d7acc907e03470695abfd2113806722e4a82c0e8161",
+      "bytes": 23557
+    },
+    {
+      "path": "historical-v010-original-zip-index.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/packages/original-zip-index.json",
+      "sha256": "9fe037f51d9fbfe850c0f7dd697ce0a6cdb5948173186ac4318950d8c68d8be3",
+      "bytes": 967
+    },
+    {
+      "path": "historical-v010-cycle-01-canyon-frame-check.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/derived-checks/cycle-01-canyon.json",
+      "sha256": "7c22a9b57153ab5a4b30c29cd198891710dfe25f6ff163dfe7a00d731ae46147",
+      "bytes": 16645
+    },
+    {
+      "path": "historical-v010-cycle-02-delta-frame-check.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/derived-checks/cycle-02-delta.json",
+      "sha256": "0403cb846ca99c6e3204717b925f864a9ea28a3b4cbf21697dbf43c857efcaba",
+      "bytes": 16326
+    },
+    {
+      "path": "historical-v010-cycle-03-ridge-frame-check.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/derived-checks/cycle-03-ridge.json",
+      "sha256": "36255dfefdc64c5aff45c242c699679df01e1b2211e8dc99f543842224323374",
+      "bytes": 16336
+    },
+    {
+      "path": "historical-v010-cycle-04-canyon-frame-check.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/derived-checks/cycle-04-canyon.json",
+      "sha256": "e75d959fe6a4bcadafd9bdc8d468aa9c02518dd758cced752a9d70a3bfaf66ce",
+      "bytes": 16313
+    },
+    {
+      "path": "historical-v010-cycle-05-delta-frame-check.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/derived-checks/cycle-05-delta.json",
+      "sha256": "84759420f3031a85c678222dd0f937c50945347739f7c7e4049483af8f5eb77f",
+      "bytes": 16335
+    },
+    {
+      "path": "historical-v010-cycle-06-ridge-frame-check.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/derived-checks/cycle-06-ridge.json",
+      "sha256": "db4ce465dde675a9143c33032dbf4280b7723e415f487bb8c208f8d5538d3d62",
+      "bytes": 16334
+    },
+    {
+      "path": "historical-v010-cycle-07-canyon-frame-check.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/derived-checks/cycle-07-canyon.json",
+      "sha256": "5595a7eab9273859cf20be21439db625bba89b6053a5b20f1920400df98b76cf",
+      "bytes": 16288
+    },
+    {
+      "path": "mission-guide.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-perf-mission-guide-v01.log",
+      "sha256": "0d60733806d5dacec8ab3d972be87f23b475de0ae89628243a6f6840810d8d87",
+      "bytes": 345
+    },
+    {
+      "path": "guide-full.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-perf-guide-full-v01.log",
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349",
+      "bytes": 1184
+    },
+    {
+      "path": "guide-functional-processes.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-perf-functional-processes-v01.json",
+      "sha256": "6ebdfb3eb6df9e03ee8c73a125fa1331a004b26d4e92f5dbec3089a5202eb734",
+      "bytes": 2304
+    },
+    {
+      "path": "query-root-paired-comparison.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-query-comparison-v2.json",
+      "sha256": "0262fd6aaf86acb1e4b4f1bbb29879c9a11c054cdad6ac33a758a538bd40ba89",
+      "bytes": 3549
+    },
+    {
+      "path": "final-import.txt",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/v011-final-import.log",
+      "sha256": "fc18697be4fa0a2891d4be0a7bfa18fd4dc6910df8c78dff3197a39eb9bcc08a",
+      "bytes": 9950
+    },
+    {
+      "path": "final-import-process.json",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/v011-final-import-process.json",
+      "sha256": "5a145d34405b1eef47fcfe4f63d64dffa080efc9ca25b70414b119ee046ea615",
+      "bytes": 286
+    }
+  ],
+  "original_root_unchanged_by_this_task": true,
+  "query_six_cases_verified": true,
+  "source_test_terminal_observations": "Root-observed completed211/0 fullGuide and137/0 missionGuide exits retained in guide-functional-processes.json. Source correctness only."
+}

@@ -1,0 +1,57 @@
+{
+  "scope": "Headless direct post_draw callback/cycle regression; no real frame pacing, Main lifecycle, GPU/native or performance measurement.",
+  "fix": "begin_cycle replaces only its previous endpoint Dictionary reference instead of mutating the object also referenced by global previous endpoint.",
+  "source_before": {
+    "scripts/diagnostics/frame_sampler.gd": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+    "tests/test_frame_sampler.gd": "3d832d684bf4926ecbf98d7c316510770aeb099a99c50c4813c4ebe39329ae58"
+  },
+  "source_after": {
+    "scripts/diagnostics/frame_sampler.gd": "72d8b6d7eca4b3e30000046dd6462718b96921de72845a9426991204ebdfc34b",
+    "tests/test_frame_sampler.gd": "d47be0f93bc2772ee359d8c4a8c46312da1aa7cd6ac63936e597be90ac15a6da"
+  },
+  "baseline_sampler_sha256": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+  "baseline_test_copy_sha256": "d47be0f93bc2772ee359d8c4a8c46312da1aa7cd6ac63936e597be90ac15a6da",
+  "baseline_observed_process": {
+    "command": [
+      "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+      "--script",
+      "work/frame-sampler-alias-regression-v01/test_frame_sampler.gd"
+    ],
+    "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+    "returncode": 1,
+    "started_unix": 1793446588.5898967,
+    "finished_unix": 1793446588.7747352,
+    "scope": "Bounded headless callback/cycle arithmetic regression, not frame pacing or performance evidence",
+    "log_sha256": "2c21d6b8e12aa9349bc43bf9665748505dfd9cc319f43f80e8df53b59db9b159"
+  },
+  "baseline_checks": 137,
+  "baseline_failures": 4,
+  "candidate_process": {
+    "command": [
+      "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf",
+      "--script",
+      "tests/test_frame_sampler.gd"
+    ],
+    "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf",
+    "returncode": 0,
+    "started_unix": 1793446599.6123888,
+    "finished_unix": 1793446599.7935255,
+    "scope": "Bounded headless callback/cycle arithmetic regression, not frame pacing or performance evidence",
+    "log_sha256": "9f291201e5e1b39667249896cbc871a0c529dfbe249e88865faecab085c9ed70"
+  },
+  "candidate_checks": 137,
+  "candidate_failures": 0,
+  "original_main_git_status": "clean (observed after both tests)",
+  "modified_owned_files": [
+    "scripts/diagnostics/frame_sampler.gd",
+    "tests/test_frame_sampler.gd"
+  ],
+  "other_worktree_modified_file": "scripts/campaign_guide.gd belongs to Guide owner and was not edited by this task",
+  "diff_check_returncode": 0
+}

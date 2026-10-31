@@ -1,0 +1,13 @@
+{
+  "scope": "Observed standalone source Guide-query process exits; no native FPS acceptance",
+  "baseline": {
+    "exit_code": 0,
+    "chunk_id": "e2aca8",
+    "wall_time_seconds": 2.56509535
+  },
+  "candidate": {
+    "exit_code": 0,
+    "chunk_id": "384101",
+    "wall_time_seconds": 1.36023369
+  }
+}

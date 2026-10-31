@@ -1,0 +1,3 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+GUIDE_QUERY_PROFILE prepared-source-observer ok=true output=/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-perf/work/guide-profile-candidate-v2.json

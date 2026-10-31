@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+  "build_dir": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-unpacked/outpost-exodus-linux",
+  "isolation_root": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full",
+  "argv": [
+    "/usr/bin/python3",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/tools/run_native_campaign.py",
+    "--build-dir",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-unpacked/outpost-exodus-linux",
+    "--isolation-root",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full",
+    "--mission",
+    "canyon",
+    "--soak",
+    "--max-seconds",
+    "5400"
+  ],
+  "started_utc": "2026-10-31T10:18:23.352025+00:00",
+  "supervisor_pid": 4160799,
+  "supervisor_start_ticks": 9216905,
+  "launcher_pid": 4160804,
+  "launcher_start_ticks": 9216907,
+  "launcher_log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-native-soak.log"
+}

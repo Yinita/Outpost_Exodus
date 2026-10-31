@@ -1,0 +1,5 @@
+{
+  "new_regression_test_sha256": "d47be0f93bc2772ee359d8c4a8c46312da1aa7cd6ac63936e597be90ac15a6da",
+  "root_sampler_before_sha256": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+  "scope": "Identical new test loads original tracked sampler; no source edits in original tree."
+}

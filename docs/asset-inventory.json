@@ -2,8 +2,8 @@
   "schema_version": 1,
   "status": "WORKTREE_INVENTORY_AND_DISCLOSURE_DRAFT_NOT_RIGHTS_OR_RELEASE_SIGNOFF",
   "snapshot": {
-    "recorded_utc": "2026-10-31T10:01:27.572366+00:00",
-    "base_commit": "c0ca682aad4a868fbbce298ffaf73cb6379b0a89",
+    "recorded_utc": "2026-10-31T11:54:39.202231+00:00",
+    "base_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
     "working_tree_dirty": true,
     "scope": "Current source asset bytes, retained production inputs and player-facing script categories. Hashes must be refreshed at source freeze, then checked against the actual final export."
   },
@@ -497,7 +497,7 @@
           "path": "project.godot",
           "status": "PRESENT",
           "bytes": 984,
-          "sha256": "8df1712268aeed156c19c86cd9671f8ff6a150e04db826f7d0be1ab2b5d917a3",
+          "sha256": "3799e03e232aa66041ee239307840045755fa5dfe5e26023388c3629d0ac0383",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -531,8 +531,8 @@
         {
           "path": "scripts/campaign_guide.gd",
           "status": "PRESENT",
-          "bytes": 36060,
-          "sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda",
+          "bytes": 36061,
+          "sha256": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
           "role": "retained_source_or_generation_input"
         },
         {
@@ -649,9 +649,10 @@
   ],
   "pack_reference": {
     "last_frozen_linux_export_identity": {
-      "source_commit": "2f650205fc64cb3e1e3f45a04f29c9e9562d92ac",
-      "pck_sha256": "9faa6bf367e8d7a4e28791ac5329b6e9176fcb448d7245df0fe3d6a73289acaf",
-      "status": "EXISTING_EXPORT_IDENTITY_NOT_NEW_WORKTREE_ACCEPTANCE"
+      "source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+      "pck_sha256": "67dd3b4439a8fb2ab7cec12d818e1087ec499c9cb12b15e6a8fca7a56b1fde39",
+      "status": "EXISTING_EXPORT_IDENTITY_NOT_NEW_WORKTREE_ACCEPTANCE",
+      "acceptance_scope": "Historical0.10 export identity only; global frame collection was rejected. See docs/evidence/v0.11/historical-v010-scope.json. Not current0.11 native proof."
     },
     "prior_directory_audit": {
       "source_commit": "2a00c7e97ff7954b0756bc49445866d92aec6b07",
@@ -734,8 +735,8 @@
       {
         "path": "scripts/campaign_guide.gd",
         "status": "PRESENT",
-        "bytes": 36060,
-        "sha256": "340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda",
+        "bytes": 36061,
+        "sha256": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
         "role": "retained_source_or_generation_input"
       },
       {
@@ -790,8 +791,8 @@
       {
         "path": "scripts/diagnostics/frame_sampler.gd",
         "status": "PRESENT",
-        "bytes": 8041,
-        "sha256": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+        "bytes": 8038,
+        "sha256": "72d8b6d7eca4b3e30000046dd6462718b96921de72845a9426991204ebdfc34b",
         "role": "retained_source_or_generation_input"
       },
       {

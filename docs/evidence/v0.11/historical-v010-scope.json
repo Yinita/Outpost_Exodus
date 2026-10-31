@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "status": "REJECTED_GLOBAL_FRAME_BASELINE_NOT_FINAL_RELEASE_COLLECTION",
+  "source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+  "recorded_utc": "2026-10-31T11:37:51.082114+00:00",
+  "steam_ready": false,
+  "performance_acceptance": "not_assessed",
+  "native_route_clock_disk_hour": {
+    "terminal_strict_verifier_success": true,
+    "seven_cycles_completed": 7,
+    "native_process_wall_seconds": 3911.885100437008,
+    "native_report_wall_seconds": 3909.8776,
+    "native_returncode": 0,
+    "launcher_returncode": 0,
+    "launcher_exit_observer": "supervisor subprocess.Popen.wait",
+    "supervisor_own_exit_status": "not independently observed; not inferred from child exit"
+  },
+  "independent_cycle_frame_checks": {
+    "checker_sha256": "b0dec342534265e6469d4d7acc907e03470695abfd2113806722e4a82c0e8161",
+    "method": "Seven direct calls to unchanged checker.verify() in a pure-Python archive process reading the exact retained actual reports. These are new derived re-read results, not new game runs or modified native reports.",
+    "cycles": [
+      {
+        "cycle_index": 1,
+        "mission_id": "canyon",
+        "result_path": "derived-checks/cycle-01-canyon.json",
+        "checker_returned_verified": true,
+        "performance_acceptance": "not_assessed"
+      },
+      {
+        "cycle_index": 2,
+        "mission_id": "delta",
+        "result_path": "derived-checks/cycle-02-delta.json",
+        "checker_returned_verified": true,
+        "performance_acceptance": "not_assessed"
+      },
+      {
+        "cycle_index": 3,
+        "mission_id": "ridge",
+        "result_path": "derived-checks/cycle-03-ridge.json",
+        "checker_returned_verified": true,
+        "performance_acceptance": "not_assessed"
+      },
+      {
+        "cycle_index": 4,
+        "mission_id": "canyon",
+        "result_path": "derived-checks/cycle-04-canyon.json",
+        "checker_returned_verified": true,
+        "performance_acceptance": "not_assessed"
+      },
+      {
+        "cycle_index": 5,
+        "mission_id": "delta",
+        "result_path": "derived-checks/cycle-05-delta.json",
+        "checker_returned_verified": true,
+        "performance_acceptance": "not_assessed"
+      },
+      {
+        "cycle_index": 6,
+        "mission_id": "ridge",
+        "result_path": "derived-checks/cycle-06-ridge.json",
+        "checker_returned_verified": true,
+        "performance_acceptance": "not_assessed"
+      },
+      {
+        "cycle_index": 7,
+        "mission_id": "canyon",
+        "result_path": "derived-checks/cycle-07-canyon.json",
+        "checker_returned_verified": true,
+        "performance_acceptance": "not_assessed"
+      }
+    ],
+    "all_seven_per_cycle_endpoint_count_and_span_exact": true,
+    "global_active_histogram_and_additive_counters_equal_seven_cycles": true
+  },
+  "global_frame_rejection": {
+    "accepted": false,
+    "endpoint_count": 173271,
+    "recorded_all_count": 173264,
+    "expected_all_count": 173270,
+    "missing_intervals": 6,
+    "endpoint_span_usec": 3909233375,
+    "recorded_all_sum_usec": 3905915179,
+    "missing_usec": 3318196,
+    "cross_cycle_endpoint_gaps_usec": [
+      544016,
+      546225,
+      554693,
+      546297,
+      561168,
+      565797
+    ],
+    "gaps_equal_missing_usec_exact": true,
+    "unchanged_checker_rejection": "Frame endpoint count/time conservation failed",
+    "cause": "Both _previous and _cycle_previous alias the same current Dictionary. begin_cycle clears _cycle_previous in place and therefore also clears the global previous endpoint at the six later cycle boundaries.",
+    "raw_global_modified": false,
+    "missing_frames_synthesized": false
+  },
+  "release_collector": {
+    "accepted": false,
+    "observed_exit_code": 1,
+    "failure_record": "collection-failure/failure.json",
+    "scope": "Global timing conservation rejection prevents final release-evidence/gallery publication despite separately successful native route/hour and per-cycle checks."
+  },
+  "raw_native_files_modified": false,
+  "original_zips_copied": false,
+  "not_verified": [
+    "Stable FPS/minimum hardware/frame-pacing performance acceptance",
+    "Fresh-player usability or physical-input full playthrough",
+    "Native Windows and clean-machine installation",
+    "Human listening/accessibility, final source rights, and actual Steam submission/review"
+  ],
+  "archive_elapsed_seconds_before_manifest": 1.310929881001357
+}

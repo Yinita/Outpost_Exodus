@@ -1,8 +1,41 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, **0.10.0-dev**. The objective remains a highly playable game that meets Steam release standards. This internal candidate is not release acceptance.
+Project: 逐营突围 / Outpost Exodus, preparing **0.11.0-dev** in the Guide-performance worktree. The objective remains a highly playable game that meets Steam release standards. The latest accepted actual package is 0.9; this working candidate is not release acceptance.
 
-## Current 0.10 candidate work
+## Current 0.11 fixes and bounded source evidence
+
+The Guide patch moves the infrastructure suggested-location search inside the missing-building branch, after the affordability check. Existing facilities and unfunded proposals no longer search for a location that the hint will not use. Hint text, targets, facility order, public navigation semantics, simulation rules and exit guidance are unchanged by this patch. Guide SHA changes from `340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda` to `21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b`.
+
+`work/guide-profile-baseline-v2.json`, `work/guide-profile-candidate-v2.json` and `work/guide-query-process-observations-v2.json` retain two observed standalone source-process exits of 0 and six passing real saved-state cases, eight updates per case. `work/guide-query-comparison-v2.json` pairs all six complete outputs. The optional middle-economy case was copied byte-for-byte from an automatic save naturally written during cycle 4 of the actual 0.10 native run; its provenance retains the process identity, source path/hash, commit and unfinished-run scope. No extra save command or fabricated state was used. The table shows mean synchronous elapsed time per `Guide.update`, with observer overhead; serialization and state inspection are outside the timed interval. It is not process CPU accounting, a rendered frame measurement or FPS evidence.
+
+| Retained actual state | Baseline → candidate mean ms/update | Forced navigation/component rebuilds per update |
+| --- | --- | --- |
+| Canyon middle facilities complete, t405.10 | 66.053 → 8.651 | 26 → 3 |
+| Canyon front facilities complete, t1451.65 | 33.214 → 8.586 | 13 → 3 |
+| Delta front facilities complete, t1505.55 | 30.393 → 5.678 | 12 → 2 |
+| Ridge front facilities complete, t1535.15 | 29.656 → 5.526 | 12 → 2 |
+| Canyon exit actually started, t1586.70 | 2.867 → 2.918 | 1 → 1 |
+| Canyon loaded withdrawal, t911.55 | 0.050 → 0.054 | 0 → 0 |
+
+Classification uses the actual exit/camp/facility state and observed infrastructure call path. A step-10 hint alone does not make a bypass control: the three backup saves have `construction_started=false` and still visit the forward infrastructure check. The started-exit primary and withdrawal checkpoint are the two bypass controls. Every update leaves the full encoded simulation/RNG unchanged; baseline/candidate complete Guide outputs match, and the instrumented subclasses match unwrapped same-source observers. The unchanged simulation SHA is `54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a`.
+
+The second fix changes only frame sampler `begin_cycle()` from clearing the previous-cycle Dictionary in place to assigning a new empty Dictionary. It preserves the global previous endpoint that shared the old object. `work/frame-sampler-alias-v01/results.json` retains an actual headless callback/cycle regression: the old sampler fails 4 of 137 checks with observed exit 1; the corrected sampler passes 137/0 with observed exit 0. This is a direct callback/state regression, not real rendered pacing, Main lifecycle or native performance evidence. Sampler source changes from `72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3` to `72d8b6d7eca4b3e30000046dd6462718b96921de72845a9426991204ebdfc34b`; the test is `d47be0f93bc2772ee359d8c4a8c46312da1aa7cd6ac63936e597be90ac15a6da`.
+
+Mission-aware Guide checks pass 137/0 and the complete source Guide route passes 211/0 with actual victory at 1589.99999999965 simulated seconds. Both have independently observed exit 0, retained commands, logs, test/source hashes and terminal observations in `work/guide-perf-functional-processes-v01.json`. These source tests are not a native exported full campaign. Final source/config/count/inventory binding remains separate. **No 0.11 export, actual native complete route, rendered FPS or elapsed-hour result exists yet.** The next native step is a complete Ridge route on the new export with phase/frame checks; only after reviewing it should another full-hour run start. A single Ridge pass cannot supply hour acceptance.
+
+## Rejected actual 0.10 global-frame baseline
+
+The actual `b3f0033a8df1c51d2d43f625133e87c227c4c5eb` Linux run completed seven normal-Main routes, real disk continuation and the elapsed-hour technical gates. Native child and launcher both have independently observed return code 0. Native-process elapsed time is 3911.885100437008 seconds; the game's report records 3909.8776 seconds. These are successful route/clock/disk/hour component results, not a successful final collection.
+
+The strict collector exits 1 because the global all-frame table loses six cross-cycle intervals totaling 3,318,196 microseconds. It has 173,271 endpoints but 173,264 intervals instead of 173,270; the missing durations exactly equal the six boundary gaps. A shared Dictionary alias is cleared by the old `begin_cycle()`. Original raw tables remain unchanged: no intervals were inserted, histogram repaired or success release report generated. Seven separate per-cycle reports pass the unchanged endpoint checker on re-read, with `performance_acceptance=not_assessed`.
+
+The rejected archive is `../rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/`. Its `index.json` SHA is `7818edde7d5b0f75ef20886e7db1b2d30629c724721734d8f16850f536832fe4`; `scope.json` is `20b097ede4d1ce96f1d7b2bc1309edce3c382fe28b19373acc56dc2ebb14b98a`. The pure-Python per-cycle re-read is derived validation of retained files, not another native run. The old packages/evidence are not modified or promoted to an accepted release.
+
+First Canyon per-cycle observations remain scoped to that old payload: opening 59.863 FPS (p95 [17,18) ms), middle economy 46.366 ([66,67) ms), withdrawal 58.565 ([20,21) ms), exit building 48.135 ([39,40) ms); active aggregate 49.896 FPS. These observations motivated the bounded Guide query measurement. They do not establish the next candidate's FPS or close minimum-machine/stable-60 gates.
+
+## Historical 0.10 pre-export source snapshot
+
+The following 0.10 integration and pre-export statements retain their original historical scope. The actual rejected run above supersedes their then-pending native status; it does not turn them into 0.11 evidence. Older sections below likewise retain their dated candidate chronology.
 
 The original project now includes UI commit `a1ca04115c278589150a549c409f0aa94454efe1` and profiling integration `c0ca682aad4a868fbbce298ffaf73cb6379b0a89`. This candidate has not been exported or accepted through native complete routes, an elapsed hour, rendered FPS or minimum hardware. Accepted 0.9 evidence remains bound to the old payload.
 

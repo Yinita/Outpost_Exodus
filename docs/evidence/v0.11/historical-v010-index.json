@@ -1,0 +1,800 @@
+{
+  "schema_version": 1,
+  "status": "REJECTED_GLOBAL_FRAME_BASELINE_NOT_FINAL_RELEASE_COLLECTION",
+  "source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+  "scope": "Every entry SHA/size verified. VERBATIM_COPY entries equal the named original bytes; DERIVED entries are archive metadata or unchanged-checker return JSON. No reconstructed global report.",
+  "verbatim_files": 104,
+  "derived_files": 10,
+  "files": [
+    {
+      "path": "README.txt",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "5299ef273b8cd3249c3f45926ae226d0b9f71e2996ff9202309c8f6e30313faf",
+      "bytes": 1329
+    },
+    {
+      "path": "automatic/log.txt",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-automatic-cycle.log",
+      "sha256": "95fe9382eda3419be547d48e705d6cd4cc0b7ac45c9af2ffba8b9d9631793e9a",
+      "bytes": 3561
+    },
+    {
+      "path": "automatic/native-files/campaign-autosave.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v010-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json",
+      "sha256": "3dba0715796a9f8b3133ab7a5f1153d755bfb30d07ad7e4e29de8520a09228ba",
+      "bytes": 146694
+    },
+    {
+      "path": "automatic/native-files/campaign-autosave.json.bak",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v010-full/data/godot/app_userdata/逐营突围 · Outpost Exodus/campaign-autosave.json.bak",
+      "sha256": "c5a9f790a7adbae06f1b1c59395e79941fcaa5b8d305c3b8fd0ae3b0f71a353f",
+      "bytes": 152109
+    },
+    {
+      "path": "automatic/probe.gd.txt",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/verify-v010-autosave.gd",
+      "sha256": "569b504e0df4721898964ef84de72197e538aa5e9c5f4adfaeafdd314647f7da",
+      "bytes": 6754
+    },
+    {
+      "path": "automatic/process.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-automatic-cycle-process.json",
+      "sha256": "dfb939a4113ca49f80ce8a48d860cbd3df422d10eb3d31461b1d16afec9b4b22",
+      "bytes": 1013
+    },
+    {
+      "path": "automatic/result.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v010-full/output/automatic-cycle-verification.json",
+      "sha256": "ea54e3ec72ed6827c71f9a5a6aba916975c2e19de8a338b980cd10c1601a6c47",
+      "bytes": 3713
+    },
+    {
+      "path": "benchmark/corrected-summary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-benchmark-summary.json",
+      "sha256": "c92a870f5e82a591520fe997c810ec4dc373475ad0de15fce6882032c9418245",
+      "bytes": 772
+    },
+    {
+      "path": "benchmark/raw-rendered-benchmark.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/benchmarks/native-v010-full/output/rendered-benchmark.json",
+      "sha256": "f7c0d6888c48b0f3d3e9f6270d01eff4633624fecd8cebf77d68fb5aaa200b5b",
+      "bytes": 1067592
+    },
+    {
+      "path": "collection-failure/failure.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-collection-failure-endpoints/failure.json",
+      "sha256": "2dadddfc62a2b5aa77b5c03a475dd3a709229ed95507090ad49dc0f551350ed2",
+      "bytes": 230
+    },
+    {
+      "path": "collection-failure/finalize_v010.py",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-collection-failure-endpoints/finalize_v010.py",
+      "sha256": "ce3d6990bfe812a1ca2e0ffc0315b92f7e81500d6a8fa5c12bd8bcb286375663",
+      "bytes": 47082
+    },
+    {
+      "path": "collection-failure/v010-finalize.log",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-collection-failure-endpoints/v010-finalize.log",
+      "sha256": "62c61815fb305695ae79330ac803fa18febe962f6af57daa63885b89a31295ec",
+      "bytes": 99
+    },
+    {
+      "path": "collection-failure/verify_frame_timing.py",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-collection-failure-endpoints/verify_frame_timing.py",
+      "sha256": "b0dec342534265e6469d4d7acc907e03470695abfd2113806722e4a82c0e8161",
+      "bytes": 23557
+    },
+    {
+      "path": "derived-checks/cycle-01-canyon.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "7c22a9b57153ab5a4b30c29cd198891710dfe25f6ff163dfe7a00d731ae46147",
+      "bytes": 16645
+    },
+    {
+      "path": "derived-checks/cycle-02-delta.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "0403cb846ca99c6e3204717b925f864a9ea28a3b4cbf21697dbf43c857efcaba",
+      "bytes": 16326
+    },
+    {
+      "path": "derived-checks/cycle-03-ridge.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "36255dfefdc64c5aff45c242c699679df01e1b2211e8dc99f543842224323374",
+      "bytes": 16336
+    },
+    {
+      "path": "derived-checks/cycle-04-canyon.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "e75d959fe6a4bcadafd9bdc8d468aa9c02518dd758cced752a9d70a3bfaf66ce",
+      "bytes": 16313
+    },
+    {
+      "path": "derived-checks/cycle-05-delta.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "84759420f3031a85c678222dd0f937c50945347739f7c7e4049483af8f5eb77f",
+      "bytes": 16335
+    },
+    {
+      "path": "derived-checks/cycle-06-ridge.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "db4ce465dde675a9143c33032dbf4280b7723e415f487bb8c208f8d5538d3d62",
+      "bytes": 16334
+    },
+    {
+      "path": "derived-checks/cycle-07-canyon.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "5595a7eab9273859cf20be21439db625bba89b6053a5b20f1920400df98b76cf",
+      "bytes": 16288
+    },
+    {
+      "path": "native/native-process.log",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/native-process.log",
+      "sha256": "0f8103df11bfebd76a90a7a4ae6426d76eaecb293405ecf5f439bf33c3a55e68",
+      "bytes": 1675
+    },
+    {
+      "path": "native/output/campaign-progress.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/campaign-progress.json",
+      "sha256": "f1a1e8447ce3492ebf2ae4cc92ffcf56cb3095b0f2653b34e17d32775bef13d1",
+      "bytes": 615
+    },
+    {
+      "path": "native/output/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/campaign-validation.json",
+      "sha256": "b4690ba5d119b138e7df87116e1ba9a99e42deb6a2349edd4491b8430a0e29c0",
+      "bytes": 82601
+    },
+    {
+      "path": "native/output/cycle-01-canyon/autosave-backup.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/autosave-backup.json",
+      "sha256": "3b5f79b5b41c149ec1ed115332c0d8de2db5b12a64be98b4aa230315ac808974",
+      "bytes": 208526
+    },
+    {
+      "path": "native/output/cycle-01-canyon/autosave-primary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/autosave-primary.json",
+      "sha256": "20b278c4ecbc42720d8463912584053d8760986d6cb30ff4429784e6c97ea89a",
+      "bytes": 192311
+    },
+    {
+      "path": "native/output/cycle-01-canyon/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/campaign-validation.json",
+      "sha256": "c01d915cda3e7ef0031d690fcbca87b8976abec830bcefd63869aeb9aef80927",
+      "bytes": 116026
+    },
+    {
+      "path": "native/output/cycle-01-canyon/checkpoint-save.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/checkpoint-save.json",
+      "sha256": "90efa8c724665a20d6fa3b2aebf64fe73490720cc3a724ca7e068b6d9f7e1e3e",
+      "bytes": 116232
+    },
+    {
+      "path": "native/output/cycle-01-canyon/completed_powered_exit.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/completed_powered_exit.png",
+      "sha256": "51e3ae61d6e20af478884d0b112f978962372e6540b2d2210505b4fca64f5083",
+      "bytes": 510079
+    },
+    {
+      "path": "native/output/cycle-01-canyon/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/final-campaign-state.json",
+      "sha256": "cdc8f1693db23bb4a6080a1df6aff7aac4248584c1d77514e1b26199dfb917e8",
+      "bytes": 497450
+    },
+    {
+      "path": "native/output/cycle-01-canyon/middle_infrastructure.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/middle_infrastructure.png",
+      "sha256": "77d29bb46b6cf60a1cfabc7702eca72979905baa13f208c0455f365562129922",
+      "bytes": 619044
+    },
+    {
+      "path": "native/output/cycle-01-canyon/opening.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/opening.png",
+      "sha256": "9e6a931d7957a29493a682014a222aa3518d39124ecfeeffccc9415b2264509e",
+      "bytes": 582909
+    },
+    {
+      "path": "native/output/cycle-01-canyon/victory.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/victory.png",
+      "sha256": "4424cf4c51149ce704462ce026a0b41e9e3c7b3c6bbcd866cc80af98e32b8db7",
+      "bytes": 352901
+    },
+    {
+      "path": "native/output/cycle-01-canyon/withdrawal_after_disk_load.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-01-canyon/withdrawal_after_disk_load.png",
+      "sha256": "0a22ac10f48ade1696038cdb51ab364068452bd8ef2d5d351ac39a090f0e3dbc",
+      "bytes": 773281
+    },
+    {
+      "path": "native/output/cycle-02-delta/autosave-backup.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/autosave-backup.json",
+      "sha256": "1182402a2863d8aad727eff540fd23047c7c97962d93f693c4889b5094f139ea",
+      "bytes": 250794
+    },
+    {
+      "path": "native/output/cycle-02-delta/autosave-primary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/autosave-primary.json",
+      "sha256": "3708697c05b99e431f96d64d19ac07bd957e819fc7ee9d7c119ae750379855ab",
+      "bytes": 233405
+    },
+    {
+      "path": "native/output/cycle-02-delta/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/campaign-validation.json",
+      "sha256": "b04ebf3b7d7acdb0ea8884fe14d160c1b1dcb421f8ae67883110fb28c602b22a",
+      "bytes": 116024
+    },
+    {
+      "path": "native/output/cycle-02-delta/checkpoint-save.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/checkpoint-save.json",
+      "sha256": "73dcf2ab7eb9c577abbf0396b370a295a79ad7f521138b8bed0305018ee75b22",
+      "bytes": 132564
+    },
+    {
+      "path": "native/output/cycle-02-delta/completed_powered_exit.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/completed_powered_exit.png",
+      "sha256": "24a44b8465531a6bbe405c07f1821d0d271a853da4b66182f8ff346cad3bffb7",
+      "bytes": 512661
+    },
+    {
+      "path": "native/output/cycle-02-delta/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/final-campaign-state.json",
+      "sha256": "22d3b835ef9ce0223127ce3a3b02fb35825086eaf2170790d1a69dfe01ab9122",
+      "bytes": 601638
+    },
+    {
+      "path": "native/output/cycle-02-delta/middle_infrastructure.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/middle_infrastructure.png",
+      "sha256": "f3a85c5b1b71a3a5c1c7dd8964d0ad8cbfde958b22e894c3663c0f3ce68719b2",
+      "bytes": 613150
+    },
+    {
+      "path": "native/output/cycle-02-delta/opening.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/opening.png",
+      "sha256": "81918897b1fe7e2bb1592dcc3b5abdb620c2d08da6fa261f14bd3b6bdf4f16d9",
+      "bytes": 576524
+    },
+    {
+      "path": "native/output/cycle-02-delta/restart-autosave.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/restart-autosave.json",
+      "sha256": "3b7eef180b4187d0b604e5ffd3996ba20ed2a92bc90fa98d3b2cb1f2caf2f07c",
+      "bytes": 37861
+    },
+    {
+      "path": "native/output/cycle-02-delta/victory.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/victory.png",
+      "sha256": "fef3ec9893e4eeaae225c6f7364e1bfba202ede1587f160499b8578482c320b2",
+      "bytes": 348980
+    },
+    {
+      "path": "native/output/cycle-02-delta/withdrawal_after_disk_load.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-02-delta/withdrawal_after_disk_load.png",
+      "sha256": "30ce503908d6e2fb0130e29251cbd1577951eee94971a2a0862e0f3e8b788fb1",
+      "bytes": 777613
+    },
+    {
+      "path": "native/output/cycle-03-ridge/autosave-backup.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/autosave-backup.json",
+      "sha256": "eb59c26345c0f2756de111e550bef1f41efa29c3301fcdacc62a1b5d72a6b335",
+      "bytes": 298751
+    },
+    {
+      "path": "native/output/cycle-03-ridge/autosave-primary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/autosave-primary.json",
+      "sha256": "fed30439c290cbf830b9a5b285ae9934be477ee98ffd599a5c289f129b41d1ca",
+      "bytes": 284683
+    },
+    {
+      "path": "native/output/cycle-03-ridge/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/campaign-validation.json",
+      "sha256": "304d78bb7ff0089f65178b589fcee0c19d0521a2636b5fc7f9db18aae3045bca",
+      "bytes": 117035
+    },
+    {
+      "path": "native/output/cycle-03-ridge/checkpoint-save.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/checkpoint-save.json",
+      "sha256": "97416d0838da0e10105697672d2ab1ec3ac41e8ce2de8c8076e6e41e3719b522",
+      "bytes": 152795
+    },
+    {
+      "path": "native/output/cycle-03-ridge/completed_powered_exit.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/completed_powered_exit.png",
+      "sha256": "51eadd893d5db55dda22679a5ff2cf0ef25b00570009ce754add947714c07fac",
+      "bytes": 513604
+    },
+    {
+      "path": "native/output/cycle-03-ridge/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/final-campaign-state.json",
+      "sha256": "d3148fcc9919d45c887b1190e4141dd979b07aed40667d9cfa01da84c0be9f73",
+      "bytes": 703371
+    },
+    {
+      "path": "native/output/cycle-03-ridge/middle_infrastructure.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/middle_infrastructure.png",
+      "sha256": "8714254d690809f6a51facbe305f8b06762ae7646eb34ad495328fae83845d1e",
+      "bytes": 627032
+    },
+    {
+      "path": "native/output/cycle-03-ridge/opening.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/opening.png",
+      "sha256": "dcb8f1f1042a7d1a2c6b0292dee8a2349ee73c1bb0946023a6127d51c53aff7e",
+      "bytes": 572615
+    },
+    {
+      "path": "native/output/cycle-03-ridge/restart-autosave.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/restart-autosave.json",
+      "sha256": "b6703b1a3e96ebab556a9c1b5eb3290772517655e8bf39e2221aa8e48465d32c",
+      "bytes": 37815
+    },
+    {
+      "path": "native/output/cycle-03-ridge/victory.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/victory.png",
+      "sha256": "edb49bb41ff87a2b421561ee54c61a8c3177c119b6ecf8b40086a7fc76647290",
+      "bytes": 357552
+    },
+    {
+      "path": "native/output/cycle-03-ridge/withdrawal_after_disk_load.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-03-ridge/withdrawal_after_disk_load.png",
+      "sha256": "8b8d5ab38e48620ef2debb832e9fa14c55363d23ae1f7f14301e573198616a82",
+      "bytes": 741415
+    },
+    {
+      "path": "native/output/cycle-04-canyon/autosave-backup.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/autosave-backup.json",
+      "sha256": "39d529ac345448177205e126f50aa20af28847c63032f08dde8822e305467e2f",
+      "bytes": 205456
+    },
+    {
+      "path": "native/output/cycle-04-canyon/autosave-primary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/autosave-primary.json",
+      "sha256": "eb47686091c750dbf7262eb7588384559b019bcf397022328fe4a30ac15a8e9d",
+      "bytes": 192036
+    },
+    {
+      "path": "native/output/cycle-04-canyon/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/campaign-validation.json",
+      "sha256": "261f35a128cdb7eca1f9f00bfbfb50351036604470982904337ac1134776a953",
+      "bytes": 116222
+    },
+    {
+      "path": "native/output/cycle-04-canyon/checkpoint-save.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/checkpoint-save.json",
+      "sha256": "cdfcd46be41d434214cefb73410d3fd9b6aa06448c08099b42885684bf66fe08",
+      "bytes": 118293
+    },
+    {
+      "path": "native/output/cycle-04-canyon/completed_powered_exit.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/completed_powered_exit.png",
+      "sha256": "10083e09a886f55bc60bda09bf84f4d85ed7d3ae704830d7fecbd1fcbd3cb9d4",
+      "bytes": 509949
+    },
+    {
+      "path": "native/output/cycle-04-canyon/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/final-campaign-state.json",
+      "sha256": "e326ad10824cf820e3633a2af807ee307ed08c0a61b29cd0df674f7c428a19db",
+      "bytes": 503692
+    },
+    {
+      "path": "native/output/cycle-04-canyon/middle_infrastructure.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/middle_infrastructure.png",
+      "sha256": "2d8b11b7118f97c9454b58971f7e2c4b225011a2a4668d2e691853d5bd5219e8",
+      "bytes": 619381
+    },
+    {
+      "path": "native/output/cycle-04-canyon/opening.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/opening.png",
+      "sha256": "e8116c8c6d42f2f463615e31a32bec9d6d006c8f6819f7d56638580540edb481",
+      "bytes": 579038
+    },
+    {
+      "path": "native/output/cycle-04-canyon/restart-autosave.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/restart-autosave.json",
+      "sha256": "bf413c79c81b1e67fd215ad6cb5003c44fec80196ee23525ccad8bac9b8c8e6f",
+      "bytes": 37731
+    },
+    {
+      "path": "native/output/cycle-04-canyon/victory.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/victory.png",
+      "sha256": "07e3d47092b3b9ff5d267ed96a3b06db8167932a9ebe7f0aae22ed87be950379",
+      "bytes": 343674
+    },
+    {
+      "path": "native/output/cycle-04-canyon/withdrawal_after_disk_load.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-04-canyon/withdrawal_after_disk_load.png",
+      "sha256": "6ff4e9e88da22be68fdf9a37965f3cad2e481bf902368ecb5f0b4adf30139fb7",
+      "bytes": 769142
+    },
+    {
+      "path": "native/output/cycle-05-delta/autosave-backup.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/autosave-backup.json",
+      "sha256": "da5e8de89c43d2bcc5cd25901147a875b7469489ee5213e7c65ae65ed38e53fc",
+      "bytes": 249505
+    },
+    {
+      "path": "native/output/cycle-05-delta/autosave-primary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/autosave-primary.json",
+      "sha256": "9f01c06c166f1a7597cd4999e392a7baf55bc87d68ebcc0fb3c6c2ed874db8a4",
+      "bytes": 231597
+    },
+    {
+      "path": "native/output/cycle-05-delta/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/campaign-validation.json",
+      "sha256": "9fa88e6e9e2b1be075fab639694413bdb703a5a082d04a34157ba5e13a51fca4",
+      "bytes": 116315
+    },
+    {
+      "path": "native/output/cycle-05-delta/checkpoint-save.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/checkpoint-save.json",
+      "sha256": "ee096295784a483f9d99904971ab7ea666d12c4d987a38e451c8a9f98fcbbc0a",
+      "bytes": 133813
+    },
+    {
+      "path": "native/output/cycle-05-delta/completed_powered_exit.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/completed_powered_exit.png",
+      "sha256": "9a926b9c72463d5bd7dd473209b1515f53f56576eb9b7cc7dc29d0015ff7bb1b",
+      "bytes": 516505
+    },
+    {
+      "path": "native/output/cycle-05-delta/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/final-campaign-state.json",
+      "sha256": "b5d2d03813832ba2ce26ccc7ad4f17e49e8384f69249e3421a625cb52ca39ef3",
+      "bytes": 598467
+    },
+    {
+      "path": "native/output/cycle-05-delta/middle_infrastructure.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/middle_infrastructure.png",
+      "sha256": "9d1eaf469b82d8221c55a00c7b2716ea517f830734c8521405e77242edb1228c",
+      "bytes": 613598
+    },
+    {
+      "path": "native/output/cycle-05-delta/opening.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/opening.png",
+      "sha256": "c7b7352747ef6f70d0269b43690a55d43a3df944f723338b1d051194e9cc4e77",
+      "bytes": 574458
+    },
+    {
+      "path": "native/output/cycle-05-delta/restart-autosave.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/restart-autosave.json",
+      "sha256": "3b7eef180b4187d0b604e5ffd3996ba20ed2a92bc90fa98d3b2cb1f2caf2f07c",
+      "bytes": 37861
+    },
+    {
+      "path": "native/output/cycle-05-delta/victory.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/victory.png",
+      "sha256": "b8a4c0fddd5bd4dc31508f9cf4ce0725ac12e1b7d8b98dacdfe3c67cc9d50a69",
+      "bytes": 347303
+    },
+    {
+      "path": "native/output/cycle-05-delta/withdrawal_after_disk_load.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-05-delta/withdrawal_after_disk_load.png",
+      "sha256": "4f6214d30d16b6571e197633f09707e20a744dcc5a4a364a2a56a14d94ba78ca",
+      "bytes": 774367
+    },
+    {
+      "path": "native/output/cycle-06-ridge/autosave-backup.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/autosave-backup.json",
+      "sha256": "4679313ee78324fd4af831d97816689209aede09b15213b63b25cf2ff192e717",
+      "bytes": 289509
+    },
+    {
+      "path": "native/output/cycle-06-ridge/autosave-primary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/autosave-primary.json",
+      "sha256": "205ee5462d7c31961e7ec30f2fd3d95b49e5749df5988d5442fcb3c6a728a39f",
+      "bytes": 276106
+    },
+    {
+      "path": "native/output/cycle-06-ridge/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/campaign-validation.json",
+      "sha256": "992886a0e3e0c9da35e79e9251187194924b6d72d871bc8c50c4c2b4852cff2c",
+      "bytes": 117043
+    },
+    {
+      "path": "native/output/cycle-06-ridge/checkpoint-save.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/checkpoint-save.json",
+      "sha256": "a14189fd04dcebbc3989dc3fc13ff1d4589b64d93eae68cdf115b454b8b16276",
+      "bytes": 151789
+    },
+    {
+      "path": "native/output/cycle-06-ridge/completed_powered_exit.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/completed_powered_exit.png",
+      "sha256": "46cd62bf84d4682cbc3d647e3927aceca098163a09b1ff5be6586e8602c51f32",
+      "bytes": 513202
+    },
+    {
+      "path": "native/output/cycle-06-ridge/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/final-campaign-state.json",
+      "sha256": "66e4aac4bef3dffdbc05c7d0c521f2f421768e26982e4d35f9217e506a419c6d",
+      "bytes": 698095
+    },
+    {
+      "path": "native/output/cycle-06-ridge/middle_infrastructure.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/middle_infrastructure.png",
+      "sha256": "60319a671f7fd19e7098437018c9bddfdfdb2942db89156786f2e784bd0ba25d",
+      "bytes": 627058
+    },
+    {
+      "path": "native/output/cycle-06-ridge/opening.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/opening.png",
+      "sha256": "318f06ab9f47a59e6872df44ae646ff891fd8714f7092ace024473e94a89e9d6",
+      "bytes": 575361
+    },
+    {
+      "path": "native/output/cycle-06-ridge/restart-autosave.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/restart-autosave.json",
+      "sha256": "b6703b1a3e96ebab556a9c1b5eb3290772517655e8bf39e2221aa8e48465d32c",
+      "bytes": 37815
+    },
+    {
+      "path": "native/output/cycle-06-ridge/victory.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/victory.png",
+      "sha256": "5b6ae656ac22a9538f3c969d45565c571fc7c82ec5beb9912b4b6f8cfef7906a",
+      "bytes": 357808
+    },
+    {
+      "path": "native/output/cycle-06-ridge/withdrawal_after_disk_load.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-06-ridge/withdrawal_after_disk_load.png",
+      "sha256": "aa92f778debf3c11ccf21e6e7cb5b405f296f2d7da36535bce50c96aa4b4e2c4",
+      "bytes": 738780
+    },
+    {
+      "path": "native/output/cycle-07-canyon/autosave-backup.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/autosave-backup.json",
+      "sha256": "3630f33e45a9b3975ca61482fa6a3834151e749c381020b208030c83823ca485",
+      "bytes": 207908
+    },
+    {
+      "path": "native/output/cycle-07-canyon/autosave-primary.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/autosave-primary.json",
+      "sha256": "4dd12c5d8bbdc49d15d747d08a48099cf2ea5e57e2159bf32c6ddf8cb1d24b7b",
+      "bytes": 193395
+    },
+    {
+      "path": "native/output/cycle-07-canyon/campaign-validation.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/campaign-validation.json",
+      "sha256": "ea99ac8179250aaf3db2da9c52fdc86f0bd243c60185c53bbcd02c214fa23ec0",
+      "bytes": 116150
+    },
+    {
+      "path": "native/output/cycle-07-canyon/checkpoint-save.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/checkpoint-save.json",
+      "sha256": "e9a625008cd1a174861db6e6f6c04df92f9742dfa44eedc3475e350bd86232f3",
+      "bytes": 120233
+    },
+    {
+      "path": "native/output/cycle-07-canyon/completed_powered_exit.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/completed_powered_exit.png",
+      "sha256": "1b113f9a09131d7c49a1c76d0405576050cbd2703be35cdb3a80841d1340b55b",
+      "bytes": 513063
+    },
+    {
+      "path": "native/output/cycle-07-canyon/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/final-campaign-state.json",
+      "sha256": "91b46fc214f6db8521377aa8e2147473e62db6d01a010ab558c9a1efea50855a",
+      "bytes": 508179
+    },
+    {
+      "path": "native/output/cycle-07-canyon/middle_infrastructure.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/middle_infrastructure.png",
+      "sha256": "fd492c6bc4e29be1cbdc1b82b5e3fc0ae6dfe2c5b5e0112e5fd57ab53f5676f3",
+      "bytes": 619129
+    },
+    {
+      "path": "native/output/cycle-07-canyon/opening.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/opening.png",
+      "sha256": "d9a5abb24c878eab7b6b1cdeb306960eee2fc21367cf1b580b6507c66d4ad3d2",
+      "bytes": 579039
+    },
+    {
+      "path": "native/output/cycle-07-canyon/restart-autosave.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/restart-autosave.json",
+      "sha256": "bf413c79c81b1e67fd215ad6cb5003c44fec80196ee23525ccad8bac9b8c8e6f",
+      "bytes": 37731
+    },
+    {
+      "path": "native/output/cycle-07-canyon/victory.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/victory.png",
+      "sha256": "144d858f15400f8e1badf69df4cb06fb1b054e2a0465a48be115e45743d14e83",
+      "bytes": 343591
+    },
+    {
+      "path": "native/output/cycle-07-canyon/withdrawal_after_disk_load.png",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/cycle-07-canyon/withdrawal_after_disk_load.png",
+      "sha256": "23ea5c5826d0ff8b023aa66621c80c3d37faf92d9fb6377ccd15601a8057698e",
+      "bytes": 771052
+    },
+    {
+      "path": "native/output/final-campaign-state.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/output/final-campaign-state.json",
+      "sha256": "91b46fc214f6db8521377aa8e2147473e62db6d01a010ab558c9a1efea50855a",
+      "bytes": 508179
+    },
+    {
+      "path": "native/verification.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-soak-v010-full/verification.json",
+      "sha256": "84a37b98cbc9239c8e9928aaacce4053d1e97defb7400f07607bcaed60887411",
+      "bytes": 141803
+    },
+    {
+      "path": "packages/checksums.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.10.0-dev-checksums.json",
+      "sha256": "3790be96f41cf6e9997bd4b9767462649a7786b3508c116aacd1efcb156c5e38",
+      "bytes": 597
+    },
+    {
+      "path": "packages/original-zip-index.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "9fe037f51d9fbfe850c0f7dd697ce0a6cdb5948173186ac4318950d8c68d8be3",
+      "bytes": 967
+    },
+    {
+      "path": "packages/unpack-proof.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-unpack-verification.json",
+      "sha256": "239a44dfe5fd7eabc9a6ab569851998a48d73a5898d6e87bdcbcfea80957da86",
+      "bytes": 1053
+    },
+    {
+      "path": "scope.json",
+      "kind": "DERIVED_ARCHIVE_METADATA_OR_CHECKER_RESULT",
+      "sha256": "20b097ede4d1ce96f1d7b2bc1309edce3c382fe28b19373acc56dc2ebb14b98a",
+      "bytes": 4437
+    },
+    {
+      "path": "source/campaign_runner.gd.txt",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/diagnostics/campaign_runner.gd",
+      "sha256": "42520760257189a95c3c239d843decc9303b8f5d55d79a7db4c05da29e5888f0",
+      "bytes": 46194
+    },
+    {
+      "path": "source/frame_sampler.gd.txt",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/diagnostics/frame_sampler.gd",
+      "sha256": "72a6240d1d5f30cc118286eeed27327c6ecfe788ccf2879fad1ccba81af88eb3",
+      "bytes": 8041
+    },
+    {
+      "path": "source/run_native_campaign.py.txt",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/tools/run_native_campaign.py",
+      "sha256": "f7dc53f987cfa609520ab3531d460781986401223650f760887ea9ee88eced04",
+      "bytes": 58860
+    },
+    {
+      "path": "supervisor/launcher-terminal-output.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-native-soak.log",
+      "sha256": "d80b32a8d982f17654a1cd308043a8470f108175ecbbf5231c8700aa78ee61a3",
+      "bytes": 329
+    },
+    {
+      "path": "supervisor/observed-live-identities.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-native-soak-observed.json",
+      "sha256": "8102d44d490b60efc7592c963101b6d96e82a6e345a97d369130766b52d0e083",
+      "bytes": 1540
+    },
+    {
+      "path": "supervisor/result.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-native-soak-supervisor-result.json",
+      "sha256": "ea18c9a496c1f304de7d346f18ad060ccd511f1b0ad84f987abdd5da11138f31",
+      "bytes": 1505
+    },
+    {
+      "path": "supervisor/source.py.txt",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/run_v010_soak_supervisor.py",
+      "sha256": "fc8473eb66c980b0a4e194534122d188aef6f027f66986f31ba5a00ae2a913c1",
+      "bytes": 2603
+    },
+    {
+      "path": "supervisor/start.json",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-native-soak-start.json",
+      "sha256": "60638ed7af451514ffc6b66d7f0ce337da2765c7d625f47c0bb3186c433f21c0",
+      "bytes": 1123
+    },
+    {
+      "path": "supervisor/stdout-stderr.log",
+      "kind": "VERBATIM_COPY",
+      "source_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v010-supervisor.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  ],
+  "original_zip_index": "packages/original-zip-index.json",
+  "scope_record": "scope.json"
+}

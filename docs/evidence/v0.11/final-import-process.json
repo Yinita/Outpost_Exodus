@@ -1,0 +1,8 @@
+{
+  "scope": "Observed headless editor import of the 0.11 candidate sources; not native export or performance acceptance",
+  "observed_by": "tools.exec_command",
+  "returncode": 0,
+  "chunk_id": "19c531",
+  "wall_time_seconds": 2.403053722,
+  "log_path": "work/v011-final-import.log"
+}

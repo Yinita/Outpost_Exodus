@@ -1,0 +1,24 @@
+{
+  "source_commit": "b3f0033a8df1c51d2d43f625133e87c227c4c5eb",
+  "scope": "Original ZIP bytes remain at their original paths; SHA/size checked during this archive. No ZIP was copied or modified.",
+  "archives": [
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-source-0.10.0-dev.zip",
+      "sha256": "9990d8e099ec25808e26206b30c15e59c6e930e11272bc94750ab9ded094afe6",
+      "bytes": 21571439,
+      "copied": false
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-linux-0.10.0-dev.zip",
+      "sha256": "32b7231ca17e47dbc7eb9b3b4177a4c8d2a44e72a5ff90e6ca8abb5600561822",
+      "bytes": 46979461,
+      "copied": false
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-windows-0.10.0-dev.zip",
+      "sha256": "d2ab0fa7e2bd9fdc6f1697a395e69067eebf90a62c39fb6e68500c9036a01809",
+      "bytes": 56515836,
+      "copied": false
+    }
+  ]
+}

@@ -2,6 +2,41 @@
 
 This plan separates simulation correctness, human playability and distribution evidence. Passing one layer does not imply the others pass. Use the version in `docs/implementation-contract.md` and record the exact runtime/build for every run.
 
+## Current 0.11 preparation and rejected 0.10 evidence
+
+The next source candidate prepares two small fixes: defer Guide infrastructure suggestions until a facility is missing and affordable; replace the sampler's cycle-previous Dictionary reference rather than clearing the object also referenced by the global previous endpoint. No simulation rule, public navigation contract, exit-hint rule, frame threshold or content budget is changed. **No 0.11 export, native full route, rendered FPS or elapsed-hour acceptance exists yet.** Historical candidate sections below retain their original date/source scope.
+
+The latest accepted actual payload remains 0.9 at `2f650205fc64cb3e1e3f45a04f29c9e9562d92ac`, with seven same-Main full routes over 3908.425177 seconds, actual loaded-withdrawal full Sim/RNG/UI/mission disk continuation and observed foreground collector exit 0. Its detached launcher exit remains unobserved. This accepted old hour is not evidence for 0.11.
+
+The actual 0.10 source `b3f0033a8df1c51d2d43f625133e87c227c4c5eb` completed seven normal-Main campaigns and the route/clock/disk/hour gates. Native and launcher each have independently observed return code 0; process wall time is 3911.885100437008 seconds, while its in-game report records 3909.8776. The strict final collector nevertheless exits 1: global 173,271 endpoints require 173,270 intervals, but only 173,264 are recorded. Six cross-cycle gaps total 3,318,196 microseconds, exactly matching the missing span. Aliasing between `_previous` and `_cycle_previous` lets `_cycle_previous.clear()` inside `begin_cycle()` erase the global previous endpoint.
+
+All raw reports remain unchanged under `../rejected/outpost-exodus-0.10.0-dev-global-frame-baseline/`, indexed by SHA/size. `index.json` SHA is `7818edde7d5b0f75ef20886e7db1b2d30629c724721734d8f16850f536832fe4`; `scope.json` SHA is `20b097ede4d1ce96f1d7b2bc1309edce3c382fe28b19373acc56dc2ebb14b98a`. No frames were synthesized or global histogram repaired, and no successful 0.10 release-evidence package was produced. Seven per-cycle reports pass independent re-reads through the unchanged checker; those are derived file checks, not new native runs. `performance_acceptance=not_assessed` remains explicit.
+
+The archived first Canyon per-cycle report records opening 59.863 FPS/p95 [17,18) ms, middle economy 46.366/[66,67), loaded withdrawal 58.565/[20,21), exit construction 48.135/[39,40), and active aggregate 49.896 FPS. These actual old-payload observations remain useful for diagnosis despite rejected global accounting; they do not establish a new candidate's frame pacing, stable 60 FPS or minimum hardware.
+
+### Guide saved-state observation
+
+`work/guide-profile-baseline-v2.json`, `work/guide-profile-candidate-v2.json` and `work/guide-query-process-observations-v2.json` retain observed source-process exits0 and six passing cases with eight repeated `Guide.update()` calls per fixed real state. `work/guide-query-comparison-v2.json` records paired complete-output equality for all six. The middle case was copied from an already-written cycle4 automatic save, without game input, an inserted save command or state fabrication. Its original bytes, native process identity, capture UTC, baseline commit and then-unfinished-run progress are retained with the optional fixture provenance.
+
+| State and actual path | Mean synchronous elapsed ms/update, baseline → candidate | Force/rebuild calls per update |
+| --- | --- | --- |
+| Canyon middle infrastructure, t405.10 | 66.053 → 8.651 | 26 → 3 |
+| Canyon front infrastructure, t1451.65 | 33.214 → 8.586 | 13 → 3 |
+| Delta front infrastructure, t1505.55 | 30.393 → 5.678 | 12 → 2 |
+| Ridge front infrastructure, t1535.15 | 29.656 → 5.526 | 12 → 2 |
+| Canyon exit started, t1586.70; infrastructure bypass | 2.867 → 2.918 | 1 → 1 |
+| Canyon withdrawal, t911.55; infrastructure bypass | 0.050 → 0.054 | 0 → 0 |
+
+Classify using actual exit `construction_started/progress`, active-camp facility completion/power and the observed infrastructure call path. The pre-construction front backups are positive cases even when their saved hint is step10. The started-exit primary and withdrawal checkpoint are bypass controls. Every measured call leaves full encoded simulation/RNG unchanged; complete baseline/candidate Guide states match. Unwrapped same-source observers also match the instrumented subclasses. All other listed source hashes remain the same; Guide changes from `340d4dc5…` to `21c2b83e…`.
+
+`Time.get_ticks_usec()` measures synchronous elapsed time, not process CPU accounting. Counters add overhead, cold first calls are retained, and serialization/state inspection are outside the measured interval. Inclusive component-rebuild time is contained in Guide time and must not be added again. These same-state function observations do not run Main, tick simulation or render frames; do not convert the millisecond reduction to a gameplay FPS claim. Mission-aware Guide 137/0 and full Guide 211/0 each have actual observed exit 0, with commands, logs and source/test hashes in `work/guide-perf-functional-processes-v01.json`; full Guide reaches actual victory at 1589.99999999965 simulated seconds. That headless source route is not a native exported campaign.
+
+### Sampler callback regression and next native gate
+
+`work/frame-sampler-alias-v01/results.json` retains the expanded direct callback/cycle regression against both implementations: old sampler 137 checks/4 failures/observed exit 1; replacement-reference fix 137/0/observed exit 0. It exercises the real callback path under controlled headless inputs. It does not measure real rendered-frame pacing, execute Main lifecycle or establish native/GPU performance. The candidate sampler SHA is `72d8b6d7eca4b3e30000046dd6462718b96921de72845a9426991204ebdfc34b`; the expanded regression SHA is `d47be0f93bc2772ee359d8c4a8c46312da1aa7cd6ac63936e597be90ac15a6da`.
+
+After source/config/inventory freeze, export the new exact payload and first run a complete native Ridge route with phase/frame checks. Review that actual route before beginning another full hour; a Ridge-only pass is not hour acceptance. The final candidate still requires actual native complete-route/hour and frame collection. Keep the 1920×1080/UI1 request and ready actual-image `timing_display_start/final`, normal Main 0.05 steps and unchanged route/economy/disk checks. Validate both each cycle and the complete global endpoint count/time conservation with the unchanged strict checker, then observe collector completion. No replayed gap insertion, omitted transition interval, old-hour substitution or lower-content/clock workload can supply missing acceptance. Minimum hardware, fresh-human play/listening, Windows/clean machines, rights and Steam gates remain open.
+
 ## Recorded automated result
 
 On 2026-10-30, the working-tree simulation and `tests/test_campaign.gd` passed **10 behavioral groups, 170 checks, 0 failures**, with process exit code 0 and no script errors in the test output. Runtime: `Godot Engine v4.7.2.stable.official.ed1daf0bf`, Linux x86_64. No tagged release/export checksum had been assigned to this working-tree test.
@@ -385,7 +420,9 @@ Final 0.9 source collection passes combined macro309, raw root construction187/r
 The retained previous25/1 run is a diagnostic measurement false positive: Texture metadata reported2304×1296 while actual client and Image/PNG were1920×1080. Its original source/log/result manifest is preserved; PNGs remain in work. The corrected readback uses actual Image pixels and keeps the 1080 gate, exposing logical/Texture sizes separately. It is not a gameplay failure, resolution downgrade, native export proof or elapsed-hour result. Runner/launcher/test freeze hashes are retained with the final record. Current0.9 full native/hour/FPS acceptance remains pending and not yet started in this candidate snapshot.
 
 
-## 0.10 source candidate and accepted 0.9 boundary
+## Historical 0.10 pre-export source candidate and accepted 0.9 boundary
+
+The following statements preserve the then-pending 0.10 integration snapshot. The actual run and rejected final collection recorded at the top supersede that pending status without changing old evidence or treating it as 0.11 proof.
 
 Current UI integration is `a1ca04115c278589150a549c409f0aa94454efe1`; profiling integration is `c0ca682aad4a868fbbce298ffaf73cb6379b0a89`. The merged HUD and WorldView bytes match external reviewed sources exactly: `32e50bbebbe67393eeaa239977fb935c6f79f9883013226e509f9e04e8e7f8a4` and `b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098`. UI changes concern annotation placement/screen-sized labels, guide-content height and a true available-height boundary, without changing gameplay commands or actor/input transforms.
 

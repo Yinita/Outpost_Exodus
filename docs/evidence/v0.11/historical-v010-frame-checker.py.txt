@@ -1,0 +1,342 @@
+#!/usr/bin/env python3
+"""Independently re-read a finished ordinary native route and frame histograms.
+
+No game is launched. This verifies provenance and arithmetic, not a hardware,
+stable-FPS, frame-pacing or release performance acceptance criterion.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import math
+from pathlib import Path
+import re
+import sys
+from typing import Any
+
+PROJECT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT / "tools"))
+import run_native_campaign as native
+
+PHASES = ("opening", "home_transfer", "middle_economy", "middle_withdrawal", "forward_rebuild", "exit_build", "exit_arrival", "other")
+EXCLUDED = ("not_started", "menu", "non_playing", "paused", "unfocused", "outside_cycle", "transition")
+BIN_USEC = 1000
+FINITE_BINS = 256
+TAILS = {"over_33333_usec": 33333, "over_50000_usec": 50000, "over_100000_usec": 100000}
+ADDITIVE = ("count", "sum_usec", *TAILS, "overflow_count")
+BUCKET_KEYS = {"count", "sum_usec", "max_usec", *TAILS, "histogram", "mean_ms", "observed_frames_per_second", "p50_interval", "p95_interval", "p99_interval", "overflow_count"}
+
+
+class Invalid(ValueError):
+    pass
+
+
+def need(condition: bool, message: str) -> None:
+    if not condition:
+        raise Invalid(message)
+
+
+def integer(value: Any, label: str, minimum: int = 0) -> int:
+    need(type(value) is int and minimum <= value <= 2**63-1, f"{label}: expected bounded integer >= {minimum}")
+    return value
+
+
+def obj(value: Any, label: str) -> dict[str, Any]:
+    need(isinstance(value, dict), f"{label}: expected object")
+    return value
+
+
+def finite_number(value: Any) -> bool:
+    return type(value) in (int, float) and math.isfinite(value)
+
+
+def close(actual: Any, expected: float, label: str) -> None:
+    need(finite_number(actual) and math.isclose(actual, expected, rel_tol=2e-15, abs_tol=1e-12),
+         f"{label}: arithmetic differs, recorded={actual!r}, expected={expected!r}")
+
+
+def file_record(path: Path) -> dict[str, Any]:
+    need(path.is_file() and not path.is_symlink(), f"Missing/plain-file evidence: {path}")
+    return {"path": str(path), "sha256": native.sha256(path), "bytes": path.stat().st_size}
+
+
+def percentile(hist: list[int], count: int, maximum: int, percent: int) -> Any:
+    if count == 0:
+        return None
+    rank = (count * percent + 99) // 100
+    cumulative = 0
+    for index, amount in enumerate(hist):
+        cumulative += amount
+        if cumulative >= rank:
+            if index == FINITE_BINS:
+                return {"lower_usec_inclusive": FINITE_BINS * BIN_USEC,
+                        "upper_usec_inclusive": maximum, "overflow_bin": True}
+            return {"lower_usec_inclusive": index * BIN_USEC,
+                    "upper_usec_exclusive": (index + 1) * BIN_USEC, "overflow_bin": False}
+    raise Invalid("Histogram has no percentile rank")
+
+
+def bucket(value: Any, label: str) -> dict[str, Any]:
+    value = obj(value, label)
+    need(set(value) == BUCKET_KEYS, f"{label}: unexpected/missing fixed bucket fields")
+    count = integer(value["count"], label + ".count")
+    duration = integer(value["sum_usec"], label + ".sum_usec")
+    maximum = integer(value["max_usec"], label + ".max_usec")
+    hist = value["histogram"]
+    need(isinstance(hist, list) and len(hist) == FINITE_BINS+1, f"{label}: histogram must have exactly 257 bins")
+    for index, amount in enumerate(hist): integer(amount, f"{label}.histogram[{index}]")
+    need(sum(hist) == count, f"{label}: histogram/count conservation failed")
+    overflow = integer(value["overflow_count"], label + ".overflow_count")
+    need(overflow == hist[FINITE_BINS], f"{label}: overflow count differs")
+    tails = [integer(value[key], label + "." + key) for key in TAILS]
+    need(count >= tails[0] >= tails[1] >= tails[2] >= 0, f"{label}: long-frame counts are not nested")
+    if count == 0:
+        need(duration == maximum == overflow == sum(tails) == 0, f"{label}: empty bucket has time/max/tail samples")
+        need(value["mean_ms"] is None and value["observed_frames_per_second"] is None,
+             f"{label}: empty timing is unavailable, not zero-time performance")
+    else:
+        need(count <= duration and 0 < maximum <= duration, f"{label}: positive intervals cannot produce recorded sum/max")
+        occupied = max(index for index, amount in enumerate(hist) if amount)
+        need(min(maximum // BIN_USEC, FINITE_BINS) == occupied, f"{label}: raw max is outside the highest occupied bin")
+        # Per-bin integer ranges constrain sum and all exact tail counters jointly.
+        # A 1ms histogram cannot reconstruct individual within-bin durations.
+        ranges = []
+        for index, amount in enumerate(hist):
+            if not amount: continue
+            lower = max(1, index * BIN_USEC)
+            upper = maximum if index == FINITE_BINS else min(maximum, (index+1)*BIN_USEC-1)
+            need(lower <= upper, f"{label}: occupied bin exceeds raw max")
+            split = [(key, threshold) for key, threshold in TAILS.items() if lower <= threshold < upper]
+            need(len(split) <= 1, f"{label}: fixed histogram threshold model differs")
+            if split:
+                key, threshold = split[0]
+                definitely_above = sum(n for j, n in enumerate(hist) if max(1, j*BIN_USEC) > threshold)
+                above_here = value[key] - definitely_above
+                need(0 <= above_here <= amount, f"{label}: {key} is incompatible with histogram")
+                ranges.extend(((amount-above_here, lower, threshold), (above_here, threshold+1, upper)))
+            else:
+                ranges.append((amount, lower, upper))
+        for key, threshold in TAILS.items():
+            low = sum(n for n, a, _b in ranges if a > threshold)
+            high = sum(n for n, _a, b in ranges if b > threshold)
+            need(low == high == value[key], f"{label}: {key} cannot be produced by the histogram/max")
+        minimum_sum = sum(n*a for n, a, _b in ranges)
+        maximum_sum = sum(n*b for n, _a, b in ranges)
+        max_groups = [(n, a, b) for n, a, b in ranges if n and a <= maximum <= b]
+        need(len(max_groups) == 1, f"{label}: exact raw max has no observed sample")
+        minimum_sum += maximum - max_groups[0][1]
+        need(minimum_sum <= duration <= maximum_sum,
+             f"{label}: sum_usec is incompatible with histogram, exact max and threshold counts")
+        close(value["mean_ms"], duration/count/1000, label + ".mean_ms")
+        close(value["observed_frames_per_second"], count*1e6/duration, label + ".observed_frames_per_second")
+    for percent in (50, 95, 99):
+        expected = percentile(hist, count, maximum, percent)
+        actual = value[f"p{percent}_interval"]
+        if expected is None:
+            need(actual is None, f"{label}: empty p{percent} interval is not unavailable")
+        else:
+            actual = obj(actual, f"{label}.p{percent}_interval")
+            need(set(actual) == set(expected) and all(type(actual[k]) is type(v) and actual[k] == v for k,v in expected.items()),
+                 f"{label}: nearest-rank p{percent} interval differs")
+    return value
+
+
+def conserved(parent: dict[str, Any], children: list[dict[str, Any]], label: str) -> None:
+    for key in ADDITIVE:
+        need(parent[key] == sum(child[key] for child in children), f"{label}: {key} conservation failed")
+    need(parent["max_usec"] == max(child["max_usec"] for child in children), f"{label}: max is not the maximum child max")
+    need(parent["histogram"] == [sum(child["histogram"][i] for child in children) for i in range(FINITE_BINS+1)],
+         f"{label}: per-bin conservation failed")
+
+
+def timing(value: Any) -> dict[str, Any]:
+    value = obj(value, "rendered_frame_timing")
+    need(integer(value.get("schema_version"), "timing.schema_version") == 1 and value.get("clock") == "Time.get_ticks_usec"
+         and value.get("signal") == "RenderingServer.frame_post_draw"
+         and value.get("interval") == "(previous_post_draw,current_post_draw]"
+         and value.get("performance_acceptance") == "not_assessed"
+         and value.get("raw_frame_intervals_retained") is False, "Timing method/scope differs from actual fixed sampler")
+    need(value.get("phase_names") == list(PHASES) and value.get("phase_limit") == len(PHASES), "Fixed eight-phase schema differs")
+    need(value.get("phase_attribution") == "Entire interval uses the previous endpoint phase; phase-boundary intervals are counted without interpolation."
+         and value.get("active_policy") == "Both endpoints must be active; mixed states go to excluded.transition. Excluded intervals remain in all. No time rebase, clamp or exclusion around normal save/load.",
+         "Frame phase/state endpoint policy differs from the measured sampler")
+    spec = obj(value.get("histogram_spec"), "histogram_spec")
+    need(spec.get("bin_width_usec") == BIN_USEC and spec.get("finite_bins") == FINITE_BINS
+         and spec.get("overflow_lower_usec_inclusive") == FINITE_BINS*BIN_USEC, "Fixed histogram schema differs")
+    phases = obj(value.get("phases"), "phases")
+    excluded = obj(value.get("excluded"), "excluded")
+    need(set(phases) == set(PHASES) and set(excluded) == set(EXCLUDED), "Unexpected/missing phase or excluded-state buckets")
+    all_frames = bucket(value.get("all"), "all")
+    active = bucket(value.get("active"), "active")
+    for name in PHASES: bucket(phases[name], "phases."+name)
+    for name in EXCLUDED: bucket(excluded[name], "excluded."+name)
+    conserved(all_frames, [active, *excluded.values()], "all=active+excluded")
+    conserved(active, list(phases.values()), "active=phases")
+    for name in PHASES[:-1]:
+        need(phases[name]["count"] > 0, f"Full actual route has no rendered active samples for {name}")
+    endpoints = integer(value.get("endpoint_count"), "endpoint_count", 2)
+    first = integer(value.get("first_endpoint_usec"), "first_endpoint_usec", 1)
+    last = integer(value.get("last_endpoint_usec"), "last_endpoint_usec", first+1)
+    need(integer(value.get("invalid_nonpositive_intervals"), "invalid_nonpositive_intervals") == 0,
+         "Real monotonic native frame intervals contain invalid/zero/backwards timestamps")
+    need(integer(value.get("unknown_phase_endpoints"), "unknown_phase_endpoints") == 0
+         and integer(value.get("unknown_state_endpoints"), "unknown_state_endpoints") == 0, "Actual native timing contains unknown phase/state endpoints")
+    need(all_frames["count"] == endpoints-1 and all_frames["sum_usec"] == last-first,
+         "Frame endpoint count/time conservation failed")
+    phase_boundaries = integer(value.get("phase_boundary_count"), "phase_boundary_count")
+    state_boundaries = integer(value.get("state_boundary_count"), "state_boundary_count")
+    need(6 <= phase_boundaries <= all_frames["count"], "Phase boundary count cannot cover seven nonempty actual route phases")
+    need(state_boundaries == excluded["transition"]["count"] <= all_frames["count"], "State boundary count differs from mixed-state intervals")
+    return value
+
+
+def summarize(bucket_value: dict[str, Any]) -> dict[str, Any]:
+    return {key: bucket_value[key] for key in ("count", "sum_usec", "mean_ms", "observed_frames_per_second", "p50_interval", "p95_interval", "p99_interval", "max_usec", *TAILS, "overflow_count")}
+
+
+def verify(report_path: Path, verification_path: Path, expected_commit: str) -> dict[str, Any]:
+    need(bool(re.fullmatch(r"[0-9a-f]{40}", expected_commit)), "Expected commit must be an explicit full 40-character hex commit")
+    report_file, verification_file = file_record(report_path), file_record(verification_path)
+    report, verdict = native.read_object(report_path), native.read_object(verification_path)
+    need(verdict.get("source_commit") == expected_commit, "Strict launcher source commit differs from requested commit")
+    soak = verdict.get("soak_mode")
+    need(type(soak) is bool, "Launcher mode is missing")
+    need(all(verdict.get(key) is True for key in ("success", "complete_campaign_evidence"))
+         and verdict.get("prepare_only") is False
+         and type(verdict.get("returncode")) is int and verdict.get("returncode") == 0 and verdict.get("timed_out") is False
+         and verdict.get("errors") == [] and verdict.get("finished_utc"), "Launcher has no successful finished full native route/run")
+    need(isinstance(verdict.get("argv"), list) and verdict["argv"]
+         and all(isinstance(argument, str) for argument in verdict["argv"]), "Strict launcher's actual argv is missing")
+    need(report.get("native_export_proof") is True and report.get("complete_campaign_evidence") is True
+         and report.get("prepare_only") is False and report.get("soak_mode") is soak
+         and report.get("errors") == [], "Report is not accepted full native route evidence")
+    starting_mission = verdict.get("requested_mission_id")
+    mission = report.get("requested_mission_id")
+    need(starting_mission in native.MISSION_TAGS and mission in native.MISSION_TAGS, "Requested/actual mission identity is missing")
+    build = Path(verdict["build_dir"])
+    payload = native.binary_snapshot(build)
+    need(verdict.get("binaries_before") == payload == verdict.get("binaries_after"), "Actual exported executable/PCK changed")
+    metadata = native.verify_export_metadata(build, payload)
+    need(metadata == verdict.get("export_metadata") and metadata.get("source_commit") == expected_commit,
+         "Actual export metadata does not bind requested commit and terminal proof")
+    recorded = obj(verdict.get("native_report"), "launcher.native_report")
+    run_proof = {"mode":"ordinary_full_route", "one_hour_soak_required":False}
+    if soak:
+        need(verdict.get("one_hour_soak_evidence") is True, "Whole soak has no terminal accepted real-hour proof")
+        top_path = Path(recorded["path"])
+        top_file = file_record(top_path)
+        top = native.read_object(top_path)
+        need(recorded.get("sha256") == top_file["sha256"] and recorded.get("data") == top,
+             "Actual entire soak report differs from the finished launcher proof")
+        whole_final_proof = obj(verdict.get("final_campaign_state"), "launcher.final_campaign_state")
+        whole_final_path = Path(whole_final_proof["path"])
+        whole_final_file = file_record(whole_final_path)
+        whole_state = native.read_object(whole_final_path)
+        need(whole_final_proof.get("sha256") == whole_final_file["sha256"], "Whole-soak actual final file changed")
+        soak_errors, independent = native.validate_soak_report(top, payload, payload, verdict.get("argv"),
+            starting_mission, top_path.parent, verdict.get("pid"), verdict.get("native_process_wall_seconds"), whole_state)
+        need(not soak_errors, "Whole terminal seven-cycle/hour revalidation rejected: " + repr(soak_errors))
+        need(independent == verdict.get("soak_validation"), "Whole-soak independent re-read differs from strict launcher results")
+        records = obj(top, "soak").get("cycles", [])
+        matches = [item for item in records if isinstance(item, dict)
+                   and (top_path.parent / str(item.get("report_path", ""))).resolve() == report_path.resolve()]
+        need(len(matches) == 1, "Selected report is not an actual unique cycle path from the complete soak manifest")
+        selected = matches[0]
+        index = integer(selected.get("cycle_index"), "selected_cycle_index", 1)
+        need(index <= native.SOAK_CYCLES and selected.get("mission_id") == mission
+             and report.get("cycle_index") == index and selected.get("report_sha256") == report_file["sha256"],
+             "Selected cycle mission/index/actual report hash differs from entire soak manifest")
+        final_path = top_path.parent / selected["final_state_path"]
+        final_file = file_record(final_path)
+        state = native.read_object(final_path)
+        need(selected.get("final_state_sha256") == final_file["sha256"] == report.get("final_state", {}).get("sha256"),
+             "Selected cycle actual final file differs from the complete soak proof")
+        run_proof = {"mode":"selected_cycle_after_terminal_full_hour_soak", "one_hour_soak_required":True,
+            "entire_run_revalidated":True, "top_level_report":top_file, "selected_cycle_index":index,
+            "entire_run_validation_scope":"Existing seven-cycle route/clock/disk/economy/hour proof; rendered-frame arithmetic below applies only to the selected cycle",
+            "cycles_completed":native.SOAK_CYCLES, "starting_mission_id":starting_mission,
+            "native_wall_seconds":top["wall_elapsed_seconds"],
+            "launcher_observed_native_process_wall_seconds":verdict["native_process_wall_seconds"]}
+    else:
+        need(mission == starting_mission, "Ordinary route mission differs from the launch")
+        need(recorded.get("sha256") == report_file["sha256"] and recorded.get("data") == report,
+             "Actual report differs from strict launcher's terminal report/hash")
+        final_proof = obj(verdict.get("final_campaign_state"), "launcher.final_campaign_state")
+        final_path = Path(final_proof["path"])
+        final_file = file_record(final_path)
+        state = native.read_object(final_path)
+        need(final_proof.get("sha256") == final_file["sha256"] == report.get("final_state", {}).get("sha256"),
+             "Actual final saved file differs from full native proof")
+    errors = native.validate_report(report, payload, payload, False, verdict.get("argv"), mission, state,
+        launch_mission=starting_mission)
+    errors += native.cycle_economic_errors(report, state)
+    need(not errors, "Existing unchanged full route/disk/economic verification rejected: " + repr(errors))
+    need(report.get("process_id") == verdict.get("pid") and native.whole(verdict.get("pid"), 1)
+         and report.get("binaries_changed") is False and report.get("sources_changed") is False
+         and report.get("sources_before") == report.get("sources_after")
+         and native.source_map_valid(report.get("sources_before")), "Actual process/source continuity proof differs")
+    need("res://scripts/diagnostics/frame_sampler.gd" in report["sources_before"], "Sampler code is missing from payload/source proof")
+    log_proof = obj(verdict.get("log"), "launcher.log")
+    log_path = Path(log_proof["path"])
+    log_file = file_record(log_path)
+    need(log_file["sha256"] == log_proof.get("sha256") and log_proof.get("error_or_leak_output") is False
+         and not native.BAD_OUTPUT.search(native.ANSI.sub("", log_path.read_text(encoding="utf-8", errors="replace"))), "Native process log changed or contains errors/leaks")
+    for name in ("timing_display_start", "timing_display_final"):
+        display_errors = native.soak_display_errors(report.get(name), name)
+        need(not display_errors, "Actual1080 readback display proof rejected: " + repr(display_errors))
+    measurement = timing(report.get("rendered_frame_timing"))
+    need(finite_number(report.get("wall_elapsed_seconds")) and report["wall_elapsed_seconds"] > 0
+         and measurement["all"]["sum_usec"] <= report["wall_elapsed_seconds"]*1e6+1,
+         "Rendered endpoint span exceeds the cycle's own monotonic wall duration")
+    need(finite_number(verdict.get("native_process_wall_seconds")) and verdict["native_process_wall_seconds"] > 0
+         and measurement["all"]["sum_usec"] <= verdict["native_process_wall_seconds"]*1e6+1,
+         "Rendered endpoint span exceeds independently observed native process lifetime")
+    span = obj(report.get("save_reload", {}).get("observed_operation_span"), "save_reload.observed_operation_span")
+    start = integer(span.get("start_usec"), "operation.start_usec", 1)
+    end = integer(span.get("end_usec"), "operation.end_usec", start+1)
+    elapsed = integer(span.get("elapsed_usec"), "operation.elapsed_usec", 1)
+    need(end-start == elapsed and measurement["first_endpoint_usec"] <= start < end <= measurement["last_endpoint_usec"],
+         "Real loaded-withdrawal disk operation span is invalid or outside rendered frame endpoints")
+    need(measurement["all"]["max_usec"] >= elapsed,
+         "Synchronous save/load operation is longer than every rendered frame interval")
+    need(any(isinstance(event, dict) and event.get("event") == "actual_disk_roundtrip"
+             and event.get("observed_operation_span") == span for event in report.get("events", [])),
+         "Disk operation span is not bound to the actual route roundtrip event")
+    return {"verified": True, "native_full_route_revalidated": True, "arithmetic_verified": True,
+        "performance_acceptance": "not_assessed", "expected_source_commit": expected_commit, "mission_id": mission,
+        "process_id": verdict["pid"], "main_instance_id": report.get("main_instance_id"),
+        "entire_run_proof":run_proof,
+        "inputs": {"campaign_report": report_file, "strict_verification": verification_file, "actual_final_state": final_file, "native_process_log": log_file},
+        "payload": payload, "actual_export_metadata": metadata,
+        "method": {"signal": measurement["signal"], "clock": measurement["clock"], "interval": measurement["interval"],
+            "phase_attribution": measurement.get("phase_attribution"), "active_policy": measurement.get("active_policy"),
+            "histogram_spec": measurement["histogram_spec"],
+            "units": "sum/max/interval bounds use microseconds; mean_ms uses milliseconds; observed_frames_per_second uses frames/second; count/tail/overflow fields count frame intervals",
+            "tail_counter_limit": "Exact recorded integer counters are checked jointly against order, histogram, sum and raw max. Fixed 1ms bins cannot independently reconstruct each within-bin sample.",
+            "scope": "Independent re-read of accepted actual native route proof and fixed-histogram arithmetic. No new game run, stable 60 FPS/minimum-hardware/performance acceptance or physical scanout claim."},
+        "endpoint_count": measurement["endpoint_count"], "first_endpoint_usec": measurement["first_endpoint_usec"],
+        "last_endpoint_usec": measurement["last_endpoint_usec"], "phase_boundary_count": measurement["phase_boundary_count"],
+        "state_boundary_count": measurement["state_boundary_count"], "all": summarize(measurement["all"]),
+        "active": summarize(measurement["active"]), "phases": {name:summarize(measurement["phases"][name]) for name in PHASES},
+        "excluded": {name:summarize(measurement["excluded"][name]) for name in EXCLUDED},
+        "recorded_readback_display": {"start":report["timing_display_start"], "final":report["timing_display_final"]},
+        "actual_save_load_operation_span": span}
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--verification", type=Path, required=True)
+    parser.add_argument("--expected-commit", required=True)
+    args = parser.parse_args()
+    try:
+        result = verify(args.report.resolve(), args.verification.resolve(), args.expected_commit)
+    except (Invalid, OSError, ValueError, KeyError, TypeError, ZeroDivisionError, AttributeError, IndexError, OverflowError) as error:
+        print(json.dumps({"verified":False, "performance_acceptance":"not_assessed", "errors":[str(error)]}, ensure_ascii=False, indent=2))
+        return 1
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
