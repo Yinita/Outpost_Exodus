@@ -126,6 +126,57 @@ static func _builder_warning(sim: Variant) -> String:
 	return "暂无空闲工人或工程师；可先下单，待施工队空闲后施工。"
 
 
+static func get_construction_status(sim: Variant, building_id: int) -> Dictionary:
+	# Observe the existing parcel/job only. No allocator, routing or simulation step.
+	var building: Dictionary = sim._get_building(building_id)
+	if building.is_empty() or float(building.get("hp", 0.0)) <= 0.0 or bool(building.get("abandoned", false)) or float(building.get("progress", 1.0)) >= 1.0:
+		return {}
+	var result: Dictionary = {"building_id": building_id, "name": sim._building_name(str(building.get("kind", ""))), "progress": float(building.get("progress", 0.0)), "source_name": "记录不可用", "builder_text": "未指定", "code": "missing_job", "text": "施工记录不可用。", "paused": bool(sim.paused)}
+	var job: Dictionary = {}
+	for candidate: Dictionary in sim._jobs:
+		if int(candidate.get("building_id", 0)) == building_id:
+			job = candidate
+			break
+	if job.is_empty(): return result
+	var camp: Dictionary = sim.get_camp(int(job.get("source_camp_id", 0)))
+	result["source_name"] = str(camp.get("name", "原供料营不存在"))
+	if bool(job.get("done", false)):
+		result["code"] = "cancelled"
+		result["text"] = "本工程已停止，尚未完工。"
+		return result
+	var builder: Dictionary = sim.get_unit(int(job.get("assigned", 0)))
+	var assigned: bool = not builder.is_empty() and float(builder.get("hp", 0.0)) > 0.0
+	if assigned:
+		result["builder_text"] = ("工程师" if str(builder.get("kind", "")) == "engineer" else "工人") + " #%d" % int(builder.id)
+	if camp.is_empty() or str(camp.get("state", "")) != "active":
+		result["code"] = "source_inactive"
+		result["text"] = "原供料营不存在或已停止接单；本工程当前不推进。"
+	elif not bool(job.get("funded", false)):
+		var missing: Dictionary = _missing(camp, Dictionary(job.get("costs", {})))
+		result["code"] = "awaiting_payment" if missing.is_empty() else "awaiting_materials"
+		result["text"] = "原供料营物资已足，等待重新备料与支付。" if missing.is_empty() else "原供料营缺少%s；等待重新备料。" % _cost_text(missing)
+	elif not assigned:
+		result["code"] = "awaiting_builder"
+		var materials: String = "材料已送达；" if bool(job.get("delivered", false)) else ""
+		result["text"] = materials + ("等待施工队接单。" if _builder_warning(sim).is_empty() else "暂无空闲工人或工程师；等待施工队空闲。")
+	elif not bool(job.get("picked_up", false)):
+		result["code"] = "collecting"
+		result["text"] = "指定人员正在前往供料营或领取材料。"
+	elif not bool(job.get("delivered", false)):
+		result["code"] = "delivering"
+		result["text"] = "材料运往工地，尚未送达。"
+	elif Vector2(builder.get("pos", Vector2.ZERO)).distance_to(Vector2(job.pos)) > 1.5:
+		result["code"] = "awaiting_arrival"
+		result["text"] = "材料已送达，指定施工人员尚未到场。"
+	elif str(job.get("kind", "")) == "exit" and not bool(building.get("powered", false)):
+		result["code"] = "waiting_power"
+		result["text"] = "材料与人员已到场，出口工程等待实际供能。"
+	else:
+		result["code"] = "building"
+		result["text"] = "材料与人员已到场。"
+	return result
+
+
 static func get_production_status(sim: Variant, camp_id: int, include_pause: bool = true) -> Dictionary:
 	var camp: Dictionary = sim.get_camp(camp_id)
 	var result: Dictionary = {"code": "no_camp", "text": "未选择驻点", "detail": "选择一个驻点查看本地生产。", "working": 0, "total": 0, "recipe": str(camp.get("recipe", "idle"))}

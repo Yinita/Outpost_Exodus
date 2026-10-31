@@ -56,13 +56,14 @@ func _draw() -> void:
 	_draw_objectives(screen, summary)
 	if main.started: _draw_guide(screen)
 	_draw_camp_cards(screen)
+	if main.menu.is_empty() and main.build_kind.is_empty() and not main.construction_readout.is_empty(): _draw_construction_details(screen)
 	_draw_dock(screen)
 	_draw_minimap(screen)
 	if main.feedback_left > 0.0:
 		var notification: Rect2 = Rect2(340, 82, maxf(300, screen.x - 670), 42)
 		_panel(notification, Color("253d40"), TEAL)
 		_text(notification.position + Vector2(14, 27), main.feedback, 16, PAPER, notification.size.x - 28)
-	if main.sim.paused and main.menu.is_empty() and main.build_kind.is_empty():
+	if _pause_banner_visible():
 		var pause_text: String = _pause_banner_text()
 		var pause_width: float = maxf(220, font.get_string_size(pause_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
 		var pause_left: float = (screen.x - pause_width) * 0.5
@@ -89,6 +90,11 @@ func _draw() -> void:
 
 func _pause_banner_text() -> String:
 	return "战术暂停 · %s 继续" % main.binding_label("pause_game")
+
+func _pause_banner_visible() -> bool:
+	# Project details already contain pause state; the central banner would cover
+	# their progress/source rows in compact logical viewports.
+	return main.sim.paused and main.menu.is_empty() and main.build_kind.is_empty() and main.construction_readout.is_empty()
 
 func _compact_tab_tip() -> String:
 	var status: String = "战术已暂停" if main.sim.paused else "地图继续运行"
@@ -638,20 +644,25 @@ func _resource_text(values: Dictionary) -> String:
 		parts.append(String(labels.get(key, key)) + " " + number)
 	return " / ".join(parts)
 
+func _construction_preview_rect(screen: Vector2) -> Rect2:
+	return Rect2(340, 140, minf(422, screen.x - 628), minf(230, screen.y - 350)) if screen.y < 840 else Rect2(18, 397, 300, clampf(screen.y - 607, 230, 248))
+
 func _draw_construction_preview(screen: Vector2) -> void:
-	var rect: Rect2 = Rect2(340, 140, minf(422, screen.x - 628), minf(230, screen.y - 350)) if screen.y < 840 else Rect2(18, 397, 300, clampf(screen.y - 607, 230, 248))
+	var rect: Rect2 = _construction_preview_rect(screen)
 	var plan: Dictionary = main.build_preview
 	var valid: bool = bool(plan.get("ok", false))
-	var accent: Color = TEAL if valid else RED
+	var choosing: bool = str(plan.get("code", "")) == "choose_map"
+	var accent: Color = MUTED if choosing else (TEAL if valid else RED)
 	var names: Dictionary = {"road": "道路", "camp": "前哨营地", "generator": "发电机", "workshop": "工坊", "tower": "岗哨炮塔", "barracks": "军营", "barricade": "临时路障"}
 	overlay_rects.append(rect)
 	_panel(rect, PANEL, accent)
 	var title: String = "施工预览 · " + String(names.get(main.build_kind, main.build_kind)) + (" · 暂停" if main.sim.paused else "")
 	_text(rect.position + Vector2(12, 27), title, 17, accent, rect.size.x - 24)
 	var camp_name: String = String(plan.get("camp_name", ""))
-	_text(rect.position + Vector2(12, 51), "供料：" + (camp_name if not camp_name.is_empty() else "无运作营地"), 13, PAPER, rect.size.x - 24)
+	var source_text: String = camp_name if not camp_name.is_empty() else ("无运作营地" if str(plan.get("code", "")) == "no_active_camp" else "选择位置后确定")
+	_text(rect.position + Vector2(12, 51), "供料：" + source_text, 13, PAPER, rect.size.x - 24)
 	var costs: Dictionary = plan.get("costs", {})
-	_text(rect.position + Vector2(12, 73), "需要：" + (_resource_text(costs) if not costs.is_empty() else "暂无可下单路线"), 13, GOLD, rect.size.x - 24)
+	_text(rect.position + Vector2(12, 73), "需要：" + ("选择位置后核对" if choosing else (_resource_text(costs) if not costs.is_empty() else "暂无可下单路线")), 13, GOLD, rect.size.x - 24)
 	var lines: Array[String] = _wrap_text(String(plan.get("message", "移动到地图选择施工位置。")), rect.size.x - 24, 14)
 	var limit: int = clampi(int((rect.size.y - 164) / 18) + 1, 1, 4)
 	for i: int in range(mini(limit, lines.size())):
@@ -661,6 +672,24 @@ func _draw_construction_preview(screen: Vector2) -> void:
 	if note.is_empty(): note = "左键下单 · 右键取消"
 	_text(Vector2(rect.position.x + 12, rect.end.y - 48), note, 12, GOLD, rect.size.x - 24)
 	_button(Rect2(rect.position.x + 12, rect.end.y - 36, rect.size.x - 24, 26), "取消施工", "cancel_build", "取消放置，不影响已安排的工程")
+
+func _construction_details_rect(screen: Vector2) -> Rect2:
+	return Rect2(Vector2((screen.x - 320.0) * 0.5, maxf(72.0, screen.y - 430.0)), Vector2(320, 228))
+
+func _draw_construction_details(screen: Vector2) -> void:
+	var rect: Rect2 = _construction_details_rect(screen)
+	var status: Dictionary = main.construction_readout
+	overlay_rects.append(rect)
+	_panel(rect, PANEL, TEAL)
+	_text(rect.position + Vector2(12, 26), str(status.get("name", "工地")) + " · 施工 %d%%" % int(float(status.get("progress", 0.0)) * 100.0), 17, PAPER, 296)
+	_bar(Rect2(rect.position + Vector2(12, 36), Vector2(296, 6)), float(status.get("progress", 0.0)), TEAL)
+	_text(rect.position + Vector2(12, 64), "供料：" + str(status.get("source_name", "记录不可用")), 14, PAPER, 296)
+	_text(rect.position + Vector2(12, 88), "施工者：" + str(status.get("builder_text", "未指定")), 14, PAPER, 296)
+	var lines: Array[String] = _wrap_text(str(status.get("text", "")), 296, 14)
+	for index: int in range(mini(3, lines.size())):
+		_text(rect.position + Vector2(12, 113 + index * 19), lines[index], 14, GOLD, 296)
+	_text(rect.position + Vector2(12, 181), "战术暂停 · 继续后推进" if bool(status.get("paused", false)) else "施工记录 · 不改变现有指令", 12, MUTED, 296)
+	_button(Rect2(rect.position + Vector2(12, 192), Vector2(296, 26)), "关闭详情", "close_project", "关闭工地详情；也可按Esc")
 
 func _draw_guide_dialog(screen: Vector2) -> void:
 	var panel_size: Vector2 = Vector2(minf(900, screen.x - 32), minf(620, screen.y - 32))
@@ -723,10 +752,21 @@ func handle_mouse(event: InputEventMouseButton) -> bool:
 				elif event.button_index == MOUSE_BUTTON_RIGHT: main._issue_context(tile)
 			elif event.button_index == MOUSE_BUTTON_LEFT: main.ui_action(item.action)
 			return true
+	return blocks_world_point(point)
+
+func blocks_world_point(point: Vector2) -> bool:
+	# Pure logical-viewport hit testing, shared by clicks and placement hover.
+	# Include panel gaps and disabled controls, not just enabled action hotspots.
+	if not main.menu.is_empty(): return true
+	for item: Dictionary in hotspots:
+		if Rect2(item.rect).has_point(point): return true
 	for rect: Rect2 in overlay_rects:
 		if rect.has_point(point): return true
 	var screen: Vector2 = get_viewport_rect().size
-	return not main.menu.is_empty() or point.y < 64 or point.y > screen.y - 190 or Rect2(18, 82, 300, 305).has_point(point) or Rect2(screen.x - 268, 82, 250, maxf(0, screen.y - 482)).has_point(point)
+	if not Rect2(Vector2.ZERO, screen).has_point(point): return true
+	if not main.build_kind.is_empty() and _construction_preview_rect(screen).has_point(point): return true
+	if not main.construction_readout.is_empty() and main.build_kind.is_empty() and _construction_details_rect(screen).has_point(point): return true
+	return point.y < 64 or point.y >= screen.y - 190 or Rect2(18, 82, 300, 305).has_point(point) or Rect2(screen.x - 268, 82, 250, maxf(0, screen.y - 482)).has_point(point)
 
 func _panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	var key: Array = [fill, border]

@@ -8,6 +8,7 @@ const Guide = preload("res://scripts/campaign_guide.gd")
 const SaveStore = preload("res://scripts/campaign_save_store.gd")
 const GameAudio = preload("res://scripts/game_audio.gd")
 const CampReadout = preload("res://scripts/camp_readout.gd")
+const ConstructionRules = preload("res://scripts/construction_rules.gd")
 const TILE: float = 48.0
 const MIN_CAMERA_ZOOM: float = 0.35
 const MAX_CAMERA_ZOOM: float = 1.6
@@ -28,6 +29,8 @@ var _camp_view_size: int = 0
 var current_tab: String = "build"
 var build_kind: String = ""
 var build_preview: Dictionary = {}
+var selected_project_id: int = 0
+var construction_readout: Dictionary = {}
 var production_readout: Dictionary = {}
 var recruit_plans: Dictionary = {}
 var training_readout: Dictionary = {}
@@ -281,14 +284,9 @@ func _refresh_camp_readouts(delta: float = 0.0, force: bool = false) -> void:
 func _refresh_context_readouts() -> void:
 	# Preview computation may involve routing. Reuse it until a simulation step,
 	# relevant input action, hovered tile or mode changes; clicks always re-query.
-	if started and menu.is_empty() and not build_kind.is_empty():
-		var key: Array = [sim, sim.time, _ui_revision, build_kind, world.hover_tile]
-		if key != _build_preview_key:
-			build_preview = sim.query_build(build_kind, world.hover_tile, false)
-			_build_preview_key = key
-	else:
-		build_preview = {}
-		_build_preview_key.clear()
+	_refresh_build_preview(get_viewport().get_mouse_position())
+	construction_readout = ConstructionRules.get_construction_status(sim, selected_project_id) if selected_project_id != 0 else {}
+	if construction_readout.is_empty(): selected_project_id = 0
 	if started and current_tab == "production":
 		var key: Array = [sim, sim.time, _ui_revision, selected_camp, sim.paused, menu]
 		if key != _production_readout_key:
@@ -310,7 +308,24 @@ func _refresh_context_readouts() -> void:
 		training_readout = {}
 		_training_readout_key.clear()
 
+func _refresh_build_preview(pointer: Vector2) -> void:
+	if started and menu.is_empty() and not build_kind.is_empty():
+		if hud.blocks_world_point(pointer):
+			world.hover_tile = Vector2i(-1, -1)
+			build_preview = {"ok": false, "code": "choose_map", "message": "移到地图选择施工位置。"}
+			_build_preview_key.clear()
+			return
+		var key: Array = [sim, sim.time, _ui_revision, build_kind, world.hover_tile]
+		if key != _build_preview_key:
+			build_preview = sim.query_build(build_kind, world.hover_tile, false)
+			_build_preview_key = key
+	else:
+		build_preview = {}
+		_build_preview_key.clear()
+
 func _cancel_pointer_modes() -> void:
+	selected_project_id = 0
+	construction_readout = {}
 	build_kind = ""
 	pending_task = ""
 	attack_move = false
@@ -349,6 +364,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.keycode == KEY_ESCAPE:
 			if not pending_task.is_empty() or attack_move or not build_kind.is_empty():
 				_cancel_pointer_modes()
+			elif selected_project_id != 0 and menu.is_empty():
+				ui_action("close_project")
 			elif menu == "campaigns":
 				ui_action("campaign_back")
 			elif menu == "restart":
@@ -428,6 +445,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera.position -= event.relative / camera.zoom
 
 func _select(point: Vector2, append: bool, same_kind: bool) -> void:
+	selected_project_id = 0
+	construction_readout = {}
 	var rect: Rect2 = Rect2(drag_start, point - drag_start).abs()
 	var click: bool = rect.size.length() < 12.0 / camera.zoom.x
 	if not append: selected_ids.clear()
@@ -453,6 +472,20 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 			selected_camp = int(closest.get("camp_id"))
 			camp_picked = true
 	if click and closest.is_empty():
+		if selected_ids.is_empty():
+			var nearest: float = INF
+			for building: Dictionary in sim.buildings:
+				if float(building.get("hp", 0.0)) <= 0.0 or bool(building.get("abandoned", false)) or float(building.get("progress", 1.0)) >= 1.0: continue
+				var size: Vector2 = world._building_visual_size(str(building.get("kind", "")))
+				var anchor: Vector2 = Vector2(building.pos) * TILE
+				var bounds: Rect2 = Rect2(anchor - Vector2(size.x * 0.5, size.y), Vector2(size.x, size.y + 34.0))
+				var distance_to_anchor: float = anchor.distance_squared_to(point)
+				if bounds.has_point(point) and distance_to_anchor < nearest:
+					selected_project_id = int(building.id)
+					nearest = distance_to_anchor
+		if selected_project_id != 0:
+			construction_readout = ConstructionRules.get_construction_status(sim, selected_project_id)
+			return
 		var best: float = 4.0
 		for camp: Dictionary in sim.camps:
 			var d: float = Vector2(camp.pos).distance_to(point / TILE)
@@ -696,6 +729,9 @@ func ui_action(action: String) -> void:
 		current_tab = action.trim_prefix("tab:")
 		_cancel_pointer_modes()
 	elif action == "cancel_build": _cancel_pointer_modes()
+	elif action == "close_project":
+		selected_project_id = 0
+		construction_readout = {}
 	elif action.begins_with("build:"):
 		_cancel_pointer_modes()
 		build_kind = action.trim_prefix("build:")
@@ -745,6 +781,8 @@ func start_campaign(mission_id: String = "") -> void:
 		return
 	sim.reset(42, requested)
 	world.motion.reset(sim)
+	selected_project_id = 0
+	construction_readout = {}
 	if is_instance_valid(game_audio): game_audio.prime(sim)
 	_ui_revision += 1
 	_build_preview_key.clear()
@@ -866,6 +904,8 @@ func load_campaign(slot: String = "manual") -> bool:
 	# touching the live run. Simulation.load_state is itself transactional.
 	if not sim.load_state(data): return false
 	world.motion.reset(sim)
+	selected_project_id = 0
+	construction_readout = {}
 	if is_instance_valid(game_audio): game_audio.prime(sim)
 	_ui_revision += 1
 	_build_preview_key.clear()
