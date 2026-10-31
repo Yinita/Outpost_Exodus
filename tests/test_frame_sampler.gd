@@ -1,5 +1,5 @@
 extends SceneTree
-## Synthetic arithmetic/boundary checks only. No Main, simulation or rendering.
+## Arithmetic plus direct headless callback/cycle checks. No Main/simulation.
 ## start() is deliberately never called; this does not prove native frame pacing.
 const Sampler = preload("res://scripts/diagnostics/frame_sampler.gd")
 var checks: int = 0
@@ -15,6 +15,7 @@ func _run() -> void:
 	_phase_and_state_boundaries()
 	_excluded_states_and_invalid_time()
 	_cycle_and_snapshot_boundaries()
+	_callback_cycle_boundaries()
 	_unknown_context_is_bounded_and_detached()
 	print("Frame sampler arithmetic checks: %d; failures: %d" % [checks, failures.size()])
 	for failure: String in failures: printerr(" - " + failure)
@@ -135,6 +136,37 @@ func _cycle_and_snapshot_boundaries() -> void:
 	second.phase_names[0] = "changed"
 	_check(JSON.stringify(sampler._snapshot(sampler._cycle)) == original_second and Sampler.PHASES[0] == "opening", "snapshot mutations cannot write back into counters, histogram or fixed phase names")
 	_conservation(sampler.snapshot_global(), "global across cycles")
+
+
+func _callback_cycle_boundaries() -> void:
+	var sampler: RefCounted = Sampler.new()
+	var context: Dictionary = {"phase": "other", "state": "menu"}
+	# Every call supplies a new Dictionary, just like runner._frame_context().
+	sampler._context = func() -> Dictionary: return {"phase": context.phase, "state": context.state}
+	sampler._global = sampler._new_series()
+	sampler._running = true
+	var cycles: Array[Dictionary] = []
+	for cycle_index: int in range(7):
+		sampler.begin_cycle()
+		context.phase = "other"
+		context.state = "menu"
+		OS.delay_usec(500)
+		sampler._on_frame_post_draw()
+		context.phase = "opening"
+		context.state = "active"
+		OS.delay_usec(500)
+		sampler._on_frame_post_draw()
+		OS.delay_usec(500)
+		sampler._on_frame_post_draw()
+		cycles.append(sampler.end_cycle())
+	sampler._running = false
+	var result: Dictionary = sampler.snapshot_global()
+	_check(result.endpoint_count == 21 and result["all"].count == 20, "actual callback path retains every interval across seven cycle resets")
+	_check(result["all"].sum_usec == result.last_endpoint_usec - result.first_endpoint_usec, "actual callback monotonic span equals all interval durations across cycle resets")
+	_check(result.excluded.transition.count == 13 and result.active.count == 7, "six between-cycle transition intervals remain in global accounting")
+	for cycle: Dictionary in cycles:
+		_check(cycle.endpoint_count == 3 and cycle["all"].count == 2 and cycle["all"].sum_usec == cycle.last_endpoint_usec - cycle.first_endpoint_usec, "actual callback cycle retains its own baseline and exact span")
+	_conservation(result, "actual callbacks across seven cycles")
 
 
 func _unknown_context_is_bounded_and_detached() -> void:

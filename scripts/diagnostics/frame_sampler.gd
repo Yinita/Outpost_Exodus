@@ -35,7 +35,7 @@ func stop() -> void:
 
 func begin_cycle() -> void:
 	_cycle = _new_series()
-	_cycle_previous.clear()
+	_cycle_previous = {}
 	_cycle_open = true
 
 
