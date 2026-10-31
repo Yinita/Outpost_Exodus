@@ -275,11 +275,11 @@ func _infrastructure_hint(sim: Variant, camp: Dictionary, step_number: int) -> b
 	for kind: String in ["generator", "workshop"]:
 		var building: Dictionary = _building(sim, kind, camp_id)
 		var label: String = "发电机" if kind == "generator" else "工坊"
-		var suggestion: Vector2 = _suggest_build_tile(sim, camp_position + (Vector2(2.0, -1.0) if kind == "generator" else Vector2(4.0, 1.0)))
 		if building.is_empty():
 			if not _can_afford(sim, camp, kind):
 				_funding_hint(sim, camp, step_number)
 				return true
+			var suggestion: Vector2 = _suggest_build_tile(sim, camp_position + (Vector2(2.0, -1.0) if kind == "generator" else Vector2(4.0, 1.0)))
 			if suggestion != UNKNOWN_TARGET and not bool(sim.road_connected(camp_position, suggestion)):
 				_set_hint(step_number, "先把本地道路接到设施附近", "用{build}把道路接到建议施工点附近。发电机和工坊都需要连接本营道路；营地之间的库存与电力不会远程共享。", suggestion)
 				return true
