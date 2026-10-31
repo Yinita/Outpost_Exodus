@@ -1,0 +1,13 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+PASS _test_reset_and_pause
+PASS _test_terrain_and_road_boundaries
+PASS _test_construction_cost_and_progress
+PASS _test_production_inputs_and_local_power
+PASS _test_recruitment_and_training_save
+PASS _test_independent_camp_and_evacuation
+PASS _test_camp_integrity
+PASS _test_pursuit_and_sealing
+PASS _test_exit_is_not_a_timer
+PASS _test_save_roundtrip_and_rejection
+Campaign checks: 170; failures: 0

@@ -1,0 +1,60 @@
+{
+  "ok": true,
+  "scope": "One sequential paired source fixture measurement, original workload/rules/actors retained, inclusive wall timing; not native FPS, no minimum hardware or release acceptance. Full cross-source byte trace compared separately.",
+  "baseline": {
+    "file": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path-cpu-baseline-v01.json",
+    "sha256": "6b71e496b0f4e532e49e4c4fcfeb6cbf8d69673733c351575563754baacf4d69",
+    "actual_process_exit": 0,
+    "completion_tool_chunk": "7db236"
+  },
+  "candidate": {
+    "file": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-candidate-v01.json",
+    "sha256": "b1d9e380c70a50c04b2b5f2c77359b7c88cbe5f4bf1beac38734794cd6c8d309",
+    "actual_process_exit": 0,
+    "completion_tool_chunk": "e844ae"
+  },
+  "rows": [
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_only",
+      "full_state_rng_and_guide_equal": true,
+      "baseline_tick_mean_ms": 17.993015,
+      "candidate_tick_mean_ms": 15.680765,
+      "tick_time_reduction_pct": 12.850820165491994,
+      "path_call_count_unchanged": true,
+      "path_calls": 1659,
+      "baseline_path_ms": 3265.288,
+      "candidate_path_ms": 2302.454,
+      "path_time_reduction_pct": 29.486954902599706
+    },
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_guide",
+      "full_state_rng_and_guide_equal": true,
+      "baseline_tick_mean_ms": 16.9603175,
+      "candidate_tick_mean_ms": 14.737325,
+      "tick_time_reduction_pct": 13.107021728809032
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_only",
+      "full_state_rng_and_guide_equal": true,
+      "baseline_tick_mean_ms": 17.411095,
+      "candidate_tick_mean_ms": 14.98776,
+      "tick_time_reduction_pct": 13.918337703630934,
+      "path_call_count_unchanged": true,
+      "path_calls": 1684,
+      "baseline_path_ms": 3168.314,
+      "candidate_path_ms": 2193.537,
+      "path_time_reduction_pct": 30.766426559993743
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_guide",
+      "full_state_rng_and_guide_equal": true,
+      "baseline_tick_mean_ms": 16.5342225,
+      "candidate_tick_mean_ms": 14.1179825,
+      "tick_time_reduction_pct": 14.613568917437759
+    }
+  ]
+}

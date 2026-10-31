@@ -1,0 +1,88 @@
+extends SceneTree
+## Private functional trace. No timing/FPS/CPU acceptance claim.
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+const Guide = preload("res://scripts/campaign_guide.gd")
+const Store = preload("res://scripts/campaign_save_store.gd")
+const ROOT: String = "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-v011-ridge-full/data/godot/app_userdata/逐营突围 · Outpost Exodus"
+const FIXTURES: Array[Dictionary] = [
+	{"file": "campaign-autosave.json.bak", "sha": "e20b44915d41b2a01edd3b03bc68d9aa0a0c6cf4debfd584f0f5bc921f1d6ff6"},
+	{"file": "campaign-autosave.json", "sha": "95f465417f7601f4e956600bc67343adb4688651e4aac03e97f84d0b1c5f41b8"}
+]
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+func _encoded(value: Variant) -> String:
+	return JSON.stringify(value, "", false, true)
+
+func _run() -> void:
+	var args: PackedStringArray = OS.get_cmdline_user_args()
+	if args.size() != 1 or not args[0].is_absolute_path() or not args[0].contains("/work/") or FileAccess.file_exists(args[0]) or FileAccess.file_exists(args[0] + ".json"):
+		printerr("Require one fresh absolute trace path in work")
+		quit(2)
+		return
+	var sources: Dictionary = {}
+	for source: String in ["res://scripts/campaign_simulation.gd", "res://scripts/campaign_guide.gd", "res://scripts/campaign_save_store.gd", "res://scripts/campaign_catalog.gd"]:
+		sources[source] = FileAccess.get_sha256(source)
+	var probe_sha: String = FileAccess.get_sha256(get_script().resource_path)
+	var trace: FileAccess = FileAccess.open(args[0], FileAccess.WRITE)
+	if trace == null:
+		quit(2)
+		return
+	var records: Array[Dictionary] = []
+	var ok: bool = true
+	for fixture: Dictionary in FIXTURES:
+		var path: String = ROOT.path_join(fixture.file)
+		if FileAccess.get_sha256(path) != fixture.sha:
+			ok = false
+			break
+		var read: Dictionary = Store.new().read(path)
+		if not bool(read.get("ok", false)):
+			ok = false
+			break
+		var sim: Variant = Simulation.new()
+		var guide: Variant = Guide.new()
+		var ui: Dictionary = read.data.ui
+		if not sim.load_state(read.data.duplicate(true)) or not guide.load_state(ui.guide.duplicate(true)):
+			ok = false
+			break
+		var living: int = 0
+		for unit: Dictionary in sim.units:
+			if unit.team == "enemy" and float(unit.hp) > 0.0: living += 1
+		if sim.mission_id != "ridge" or sim.units.size() != 107 or living != 100:
+			ok = false
+			break
+		var initial_time: float = sim.time
+		var updates: int = 0
+		trace.store_line(_encoded([fixture.file, 0, _encoded(sim.save_state()), str(sim._rng.state), _encoded(guide.save_state())]))
+		for tick: int in range(1, 401):
+			sim.tick(0.05)
+			if tick % 15 == 0:
+				var selection: Array = []
+				for id_value: Variant in ui.get("selected_ids", []):
+					var unit: Dictionary = sim.get_unit(int(id_value))
+					if not unit.is_empty() and float(unit.hp) > 0.0: selection.append(int(id_value))
+				guide.update(sim, selection, int(ui.get("selected_camp", 0)))
+				updates += 1
+			trace.store_line(_encoded([fixture.file, tick, _encoded(sim.save_state()), str(sim._rng.state), _encoded(guide.save_state())]))
+		var unchanged: bool = FileAccess.get_sha256(path) == fixture.sha
+		ok = ok and unchanged and updates == 26
+		records.append({"fixture": fixture, "initial_time": initial_time, "final_time": sim.time, "ticks": 400, "guide_updates": updates, "living_enemies_at_load": living, "units_at_load": 107, "input_unchanged": unchanged})
+		print("TRACE case=", fixture.file, " ticks=400 guide_updates=", updates)
+	trace.flush()
+	var write_error: Error = trace.get_error()
+	trace.close()
+	ok = ok and write_error == OK and records.size() == 2
+	for source: String in sources:
+		ok = ok and sources[source] == FileAccess.get_sha256(source)
+	ok = ok and probe_sha == FileAccess.get_sha256(get_script().resource_path)
+	var metadata: FileAccess = FileAccess.open(args[0] + ".json", FileAccess.WRITE)
+	if metadata == null:
+		quit(2)
+		return
+	metadata.store_string(JSON.stringify({"ok": ok, "scope": "Exact serialized per-tick plain Simulation/RNG/Guide trace from two actual native Ridge saves, no orders or rule/rate/actor changes. No timing or FPS claim.", "engine": Engine.get_version_info(), "sources": sources, "probe_sha256": probe_sha, "trace_sha256": FileAccess.get_sha256(args[0]), "records": records}, "\t", true, true) + "\n")
+	metadata.flush()
+	ok = ok and metadata.get_error() == OK
+	metadata.close()
+	print("PATH_STATE_TRACE ok=", ok)
+	quit(0 if ok else 1)

@@ -1,0 +1,9 @@
+{
+  "commit": "01fab48a8e33aa1b8463545ce68b7788647058c0",
+  "source_hashes": {
+    "scripts/campaign_simulation.gd": "f47d56fca884731a9d3694ced42c882240cb045fd9ec42f99ff493e1df6337da",
+    "tests/test_path_query_cache.gd": "1d28eeabe51d17d9ddefe5dbd345722db87709561d0c63c30707bf02934e3660",
+    "tests/test_path_query_cache.gd.uid": "015c56a020c7eb6d5cc3a56abdf46b3eb4423ff537d8bfdbe868a69f1afa84c4"
+  },
+  "scope": "Verbatim v01 before cross-time FIFO experiment; existing commit and v01 evidence untouched"
+}

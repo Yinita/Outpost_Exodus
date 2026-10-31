@@ -2,7 +2,19 @@
 
 This plan separates simulation correctness, human playability and distribution evidence. Passing one layer does not imply the others pass. Use the version in `docs/implementation-contract.md` and record the exact runtime/build for every run.
 
-## Current 0.11 preparation and rejected 0.10 evidence
+## Current 0.12 source validation and pending native results
+
+The bounded static path-query cache is derived state: reuse across ticks depends on unchanged navigation geometry and exact terrain/ramps context, paths returned to callers are independent arrays, and campaign saves omit the cache. Final simulation SHA is `8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb`. Main integrations `3e109ba`/`ab2a8a9` retain the original rules, actor population and 0.05 simulation step. Evidence is collected under `docs/benchmarks/v0.12/path-query-cache/`.
+
+Across two real 107-actor Ridge saves, compare initial full state plus every one of 400 ticks per fixture. All 802 complete serialized Simulation/RNG/Guide rows match byte-for-byte across baseline and final source, including 26 scheduled Guide updates per fixture; both trace processes have actual exit 0. The fixed CPU-observation probe SHA is `e5807e8947e91fabb37446e2c16d0cc935d90b89404e6f7868ecd6d16c9897c0`. In its unwrapped-Simulation/scheduled-Guide mode, mean simulation-tick elapsed time is 16.960→13.617 ms and 16.534→12.910 ms, about 19.7%/21.9% lower in this sequential source replay. Cold first samples remain included. The timed tick excludes the later Guide call; the whole-work window is recorded separately. Guide runs every 15 ticks, approximating 0.25 real seconds at 3× without exercising an actual real-time cadence. No Main, renderer, whole-campaign improvement or FPS acceptance is inferred from these source timings; simulation-only mode remains a separate isolation measurement.
+
+The actual unpacked 0.11 Linux payload at `be4998004f19b22c6c868f813644cca5704f84ed` subsequently passed Ridge-only native/clock/disk/frame-arithmetic collection with actual native/launcher/foreground collector exit 0. It ends at 1776 simulated seconds with six evacuees and truck; full simulation/UI/mission identity survives loaded-withdrawal disk continuation. See authoritative outer `../outpost-exodus-0.11.0-dev-ridge-release-evidence.json` and companion collection-process JSON. That release's `current_all_three_maps_completed=false`, `one_hour_soak_evidence=false` and `performance_acceptance=not_assessed` are explicit. Its exit-build 20.815 FPS/p 95[89,90)ms is bound to the old 0.11 package, not the cache source.
+
+**0.12 export, complete native route, FPS and hour validation are pending.** After final source/config/evidence binding, test the exact new exported payload through the ordinary Ridge route and phase/frame checker before deciding on a further hour run. Preserve actual 1920×1080/UI 1 readback, normal Main clock, original paid economy and full disk/mission/UI checks. A source trace, short replay, old Ridge pass or older 0.9 hour cannot replace the corresponding new native result. Human playability/listening, Windows/clean-machine, minimum hardware, rights and Steam gates remain open.
+
+## Historical 0.11 preparation and rejected 0.10 evidence
+
+The following section preserves the original0.11 pre-export snapshot. Its pending statements are historical; the later Ridge-only acceptance is recorded above, and no old result becomes0.12 evidence.
 
 The next source candidate prepares two small fixes: defer Guide infrastructure suggestions until a facility is missing and affordable; replace the sampler's cycle-previous Dictionary reference rather than clearing the object also referenced by the global previous endpoint. No simulation rule, public navigation contract, exit-hint rule, frame threshold or content budget is changed. **No 0.11 export, native full route, rendered FPS or elapsed-hour acceptance exists yet.** Historical candidate sections below retain their original date/source scope.
 

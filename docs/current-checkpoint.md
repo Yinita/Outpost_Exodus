@@ -1,8 +1,18 @@
 # Current development checkpoint
 
-Project: 逐营突围 / Outpost Exodus, preparing **0.11.0-dev** in the Guide-performance worktree. The objective remains a highly playable game that meets Steam release standards. The latest accepted actual package is 0.9; this working candidate is not release acceptance.
+Project: 逐营突围 / Outpost Exodus, preparing **0.12.0-dev** after the path-query cache integration. The objective remains a highly playable game that meets Steam release standards. The 0.11 package has accepted Ridge-only native evidence; the latest complete three-map/hour package remains 0.9. This working candidate is not release acceptance.
 
-## Current 0.11 fixes and bounded source evidence
+## Current 0.12 source cache and validation boundary
+
+The two path-cache commits are integrated on main as `3e109ba` and `ab2a8a9`. The bounded derived cache reuses static path queries across ticks while navigation geometry is unchanged, distinguishes navigation teams/resolved endpoints, copies returned paths and invalidates with the navigation/terrain lifecycle. It is absent from serialized campaign state. The final simulation source SHA is `8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb`.
+
+Two actual Ridge saves each contain 107 actors, including 100 living enemies. Initial state plus 400 normal 0.05 ticks per fixture yields 802 serialized full Simulation/RNG/Guide rows, byte-identical across the old source and final cache source; each fixture includes 26 scheduled Guide updates. Both actual trace processes exit 0. Fixed-probe `sim_guide` replay retains the unwrapped Simulation and saved Guide/UI context, updating Guide every 15 ticks. Mean synchronous simulation-tick time changes 16.960→13.617 ms and 16.534→12.910 ms, about 19.7%/21.9%. These tick windows exclude the subsequent Guide call; the enclosing workload is retained separately. This source observation does not execute real Main cadence or render frames. Simulation-only isolation results have their own narrower scope and do not supply a whole-game improvement claim. Evidence is retained under `docs/benchmarks/v0.12/path-query-cache/`.
+
+**No 0.12 export, native complete-route, rendered FPS or hour result exists yet.** The prior actual 0.11 Ridge package at `be4998004f19b22c6c868f813644cca5704f84ed` did complete an ordinary native route:1776 simulated seconds, six evacuees plus truck, full Sim/UI/mission disk continuation, with native/launcher/foreground collector exit 0. Authoritative outer `../outpost-exodus-0.11.0-dev-ridge-release-evidence.json` and `../outpost-exodus-0.11.0-dev-ridge-collection-process.json` retain the exact payload and single-route scope. That old package's exit-build 20.815 FPS/p 95[89,90)ms is not new-source performance; current-all-three-maps/hour and stable 60/minimum-hardware acceptance remain absent. The next exported payload must be observed independently.
+
+## Historical 0.11 pre-export fixes and bounded source evidence
+
+The following frozen-source records predate the subsequently accepted Ridge-only run above. Their then-pending export/native statements retain historical scope and do not describe current0.12 acceptance. Old candidate evidence and packages are unchanged.
 
 The Guide patch moves the infrastructure suggested-location search inside the missing-building branch, after the affordability check. Existing facilities and unfunded proposals no longer search for a location that the hint will not use. Hint text, targets, facility order, public navigation semantics, simulation rules and exit guidance are unchanged by this patch. Guide SHA changes from `340d4dc5771c4e808a109f6f29b2e214f526e26d77ff5135ed1e4098b9ea4fda` to `21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b`.
 

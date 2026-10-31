@@ -1,0 +1,682 @@
+{
+  "schema_version": 1,
+  "collection": "v0.12 path query cache source evidence",
+  "scope": "Source-only fixed-checkpoint synchronous wall timing and exact-state correctness; not native FPS or release acceptance",
+  "target_candidate_version": "0.12.0-dev",
+  "final_candidate_manifest": false,
+  "canonical_integration_commit": "ab2a8a9647a799c006f2771957e21bb1aa143f97",
+  "source_revisions": [
+    {
+      "stage": "baseline",
+      "git_commit": "be4998004f19b22c6c868f813644cca5704f84ed",
+      "recorded_runtime_source_hashes": {
+        "res://scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+        "res://scripts/campaign_guide.gd": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+        "res://scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+        "res://scripts/campaign_simulation.gd": "54e85c71cd98d6f0410ef268faca3f6b15a9cd27b2aaab0bf47287ff3bdd382a",
+        "res://scripts/construction_rules.gd": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+        "res://scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+        "res://scripts/recruitment_rules.gd": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641"
+      },
+      "runtime_hashes_match_commit": true
+    },
+    {
+      "stage": "v01",
+      "git_commit": "3e109ba1cd6350e3f2601ca2c7300cacfc144b01",
+      "recorded_runtime_source_hashes": {
+        "res://scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+        "res://scripts/campaign_guide.gd": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+        "res://scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+        "res://scripts/campaign_simulation.gd": "f47d56fca884731a9d3694ced42c882240cb045fd9ec42f99ff493e1df6337da",
+        "res://scripts/construction_rules.gd": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+        "res://scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+        "res://scripts/recruitment_rules.gd": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641"
+      },
+      "runtime_hashes_match_commit": true,
+      "test_hashes": {
+        "tests/test_path_query_cache.gd": "1d28eeabe51d17d9ddefe5dbd345722db87709561d0c63c30707bf02934e3660",
+        "tests/test_path_query_cache.gd.uid": "015c56a020c7eb6d5cc3a56abdf46b3eb4423ff537d8bfdbe868a69f1afa84c4",
+        "tests/test_navigation_combat.gd": "158dd541899ec94938b9d95caf71bc13ba636cc6fbccf2278f8e46e34d354764",
+        "tests/test_arrival_staging.gd": "f4cb01de09deece7b85445e26097ce72e693113d054cd7d91e66831e153f83e5",
+        "tests/test_campaign.gd": "adb011d3eeb99b784df6efe934e95d26ab5ac6d9c460a3a75919958dbecd9886"
+      }
+    },
+    {
+      "stage": "v02",
+      "git_commit": "ab2a8a9647a799c006f2771957e21bb1aa143f97",
+      "recorded_runtime_source_hashes": {
+        "res://scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+        "res://scripts/campaign_guide.gd": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+        "res://scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+        "res://scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+        "res://scripts/construction_rules.gd": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+        "res://scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+        "res://scripts/recruitment_rules.gd": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641"
+      },
+      "runtime_hashes_match_commit": true,
+      "test_hashes": {
+        "tests/test_path_query_cache.gd": "b8dd0b2761965371911d5c3215acb7c592c13a55e883bdbc0545f04e1093a7b2",
+        "tests/test_path_query_cache.gd.uid": "015c56a020c7eb6d5cc3a56abdf46b3eb4423ff537d8bfdbe868a69f1afa84c4",
+        "tests/test_navigation_combat.gd": "158dd541899ec94938b9d95caf71bc13ba636cc6fbccf2278f8e46e34d354764",
+        "tests/test_arrival_staging.gd": "f4cb01de09deece7b85445e26097ce72e693113d054cd7d91e66831e153f83e5",
+        "tests/test_campaign.gd": "adb011d3eeb99b784df6efe934e95d26ab5ac6d9c460a3a75919958dbecd9886"
+      }
+    }
+  ],
+  "source_bindings_scope": "Derived at collection from recorded runtime source hashes, retained snapshots and exact Git blobs; not a new test execution or contemporaneous process receipt.",
+  "external_source_snapshots": [
+    {
+      "stage": "v01",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/source-v01/scripts/campaign_simulation.gd",
+      "sha256": "f47d56fca884731a9d3694ced42c882240cb045fd9ec42f99ff493e1df6337da",
+      "bytes": 123265,
+      "copied_here": false,
+      "matches_integrated_commit": true,
+      "note": null
+    },
+    {
+      "stage": "v01",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/source-v01/tests/test_path_query_cache.gd",
+      "sha256": "1d28eeabe51d17d9ddefe5dbd345722db87709561d0c63c30707bf02934e3660",
+      "bytes": 10773,
+      "copied_here": false,
+      "matches_integrated_commit": true,
+      "note": null
+    },
+    {
+      "stage": "v01",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/source-v01/tests/test_path_query_cache.gd.uid",
+      "sha256": "a37d89d6212012a6aa4626d978824faf80e88639b01524770905cd026e1f457e",
+      "bytes": 20,
+      "copied_here": false,
+      "matches_integrated_commit": false,
+      "note": "Historical retained v01 UID differs from committed UID; Simulation and test.gd source bytes match. This UID is not asserted as final commit metadata."
+    },
+    {
+      "stage": "v02",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/source-v02/scripts/campaign_simulation.gd",
+      "sha256": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+      "bytes": 123635,
+      "copied_here": false,
+      "matches_integrated_commit": true,
+      "note": null
+    },
+    {
+      "stage": "v02",
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/source-v02/tests/test_path_query_cache.gd",
+      "sha256": "b8dd0b2761965371911d5c3215acb7c592c13a55e883bdbc0545f04e1093a7b2",
+      "bytes": 12676,
+      "copied_here": false,
+      "matches_integrated_commit": true,
+      "note": null
+    }
+  ],
+  "source_only": true,
+  "new_export_performed": false,
+  "new_native_full_route_performed": false,
+  "new_native_fps_validation_performed": false,
+  "new_one_hour_run_performed": false,
+  "performance_acceptance": "not_assessed",
+  "steam_ready": false,
+  "workload": {
+    "fixture_origin": "Two actual isolated v0.11 ordinary Ridge native autosaves",
+    "actors_each": 107,
+    "enemies_each": 100,
+    "friendlies_each": 7,
+    "ticks_each": 400,
+    "tick_delta_seconds": 0.05,
+    "guide_update_every_ticks": 15,
+    "scheduled_guide_updates_each": 26,
+    "cold_first_samples_included": true,
+    "rules_commands_rates_step_sizes_and_actor_counts_unchanged": true
+  },
+  "measurement_limits": [
+    "Inclusive monotonic wall microseconds with observer overhead, not process CPU accounting. Nested method timers must not be summed.",
+    "Plain Simulation+Guide mean tick timers exclude subsequent scheduled Guide/selection; whole-work means include it.",
+    "Guide every 15 ticks approximates 0.25 real seconds at 3x; this is not real-time UI/rendering measurement.",
+    "Wrapped Simulation-only and plain Simulation+Guide modes cannot be subtracted. One sequential paired source measurement does not establish a full-campaign/FPS/minimum-hardware improvement."
+  ],
+  "comparisons": {
+    "v01": {
+      "raw_cpu_comparison": "raw/cpu/path-cpu-comparison-v01.json",
+      "raw_full_trace_comparison": "raw/traces/path-cross-source-trace-comparison-v01.json",
+      "trace_rows": 802,
+      "root_actually_compared_complete_serialized_rows_byte_for_byte": true,
+      "sha_only_comparison": false,
+      "tick_scope": "tick() elapsed only, excluding subsequent scheduled Guide/selection",
+      "whole_work_scope": "tick plus subsequent scheduled Guide/selection in sim_guide mode, divided by 400 ticks",
+      "separate_tick_and_whole_work_means": [
+        {
+          "fixture": "ridge_exit_not_started_1533",
+          "mode": "sim_only",
+          "baseline_mean_tick_wall_ms": 17.993015,
+          "candidate_mean_tick_wall_ms": 15.680765,
+          "baseline_mean_whole_work_wall_ms": 17.994775,
+          "candidate_mean_whole_work_wall_ms": 15.682395
+        },
+        {
+          "fixture": "ridge_exit_not_started_1533",
+          "mode": "sim_guide",
+          "baseline_mean_tick_wall_ms": 16.960317500000002,
+          "candidate_mean_tick_wall_ms": 14.737325,
+          "baseline_mean_whole_work_wall_ms": 17.31468,
+          "candidate_mean_whole_work_wall_ms": 15.096935
+        },
+        {
+          "fixture": "ridge_late_exit_not_started_1669",
+          "mode": "sim_only",
+          "baseline_mean_tick_wall_ms": 17.411095,
+          "candidate_mean_tick_wall_ms": 14.98776,
+          "baseline_mean_whole_work_wall_ms": 17.412740000000003,
+          "candidate_mean_whole_work_wall_ms": 14.989450000000001
+        },
+        {
+          "fixture": "ridge_late_exit_not_started_1669",
+          "mode": "sim_guide",
+          "baseline_mean_tick_wall_ms": 16.5342225,
+          "candidate_mean_tick_wall_ms": 14.1179825,
+          "baseline_mean_whole_work_wall_ms": 16.802725,
+          "candidate_mean_whole_work_wall_ms": 14.389065
+        }
+      ]
+    },
+    "v02": {
+      "raw_cpu_comparison": "raw/cpu/path-cpu-comparison-v02.json",
+      "raw_full_trace_comparison": "raw/traces/path-cross-source-trace-comparison-v02.json",
+      "trace_rows": 802,
+      "root_actually_compared_complete_serialized_rows_byte_for_byte": true,
+      "sha_only_comparison": false,
+      "tick_scope": "tick() elapsed only, excluding subsequent scheduled Guide/selection",
+      "whole_work_scope": "tick plus subsequent scheduled Guide/selection in sim_guide mode, divided by 400 ticks",
+      "separate_tick_and_whole_work_means": [
+        {
+          "fixture": "ridge_exit_not_started_1533",
+          "mode": "sim_only",
+          "baseline_mean_tick_wall_ms": 17.993015,
+          "candidate_mean_tick_wall_ms": 10.0563725,
+          "baseline_mean_whole_work_wall_ms": 17.994775,
+          "candidate_mean_whole_work_wall_ms": 10.057934999999999
+        },
+        {
+          "fixture": "ridge_exit_not_started_1533",
+          "mode": "sim_guide",
+          "baseline_mean_tick_wall_ms": 16.960317500000002,
+          "candidate_mean_tick_wall_ms": 13.616790000000002,
+          "baseline_mean_whole_work_wall_ms": 17.31468,
+          "candidate_mean_whole_work_wall_ms": 13.975625
+        },
+        {
+          "fixture": "ridge_late_exit_not_started_1669",
+          "mode": "sim_only",
+          "baseline_mean_tick_wall_ms": 17.411095,
+          "candidate_mean_tick_wall_ms": 9.62073,
+          "baseline_mean_whole_work_wall_ms": 17.412740000000003,
+          "candidate_mean_whole_work_wall_ms": 9.622217500000001
+        },
+        {
+          "fixture": "ridge_late_exit_not_started_1669",
+          "mode": "sim_guide",
+          "baseline_mean_tick_wall_ms": 16.5342225,
+          "candidate_mean_tick_wall_ms": 12.909934999999999,
+          "baseline_mean_whole_work_wall_ms": 16.802725,
+          "candidate_mean_whole_work_wall_ms": 13.1766175
+        }
+      ]
+    }
+  },
+  "headless_correctness_processes": [
+    {
+      "stage": "v01",
+      "process": "raw/tests/v01/arrival-process.json",
+      "log": "raw/tests/v01/arrival.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v01",
+      "process": "raw/tests/v01/campaign-process.json",
+      "log": "raw/tests/v01/campaign.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v01",
+      "process": "raw/tests/v01/import-process.json",
+      "log": "raw/tests/v01/import.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v01",
+      "process": "raw/tests/v01/navigation-process.json",
+      "log": "raw/tests/v01/navigation.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v01",
+      "process": "raw/tests/v01/test-v01-process.json",
+      "log": "raw/tests/v01/test-v01.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v02",
+      "process": "raw/tests/v02/arrival-process.json",
+      "log": "raw/tests/v02/arrival.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v02",
+      "process": "raw/tests/v02/campaign-process.json",
+      "log": "raw/tests/v02/campaign.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v02",
+      "process": "raw/tests/v02/navigation-process.json",
+      "log": "raw/tests/v02/navigation.log",
+      "actual_exit_from_original_receipt": 0
+    },
+    {
+      "stage": "v02",
+      "process": "raw/tests/v02/test-process.json",
+      "log": "raw/tests/v02/test.log",
+      "actual_exit_from_original_receipt": 0
+    }
+  ],
+  "root_observed_process_scope": "Root supplied direct actual tool observations; archival did not rerun engines or infer exit status from logs.",
+  "root_observed_engine_exits": [
+    {
+      "run": "baseline CPU",
+      "actual_exit": 0,
+      "completion_tool_chunk": "7db236"
+    },
+    {
+      "run": "v01 CPU",
+      "actual_exit": 0,
+      "completion_tool_chunk": "e844ae"
+    },
+    {
+      "run": "v02 CPU",
+      "actual_exit": 0,
+      "completion_tool_chunk": "dc476e"
+    },
+    {
+      "run": "baseline trace",
+      "actual_exit": 0,
+      "completion_tool_chunk": "de28cf"
+    },
+    {
+      "run": "v01 trace",
+      "actual_exit": 0,
+      "completion_tool_chunk": "c62624"
+    },
+    {
+      "run": "v02 trace",
+      "actual_exit": 0,
+      "completion_tool_chunk": "634489"
+    }
+  ],
+  "root_observed_pure_comparisons": [
+    {
+      "run": "v01 full-byte trace comparison",
+      "actual_exit": 0,
+      "tool_chunk": "ac010a"
+    },
+    {
+      "run": "v01 CPU comparison",
+      "actual_exit": 0,
+      "tool_chunk": "c649da"
+    },
+    {
+      "run": "v02 full-byte trace comparison",
+      "actual_exit_reported_by_root": 0,
+      "tool_chunk": "14063f",
+      "receipt_scope": "This exec continued into the subsequent engine run; complete command chain actually finished exit 0 at dc476e. 14063f itself is not a terminal exec receipt."
+    },
+    {
+      "run": "v02 CPU comparison",
+      "actual_exit": 0,
+      "tool_chunk": "b1e08f"
+    }
+  ],
+  "external_complete_state_traces": [
+    {
+      "stage": "baseline",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path-baseline-trace-v01.jsonl",
+      "bytes": 276677815,
+      "sha256": "11ce1ff2c6acc951f6063f1a199c8fa765a836321037bb53106ca2e07412d45c",
+      "actual_sha256_checked_at_collection": true,
+      "copied_into_git": false,
+      "metadata": "raw/traces/path-baseline-trace-v01.jsonl.json",
+      "root_observed_engine_exit": 0,
+      "completion_tool_chunk": "de28cf"
+    },
+    {
+      "stage": "v01",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v01.jsonl",
+      "bytes": 276677815,
+      "sha256": "11ce1ff2c6acc951f6063f1a199c8fa765a836321037bb53106ca2e07412d45c",
+      "actual_sha256_checked_at_collection": true,
+      "copied_into_git": false,
+      "metadata": "raw/traces/path-candidate-trace-v01.jsonl.json",
+      "root_observed_engine_exit": 0,
+      "completion_tool_chunk": "c62624"
+    },
+    {
+      "stage": "v02",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v02.jsonl",
+      "bytes": 276677815,
+      "sha256": "11ce1ff2c6acc951f6063f1a199c8fa765a836321037bb53106ca2e07412d45c",
+      "actual_sha256_checked_at_collection": true,
+      "copied_into_git": false,
+      "metadata": "raw/traces/path-candidate-trace-v02.jsonl.json",
+      "root_observed_engine_exit": 0,
+      "completion_tool_chunk": "634489"
+    }
+  ],
+  "raw_files": [
+    {
+      "path": "raw/cpu/path-cpu-baseline-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path-cpu-baseline-v01.json",
+      "bytes": 136256,
+      "sha256": "6b71e496b0f4e532e49e4c4fcfeb6cbf8d69673733c351575563754baacf4d69",
+      "kind": "source CPU result/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/cpu/path-cpu-baseline-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path-cpu-baseline-v01.log",
+      "bytes": 557,
+      "sha256": "618f8e2a0950f1974e77cb783ffc740fbb2a38d3d485d9106da07f4ac61521d6",
+      "kind": "source CPU result/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-baseline-trace-v01.jsonl.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path-baseline-trace-v01.jsonl.json",
+      "bytes": 1757,
+      "sha256": "beea64f6c3f0539873f24bf559e5191554c0e620061bf2d328bd170e8fac6893",
+      "kind": "complete-state trace metadata/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-baseline-trace-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path-baseline-trace-v01.log",
+      "bytes": 224,
+      "sha256": "881fd7deb60ba10c0883752237671f557e9fd74277f0014b842d12770c9b6160",
+      "kind": "complete-state trace metadata/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/cpu/path-cpu-candidate-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-candidate-v01.json",
+      "bytes": 136292,
+      "sha256": "b1d9e380c70a50c04b2b5f2c77359b7c88cbe5f4bf1beac38734794cd6c8d309",
+      "kind": "source CPU result/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/cpu/path-cpu-candidate-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-candidate-v01.log",
+      "bytes": 568,
+      "sha256": "dff83fd98c81c718f25fdd23121390c5ddd16bf6982de8d31ad65f56b64f5f1e",
+      "kind": "source CPU result/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-candidate-trace-v01.jsonl.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v01.jsonl.json",
+      "bytes": 1757,
+      "sha256": "e9b3a5d5b0c8734fc82349ad4c415bc2c576d909b2d288fa0c4e49385b6fadd6",
+      "kind": "complete-state trace metadata/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-candidate-trace-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v01.log",
+      "bytes": 224,
+      "sha256": "881fd7deb60ba10c0883752237671f557e9fd74277f0014b842d12770c9b6160",
+      "kind": "complete-state trace metadata/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/cpu/path-cpu-candidate-v02.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-candidate-v02.json",
+      "bytes": 136256,
+      "sha256": "990143626e402662cdb46417c0776e590d14dc96c9bd56465965e0f496b2a3d6",
+      "kind": "source CPU result/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/cpu/path-cpu-candidate-v02.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-candidate-v02.log",
+      "bytes": 568,
+      "sha256": "77f6c17e82d2bb518699da946875fa610ecf343310da147b77fbeba52d56fa5a",
+      "kind": "source CPU result/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-candidate-trace-v02.jsonl.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v02.jsonl.json",
+      "bytes": 1757,
+      "sha256": "e7ef54a67dff46eb533a397ad1e34c5fd7dc83a529fc6c136c0fbf0c1a78137f",
+      "kind": "complete-state trace metadata/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-candidate-trace-v02.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-candidate-trace-v02.log",
+      "bytes": 224,
+      "sha256": "881fd7deb60ba10c0883752237671f557e9fd74277f0014b842d12770c9b6160",
+      "kind": "complete-state trace metadata/log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/cpu/path-cpu-comparison-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-comparison-v01.json",
+      "bytes": 2330,
+      "sha256": "0ac57a1fd3594811ff2d9286964749a7ef648e77dadbf011c412dfd5d6f2c2f0",
+      "kind": "original CPU comparison",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-cross-source-trace-comparison-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cross-source-trace-comparison-v01.json",
+      "bytes": 4880,
+      "sha256": "ff1ba5766589c484c5af3e74ac10ada5d97fce9ff9bd5903cd9fd9a0bd12cac7",
+      "kind": "original actual full-byte state comparison",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/cpu/path-cpu-comparison-v02.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-comparison-v02.json",
+      "bytes": 2381,
+      "sha256": "f1c7e70b9721a67085618b9c7f52e2ce84bd4593a6728b6fbde87091bc7769b4",
+      "kind": "original CPU comparison",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/traces/path-cross-source-trace-comparison-v02.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cross-source-trace-comparison-v02.json",
+      "bytes": 4857,
+      "sha256": "8942f70e44f2ce84eb72027c90bb06bed0c298a2e729a9ce29ca255cd8c01c07",
+      "kind": "original actual full-byte state comparison",
+      "verbatim_copy": true
+    },
+    {
+      "path": "CPU-probe.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path_cpu_profile_v01.gd",
+      "bytes": 20658,
+      "sha256": "e5807e8947e91fabb37446e2c16d0cc935d90b89404e6f7868ecd6d16c9897c0",
+      "kind": "unmodified source wall-time probe retained as text",
+      "verbatim_copy": true
+    },
+    {
+      "path": "state-trace-probe.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path_state_trace.gd",
+      "bytes": 4459,
+      "sha256": "acfb1cb3f51ee7e9119e21f405404fee3ba5a2d6b946bca9310b50b9a0e9834c",
+      "kind": "unmodified full-state trace probe retained as text",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/arrival-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/arrival-process.json",
+      "bytes": 469,
+      "sha256": "399a23046194ced7ef2b18e76c1607c0a53f2d3cfc0abaf5030c59b6fdc3a77f",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/arrival.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/arrival.log",
+      "bytes": 117,
+      "sha256": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/campaign-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/campaign-process.json",
+      "bytes": 462,
+      "sha256": "8388551bd0cbd1e71c3333ab563e3c2dcf73428fb0464354873afc3f069e4e04",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/campaign.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/campaign.log",
+      "bytes": 472,
+      "sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/import-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/import-process.json",
+      "bytes": 448,
+      "sha256": "3689380dc75862eebf10ee2ea1f1abab1ddb9efef4d191b86de8cd92acebd137",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/import.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/import.log",
+      "bytes": 9834,
+      "sha256": "db18fec8a5ded06561fa2ab26eeda84e3e5d28ffdc8b00842bd1026db0ca1f1c",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/navigation-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/navigation-process.json",
+      "bytes": 471,
+      "sha256": "2938429ee7d6812f8fa3a6c993d7bdd472d1965d8b2aecd788b144de0608a8ff",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/navigation.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/navigation.log",
+      "bytes": 1394,
+      "sha256": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/test-v01-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/test-v01-process.json",
+      "bytes": 473,
+      "sha256": "26876ace087cbaff1ad5c3e6cdfc133833f5880b5f4da6a1869768a9e5a1e0be",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v01/test-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v01/test-v01.log",
+      "bytes": 115,
+      "sha256": "b609446fdaf4e3ef7740da3812c188f23c71d5deb18834484c834d092b5547dc",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/arrival-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/arrival-process.json",
+      "bytes": 463,
+      "sha256": "001531df955d0f6ea5d0f6faba0bf7199500c115f37f3ea7241dd434f1ee9390",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/arrival.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/arrival.log",
+      "bytes": 117,
+      "sha256": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/campaign-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/campaign-process.json",
+      "bytes": 456,
+      "sha256": "e4b137d362fb2d4022ce46e698906785c15921feeac933e97850a17c67f57e1c",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/campaign.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/campaign.log",
+      "bytes": 472,
+      "sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/navigation-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/navigation-process.json",
+      "bytes": 465,
+      "sha256": "0428838d1b6c03a6934796ca4785910831e9691fbfda2a63f46fa5e135927554",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/navigation.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/navigation.log",
+      "bytes": 1394,
+      "sha256": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/test-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/test-process.json",
+      "bytes": 464,
+      "sha256": "fb096b1a5ac01bfa33a106e3df66dbcf05142ee4db853c78107bb5f516615558",
+      "kind": "original observed headless process receipt",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/test.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/test.log",
+      "bytes": 115,
+      "sha256": "4c77811b3508bc76f542d2b44e9c8a73869c6f11e8436ed757b0a06686c7c4b3",
+      "kind": "original observed headless correctness/import log",
+      "verbatim_copy": true
+    },
+    {
+      "path": "raw/tests/v02/before-v01-manifest.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-query-cache-v02/before-v01-manifest.json",
+      "bytes": 511,
+      "sha256": "c4b1cd476c3529e863eb020fc89b244582aed5089051e536bb09d02bcc673a23",
+      "kind": "original retained v01 source manifest",
+      "verbatim_copy": true
+    }
+  ],
+  "generated_files": [
+    {
+      "path": "code-size.json",
+      "bytes": 15745,
+      "sha256": "30d2f7d843b5557daacbc1af72ca52f7c39916ed494d6f047d0329647e1df4c0",
+      "original_source_path": null,
+      "kind": "Existing root-generated derived code-count/hash manifest, preserved unchanged; not copied raw evidence. All71 file hashes and per-file counts verified at collection."
+    }
+  ],
+  "preservation": "Existing v0.11, rejected v0.10 and other evidence untouched. Raw traces remain external. Original inputs and code-size.json unchanged. SHA256SUMS covers every retained file including this index, except itself."
+}

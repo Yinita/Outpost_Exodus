@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+SIMULATION_CPU_PROFILE_SAMPLE ridge_exit_not_started_1533 sim_only sample=0 ok=true
+SIMULATION_CPU_PROFILE_SAMPLE ridge_exit_not_started_1533 sim_guide sample=0 ok=true
+SIMULATION_CPU_PROFILE_SAMPLE ridge_late_exit_not_started_1669 sim_only sample=0 ok=true
+SIMULATION_CPU_PROFILE_SAMPLE ridge_late_exit_not_started_1669 sim_guide sample=0 ok=true
+SIMULATION_CPU_PROFILE ok=true output=/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-path-perf/work/path-cpu-candidate-v02.json
