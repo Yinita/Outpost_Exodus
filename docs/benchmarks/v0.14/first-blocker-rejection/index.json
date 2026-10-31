@@ -1,0 +1,402 @@
+{
+  "schema_version": 1,
+  "collection": "v0.14 first-blocker overlap rejection",
+  "scope": "Source functional equivalence and sequential ABBA fixture timing; no native FPS or minimum hardware acceptance",
+  "decision": {
+    "promoted_to_next_source": true,
+    "candidate_commit": "aaf5672f48d90d47feef9a4cbeb1b2526039218c",
+    "canonical_cherry_pick": "b484573",
+    "baseline_commit": "07ce02111d32df262342393b4bb48637c4a79ed1",
+    "candidate_simulation_sha256": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+    "reason": "Full per-tick state/RNG/Guide equivalence, boundary regression and repeated sequential paired source wall-time reductions on both retained real Ridge fixtures",
+    "performance_acceptance": "not_assessed",
+    "native_candidate_export_accepted_at_collection": false
+  },
+  "workload": {
+    "real_fixtures": 2,
+    "actors_each": 107,
+    "ticks_each": 400,
+    "step_seconds": 0.05,
+    "guide_every_ticks": 15,
+    "run_order": [
+      "baseline",
+      "candidate",
+      "candidate",
+      "baseline"
+    ],
+    "cold_first_ticks_retained": true
+  },
+  "comparison_rows": [
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_only",
+      "values": {
+        "baseline": {
+          "tick_mean_ms": [
+            10.105690000000001,
+            10.1266225
+          ],
+          "work_mean_ms": [
+            10.1071975,
+            10.1281175
+          ]
+        },
+        "candidate": {
+          "tick_mean_ms": [
+            8.6760875,
+            8.699755
+          ],
+          "work_mean_ms": [
+            8.6774525,
+            8.7011225
+          ]
+        }
+      },
+      "mean_tick_reduction_pct": 14.118356465678364,
+      "cross_source_final_state_sha_equal": true,
+      "cross_source_final_rng_equal": true
+    },
+    {
+      "fixture": "ridge_exit_not_started_1533",
+      "mode": "sim_guide",
+      "values": {
+        "baseline": {
+          "tick_mean_ms": [
+            13.6524875,
+            13.6360425
+          ],
+          "work_mean_ms": [
+            14.01085,
+            13.9930625
+          ]
+        },
+        "candidate": {
+          "tick_mean_ms": [
+            12.3197275,
+            12.247237499999999
+          ],
+          "work_mean_ms": [
+            12.679635000000001,
+            12.6073275
+          ]
+        }
+      },
+      "mean_tick_reduction_pct": 9.97329280837041,
+      "cross_source_final_state_sha_equal": true,
+      "cross_source_final_rng_equal": true
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_only",
+      "values": {
+        "baseline": {
+          "tick_mean_ms": [
+            9.700790000000001,
+            9.7029375
+          ],
+          "work_mean_ms": [
+            9.70214,
+            9.7043775
+          ]
+        },
+        "candidate": {
+          "tick_mean_ms": [
+            8.385922500000001,
+            8.434915
+          ],
+          "work_mean_ms": [
+            8.387287500000001,
+            8.43633
+          ]
+        }
+      },
+      "mean_tick_reduction_pct": 13.311308355572397,
+      "cross_source_final_state_sha_equal": true,
+      "cross_source_final_rng_equal": true
+    },
+    {
+      "fixture": "ridge_late_exit_not_started_1669",
+      "mode": "sim_guide",
+      "values": {
+        "baseline": {
+          "tick_mean_ms": [
+            12.9432075,
+            12.8985125
+          ],
+          "work_mean_ms": [
+            13.215950000000001,
+            13.1685725
+          ]
+        },
+        "candidate": {
+          "tick_mean_ms": [
+            11.7197175,
+            11.5675675
+          ],
+          "work_mean_ms": [
+            11.9900275,
+            11.834475000000001
+          ]
+        }
+      },
+      "mean_tick_reduction_pct": 9.88492639034865,
+      "cross_source_final_state_sha_equal": true,
+      "cross_source_final_rng_equal": true
+    }
+  ],
+  "functional_checks": {
+    "first_blocker": 381,
+    "path_cache": 194,
+    "navigation": 151,
+    "arrival": 2329,
+    "campaign": 170,
+    "guide": 211
+  },
+  "functional_failures": 0,
+  "complete_cross_source_comparisons": 1604,
+  "comparison_method": "Direct initial and every-tick complete encoded state text, exact RNG and scheduled Guide state; no tolerance or hash-only acceptance",
+  "limits": [
+    "Timing is inclusive monotonic wall microseconds, not process CPU accounting.",
+    "Sim-only method observers and plain Sim+Guide are separate scopes, not subtractable.",
+    "Two measurements per role, sequential ABBA; no statistical significance or universal performance claim.",
+    "No native rendered campaign, minimum hardware or human acceptance follows from this source comparison.",
+    "Yield branch remains the original algorithm; no yield optimization inferred from zero opportunity coverage."
+  ],
+  "root_process_observation_sha256": "231cab9cb70ccd5237252289332f65398fd27b68b7ea3e0ac91741b5732615f7",
+  "files": [
+    {
+      "archive": "raw/functional/baseline-source.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/baseline-source.json",
+      "bytes": 244,
+      "sha256": "373148ff4eb0e615c289e2d8f59e539f72d3d8c0e4628e9437654a642d08476d"
+    },
+    {
+      "archive": "raw/functional/campaign_simulation_oracle.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/campaign_simulation_oracle.gd",
+      "bytes": 123635,
+      "sha256": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb"
+    },
+    {
+      "archive": "raw/functional/compare_real_ridge.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/compare_real_ridge.gd",
+      "bytes": 6961,
+      "sha256": "6b778e3e520e517c5dc764b911d692d62a8e6ed6bec77624e57c196974c135e1"
+    },
+    {
+      "archive": "raw/functional/evidence-index.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/evidence-index.json",
+      "bytes": 6696,
+      "sha256": "f7e2c8182f8932aa0217e9b00e94187fd7f46e9f525fedab5cb4cc77ee6b092a"
+    },
+    {
+      "archive": "raw/functional/first-blocker.patch",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/first-blocker.patch",
+      "bytes": 16243,
+      "sha256": "856cc1fe2cb6dfbd9ac16defb45229f077cc4e0f5737b58518ca0f5ef2943c0c"
+    },
+    {
+      "archive": "raw/functional/import.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/import.log",
+      "bytes": 10012,
+      "sha256": "4b1a32c51652144dc8bf5f86f4297676f2452b44cba559cb3505e4c51ee9a502"
+    },
+    {
+      "archive": "raw/functional/original_movement_methods.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/original_movement_methods.gd.txt",
+      "bytes": 3023,
+      "sha256": "e3b7bab395fc2fc6f174abadbee3244ebcaba2e4c23d5f1d28f46ab9866389a5"
+    },
+    {
+      "archive": "raw/functional/real-ridge-comparison.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-comparison.json",
+      "bytes": 6454,
+      "sha256": "c9b6cbd35c25ec8614b48b4e18db55de0b84d53da986a065ca8223dd91a68798"
+    },
+    {
+      "archive": "raw/functional/real-ridge-comparison.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-comparison.log",
+      "bytes": 371,
+      "sha256": "1812dde5129ef029da3bfc61517f7e9275d20dd780b97cfa37f5e346ba216b55"
+    },
+    {
+      "archive": "raw/functional/real-ridge-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-process.json",
+      "bytes": 1124,
+      "sha256": "e34892e83796aba60ef0e1c8daf3be0b42762334f7512a65be623a13e58140c6"
+    },
+    {
+      "archive": "raw/functional/regression-processes.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/regression-processes.json",
+      "bytes": 4034,
+      "sha256": "cdabc1342ba66aaf6ec438c985399c5025cbf0062ed4a44e394cb1086b044e17"
+    },
+    {
+      "archive": "raw/functional/run-regressions.py.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/run-regressions.py",
+      "bytes": 1778,
+      "sha256": "9827a9c9c67f4f4b14defa056c5f3902851631c0e40137e46523ebcdcc82016d"
+    },
+    {
+      "archive": "raw/functional/static-preservation.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/static-preservation.json",
+      "bytes": 688,
+      "sha256": "2a5c7f7fa36cd741201f4cf2543bbd04a87026ccfebb6da613f404ee1ced4f67"
+    },
+    {
+      "archive": "raw/functional/test-first-blocker-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test-first-blocker-v01.log",
+      "bytes": 122,
+      "sha256": "240cd38fcb923c91031cf3833956019ed85747fbab923a6d4f4a572cc2e4d469"
+    },
+    {
+      "archive": "raw/functional/test_arrival_staging.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_arrival_staging.log",
+      "bytes": 117,
+      "sha256": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842"
+    },
+    {
+      "archive": "raw/functional/test_campaign.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_campaign.log",
+      "bytes": 472,
+      "sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e"
+    },
+    {
+      "archive": "raw/functional/test_guide.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_guide.log",
+      "bytes": 1184,
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349"
+    },
+    {
+      "archive": "raw/functional/test_navigation_combat.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_navigation_combat.log",
+      "bytes": 1394,
+      "sha256": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853"
+    },
+    {
+      "archive": "raw/functional/test_path_query_cache.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_path_query_cache.log",
+      "bytes": 115,
+      "sha256": "4c77811b3508bc76f542d2b44e9c8a73869c6f11e8436ed757b0a06686c7c4b3"
+    },
+    {
+      "archive": "raw/cpu/plan.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/plan.json",
+      "bytes": 4217,
+      "sha256": "fbccae3d7ff8a3e1ea04536f4376d0b1604a750959da5034e1916221ba40ede1"
+    },
+    {
+      "archive": "raw/cpu/summary.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/summary.json",
+      "bytes": 6852,
+      "sha256": "f9953f509435c1f822ffe07cadc1b6e33510dc8775bcbb75b20ee31b4c426b93"
+    },
+    {
+      "archive": "raw/cpu/01-baseline/report.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/01-baseline/report.json",
+      "bytes": 136257,
+      "sha256": "53a3f8dc989a86dc6470dd537415212b829b887198fea18b95074769b3f860dd"
+    },
+    {
+      "archive": "raw/cpu/01-baseline/process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/01-baseline/process.json",
+      "bytes": 888,
+      "sha256": "17a934b3a7dacc78176ba45bf44dab8836497eff44a01e312687dbb47078fe57"
+    },
+    {
+      "archive": "raw/cpu/01-baseline/process.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/01-baseline/process.log",
+      "bytes": 574,
+      "sha256": "9c3991976ea2aa21c3b8a3e2d1404105f331b8f97a61f08b4ea3de1e8410cb44"
+    },
+    {
+      "archive": "raw/cpu/02-candidate/report.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/02-candidate/report.json",
+      "bytes": 136154,
+      "sha256": "be7ead6fd53ee1149db60349512032f0bdc3de8b7de0c9393b1d2f36c1490617"
+    },
+    {
+      "archive": "raw/cpu/02-candidate/process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/02-candidate/process.json",
+      "bytes": 914,
+      "sha256": "440dc82c5aa60b9d2229d5574559e0a783c49c0054058ed75adf911195140de8"
+    },
+    {
+      "archive": "raw/cpu/02-candidate/process.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/02-candidate/process.log",
+      "bytes": 575,
+      "sha256": "df13f9a72b39b15cb9d24e9fec8dfc74a16b5c257bfb58689564c6be33dd74ee"
+    },
+    {
+      "archive": "raw/cpu/03-candidate/report.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/03-candidate/report.json",
+      "bytes": 136151,
+      "sha256": "e48ff34ce99f5e315cd078348443a00c4633966ee6ba856baebc77e180f9c921"
+    },
+    {
+      "archive": "raw/cpu/03-candidate/process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/03-candidate/process.json",
+      "bytes": 914,
+      "sha256": "66165863ec8698904da0f664fdafb38e3ad7dd2805128697177d936d679d85d7"
+    },
+    {
+      "archive": "raw/cpu/03-candidate/process.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/03-candidate/process.log",
+      "bytes": 575,
+      "sha256": "b0e41be8eef8ee6a05b0d43202765f64e2112857bba6f5e36a89c2d487a0d606"
+    },
+    {
+      "archive": "raw/cpu/04-baseline/report.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/04-baseline/report.json",
+      "bytes": 136259,
+      "sha256": "29505898ab395b4288f2f81ac016530eeb61074286f3fe24f879d9d2eb000805"
+    },
+    {
+      "archive": "raw/cpu/04-baseline/process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/04-baseline/process.json",
+      "bytes": 888,
+      "sha256": "fc17095bd63ea7b347383fdba26c5a44e4c036d896c51ed5ec1f59e8b6f806a4"
+    },
+    {
+      "archive": "raw/cpu/04-baseline/process.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01/04-baseline/process.log",
+      "bytes": 574,
+      "sha256": "d70a7a77520f41133739ca27743b41b385c8296807920c0556acff59968ed325"
+    },
+    {
+      "archive": "raw/observation/body_witness_opportunities_v01.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body_witness_opportunities_v01.gd",
+      "bytes": 21706,
+      "sha256": "744bd5278495aed2677cb2cbbee983ec87b997ea0d79a056889e6cc650bf7949"
+    },
+    {
+      "archive": "raw/observation/body-witness-opportunities-v01.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-witness-opportunities-v01.json",
+      "bytes": 15968,
+      "sha256": "6fa69616a0b0226dc1ba0f2cf620d8883aa9b0786e3f5635689a4237fd4c97af"
+    },
+    {
+      "archive": "raw/observation/body-witness-opportunities-v01-process.json",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-witness-opportunities-v01-process.json",
+      "bytes": 1238,
+      "sha256": "ee02365c739b420e17ee1c742a243b681ef048e5ae5bf3de0b1c05a193a05d90"
+    },
+    {
+      "archive": "raw/observation/body-witness-opportunities-v01.log",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-witness-opportunities-v01.log",
+      "bytes": 406,
+      "sha256": "15e5fc340fa5b76182b0b2da14c4e833a71a71a470412df0ae6f57918906adbf"
+    },
+    {
+      "archive": "raw/observation/path_cpu_profile_v01.gd.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/path_cpu_profile_v01.gd",
+      "bytes": 20658,
+      "sha256": "e5807e8947e91fabb37446e2c16d0cc935d90b89404e6f7868ecd6d16c9897c0"
+    },
+    {
+      "archive": "raw/observation/run_body_cpu_pair_v01.py.txt",
+      "original_path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/run_body_cpu_pair_v01.py",
+      "bytes": 7137,
+      "sha256": "5049ebf72b99e8c36b2f16177336a38ea7b1937eb4b91b37fce19ca0f9a0e708"
+    }
+  ]
+}

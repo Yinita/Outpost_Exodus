@@ -3,7 +3,7 @@ config_version=5
 
 [application]
 config/name="逐营突围 · Outpost Exodus"
-config/version="0.13.0-dev"
+config/version="0.14.0-dev"
 config/icon="res://assets/identity/icon.svg"
 config/description="向前建设，向后撤守。卡通废土战役式生存策略。"
 run/main_scene="res://main.tscn"

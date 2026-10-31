@@ -1,0 +1,124 @@
+"""Sequential ABBA source-fixture timing; never a rendered FPS acceptance."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import statistics
+import subprocess
+
+BASE = Path(__file__).resolve().parents[3]
+BASELINE = BASE / "outputs/outpost-exodus"
+CANDIDATE = BASE / "outputs/outpost-exodus-body-perf"
+ENGINE = BASE / "work/runtime/Godot_v4.7.2-stable_linux.x86_64"
+PROBE = BASELINE / "work/path_cpu_profile_v01.gd"
+PROBE_SHA = "e5807e8947e91fabb37446e2c16d0cc935d90b89404e6f7868ecd6d16c9897c0"
+BASELINE_COMMIT = "07ce02111d32df262342393b4bb48637c4a79ed1"
+BASELINE_SIM_SHA = "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb"
+
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def git(root, *args):
+    return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
+
+
+def freeze(root, commit, sim_sha):
+    assert git(root, "rev-parse", "HEAD") == commit, (root, "commit changed")
+    assert not git(root, "status", "--porcelain", "--untracked-files=no"), (root, "tracked changes")
+    assert sha(root / "scripts/campaign_simulation.gd") == sim_sha, (root, "simulation hash")
+    return {str(p.relative_to(root)): sha(p) for p in sorted((root / "scripts").glob("*.gd"))}
+
+
+def write(path, data):
+    with path.open("x") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--candidate-commit", required=True)
+    parser.add_argument("--candidate-sim-sha", required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    output = args.output.resolve()
+    assert "/work/" in str(output) and not output.exists(), "fresh work output required"
+    assert sha(PROBE) == PROBE_SHA, "original probe changed"
+    roots = {"baseline": BASELINE, "candidate": CANDIDATE}
+    commits = {"baseline": BASELINE_COMMIT, "candidate": args.candidate_commit}
+    sims = {"baseline": BASELINE_SIM_SHA, "candidate": args.candidate_sim_sha}
+    pins = {role: freeze(root, commits[role], sims[role]) for role, root in roots.items()}
+    assert {k: v for k, v in pins["baseline"].items() if k != "scripts/campaign_simulation.gd"} == {
+        k: v for k, v in pins["candidate"].items() if k != "scripts/campaign_simulation.gd"
+    }, "body-only comparison requires every other gameplay script identical"
+    output.mkdir(parents=True)
+    probe_copy = CANDIDATE / "work/root-body-paired-cpu-v01.gd"
+    assert not probe_copy.exists(), "refuse existing candidate probe"
+    probe_copy.parent.mkdir(exist_ok=True)
+    shutil.copy2(PROBE, probe_copy)
+    assert sha(probe_copy) == PROBE_SHA
+    order = ["baseline", "candidate", "candidate", "baseline"]
+    plan = {"scope": "Four sequential ABBA same-source-fixture runs; monotonic wall timing, not FPS or minimum hardware", "order": order,
+            "source_commits": commits, "source_hashes": pins, "probe_sha256": PROBE_SHA, "engine_sha256": sha(ENGINE),
+            "discarded_warmup_ticks": 0, "guide_every_ticks": 15, "ticks_per_fixture": 400,
+            "actor_count_each": 107, "performance_acceptance": "not_assessed"}
+    write(output / "plan.json", plan)
+    results = []
+    for index, role in enumerate(order, 1):
+        root = roots[role]
+        assert freeze(root, commits[role], sims[role]) == pins[role]
+        job = output / f"{index:02d}-{role}"
+        job.mkdir()
+        report, log = job / "report.json", job / "process.log"
+        script = "res://work/path_cpu_profile_v01.gd" if role == "baseline" else "res://work/root-body-paired-cpu-v01.gd"
+        argv = [str(ENGINE), "--headless", "--path", str(root), "--script", script, "--", "--output=" + str(report),
+                "--label=body-paired-v01-" + str(index) + "-" + role, "--mode=both", "--samples=1"]
+        env = os.environ.copy()
+        for key, name in [("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"), ("XDG_CACHE_HOME", "cache")]:
+            env[key] = str(job / name)
+        print(json.dumps({"stage": "starting", "index": index, "role": role}), flush=True)
+        with log.open("xb") as stream:
+            proc = subprocess.Popen(argv, cwd=root, env=env, stdout=stream, stderr=subprocess.STDOUT)
+            pid = proc.pid
+            returncode = proc.wait()
+        source_unchanged = freeze(root, commits[role], sims[role]) == pins[role]
+        receipt = {"argv": argv, "cwd": str(root), "pid": pid, "actual_wait_returncode": returncode,
+                   "source_commit": commits[role], "source_unchanged": source_unchanged,
+                   "report_sha256": sha(report) if report.exists() else None, "log_sha256": sha(log)}
+        write(job / "process.json", receipt)
+        assert returncode == 0 and source_unchanged, receipt
+        data = json.loads(report.read_text())
+        assert data["ok"] and data["sources_unchanged"] and data["probe_sha256_before"] == PROBE_SHA
+        assert len(data["records"]) == 4 and all(r["ok"] and r["timed_tick_calls"] == 400 for r in data["records"])
+        results.append((role, data))
+        print(json.dumps({"stage": "completed", "index": index, "role": role, "actual_wait_returncode": returncode}), flush=True)
+    rows = []
+    for original in results[0][1]["records"]:
+        fixture, mode = original["fixture"], original["mode"]
+        matched = [(role, next(r for r in data["records"] if r["fixture"] == fixture and r["mode"] == mode)) for role, data in results]
+        assert len({r["final_profiled_state_sha256"] for _, r in matched}) == 1
+        assert len({r["final_profiled_rng_state"] for _, r in matched}) == 1
+        values = {}
+        for role in roots:
+            records = [r for current, r in matched if current == role]
+            values[role] = {"tick_mean_ms": [r["method_metrics_inclusive"]["tick"]["inclusive_wall_usec"] / r["timed_tick_calls"] / 1000 for r in records],
+                            "work_mean_ms": [r["work_total_wall_usec"] / r["timed_tick_calls"] / 1000 for r in records]}
+        baseline = statistics.mean(values["baseline"]["tick_mean_ms"])
+        candidate = statistics.mean(values["candidate"]["tick_mean_ms"])
+        rows.append({"fixture": fixture, "mode": mode, "values": values, "mean_tick_reduction_pct": (baseline - candidate) / baseline * 100,
+                     "cross_source_final_state_sha_equal": True, "cross_source_final_rng_equal": True})
+    for role, root in roots.items():
+        assert freeze(root, commits[role], sims[role]) == pins[role]
+    summary = {"execution_complete": True, "scope": plan["scope"], "performance_acceptance": "not_assessed",
+               "not_proven": ["native FPS", "whole-campaign timing", "minimum hardware", "statistical significance", "per-tick cross-source equivalence; use separate full-state validation"],
+               "rows": rows, "source_commits": commits, "source_hashes": pins}
+    write(output / "summary.json", summary)
+    print(json.dumps({"stage": "complete", "summary": str(output / "summary.json")}), flush=True)
+
+
+if __name__ == "__main__":
+    main()

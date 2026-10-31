@@ -3,3 +3,5 @@
 *.ttc binary
 *.wav binary
 *.ogg binary
+# Unified-diff evidence retains its literal context prefixes and empty lines.
+docs/benchmarks/v0.14/first-blocker-rejection/raw/functional/first-blocker.patch -whitespace

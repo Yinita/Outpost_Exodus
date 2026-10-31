@@ -1,0 +1,133 @@
+{
+  "scope": "Merged source functional and native controlled UI evidence; no export, native FPS, fresh-player or Windows acceptance",
+  "source_runtime_sha256": {
+    "scripts/actor_atlas.gd": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+    "scripts/camp_readout.gd": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3",
+    "scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+    "scripts/campaign_guide.gd": "39e6bd3547d1b477375f86eb49268805c32e02f1d9b449a4ad3f25dccf6572aa",
+    "scripts/hud.gd": "982c2f03507e351044ccc11ccf3f0ecb95f613df71a3c152be6923b36bffff8b",
+    "scripts/construction_rules.gd": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+    "scripts/terrain_cache.gd": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+    "scripts/campaign_simulation.gd": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+    "scripts/recruitment_rules.gd": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
+    "scripts/actor_canvas.gd": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+    "scripts/render_motion.gd": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+    "scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+    "scripts/cartoon_canvas.gd": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+    "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+    "scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+    "scripts/game_audio.gd": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+    "scripts/world_view.gd": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098"
+  },
+  "source_unchanged_during_checks": true,
+  "all_actual_child_exits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "checks": {
+    "first_blocker": 381,
+    "camp_action_guidance": 32,
+    "pause_binding": 16,
+    "native_guidance_ui": 55,
+    "guide_full": 211
+  },
+  "root_foreground_actual_exit": 0,
+  "root_initial_tool_chunk": "5588e3",
+  "root_completion_tool_chunk": "42fdd3",
+  "root_session": 50504,
+  "screenshots": [
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v014-integrated/packing-source-action-small.png",
+      "sha256": "8b645283ede48cdfde12796efa7466538e4a0ceb9f45696e15c1dab59c2ef4fc",
+      "scope": "controlled source-project UI, not exported package or human playtest"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v014-integrated/packing-wrong-camp-guide-small.png",
+      "sha256": "b0a0557b27fd987286bcb4aa318e00de5f35c548316874f4fb4f00d8efbbb35d",
+      "scope": "controlled source-project UI, not exported package or human playtest"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v014-integrated/pause-backspace-small.png",
+      "sha256": "ce3542d5ca62284ae3253e93c1db028d53906ce84ac96dfef4cf06318f5d4abc",
+      "scope": "controlled source-project UI, not exported package or human playtest"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-ui-v014-integrated/pause-j-small.png",
+      "sha256": "37dff6b66d76bdb258ce60de2a652f7ec537bb33f4751297641ec18ccaeaf273",
+      "scope": "controlled source-project UI, not exported package or human playtest"
+    }
+  ],
+  "root_visual_review": "Actual Backspace screenshot inspected; key/action fit together on second tooltip line; wrong-camp full hint inspected in same-byte preceding guide capture.",
+  "files": [
+    {
+      "path": "raw/camp-guidance-process.json",
+      "sha256": "7e6d0e2a1be145390c9712dbab9a53609d8b4212508a19fdf8acdf069e0b5c2a",
+      "bytes": 541
+    },
+    {
+      "path": "raw/camp-guidance.log",
+      "sha256": "c6ab462a974368e2103bc98b5b06e7ad476cd682085d8e5e91c39edfec134453",
+      "bytes": 118
+    },
+    {
+      "path": "raw/first-blocker-process.json",
+      "sha256": "5a76d0b319325f83b91126697e0cc9db1a246edca338ba9bb5bb6bb0cfb96582",
+      "bytes": 548
+    },
+    {
+      "path": "raw/first-blocker.log",
+      "sha256": "240cd38fcb923c91031cf3833956019ed85747fbab923a6d4f4a572cc2e4d469",
+      "bytes": 122
+    },
+    {
+      "path": "raw/guide-full-process.json",
+      "sha256": "ed05fd7d9092794cca7b9bbdf11935b67b39d1979cb5557a66953396299826a9",
+      "bytes": 509
+    },
+    {
+      "path": "raw/guide-full.log",
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349",
+      "bytes": 1184
+    },
+    {
+      "path": "raw/import-process.json",
+      "sha256": "5e10f1b4959d903a228bc1c6ba8446f54984a97f530c3b730c2d06c1331e0b43",
+      "bytes": 446
+    },
+    {
+      "path": "raw/import.log",
+      "sha256": "a6d3e6d6f78ad3e4adf6c6260eac7149c7247c2a51abd8fee46b7d5184ea6b63",
+      "bytes": 1642
+    },
+    {
+      "path": "raw/native-guidance-process.json",
+      "sha256": "88d9b4c35732725e936711a2e765a2eeeac5a07a3d42a528c02060e57720deb9",
+      "bytes": 517
+    },
+    {
+      "path": "raw/native-guidance.log",
+      "sha256": "b450786feedc9c7cbf54e33db3cfbc366628e49c56b62a4dfb7c8ddc6762e71d",
+      "bytes": 1510
+    },
+    {
+      "path": "raw/pause-binding-process.json",
+      "sha256": "f4c7d15614cb1e510e5dbb6b69551a2fa02cc753ab172137f877d728ee5691c0",
+      "bytes": 540
+    },
+    {
+      "path": "raw/pause-binding.log",
+      "sha256": "a24aab5347d56e2c8bc463427b39cccaeb8da301b854b9593ca8df598a57f2d2",
+      "bytes": 117
+    },
+    {
+      "path": "raw/summary.json",
+      "sha256": "45363ccdc9801f244eed1ab05d59d1aa64ae31ec4ac63c3aed5a49ad51493873",
+      "bytes": 5422
+    }
+  ],
+  "docs_import_scope": "docs/.gdignore excludes documentary captures from engine imports; existing export presets also exclude docs/*."
+}

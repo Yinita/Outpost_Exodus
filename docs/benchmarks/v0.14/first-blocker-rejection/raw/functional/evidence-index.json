@@ -1,0 +1,159 @@
+{
+  "candidate_commit": "aaf5672f48d90d47feef9a4cbeb1b2526039218c",
+  "branch": "perf/first-blocker-rejection",
+  "base_commit": "07ce02111d32df262342393b4bb48637c4a79ed1",
+  "scope": "Functional headless correctness only; no CPU/performance timing or native/render/Main acceptance. Canonical tracked source unchanged.",
+  "engine": "Godot4.7.2-stable official ed1daf0bf",
+  "performance_acceptance": "not_assessed",
+  "source_sha256": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+  "test_sha256": "2ec7e97acd854a76be06096f8da4cdab0c9b4239efe9f8ec0a753bf880eb5caf",
+  "uid_sha256": "01db207b584b5a6c1fecc5b0ebade64154b7a4e84299ee41add126ea35b0f417",
+  "original_simulation_sha256": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+  "import": {
+    "actual_child_returncode": 0,
+    "observed_tool_completion_chunk": "a79864",
+    "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/import.log",
+    "sha256": "4b1a32c51652144dc8bf5f86f4297676f2452b44cba559cb3505e4c51ee9a502"
+  },
+  "regressions": [
+    {
+      "test": "test-first-blocker-v01",
+      "checks": 381,
+      "failures": 0,
+      "actual_child_returncode": 0,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test-first-blocker-v01.log",
+      "sha256": "240cd38fcb923c91031cf3833956019ed85747fbab923a6d4f4a572cc2e4d469"
+    },
+    {
+      "test": "test_path_query_cache",
+      "checks": 194,
+      "failures": 0,
+      "actual_child_returncode": 0,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_path_query_cache.log",
+      "sha256": "4c77811b3508bc76f542d2b44e9c8a73869c6f11e8436ed757b0a06686c7c4b3"
+    },
+    {
+      "test": "test_navigation_combat",
+      "checks": 151,
+      "failures": 0,
+      "actual_child_returncode": 0,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_navigation_combat.log",
+      "sha256": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853"
+    },
+    {
+      "test": "test_arrival_staging",
+      "checks": 2329,
+      "failures": 0,
+      "actual_child_returncode": 0,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_arrival_staging.log",
+      "sha256": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842"
+    },
+    {
+      "test": "test_campaign",
+      "checks": 170,
+      "failures": 0,
+      "actual_child_returncode": 0,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_campaign.log",
+      "sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e"
+    },
+    {
+      "test": "test_guide",
+      "checks": 211,
+      "failures": 0,
+      "actual_child_returncode": 0,
+      "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/test_guide.log",
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349"
+    }
+  ],
+  "new_test_actual_exit_observation_chunk": "addab4",
+  "total_regression_checks": 3436,
+  "cross_source_comparison": {
+    "actual_child_returncode": 0,
+    "fixture_mode_cases": 4,
+    "comparisons": 1604,
+    "ticks_each_case": 400,
+    "guide_updates_each_guide_case": 26,
+    "exact_strings_rng_guide": true,
+    "report": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-comparison.json",
+    "report_sha256": "c9b6cbd35c25ec8614b48b4e18db55de0b84d53da986a065ca8223dd91a68798",
+    "actual_exit_process_receipt": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-process.json"
+  },
+  "files": {
+    "baseline-source.json": {
+      "bytes": 244,
+      "sha256": "373148ff4eb0e615c289e2d8f59e539f72d3d8c0e4628e9437654a642d08476d"
+    },
+    "campaign_simulation_oracle.gd": {
+      "bytes": 123635,
+      "sha256": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb"
+    },
+    "campaign_simulation_oracle.gd.uid": {
+      "bytes": 19,
+      "sha256": "c423d541ef13cc3ecd562e2ff8b427e198e07746ed0e748ac2fda2989656c08a"
+    },
+    "compare_real_ridge.gd": {
+      "bytes": 6961,
+      "sha256": "6b778e3e520e517c5dc764b911d692d62a8e6ed6bec77624e57c196974c135e1"
+    },
+    "first-blocker.patch": {
+      "bytes": 16243,
+      "sha256": "856cc1fe2cb6dfbd9ac16defb45229f077cc4e0f5737b58518ca0f5ef2943c0c"
+    },
+    "import.log": {
+      "bytes": 10012,
+      "sha256": "4b1a32c51652144dc8bf5f86f4297676f2452b44cba559cb3505e4c51ee9a502"
+    },
+    "original_movement_methods.gd.txt": {
+      "bytes": 3023,
+      "sha256": "e3b7bab395fc2fc6f174abadbee3244ebcaba2e4c23d5f1d28f46ab9866389a5"
+    },
+    "real-ridge-comparison.json": {
+      "bytes": 6454,
+      "sha256": "c9b6cbd35c25ec8614b48b4e18db55de0b84d53da986a065ca8223dd91a68798"
+    },
+    "real-ridge-comparison.log": {
+      "bytes": 371,
+      "sha256": "1812dde5129ef029da3bfc61517f7e9275d20dd780b97cfa37f5e346ba216b55"
+    },
+    "real-ridge-process.json": {
+      "bytes": 1124,
+      "sha256": "e34892e83796aba60ef0e1c8daf3be0b42762334f7512a65be623a13e58140c6"
+    },
+    "regression-processes.json": {
+      "bytes": 4034,
+      "sha256": "cdabc1342ba66aaf6ec438c985399c5025cbf0062ed4a44e394cb1086b044e17"
+    },
+    "run-regressions.py": {
+      "bytes": 1778,
+      "sha256": "9827a9c9c67f4f4b14defa056c5f3902851631c0e40137e46523ebcdcc82016d"
+    },
+    "static-preservation.json": {
+      "bytes": 688,
+      "sha256": "2a5c7f7fa36cd741201f4cf2543bbd04a87026ccfebb6da613f404ee1ced4f67"
+    },
+    "test-first-blocker-v01.log": {
+      "bytes": 122,
+      "sha256": "240cd38fcb923c91031cf3833956019ed85747fbab923a6d4f4a572cc2e4d469"
+    },
+    "test_arrival_staging.log": {
+      "bytes": 117,
+      "sha256": "044cf2ef958f0b0891733145b159b981f05a210f28cbe8517d7fe3172510f842"
+    },
+    "test_campaign.log": {
+      "bytes": 472,
+      "sha256": "f9eb17b70267ef60e15842fab2f240deddfcab041f537875bf5783dd71275d5e"
+    },
+    "test_guide.log": {
+      "bytes": 1184,
+      "sha256": "e4922e8e205d8a3764f350f6ec380a014d6faf02a45fa512cf6291a8f45aa349"
+    },
+    "test_navigation_combat.log": {
+      "bytes": 1394,
+      "sha256": "f4b45ba68710e732f759ca6f480e1d42e8984bc5d0f8df67e6c216162557e853"
+    },
+    "test_path_query_cache.log": {
+      "bytes": 115,
+      "sha256": "4c77811b3508bc76f542d2b44e9c8a73869c6f11e8436ed757b0a06686c7c4b3"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "scope": "Root actual foreground execution observation, not reconstructed native FPS",
+  "argv": [
+    "python3",
+    "work/run_body_cpu_pair_v01.py",
+    "--candidate-commit",
+    "aaf5672f48d90d47feef9a4cbeb1b2526039218c",
+    "--candidate-sim-sha",
+    "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+    "--output",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-cpu-paired-v01"
+  ],
+  "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+  "actual_exit_code": 0,
+  "initial_tool_chunk": "d90e98",
+  "completion_tool_chunk": "59d81b",
+  "session_id": 81955,
+  "probe_sha256": "e5807e8947e91fabb37446e2c16d0cc935d90b89404e6f7868ecd6d16c9897c0",
+  "runner_sha256": "5049ebf72b99e8c36b2f16177336a38ea7b1937eb4b91b37fce19ca0f9a0e708",
+  "summary_sha256": "f9953f509435c1f822ffe07cadc1b6e33510dc8775bcbb75b20ee31b4c426b93"
+}

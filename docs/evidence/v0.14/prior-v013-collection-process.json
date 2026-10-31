@@ -1,0 +1,33 @@
+{
+  "scope": "Root observed foreground collector completion; technical seven-route/hour evidence only, not performance/human/Windows/Steam acceptance.",
+  "source_commit": "07ce02111d32df262342393b4bb48637c4a79ed1",
+  "argv": [
+    "python3",
+    "work/finalize_v013.py",
+    "--collect"
+  ],
+  "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+  "returncode": 0,
+  "observed_by": "tools.write_stdin",
+  "initial_tool_chunk": "fb076e",
+  "completion_tool_chunk": "8ff0bc",
+  "session_id": 33759,
+  "log_path": "outpost-exodus/work/v013-finalize.log",
+  "supervisor_foreground_observation": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/v013-native-soak-supervisor-observed.json",
+    "sha256": "15ab1b98423be734db5faf389291ec5a8c0640e9f230e93a0f8817631323464e",
+    "data": {
+      "scope": "Root observed foreground supervisor completion; strict launcher independently observed actual native exit. No final collection/performance/Steam acceptance inferred.",
+      "source_commit": "07ce02111d32df262342393b4bb48637c4a79ed1",
+      "argv": [
+        "python3",
+        "work/run_v013_soak_supervisor.py"
+      ],
+      "actual_exit_code": 0,
+      "completion_tool_chunk": "2f3786",
+      "session_id": 22381,
+      "supervisor_pid": 934327,
+      "supervisor_start_ticks": 10720854
+    }
+  }
+}

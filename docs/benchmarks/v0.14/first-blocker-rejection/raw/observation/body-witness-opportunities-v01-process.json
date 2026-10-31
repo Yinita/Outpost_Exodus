@@ -1,0 +1,22 @@
+{
+  "scope": "actual headless count-only functional opportunity observer; no Main, renderer or timing result",
+  "argv": [
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+    "--script",
+    "res://work/body_witness_opportunities_v01.gd",
+    "--",
+    "--output=/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-witness-opportunities-v01.json",
+    "--label=v013-body-witness-v01"
+  ],
+  "cwd": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+  "source_commit": "07ce02111d32df262342393b4bb48637c4a79ed1",
+  "script_sha256": "744bd5278495aed2677cb2cbbee983ec87b997ea0d79a056889e6cc650bf7949",
+  "actual_child_returncode": 0,
+  "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-witness-opportunities-v01.log",
+  "log_sha256": "15e5fc340fa5b76182b0b2da14c4e833a71a71a470412df0ae6f57918906adbf",
+  "report": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/body-witness-opportunities-v01.json",
+  "report_sha256": "6fa69616a0b0226dc1ba0f2cf620d8883aa9b0786e3f5635689a4237fd4c97af"
+}

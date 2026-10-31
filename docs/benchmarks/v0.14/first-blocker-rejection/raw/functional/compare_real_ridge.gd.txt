@@ -1,0 +1,125 @@
+extends SceneTree
+## Functional lockstep only. Frozen complete Simulation oracle, no timers.
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+const Oracle = preload("res://work/body-first-blocker-v01/campaign_simulation_oracle.gd")
+const Guide = preload("res://scripts/campaign_guide.gd")
+const Store = preload("res://scripts/campaign_save_store.gd")
+const EXPECTED_CANDIDATE: String = "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c"
+const EXPECTED_ORACLE: String = "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb"
+const ROOT: String = "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-v011-ridge-full/data/godot/app_userdata/逐营突围 · Outpost Exodus"
+const FIXTURES: Array[Dictionary] = [
+	{"file": "campaign-autosave.json.bak", "sha256": "e20b44915d41b2a01edd3b03bc68d9aa0a0c6cf4debfd584f0f5bc921f1d6ff6"},
+	{"file": "campaign-autosave.json", "sha256": "95f465417f7601f4e956600bc67343adb4688651e4aac03e97f84d0b1c5f41b8"}
+]
+var output: String = ""
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+func _encoded(value: Variant) -> String:
+	return JSON.stringify(value, "", false, true)
+
+func _sources() -> Dictionary:
+	var result: Dictionary = {}
+	for source: String in ["res://scripts/campaign_simulation.gd", "res://work/body-first-blocker-v01/campaign_simulation_oracle.gd", "res://scripts/campaign_guide.gd", "res://scripts/campaign_catalog.gd", "res://scripts/campaign_save_store.gd", "res://scripts/construction_rules.gd", "res://scripts/recruitment_rules.gd", get_script().resource_path]:
+		result[source] = FileAccess.get_sha256(source)
+	return result
+
+func _living_enemies(sim: Variant) -> int:
+	var result: int = 0
+	for unit: Dictionary in sim.units:
+		if unit.team == "enemy" and float(unit.hp) > 0.0: result += 1
+	return result
+
+func _guide_update(guide: Variant, sim: Variant, ui: Dictionary) -> void:
+	var selection: Array = []
+	for identifier: Variant in ui.get("selected_ids", []):
+		var unit: Dictionary = sim.get_unit(int(identifier))
+		if not unit.is_empty() and float(unit.hp) > 0.0: selection.append(int(identifier))
+	guide.update(sim, selection, int(ui.get("selected_camp", 0)))
+
+func _save(path: String, data: Dictionary) -> bool:
+	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+	if file == null: return false
+	file.store_string(JSON.stringify(data, "\t", true, true) + "\n")
+	file.flush()
+	var error: Error = file.get_error()
+	file.close()
+	return error == OK
+
+func _sample(fixture: Dictionary, with_guide: bool) -> Dictionary:
+	var path: String = ROOT.path_join(fixture.file)
+	var result: Dictionary = {"fixture": fixture.file, "with_guide": with_guide, "sha256_before": FileAccess.get_sha256(path), "ok": false}
+	if result.sha256_before != fixture.sha256: return result
+	var read: Dictionary = Store.new().read(path)
+	if not bool(read.get("ok", false)): return result
+	var sim: Variant = Simulation.new()
+	var oracle: Variant = Oracle.new()
+	var guide: Variant = Guide.new()
+	var old_guide: Variant = Guide.new()
+	var ui: Dictionary = read.data.ui
+	if not sim.load_state(read.data.duplicate(true)) or not oracle.load_state(read.data.duplicate(true)): return result
+	if not guide.load_state(ui.guide.duplicate(true)) or not old_guide.load_state(ui.guide.duplicate(true)): return result
+	if sim.mission_id != "ridge" or sim.units.size() != 107 or _living_enemies(sim) != 100: return result
+	var initial: float = sim.time
+	var updates: int = 0
+	var equal_steps: int = 0
+	var complete: bool = true
+	var state: String = ""
+	var old_state: String = ""
+	var guide_state: String = ""
+	var old_guide_state: String = ""
+	for tick: int in range(401):
+		if tick > 0:
+			sim.tick(0.05)
+			oracle.tick(0.05)
+			if with_guide and tick % 15 == 0:
+				_guide_update(guide, sim, ui)
+				_guide_update(old_guide, oracle, ui)
+				updates += 1
+		state = _encoded(sim.save_state())
+		old_state = _encoded(oracle.save_state())
+		guide_state = _encoded(guide.save_state())
+		old_guide_state = _encoded(old_guide.save_state())
+		if state != old_state or str(sim._rng.state) != str(oracle._rng.state) or guide_state != old_guide_state:
+			complete = false
+			result["first_mismatch_tick"] = tick
+			result["mismatch_written"] = _save(output + ".mismatch.json", {"tick": tick, "fixture": fixture, "with_guide": with_guide, "candidate": state, "oracle": old_state, "candidate_rng": str(sim._rng.state), "oracle_rng": str(oracle._rng.state), "candidate_guide": guide_state, "oracle_guide": old_guide_state})
+			break
+		equal_steps += 1
+	result.merge({"initial_time": initial, "final_time": sim.time, "full_state_rng_guide_comparisons": equal_steps, "ticks": equal_steps - 1,
+		"guide_updates_per_side": updates, "actor_count_at_load": 107, "living_enemies_at_load": 100,
+		"candidate_final_state_sha256": state.sha256_text(), "oracle_final_state_sha256": old_state.sha256_text(),
+		"candidate_final_guide_sha256": guide_state.sha256_text(), "oracle_final_guide_sha256": old_guide_state.sha256_text(),
+		"candidate_final_rng": str(sim._rng.state), "oracle_final_rng": str(oracle._rng.state), "sha256_after": FileAccess.get_sha256(path)})
+	result.ok = complete and equal_steps == 401 and updates == (26 if with_guide else 0) and result.sha256_before == result.sha256_after
+	return result
+
+func _run() -> void:
+	var args: PackedStringArray = OS.get_cmdline_user_args()
+	if args.size() != 1 or not args[0].is_absolute_path() or not args[0].contains("/work/") or FileAccess.file_exists(args[0]) or FileAccess.file_exists(args[0] + ".mismatch.json"):
+		printerr("Require fresh absolute work JSON path")
+		quit(2)
+		return
+	output = args[0]
+	var before: Dictionary = _sources()
+	if before["res://scripts/campaign_simulation.gd"] != EXPECTED_CANDIDATE or before["res://work/body-first-blocker-v01/campaign_simulation_oracle.gd"] != EXPECTED_ORACLE or Engine.time_scale != 1.0:
+		printerr("Source or clock guard failed")
+		quit(2)
+		return
+	var records: Array[Dictionary] = []
+	var ok: bool = true
+	for fixture: Dictionary in FIXTURES:
+		for with_guide: bool in [false, true]:
+			var record: Dictionary = _sample(fixture, with_guide)
+			records.append(record)
+			ok = ok and record.ok
+			print("BODY_FUNCTIONAL fixture=", fixture.file, " guide=", with_guide, " ok=", record.ok)
+			if not record.ok: break
+		if not ok: break
+	var after: Dictionary = _sources()
+	ok = ok and before == after and records.size() == 4
+	var report: Dictionary = {"ok": ok, "scope": "Exact per-tick full encoded state with entry order and exact RNG/Guide comparison against retained complete frozen07ce Simulation; two real Ridge107-actor saves, each400x0.05 steps with and without normal15tick Guide calls. No timing, FPS or native/Main claim.", "records": records, "sources_before": before, "sources_after": after, "engine": Engine.get_version_info(), "performance_acceptance": "not_assessed"}
+	ok = _save(output, report) and ok
+	print("BODY_FUNCTIONAL ok=", ok)
+	quit(0 if ok else 1)

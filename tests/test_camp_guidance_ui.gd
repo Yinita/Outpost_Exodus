@@ -89,6 +89,8 @@ func _test_pause_rebinding() -> void:
 	_check(app.hud._pause_banner_text().contains(label + " 继续"), "banner preserves complete current long key name")
 	await _hover_action("tab:training")
 	_check(app.hud.tooltip.contains(label + " 继续"), "actual training-tab hover uses the same complete long key name")
+	var tip_lines: Array[String] = app.hud._wrap_text(app.hud.tooltip, 332, 15, false)
+	_check(tip_lines.size() <= 2 and tip_lines[-1].contains(label + " 继续"), "long rebound key and action remain together within the two visible tooltip lines")
 	await _capture("pause-backspace-small.png", true)
 	case_completed = true
 

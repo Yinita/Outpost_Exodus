@@ -1,0 +1,66 @@
+func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
+	var radius: float = _unit_radius(unit)
+	var broadphase_radius: float = radius + MAX_UNIT_RADIUS
+	var unit_id: int = int(unit["id"])
+	for other in _nearby_bodies(position):
+		if int(other["id"]) == unit_id:
+			continue
+		var other_position: Vector2 = Vector2(other["pos"])
+		var offset: Vector2 = position - other_position
+		if absf(offset.x) > broadphase_radius or absf(offset.y) > broadphase_radius:
+			continue
+		if float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+			continue
+		var minimum: float = radius + _unit_radius(other) - 0.01
+		if offset.length_squared() < minimum * minimum:
+			return false
+	return true
+
+func _try_body_move(unit: Dictionary, destination: Vector2) -> bool:
+	if not _within_pursuit_front(unit, destination):
+		return false
+	if not _static_motion_clear(Vector2(unit["pos"]), destination, _unit_radius(unit), str(unit["team"])):
+		return false
+	if not _body_is_clear(unit, destination) and not _improves_existing_overlap(unit, destination):
+		return false
+	_set_unit_position(unit, destination)
+	return true
+
+func _improves_existing_overlap(unit: Dictionary, destination: Vector2) -> bool:
+	# Existing overlaps from old saves/spawn fixtures may slide apart along a
+	# wall; requiring a completely clear first step would deadlock both bodies.
+	var origin: Vector2 = Vector2(unit["pos"])
+	var radius: float = _unit_radius(unit)
+	var broadphase_radius: float = radius + MAX_UNIT_RADIUS
+	var unit_id: int = int(unit["id"])
+	var old_penetration: float = 0.0
+	var new_penetration: float = 0.0
+	var seen: Dictionary = {}
+	var neighbors: Array = _nearby_bodies(origin)
+	# Short movement within one bucket has exactly the same neighbor sequence.
+	# Avoid scanning it twice, and copy only when merging two cached snapshots.
+	var same_bucket: bool = Vector2i(origin.floor()) == Vector2i(destination.floor())
+	if not same_bucket:
+		neighbors = neighbors.duplicate()
+		neighbors.append_array(_nearby_bodies(destination))
+	for other in neighbors:
+		var identifier: int = int(other["id"])
+		if identifier == unit_id or (not same_bucket and seen.has(identifier)):
+			continue
+		var other_position: Vector2 = Vector2(other["pos"])
+		var old_offset: Vector2 = origin - other_position
+		var new_offset: Vector2 = destination - other_position
+		if (absf(old_offset.x) > broadphase_radius or absf(old_offset.y) > broadphase_radius) and (absf(new_offset.x) > broadphase_radius or absf(new_offset.y) > broadphase_radius):
+			continue
+		if float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+			continue
+		if not same_bucket:
+			seen[identifier] = true
+		var minimum: float = radius + _unit_radius(other) - 0.01
+		var previous: float = maxf(0.0, minimum - old_offset.length())
+		var next: float = maxf(0.0, minimum - new_offset.length())
+		if next > previous + EPSILON:
+			return false
+		old_penetration += previous
+		new_penetration += next
+	return old_penetration > EPSILON and new_penetration + EPSILON < old_penetration

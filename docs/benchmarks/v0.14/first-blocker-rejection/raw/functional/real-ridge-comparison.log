@@ -1,0 +1,7 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+
+BODY_FUNCTIONAL fixture=campaign-autosave.json.bak guide=false ok=true
+BODY_FUNCTIONAL fixture=campaign-autosave.json.bak guide=true ok=true
+BODY_FUNCTIONAL fixture=campaign-autosave.json guide=false ok=true
+BODY_FUNCTIONAL fixture=campaign-autosave.json guide=true ok=true
+BODY_FUNCTIONAL ok=true

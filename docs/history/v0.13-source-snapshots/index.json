@@ -1,0 +1,31 @@
+{
+  "scope": "Unchanged pre-export v0.13 source documentation; pending claims are historical. Later actual v0.13 acceptance is recorded separately.",
+  "source_commit": "07ce02111d32df262342393b4bb48637c4a79ed1",
+  "files": [
+    {
+      "original_path": "README.md",
+      "snapshot": "source-README.md",
+      "sha256": "73c91c4517369351a746e64a98be04b212cc4285d9831a12b9f56c0130580763"
+    },
+    {
+      "original_path": "docs/current-checkpoint.md",
+      "snapshot": "current-checkpoint.md",
+      "sha256": "b74d2b848723fc6fe2c3701575db2b5dcdcdb44c460789c238f16bb29cdd72ca"
+    },
+    {
+      "original_path": "docs/release-gates.md",
+      "snapshot": "release-gates.md",
+      "sha256": "661ebd0c08916d11d376c0bcc1fe22889c977f1a292c64d0f8ba6a9ab6c30244"
+    },
+    {
+      "original_path": "docs/validation-plan.md",
+      "snapshot": "validation-plan.md",
+      "sha256": "d8369fd3dbcb96dd90cf0ebe1bec2fcc32179b44b7922d94ce5dcbc5a59177a6"
+    },
+    {
+      "original_path": "docs/development-plan.md",
+      "snapshot": "development-plan.md",
+      "sha256": "93fdcfbdde858fd5f122888792a690cada911b3a4ad8e8c0d30b1fd9b6e93ca2"
+    }
+  ]
+}

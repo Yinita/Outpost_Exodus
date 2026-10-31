@@ -1,0 +1,24 @@
+from pathlib import Path
+import subprocess,json,hashlib
+root=Path('/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf')
+engine='/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64'
+work=root/'work/body-first-blocker-v01'
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+before=sha(root/'scripts/campaign_simulation.gd')
+records=[]
+for name in ['test_path_query_cache','test_navigation_combat','test_arrival_staging','test_campaign','test_guide']:
+ log=work/(name+'.log')
+ if log.exists():raise SystemExit('Refuse overwrite '+str(log))
+ args=[engine,'--headless','--path',str(root),'--script','res://tests/'+name+'.gd']
+ with log.open('xb') as f:proc=subprocess.run(args,stdout=f,stderr=subprocess.STDOUT)
+ text=log.read_text()
+ failures=any(s in text for s in ['SCRIPT ERROR:', 'Parse Error:', 'ERROR:'])
+ records.append({'test':name,'argv':args,'actual_child_returncode':proc.returncode,'error_text_present':failures,'log':str(log),'sha256':sha(log),'test_sha256':sha(root/('tests/'+name+'.gd'))})
+ print(name,'actual_exit',proc.returncode,'error_text',failures,flush=True)
+ for line in text.splitlines():
+  if 'checks' in line.lower() or 'failures' in line.lower():print(line,flush=True)
+ if proc.returncode or failures:break
+out={'scope':'Headless correctness regressions only, no performance timing claim.','source_before':before,'source_after':sha(root/'scripts/campaign_simulation.gd'),'records':records}
+out['ok']=len(records)==5 and out['source_before']==out['source_after'] and all(r['actual_child_returncode']==0 and not r['error_text_present'] for r in records)
+(work/'regression-processes.json').write_text(json.dumps(out,ensure_ascii=False,indent=2)+'\n')
+raise SystemExit(0 if out['ok'] else 1)

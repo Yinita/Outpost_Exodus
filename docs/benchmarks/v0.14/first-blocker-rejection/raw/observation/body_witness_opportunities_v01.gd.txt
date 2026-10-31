@@ -1,0 +1,366 @@
+extends SceneTree
+## Prepared-only, count-only first-blocker opportunity observer. No timers.
+## Fixed 0.05 steps, real retained bytes, no new orders/rules or Main/render/FPS claim.
+const Simulation = preload("res://scripts/campaign_simulation.gd")
+const SaveStore = preload("res://scripts/campaign_save_store.gd")
+const FIXTURE_ROOT: String = "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/native-v011-ridge-full/data/godot/app_userdata/逐营突围 · Outpost Exodus"
+const FIXTURES: Array[Dictionary] = [
+	{"label": "ridge_exit_not_started_1533", "file": "campaign-autosave.json.bak", "sha256": "e20b44915d41b2a01edd3b03bc68d9aa0a0c6cf4debfd584f0f5bc921f1d6ff6", "living_enemies": 100, "unit_count": 107},
+	{"label": "ridge_late_exit_not_started_1669", "file": "campaign-autosave.json", "sha256": "95f465417f7601f4e956600bc67343adb4688651e4aac03e97f84d0b1c5f41b8", "living_enemies": 100, "unit_count": 107}
+]
+const STEP: float = 0.05
+const STEPS: int = 400
+const EXPECTED_SIMULATION_SHA256: String = "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb"
+const CANONICAL_ROOT: String = "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus"
+const SOURCES: Array[String] = ["res://scripts/campaign_simulation.gd", "res://scripts/campaign_guide.gd",
+	"res://scripts/campaign_catalog.gd", "res://scripts/construction_rules.gd", "res://scripts/recruitment_rules.gd",
+	"res://scripts/campaign_save_store.gd", "res://scripts/main.gd"]
+
+class ObservedSimulation:
+	extends "res://scripts/campaign_simulation.gd"
+	var observing: bool = false
+	var observed_tick: int = 0
+	var counts: Dictionary = {}
+	var by_bucket: Dictionary = {}
+	var by_scope: Dictionary = {}
+	var first_contradiction: Dictionary = {}
+	var _context: Dictionary = {}
+	var _scope: String = "other"
+
+	func _new_bucket() -> Dictionary:
+		return {"checks": 0, "predicted_reject": 0, "fallback": 0, "actual_allowed": 0, "actual_rejected": 0, "contradictions": 0}
+
+	func reset_observer() -> void:
+		observing = false
+		counts = {"body_calls": 0, "body_clear": 0, "body_blocked": 0, "rescan_found": 0, "rescan_missing": 0,
+			"body_blocked_outside_immediate_chain": 0, "improves_calls": 0, "actual_allowed": 0, "actual_rejected": 0,
+			"matched_context": 0, "context_missing_or_changed": 0, "predicted_reject": 0, "fallback": 0, "contradictions": 0}
+		by_bucket = {"same_bucket": _new_bucket(), "cross_bucket": _new_bucket()}
+		by_scope = {"try_move": _new_bucket(), "yield": _new_bucket()}
+		first_contradiction = {}
+		_context = {}
+		_scope = "other"
+
+	func tick(delta: float) -> void:
+		_context = {}
+		super.tick(delta)
+		_context = {}
+
+	func _try_body_move(unit: Dictionary, destination: Vector2) -> bool:
+		if not observing: return super._try_body_move(unit, destination)
+		_context = {}
+		var previous_scope: String = _scope
+		_scope = "try_move"
+		var actual: bool = super._try_body_move(unit, destination)
+		_context = {}
+		_scope = previous_scope
+		return actual
+
+	func _yield_idle_friend(mover: Dictionary, destination: Vector2, direction: Vector2, travel: float) -> bool:
+		if not observing: return super._yield_idle_friend(mover, destination, direction, travel)
+		# Never carry a mover attempt's witness into or out of yielding another body.
+		_context = {}
+		var previous_scope: String = _scope
+		_scope = "yield"
+		var actual: bool = super._yield_idle_friend(mover, destination, direction, travel)
+		_context = {}
+		_scope = previous_scope
+		return actual
+
+	func _set_unit_position(unit: Dictionary, position: Vector2) -> void:
+		_context = {}
+		super._set_unit_position(unit, position)
+
+	func _first_blocker_for_observation(unit: Dictionary, position: Vector2) -> Dictionary:
+		# Exact original body-clear filter, order and squared-distance comparison.
+		var radius: float = _unit_radius(unit)
+		var broadphase_radius: float = radius + MAX_UNIT_RADIUS
+		var unit_id: int = int(unit["id"])
+		for other in _nearby_bodies(position):
+			if int(other["id"]) == unit_id:
+				continue
+			var other_position: Vector2 = Vector2(other["pos"])
+			var offset: Vector2 = position - other_position
+			if absf(offset.x) > broadphase_radius or absf(offset.y) > broadphase_radius:
+				continue
+			if float(other["hp"]) <= 0.0 or str(other["state"]) == "evacuated":
+				continue
+			var minimum: float = radius + _unit_radius(other) - 0.01
+			if offset.length_squared() < minimum * minimum:
+				return other
+		return {}
+
+	func _body_is_clear(unit: Dictionary, position: Vector2) -> bool:
+		_context = {}
+		# First obtain and always return the production result, never the rescan.
+		var actual: bool = super._body_is_clear(unit, position)
+		if not observing: return actual
+		counts.body_calls += 1
+		if actual:
+			counts.body_clear += 1
+			return actual
+		counts.body_blocked += 1
+		var blocker: Dictionary = _first_blocker_for_observation(unit, position)
+		if blocker.is_empty():
+			counts.rescan_missing += 1
+			return actual
+		counts.rescan_found += 1
+		if not _scope in ["try_move", "yield"]:
+			counts.body_blocked_outside_immediate_chain += 1
+			return actual
+		_context = {"unit": unit, "unit_id": int(unit["id"]), "destination": position,
+			"origin": Vector2(unit["pos"]), "time": time, "scope": _scope,
+			"blocker": blocker, "blocker_position": Vector2(blocker["pos"])}
+		return actual
+
+	func _improves_existing_overlap(unit: Dictionary, destination: Vector2) -> bool:
+		# Production evaluates its complete ordered scan before any prediction.
+		var actual: bool = super._improves_existing_overlap(unit, destination)
+		if not observing: return actual
+		counts.improves_calls += 1
+		if actual: counts.actual_allowed += 1
+		else: counts.actual_rejected += 1
+		var context: Dictionary = _context
+		_context = {} # Consume the witness, without clearing its shared object.
+		if context.is_empty() or not is_same(context.unit, unit) or int(context.unit_id) != int(unit["id"]) or context.destination != destination or context.origin != Vector2(unit["pos"]) or context.time != time or context.scope != _scope:
+			counts.context_missing_or_changed += 1
+			return actual
+		var blocker: Dictionary = context.blocker
+		if Vector2(blocker["pos"]) != context.blocker_position or float(blocker["hp"]) <= 0.0 or str(blocker["state"]) == "evacuated" or int(blocker["id"]) == int(unit["id"]):
+			counts.context_missing_or_changed += 1
+			return actual
+		counts.matched_context += 1
+		var origin: Vector2 = Vector2(unit["pos"])
+		var other_position: Vector2 = Vector2(blocker["pos"])
+		var old_offset: Vector2 = origin - other_position
+		var new_offset: Vector2 = destination - other_position
+		var minimum: float = _unit_radius(unit) + _unit_radius(blocker) - 0.01
+		var previous: float = maxf(0.0, minimum - old_offset.length())
+		var next: float = maxf(0.0, minimum - new_offset.length())
+		var predicted_reject: bool = next > previous + EPSILON
+		var contradiction: bool = predicted_reject and actual
+		var bucket: String = "same_bucket" if Vector2i(origin.floor()) == Vector2i(destination.floor()) else "cross_bucket"
+		if predicted_reject: counts.predicted_reject += 1
+		else: counts.fallback += 1
+		if contradiction: counts.contradictions += 1
+		for target: Dictionary in [by_bucket[bucket], by_scope[_scope]]:
+			target.checks += 1
+			if predicted_reject: target.predicted_reject += 1
+			else: target.fallback += 1
+			if actual: target.actual_allowed += 1
+			else: target.actual_rejected += 1
+			if contradiction: target.contradictions += 1
+		if contradiction and first_contradiction.is_empty():
+			first_contradiction = {"tick": observed_tick, "simulation_time": time, "unit_id": unit["id"], "blocker_id": blocker["id"],
+				"scope": _scope, "bucket": bucket, "origin": [origin.x, origin.y], "destination": [destination.x, destination.y],
+				"blocker_position": [other_position.x, other_position.y], "minimum": minimum, "previous": previous, "next": next, "actual_allowed": actual}
+		return actual
+
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+
+func _state(sim: Variant) -> String:
+	# Keep encoded entry order and full numeric text; no tolerance/normalization.
+	return JSON.stringify(sim.save_state(), "", false, true)
+
+
+func _sources() -> Dictionary:
+	var result: Dictionary = {}
+	for path: String in SOURCES: result[path] = FileAccess.get_sha256(path)
+	return result
+
+
+func _living_enemies(sim: Variant) -> int:
+	var count: int = 0
+	for unit: Dictionary in sim.units:
+		if str(unit.get("team", "")) == "enemy" and float(unit.get("hp", 0.0)) > 0.0: count += 1
+	return count
+
+
+func _actor_counts(sim: Variant) -> Dictionary:
+	var result: Dictionary = {"units_total": sim.units.size(), "living_by_team": {}, "collision_bodies": 0}
+	for unit: Dictionary in sim.units:
+		if float(unit.get("hp", 0.0)) <= 0.0: continue
+		var team: String = str(unit.get("team", ""))
+		result.living_by_team[team] = int(result.living_by_team.get(team, 0)) + 1
+		if str(unit.get("state", "")) != "evacuated": result.collision_bodies += 1
+	return result
+
+
+func _exit_flags(sim: Variant) -> Dictionary:
+	for building: Dictionary in sim.buildings:
+		if int(building.get("id", 0)) == int(sim.exit_building_id):
+			return {"id": building.id, "construction_started": bool(building.get("construction_started", false)),
+				"progress": float(building.get("progress", 0.0)), "powered": bool(building.get("powered", false)), "hp": float(building.get("hp", 0.0))}
+	return {"missing": true}
+
+
+func _coverage(calls: int, matched: int, predicted: int, contradictions: int) -> Dictionary:
+	var chain: bool = calls > 0 and matched > 0
+	var reject_covered: bool = chain and predicted > 0
+	return {"status": "not_covered" if not chain else ("covered" if reject_covered else "zero_opportunities"),
+		"witness_chain": {"status": "covered" if chain else "not_covered", "improves_calls": calls, "matched_context": matched},
+		"reject_implication": {"status": "covered" if reject_covered else ("zero_opportunities" if chain else "not_covered"),
+			"predicted_reject": predicted, "contradictions": contradictions,
+			"empirical_result": "failed" if contradictions > 0 else ("passed" if reject_covered else "not_covered")}}
+
+
+func _reported_groups(groups: Dictionary) -> Dictionary:
+	var result: Dictionary = groups.duplicate(true)
+	for name: String in result:
+		var row: Dictionary = result[name]
+		row["coverage"] = _coverage(int(row.checks), int(row.checks), int(row.predicted_reject), int(row.contradictions))
+	return result
+
+
+func _sample(fixture: Dictionary) -> Dictionary:
+	var path: String = FIXTURE_ROOT.path_join(str(fixture.file))
+	var result: Dictionary = {"fixture": fixture.label, "mode": "count_only_sim_lockstep", "path": path, "ok": false, "execution_valid": false, "overall_status": "failed",
+		"behavioral_consistency": "failed", "observation_integrity": "failed", "coverage": _coverage(0, 0, 0, 0),
+		"sha256_before": FileAccess.get_sha256(path), "expected_sha256": fixture.sha256}
+	if result.sha256_before != fixture.sha256:
+		result["error"] = "actual retained fixture missing or bytes changed"
+		return result
+	var loaded: Dictionary = SaveStore.new().read(path)
+	if not bool(loaded.get("ok", false)):
+		result["error"] = "actual save could not be read"
+		return result
+	var data: Dictionary = loaded.data
+	var sim: ObservedSimulation = ObservedSimulation.new()
+	var oracle: RefCounted = Simulation.new()
+	if not sim.load_state(data.duplicate(true)) or not oracle.load_state(data.duplicate(true)):
+		result["error"] = "observed/plain same-source Sim rejected actual save"
+		return result
+	var observed_state: String = _state(sim)
+	var plain_state: String = _state(oracle)
+	var start_time: float = float(sim.time)
+	var exact_equal: bool = observed_state == plain_state and str(sim._rng.state) == str(oracle._rng.state)
+	result.merge({"simulation_time_before": start_time, "actor_counts_before": _actor_counts(sim), "actual_exit_before": _exit_flags(sim),
+		"mission_id": str(sim.mission_id), "initial_state_sha256": observed_state.sha256_text(), "initial_full_state_and_rng_equal": exact_equal})
+	if not exact_equal or _living_enemies(sim) != int(fixture.living_enemies) or sim.units.size() != int(fixture.unit_count) or str(sim.mission_id) != "ridge":
+		result["error"] = "initial full state/RNG or actual mission/107-actor identity differs"
+		return result
+	sim.reset_observer()
+	var completed: int = 0
+	var first_tick_counts: Dictionary = {}
+	for index: int in range(STEPS):
+		sim.observed_tick = index + 1
+		sim.observing = true
+		sim.tick(STEP)
+		sim.observing = false
+		oracle.tick(STEP)
+		observed_state = _state(sim)
+		plain_state = _state(oracle)
+		completed = index + 1
+		if index == 0: first_tick_counts = sim.counts.duplicate(true)
+		if observed_state != plain_state or str(sim._rng.state) != str(oracle._rng.state):
+			exact_equal = false
+			result["first_state_mismatch"] = {"after_tick": completed, "observed": sim.save_state(), "plain": oracle.save_state(),
+				"observed_rng": str(sim._rng.state), "plain_rng": str(oracle._rng.state)}
+			break
+	result.merge({"completed_ticks": completed, "requested_ticks": STEPS, "fixed_step_seconds": STEP,
+		"actual_simulation_seconds": float(sim.time) - start_time, "actor_counts_after": _actor_counts(sim), "actual_exit_after": _exit_flags(sim),
+		"full_encoded_state_and_rng_equal_at_every_tick": exact_equal and completed == STEPS,
+		"final_observed_state_sha256": observed_state.sha256_text(), "final_plain_state_sha256": plain_state.sha256_text(),
+		"final_observed_rng_state": str(sim._rng.state), "final_plain_rng_state": str(oracle._rng.state),
+		"first_tick_counts": first_tick_counts, "counts": sim.counts, "by_bucket": _reported_groups(sim.by_bucket), "by_scope": _reported_groups(sim.by_scope),
+		"first_contradiction": sim.first_contradiction, "sha256_after": FileAccess.get_sha256(path)})
+	var behavior_valid: bool = exact_equal and completed == STEPS
+	var observations_valid: bool = int(sim.counts.contradictions) == 0 and int(sim.counts.rescan_missing) == 0 and int(sim.counts.context_missing_or_changed) == 0
+	result["behavioral_consistency"] = "passed" if behavior_valid else "failed"
+	result["observation_integrity"] = "passed" if observations_valid else "failed"
+	result["input_integrity"] = "passed" if result.sha256_after == result.sha256_before else "failed"
+	result["execution_valid"] = behavior_valid and observations_valid and result.sha256_after == result.sha256_before
+	result["coverage"] = _coverage(int(sim.counts.improves_calls), int(sim.counts.matched_context), int(sim.counts.predicted_reject), int(sim.counts.contradictions))
+	result["overall_status"] = "failed" if not result.execution_valid else ("passed" if result.coverage.status == "covered" else result.coverage.status)
+	result["ok"] = result.overall_status == "passed"
+	return result
+
+
+func _run() -> void:
+	var output: String = ""
+	var label: String = ""
+	for arg: String in OS.get_cmdline_user_args():
+		if arg.begins_with("--output="): output = arg.trim_prefix("--output=")
+		elif arg.begins_with("--label="): label = arg.trim_prefix("--label=")
+		else:
+			printerr("BODY_WITNESS_OPPORTUNITIES_REFUSED invalid argument: ", arg)
+			quit(2)
+			return
+	if not output.is_absolute_path() or not output.simplify_path().contains("/work/") or FileAccess.file_exists(output) or DirAccess.dir_exists_absolute(output) or label.is_empty():
+		printerr("BODY_WITNESS_OPPORTUNITIES_REFUSED require fresh absolute work JSON and label")
+		quit(2)
+		return
+	if ProjectSettings.globalize_path("res://").trim_suffix("/") != CANONICAL_ROOT or FileAccess.get_sha256("res://scripts/campaign_simulation.gd") != EXPECTED_SIMULATION_SHA256 or not is_equal_approx(Engine.time_scale, 1.0):
+		printerr("BODY_WITNESS_OPPORTUNITIES_REFUSED require canonical8f80 source and normal engine time scale")
+		quit(2)
+		return
+	var before: Dictionary = _sources()
+	var probe_before: String = FileAccess.get_sha256(get_script().resource_path)
+	var records: Array[Dictionary] = []
+	var execution_valid: bool = true
+	var behavior_valid: bool = true
+	var observations_valid: bool = true
+	var all_covered: bool = true
+	var any_chain_covered: bool = false
+	var any_reject_covered: bool = false
+	for fixture: Dictionary in FIXTURES:
+		var result: Dictionary = _sample(fixture)
+		records.append(result)
+		execution_valid = execution_valid and bool(result.get("execution_valid", false))
+		behavior_valid = behavior_valid and result.get("behavioral_consistency", "failed") == "passed"
+		observations_valid = observations_valid and result.get("observation_integrity", "failed") == "passed"
+		all_covered = all_covered and result.get("overall_status", "failed") == "passed"
+		any_chain_covered = any_chain_covered or result.coverage.witness_chain.status == "covered"
+		any_reject_covered = any_reject_covered or result.coverage.reject_implication.status == "covered"
+		print("BODY_WITNESS_OPPORTUNITIES_SAMPLE ", fixture.label, " status=", result.overall_status)
+	var after: Dictionary = _sources()
+	var probe_after: String = FileAccess.get_sha256(get_script().resource_path)
+	var sources_valid: bool = before == after and probe_before == probe_after and str(after["res://scripts/campaign_simulation.gd"]) == EXPECTED_SIMULATION_SHA256
+	execution_valid = execution_valid and sources_valid
+	var overall_status: String = "failed"
+	if execution_valid:
+		if all_covered: overall_status = "passed"
+		elif not any_chain_covered: overall_status = "not_covered"
+		elif not any_reject_covered: overall_status = "zero_opportunities"
+		else: overall_status = "partial_coverage"
+	var ok: bool = overall_status == "passed"
+	var report: Dictionary = {"schema_version": 1, "label": label, "ok": ok, "overall_status": overall_status,
+		"execution_valid": execution_valid, "behavioral_consistency": "passed" if behavior_valid else "failed",
+		"observation_integrity": "passed" if observations_valid else "failed", "source_integrity": "passed" if sources_valid else "failed",
+		"coverage": {"all_fixtures_fully_covered": all_covered, "any_witness_chain_covered": any_chain_covered, "any_reject_implication_covered": any_reject_covered},
+		"mode": "count_only_sim_lockstep", "timing_collected": false,
+		"performance_acceptance": "not_assessed", "optimization_acceptance": "not_assessed",
+		"scope": "Pure opportunity observation on two exact real Ridge saves,107 actors,400x0.05 steps per save. No Guide, Main, renderer, wall cadence, FPS or optimization proof.",
+		"method": "Production body-clear bool is obtained first; only false results are additionally rescanned in original filter/bucket order for the first live blocker. Production full overlap result is obtained first; matching same-unit/reference,destination,origin,time,scope and unchanged live-blocker position then permit counting the original per-pair formula. Every override returns production's actual result regardless of prediction.",
+		"context_scope": "Only one immediate try-move or yield inner check chain. Context is replaced on each body query, consumed after overlap, and discarded at try/yield/tick boundaries and every position write. Outside-chain recovery scans do not retain a context. No cross-unit, cross-attempt or cross-yield reuse.",
+		"counter_scope": "Counts are observer-instrumented opportunities, not avoided production work. matched_context splits into predicted_reject or fallback; contradiction means predicted_reject with actual_allowed. Same/cross buckets and try/yield scopes are fixed bounded categories. No hit-rate-derived speedup is claimed.",
+		"coverage_scope": "Behavior/integrity and coverage are distinct. A chain needs improves_calls>0 and matched_context>0. The reject implication needs predicted_reject>0; otherwise it is not empirically established. Zero checks is not_covered, a covered chain with no predicted rejects is zero_opportunities. Overall passed/ok requires both fixed fixtures fully covered; partial or zero coverage never becomes passed.",
+		"exit_status_scope": "Exit0 means completed behavior/integrity/input/source checks, not coverage acceptance. Valid zero_opportunities/not_covered/partial_coverage is not a semantic failure; inspect overall_status, coverage and ok rather than exit alone.",
+		"oracle_scope": "Observed and plain same-source Sim lockstep. At initial state and after every tick compare complete encoded strings directly with exact entry order/numeric text plus RNG; no hash-only or tolerance acceptance. Only first mismatch retains full states; no huge raw trace.",
+		"warmup_ticks_discarded": 0, "cold_scope": "All400 steps and first-tick counts retained; no cold timing or OS cache claim.",
+		"engine": Engine.get_version_info(), "engine_time_scale": Engine.time_scale, "project_root": ProjectSettings.globalize_path("res://"),
+		"probe_path": get_script().resource_path, "probe_sha256_before": probe_before, "probe_sha256_after": probe_after,
+		"expected_simulation_sha256": EXPECTED_SIMULATION_SHA256, "sources_before": before, "sources_after": after, "sources_unchanged": before == after,
+		"fixture_source_commit": "be4998004f19b22c6c868f813644cca5704f84ed", "records": records}
+	if DirAccess.make_dir_recursive_absolute(output.get_base_dir()) != OK:
+		printerr("BODY_WITNESS_OPPORTUNITIES_WRITE_FAILED directory")
+		quit(1)
+		return
+	var file: FileAccess = FileAccess.open(output, FileAccess.WRITE)
+	if file == null:
+		printerr("BODY_WITNESS_OPPORTUNITIES_WRITE_FAILED file")
+		quit(1)
+		return
+	file.store_string(JSON.stringify(report, "\t", true, true) + "\n")
+	file.flush()
+	var write_error: Error = file.get_error()
+	file.close()
+	if write_error != OK:
+		printerr("BODY_WITNESS_OPPORTUNITIES_WRITE_FAILED data")
+		quit(1)
+		return
+	print("BODY_WITNESS_OPPORTUNITIES status=", overall_status, " execution_valid=", execution_valid, " output=", output)
+	quit(0 if execution_valid else 1)

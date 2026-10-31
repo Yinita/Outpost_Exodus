@@ -1,0 +1,18 @@
+{
+  "name": "pause-binding",
+  "argv": [
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+    "--path",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--script",
+    "res://tests/test_pause_binding_labels.gd"
+  ],
+  "actual_child_returncode": 0,
+  "log_sha256": "a24aab5347d56e2c8bc463427b39cccaeb8da301b854b9593ca8df598a57f2d2",
+  "reported_checks": [
+    "Pause binding label checks: 16; failures: 0"
+  ]
+}

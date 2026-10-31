@@ -1,0 +1,19 @@
+{
+  "scope": "Actual child exit for headless full-state functional comparison, no timing.",
+  "argv": [
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/work/runtime/Godot_v4.7.2-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf",
+    "--script",
+    "res://work/body-first-blocker-v01/compare_real_ridge.gd",
+    "--",
+    "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-comparison.json"
+  ],
+  "actual_child_returncode": 0,
+  "log": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-comparison.log",
+  "log_sha256": "1812dde5129ef029da3bfc61517f7e9275d20dd780b97cfa37f5e346ba216b55",
+  "probe_sha256": "6b778e3e520e517c5dc764b911d692d62a8e6ed6bec77624e57c196974c135e1",
+  "report": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-body-perf/work/body-first-blocker-v01/real-ridge-comparison.json",
+  "report_sha256": "c9b6cbd35c25ec8614b48b4e18db55de0b84d53da986a065ca8223dd91a68798"
+}

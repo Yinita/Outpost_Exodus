@@ -1,40 +1,31 @@
-# Release gates
+# 发布门槛
 
-Status baseline: preparing 0.13 with the real withdrawal destination/manifest summary. The 0.12 actual unpacked Linux package at `a35bccab601fb6b16eb2245cd8c4ea6b9144ee88` passes Ridge-only native/disk/frame collection with observed collector exit 0; current three-map/hour flags are false and performance remains `not_assessed`. The latest complete three-map/hour payload remains 0.9. No 0.13 export/native/FPS/hour result exists yet. The isolated movement experiment is not integrated because no benefit was confirmed. **The project is not Steam-ready.**
+目标：完成高度可玩的《逐营突围》，达到 Steam 发布标准。当前0.14为开发候选，`steam_ready=false`。自动技术验收、人工可玩性、目标平台验证和平台发布均需各自证据。
 
-The gates below are this project's quality bar, not a claim that every item is a mandatory Valve rule. A gate is complete only when its evidence is recorded for the exact candidate build. `Unverified` is not a pass.
+| 要求 | 当前证据与状态 |
+| --- | --- |
+| 推进、建设、生产、供能、追兵、撤营、封关、实际付费出口 | 三关规则已实现；0.13实际包七场三图通过。0.14源项目功能检查通过，新包待验。 |
+| 小地图、缩放、选择编队、快捷键、生产操作 | 已实现，23项可重绑；0.14受控原生UI55/0通过。仍需真人操作验证。 |
+| 真实运输、存读档、坏档保护、备份与失败恢复 | 已实现且有功能及0.13原生证据；0.14实际载货盘上续接待验。 |
+| 新包全部三关与长时间稳定性 | 0.13通过七场/三图/超过一小时。0.14待验，不能继承旧包。 |
+| 顺畅帧时与最低配置 | 尚未接受。源码热点耗时改善及控制场景接近60FPS均不能证明稳定60或最低硬件。 |
+| 原生Windows与干净机器 | 待验；PE导出/结构检查不等于Windows执行。 |
+| 陌生玩家上手与早微操/晚宏观节奏 | 待真实试玩；自动路线和受控点击不代替新玩家。 |
+| 人工听感、辨识度、无障碍 | 设置与反馈已有实现，最终人工验收待完成。 |
+| 游戏内容、美术、字体、音频与名称权利 | 有来源台账与第三方通知；最终权利、名称和自有分发条款待确认。 |
+| 商店图与真实游戏截图 | 0.13有五张实际游戏画面；九规格宣传插画v02已生成，均待最终审阅。宣传插画不可作为实机截图。 |
+| Steam项目、上传、审核与发行 | 仅有离线准备草稿；没有已确认AppID/Depot、上传或审核通过。 |
 
-| Gate | Acceptance evidence | Current status |
-| --- | --- | --- |
-| Campaign rules | Headless tests cover terrain crossings, paid construction, local fuel/power, production inputs, actual barracks training and population limits, transport/packing, camp loss, pursuit, delaying barriers, real exit construction and evacuation. | Final withdrawal helper 189/0 preserves actual owner/cargo and integrity-loss retargeting; old helper 189/3 failure is retained. This is source-observer evidence. The 0.12 actual Ridge route passes original economy/arrival/disk gates; combined 0.13 native and human gates remain open |
-| Complete playable mission | A fresh player can start, choose a northern or southern resource route, establish a forward camp, abandon a rear camp, delay pursuit, prepare the exit and reach a truthful victory/defeat result. Restart and return to menu work. | Actual 0.12 Ridge completes 1774.55 sim/6+truck, launcher-observed 594.251486 wall seconds and collector 0. Its all-three-map/hour flags remain false; complete 0.9 hour is historical. No 0.13 exported full route yet; fresh-human/alternate routes remain open |
-| Early-to-late attention transition | Early squad movement and combat matter. Later clear/escort/guard/repair orders and camp priorities allow meaningful macro decisions without repetitive individual-unit babysitting. | Requires external playtest |
-| Onboarding | In-game, dismissible instruction teaches selection, movement, attack/task orders, road building, supplies/power, packing, sealing, and the actual exit requirements. All critical failure causes are explained. | The 0.13 UI draft shows real destination/cargo in unchanged 250×91 cards and keeps full hover details. Final 189/0, preceding-helper UI 124/macro 309 and three corrected-helper source captures retain separate scopes. Fresh-player discovery, pacing and new-payload acceptance remain open |
-| Input | Every essential action can be rebound, conflicts are explained, cancel/back always works, remaps persist, and UI receives focus correctly. No gameplay action leaks through menus. Controller support is tested only if advertised. | 23 actions rebindable with conflict checks; rendered options and48engine-event checks pass. NativeX11 focus/title63 checks include held-action retirement, explicit continue and menu isolation. Native human interaction, Windows and wider devices remain open |
-| Options and accessibility | Master/music/effects levels, mute, resolution/window mode, scale/readability and pause behavior work and persist. Critical ownership, power and threat states have a non-color-only signal. | Rendered persisted audio/display/scale checks pass here; nativeX11 focus loss/minimize pauses and requires explicit continue while preserving tactical pause. Listening, Windows/wider focus devices, high-DPI and accessibility review remain open |
-| Saves | Versioned saves preserve mission, inventories, construction, combat units, orders, pursuit, barriers and RNG state. Roundtrip continues the same simulation. Invalid, truncated and incompatible data fail before replacing the current state. File writes are atomic and a last-known-good save can be recovered. | 134 file-layer and90two-process continuation checks pass; rendered backup/auto recovery and confirmation-before-restart pass. Actual failedAUTO writes retain live state on both Quit43 and Return-to-title in focus/title63. Power-loss durability and platform-specific filesystems remain open |
-| Technical reliability | No parser errors, unhandled script errors, invalid indexes, NaN coordinates, negative inventories, duplicate IDs, stuck workers, or guaranteed-unreachable mission objectives across the supported scenarios. | Actual 0.12 Ridge disk/frame collection passes; three-map/hour acceptance remains absent. New UI helper 189/0/controlled captures do not replace 0.13 native route/hour proof. Rejected 0.10 global-frame evidence stays unchanged |
-| Performance | A named minimum machine and scene budget are published. Exported builds are profiled at 1080p through the peak pursuit/evacuation section, including saves and strategic zoom. Proposed target: stable 60 FPS, no repeated >100 ms gameplay stalls; hardware limits remain provisional until measured. | Descriptive actual ordinary 0.11→0.12 Ridge comparison: exit 20.815→48.178 FPS, arrival 30.268→57.269 FPS. Different-build runs are not a paired experiment; performance_acceptance remains not_assessed. No 0.13 exported FPS, stable 60 or minimum-hardware acceptance; the movement experiment is not integrated after no confirmed gain |
-| Art, sound and text | Every shipping asset has a provenance/license record, including fonts, generated content, sound effects, music and localization. Required notices ship. Art direction and UI remain legible at normal play zoom. | Actual font notice aligned to embedded metadata/full OFL; original ambient bytes verified with read-only reproduction. Structured asset inventory and unsubmitted survey draft exist. Final own-code/art terms, owner review, art/audio listening and shipping-rights acceptance remain open |
-| Windows and Linux builds | Both native release exports install and launch on a clean machine without the editor, have correct icons/version, save to writable user data, handle missing devices, and include required runtime/licenses. Full mission and save/load smoke tests pass on each OS. | Actual 0.12 unpacked Linux Ridge-only route/disk/smoke/archive collection passes. New 0.13 export/native validation, Windows execution, clean-machine installs and broader devices remain open; PE checks are not Windows execution |
-| Steam distribution | Correct App ID, packages, launch options, depots and release branches are configured and tested by a non-developer account. Store claims match the delivered build and languages/platforms. Required content survey, store/build reviews and release tasks are completed in Steamworks. | Not configured/verified in this project |
-| Steam features | Any advertised overlay, achievements, stats, cloud saves, Steam Input or Deck support is implemented and tested. Offline launch has an explicit supported behavior. Cloud, if enabled, excludes machine-specific display settings and has account/cross-platform conflict tests. These features are not all prerequisites for publishing. | Not integrated; do not advertise |
-| External validation | Target players outside the development team complete the mission without live coaching; issues are recorded by build ID, severity and reproduction. Blocking usability, progress-loss and soft-lock defects are resolved and rechecked. | Not started |
+## 新包技术验收
 
-## Candidate sign-off
+冻结源码并保持工作树干净；导出绑定提交与模板；对实际原生文件进行smoke、完整控制场景测量、ZIP/权限/通知/来源独立核对。普通Main运行保持0.05模拟步、正常引擎时间和真实付费经济，不减少部队或另写宽松胜负路径。完成真实载货存读档后续接，核对完整状态、UI、任务及随机状态。
 
-Record candidate version/commit, export checksums, Godot version, OS/hardware, test commands and logs, playthrough result, known issues, and named reviewer for each gate. Keep failures visible rather than replacing them with a successful screenshot. Any save-loss, impossible route, fake outcome, crash, or advertised-feature failure blocks release. Balance and presentation findings receive an explicit fix or documented product decision.
+三图/小时结论必须来自新包本身，使用同一实际Main完成七场并保留原始进程身份、实际退出、墙钟、逐关及全局帧端点/间隔/直方图守恒。失败保留原样，不补帧、不修成功报告、不放宽验证器。源码重放、短启动、旧包和合成测试不能代替这些证据。
 
-The immutable 0.10 rejected archive and frozen 0.11/0.12 source/native evidence retain their original scope. Current 0.12 Ridge-only acceptance is recorded in outer `../outpost-exodus-0.12.0-dev-ridge-release-evidence.json` and companion collection-process JSON. The 0.13 UI work requires combined-source and new exact-payload observation. Older hours, a previous single route and source replay timings do not fill new native/full/hour/performance gates.
+## 人工与平台验收
 
-The first internal milestone is **a verified complete mission**. It does not close the Steam-release objective or the external-test gates.
+试玩记录需包含玩家首次理解、实际操作、预期与结果、困惑和停止原因，观察自动任务/拥堵/撤收/供能与注意力转移。人工听音、按键与可读性应在目标环境实际执行。最低配置、Windows、干净机器分别记录真实设备与软件环境和测试结果。
 
-## Steam sources
+最终商店展示应与交付构建一致；只列已经实现的功能、语言和系统。源码或素材权利不因生成了一份清单或使用了GitHub而自动获批。真实项目配置、账号级提交与公开发行在相关信息和最终材料具备后完成。
 
-Official references checked 2026-10-30:
-
-- [Steamworks review process](https://partner.steamgames.com/doc/store/review_process): store presence and the product build require review; approval is separate from local build validation.
-- [Steamworks content survey](https://partner.steamgames.com/doc/gettingstarted/contentsurvey): complete the applicable general, mature and generative-AI content questions before review. Track AI-created player-facing assets in the provenance inventory so the answers can be accurate.
-- [Steam Cloud](https://partner.steamgames.com/doc/features/cloud): optional cloud configuration requires deliberate save paths and cross-platform behavior; avoid synchronizing machine-specific video settings.
-
-Recheck these official pages when preparing a real submission because platform policy and tooling can change.
+官方依据：[Steam审核](https://partner.steamgames.com/doc/store/review_process)、[商店图要求](https://partner.steamgames.com/doc/store/assets/standard)、[内容调查](https://partner.steamgames.com/doc/gettingstarted/contentsurvey)。旧版详细过程逐字保留在[历史快照](history/v0.13-source-snapshots/index.json)。

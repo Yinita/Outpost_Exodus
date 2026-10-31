@@ -1,0 +1,18 @@
+{
+  "ok": true,
+  "checks": {
+    "_improves_existing_overlap": true,
+    "_yield_idle_friend": true,
+    "_set_unit_position": true,
+    "_static_motion_clear": true,
+    "_separate_bodies": true,
+    "_nearby_bodies": true,
+    "blocker_exact_return_conversion": true,
+    "retained_original__body_is_clear": true,
+    "retained_original__try_body_move": true,
+    "retained_original__improves_existing_overlap": true
+  },
+  "oracle_sha256": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+  "candidate_sha256": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+  "test_sha256": "2ec7e97acd854a76be06096f8da4cdab0c9b4239efe9f8ec0a753bf880eb5caf"
+}

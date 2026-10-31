@@ -93,7 +93,7 @@ func _pause_banner_text() -> String:
 func _compact_tab_tip() -> String:
 	var status: String = "战术已暂停" if main.sim.paused else "地图继续运行"
 	var action: String = "继续" if main.sim.paused else "暂停"
-	return "切换面板或显示范围；%s，可用 %s %s" % [status, main.binding_label("pause_game"), action]
+	return "切换面板或显示范围；%s\n可用 %s %s" % [status, main.binding_label("pause_game"), action]
 
 func _draw_top(screen: Vector2, summary: Dictionary) -> void:
 	_panel(Rect2(0, 0, screen.x, 64), INK, Color("456065"))

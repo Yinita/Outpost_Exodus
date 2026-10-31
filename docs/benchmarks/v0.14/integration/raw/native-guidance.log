@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org
+OpenGL API 3.3.0 NVIDIA 580.178.04 - Compatibility - Using Device: NVIDIA - NVIDIA GeForce RTX 5060
+
+PASS _test_pause_rebinding
+PASS _test_packing_source_guidance
+Camp guidance UI checks: 55; failures: 0
+Scope: controlled native source UI; no complete campaign, exported build, benchmark or human-playtest claim
+Isolated user data: /home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/camp-guidance-ui-data/godot/app_userdata/逐营突围 · Outpost Exodus
+Screenshot: {"height":648,"path":"/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/camp-guidance-ui/pause-j-small.png","sha256":"37dff6b66d76bdb258ce60de2a652f7ec537bb33f4751297641ec18ccaeaf273","width":1152}
+Screenshot: {"height":648,"path":"/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/camp-guidance-ui/pause-backspace-small.png","sha256":"ce3542d5ca62284ae3253e93c1db028d53906ce84ac96dfef4cf06318f5d4abc","width":1152}
+Screenshot: {"height":648,"path":"/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/camp-guidance-ui/packing-wrong-camp-guide-small.png","sha256":"b0a0557b27fd987286bcb4aa318e00de5f35c548316874f4fb4f00d8efbbb35d","width":1152}
+Screenshot: {"height":648,"path":"/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/work/camp-guidance-ui/packing-source-action-small.png","sha256":"8b645283ede48cdfde12796efa7466538e4a0ceb9f45696e15c1dab59c2ef4fc","width":1152}

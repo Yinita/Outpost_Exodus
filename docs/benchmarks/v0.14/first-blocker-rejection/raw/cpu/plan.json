@@ -1,0 +1,60 @@
+{
+  "scope": "Four sequential ABBA same-source-fixture runs; monotonic wall timing, not FPS or minimum hardware",
+  "order": [
+    "baseline",
+    "candidate",
+    "candidate",
+    "baseline"
+  ],
+  "source_commits": {
+    "baseline": "07ce02111d32df262342393b4bb48637c4a79ed1",
+    "candidate": "aaf5672f48d90d47feef9a4cbeb1b2526039218c"
+  },
+  "source_hashes": {
+    "baseline": {
+      "scripts/actor_atlas.gd": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+      "scripts/actor_canvas.gd": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+      "scripts/camp_readout.gd": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3",
+      "scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+      "scripts/campaign_guide.gd": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+      "scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+      "scripts/campaign_simulation.gd": "8f80e3cea63b023a19c4dc624761dacbbaf1991cdd82234b45e984bb68c0eddb",
+      "scripts/cartoon_canvas.gd": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+      "scripts/construction_rules.gd": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+      "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+      "scripts/game_audio.gd": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+      "scripts/hud.gd": "70467eb90e206dd230edf57ef8917cc0005e5a280dd926342679cd98b512cac2",
+      "scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+      "scripts/recruitment_rules.gd": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
+      "scripts/render_motion.gd": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+      "scripts/terrain_cache.gd": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+      "scripts/world_view.gd": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098"
+    },
+    "candidate": {
+      "scripts/actor_atlas.gd": "c37efc1870c4bb2691288b3a90ef085bbb4f10d458031451b52ec9b744a82ca1",
+      "scripts/actor_canvas.gd": "8a879d582f9a73584b6329dffa87edd98db3c014b775b3d9345a5b68553ebeda",
+      "scripts/camp_readout.gd": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3",
+      "scripts/campaign_catalog.gd": "87ac25748a1ae45de184de6acfe7b2977310d8286a5e9011ebe43318a6dd8556",
+      "scripts/campaign_guide.gd": "21c2b83efd073864471a8ac4fc818871d3e3e9085757315c9653ed621f83073b",
+      "scripts/campaign_save_store.gd": "5a24e3bc5bb8bf3860f95ffd2a8a1dc13a4f0a1136aebbd1c29e03116445c9fc",
+      "scripts/campaign_simulation.gd": "e9d3017be7d352fbe5f6189f4fc608b2a67f4924bfd440772584f726ba07cf5c",
+      "scripts/cartoon_canvas.gd": "5880ba05ba455b359dfe5eda8b3665a51087206dcd43f794ec1701b4e0e0d533",
+      "scripts/construction_rules.gd": "2a79f7fbacec52272cbaa0ca904ec245f6f9d75f0470187d7861c985abdf5068",
+      "scripts/decoration_cache.gd": "2884bca72b5365d7c9b8472cad20573cdd3230e233305a143d31266f394038da",
+      "scripts/game_audio.gd": "63e2df3ca5c21df18731c1e218737b2e42ea78ef6f94389a998640f557955612",
+      "scripts/hud.gd": "70467eb90e206dd230edf57ef8917cc0005e5a280dd926342679cd98b512cac2",
+      "scripts/main.gd": "f60cb043be820c903943a062d7ae0f52ebff2aaea152feb286e6afe27d7141bb",
+      "scripts/recruitment_rules.gd": "699bbb57c9e471fc15cf83b008e55de66e3b669f67162f47c3c3fb26f8160641",
+      "scripts/render_motion.gd": "4c78d2211e27c34b42684431760a9e354ffe01b918cf2f8c0d282c09378a1eac",
+      "scripts/terrain_cache.gd": "683104b3f2c118f8407404f1b1c0f8241aafff979858ff6de35e9df3b346ffe2",
+      "scripts/world_view.gd": "b0460e32747ce9a423739dde14dc3486db280b2ea21937c383dea00edea1c098"
+    }
+  },
+  "probe_sha256": "e5807e8947e91fabb37446e2c16d0cc935d90b89404e6f7868ecd6d16c9897c0",
+  "engine_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+  "discarded_warmup_ticks": 0,
+  "guide_every_ticks": 15,
+  "ticks_per_fixture": 400,
+  "actor_count_each": 107,
+  "performance_acceptance": "not_assessed"
+}
