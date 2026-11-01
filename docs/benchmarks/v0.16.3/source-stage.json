@@ -1,0 +1,141 @@
+{
+  "version": "0.16.3-dev",
+  "recorded_utc": "2026-11-01T07:39:04.660204+00:00",
+  "status": "SOURCE_VALIDATED_NOT_EXPORTED",
+  "runtime_code_basis_commit": "4306c2431faf225f742f142836959fe4992a7900",
+  "runtime_Main_sha256": "9920bed445f6d5cb8c5a09aaa7eb2b7501c04ebf36a0d4a8d394e3bc7021a962",
+  "runtime21_byte_identical_to_accepted_AAAE": true,
+  "source_scope": "Source UI-only viewport/focus and loaded-selection identity fixes. No new exported package or technical acceptance inherited from0.16.2.",
+  "actual_headless": {
+    "loaded_selection": 61,
+    "camera": 305,
+    "command_transport_status": 113,
+    "failures": 0,
+    "actual_engine_waits": [
+      0,
+      0,
+      0
+    ]
+  },
+  "actual_existing_GUI": {
+    "ui": 124,
+    "command_truck": 64,
+    "camp_guide": 55,
+    "macro_controls": 309,
+    "total": 552,
+    "failures": 0,
+    "root_session": 81167,
+    "initial": "572901",
+    "terminal": "2e0aca",
+    "tool_exit": 0,
+    "native_waits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "server_wait": 0,
+    "bad_or_leak_output": false,
+    "sealed_PNGs_full_decoded": 23
+  },
+  "actual_camera_GUI": {
+    "checks": 248,
+    "failures": 0,
+    "owner": "/root/development_scope_review",
+    "tool_session": 31185,
+    "initial": "950bc0",
+    "terminal": "4a488d",
+    "actual_native_and_server_waits": [
+      0,
+      0
+    ],
+    "postdraw_signals": 322,
+    "original_focus_callbacks_consumed": 16,
+    "strict_integer_selected_ID_and_external16px_assertions_unchanged": true
+  },
+  "root_review": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-camera-selection-root-review-v01.json",
+    "bytes": 7827,
+    "sha256": "660361bfce722b5ae7f186955c3bd5914c8a31504c98035a115d73e3410c44d0"
+  },
+  "code_size": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/docs/benchmarks/v0.16.3/code-size.json",
+    "bytes": 18960,
+    "sha256": "239f46f3b6167362ad7c4ef2b44c3520ddd0ce751d150ad278b2d71b634e8167"
+  },
+  "source_evidence": {
+    "headless": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-selection-final-headless-v01/index.json",
+      "bytes": 2852,
+      "sha256": "d660b4b5d945643dc7cfa770df10963a6e3d5477f99764535ed7355184526aff"
+    },
+    "loaded_selection_counterexample": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-loaded-selection-regression-v02/index.json",
+      "bytes": 3864,
+      "sha256": "029a0a48fa37b7441490522e49d0c850fc8da75ba4837c1740a7c1609f9769c5"
+    },
+    "original_ID_diagnosis": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-camera-id-diagnostic-v01/index.json",
+      "bytes": 2858,
+      "sha256": "705dbe33eadc8de2f4bb4398443a8a25ed121affb7f2b0456cbc32dcf265c84f"
+    },
+    "existing_GUI4": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-camera-existing-gui-v02/result.json",
+      "bytes": 43613,
+      "sha256": "5b671662979e66021a6c39d236681c4b8e821941d5df232288feb862004c10e8"
+    },
+    "camera_GUI": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-camera-viewport-gui-v02/results-index.json",
+      "bytes": 6817,
+      "sha256": "69d52fc95e2e38d9f857469d63f8df32828c1da68d406cb296fef2c70fe516ee"
+    },
+    "camera_GUI_first_failure": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-camera-viewport-gui-v01/attempt01-results-index.json",
+      "bytes": 6679,
+      "sha256": "7f13dbb6d21d82f0c620c19464367416d500d67d533da7615886a5d399a1339f"
+    },
+    "existing_GUI_first_failure_and_AB": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-camera-ui-leak-ab-v01/index.json",
+      "bytes": 6702,
+      "sha256": "607869e23b1a0ec1a2429d744d16f7bbc1f746979334457e6d3df6f582c3e73d"
+    },
+    "static_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/camera-and-loaded-selection-static-review-v01/index.json",
+      "bytes": 930,
+      "sha256": "219644cbe62c4fbead4118ac25690e76c25895eddd7240b2442ba7c3a6ffb267"
+    },
+    "resource_import": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-camera-final-import-v01/process.json",
+      "bytes": 576,
+      "sha256": "da1ce860a0991e87aadcb034809f1e3c0767bf117a897ef49e56c599f934e874"
+    },
+    "private_GLX_context": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/linux-private-glx-context-v01/index.json",
+      "bytes": 2082,
+      "sha256": "55e0c78adf74789bf182d3ca96d3f8911b32b02c0224eb8712f77ea8cbd216fb"
+    }
+  },
+  "previous_accepted_package": {
+    "version": "0.16.2-dev",
+    "source_commit": "aaae0064413528b6c135f76d308118465e34831d",
+    "local_tag": "v0.16.2-dev",
+    "evidence": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.2-dev-release-evidence.json",
+      "bytes": 167603,
+      "sha256": "f656372660752fdd4ee1f8dbc98841efbea6d1792f04a0a6a77eabb152239626"
+    },
+    "known_loaded_selection_feedback_gap_remains_in_original_ZIP": true,
+    "old_package_or_acceptance_rewritten": false
+  },
+  "original_failed_runs_reclassified": false,
+  "actual_source_freeze_commit": null,
+  "actual_export": null,
+  "actual_native_package_smoke": null,
+  "actual_standard_render_measurement": null,
+  "actual_native_full_seven_cycle_dual_wall_acceptance": null,
+  "required_native_gates_unchanged": "Fresh normal-Main original seven cycles/six restarts; independent game/native each>=3600 seconds; real costs/local stock/power/persons/maintruck arrival/disk continuation; original timeouts and all257-bin frame/phase conservation. No inherited native acceptance.",
+  "Windows_native_verified": false,
+  "human_results": null,
+  "performance_acceptance": "not_assessed",
+  "steam_ready": false
+}

@@ -1,55 +1,38 @@
 # 当前开发检查点
 
-当前开发版 **0.16.2-dev** 的精确导出冻结于 `aaae0064413528b6c135f76d308118465e34831d` / tree `32c02312c7cec6268bd590112a8a1ad25b785388`。新包导出、原生smoke、标准双缩放渲染、三ZIP、严格解压和两个受控普通原生Guide场景已通过；第二次独立长测七场三图完成，游戏4016.244577秒、native4018.0584507070016秒，三个实际wait均0，七场／全局帧账与215项四槽source读回通过。当前文档更新不改变22runtime脚本。[本版接受记录](../../outpost-exodus-0.16.2-dev-release-evidence.json)与[实际收集过程](../../outpost-exodus-0.16.2-dev-collection-process.json)只属于该精确Linux包。单人、2D卡通、三场独立战役；`steam_ready=false`，`performance_acceptance=not_assessed`。
+## 当前源码：0.16.3-dev，已验证、未导出
 
-## 当前引导修复
+当前功能源基线为 `4306c2431faf225f742f142836959fe4992a7900`，Main SHA为 `9920bed445f6d5cb8c5a09aaa7eb2b7501c04ebf36a0d4a8d394e3bc7021a962`。本轮只改变Main的镜头与UI选择行为，其余21个runtime脚本与AAAE逐字一致；83份自有代码清单所列字节与受测工作树匹配，实际执行范围见下文。见[源码阶段记录](benchmarks/v0.16.3/source-stage.json)及[root逐项复核](../../source-camera-selection-root-review-v01.json)。**0.16.3尚无新导出、整关／小时或性能验收**，不能继承0.16.2包的接受结果。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
-Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯一主车尚忙使实际命令必被拒绝。现在只读真实主车与绑定记录，说明当前起讫点、返程／装车／末班运输及等待原因，定位实际车辆；记录无效时明确检查，空闲后恢复原可执行提示。不改Sim/Main/HUD/SaveStore/readout、订单、资源、RNG、存档字段或按键。
+普通平移、拖拽和缩放现在按真实logical viewport／zoom限位，小地图轴居中；显式定位优先减少图外区域，必要时用有界偏移避开HUD。17px内部guard保持原16px实际canvas净空要求，postdraw复核新布局；手动移动结束定位。旧存档镜头／zoom精确保留，直到新镜头操作或真实视口变化。
 
-同一最终测试原cf Guide204／43失败，修复后204／0；相关headless合计584／0。受控source GUI67／0，实际native与工具均0，三张PNG由root逐张查看；输入是引擎派发至真实HUD/Main，非OS XTest或真人。完整状态与选择／运输保持、默认及小窗口120%UI、正常Main退出均覆盖。[修复证据](benchmarks/v0.16.2/guide-transport-availability.json)。功能验证后仅更新版本／文档，runtime/test字节未变。
+同时修复读档后的选择ID表示：旧JSON中的单位ID可为float，点击／框选／同类选择等曾把它直接放入UI数组，与WorldView的整数ID membership失配。现在选择、Tab、编组和初始选择统一使用int，单位模型、订单、资源、RNG及保存schema不变。[原缺口诊断](../../source-camera-id-diagnostic-v01/index.json)证明旧b527与4add均存在此问题；**AAAE旧ZIP未改，仍含该缺口**。
 
-新精确解压包另从普通菜单加载两份明确平地／高库存fixture，使用真实OS鼠标键盘展开／定位、F5保存、空闲后公开A→B下单和正常菜单退出。忙／闲两个native与工具实际0；相同暂停实例Guide操作前后完整Sim/RNG及选营／选人／编组／速度／覆盖层不变，保存镜头匹配真实主车／A营。另成阶段的有意撤营实际接受，不声称其前后Sim不变。20张原始PNG均完整解码，root查看展开／定位／下单关键图，见[原生root复核](../../native-guide-v0162-root-review-v01.json)。外部fixture helper首轮解析失败保留，修后37／0仅属fixture构造；不是默认开局整关或真人证据。
+实际源码验证分别为headless **479／0**（loaded selection61、camera305、运输状态113）、既有四项实绘GUI **552／0**、新增镜头GUI **248／0**，相关引擎、工具与自有显示服务均实际退出0。源码GUI使用引擎派发输入，覆盖1920×1080／100%与1152×648／120%、真实postdraw／resize、严格整数选择及16px净空；不是OS XTest、真人或导出包验收。root查看4张新增关键图，另23张capture完整解码。[首轮6项GUI失败](../../source-camera-viewport-gui-v01/attempt01-results-index.json)、[退出资源残留及verbose A/B未复现](../../source-camera-ui-leak-ab-v01/index.json)均保留；测试随后补足两次scene retirement的120ms真实墙钟等待，未屏蔽资源日志或减少断言。
 
-## 0.16.2实际包阶段
+[代码统计](benchmarks/v0.16.3/code-size.json)：18份玩法脚本8,981物理行；83份自有代码27,190物理行、24,815非空行。含注释／空行，排除引擎、第三方、素材、场景、UID、缓存与work/probes；代码量不表示完成度。
 
-导出tool72663终局9e412f实际0；pipeline10163终局4572d8实际0，smoke／benchmark／package三阶段均0。普通／战略各3600帧+120预热、原max600，软件Mesa测量用567.755738秒，两个视角真实保存读回有效；不等同目标硬件或稳定60FPS。
+## 最新已接受精确包：0.16.2-dev／AAAE
 
-[三包checksums](../../outpost-exodus-0.16.2-dev-checksums.json) SHA `707b7b00b1327b8c38f8aa24bbf7bf0a096a5a05647c93df5767c46c8b0682a4`。root8741终局2e94bd实际0，三ZIP／872源码文件／CRC／通知／元数据／权限逐项核对，并从Linux ZIP创建全新副本。EXE `d9f79ab8…`、双PCK `0eeaf196…`、WindowsEXE `9c1644a5…`。[阶段证据](benchmarks/v0.16.2/package-stage.json)绑定完整SHA与原始记录。
+冻结source/tag为 `aaae0064413528b6c135f76d308118465e34831d`／`v0.16.2-dev`，tree `32c02312c7cec6268bd590112a8a1ad25b785388`。其导出、原生smoke、普通／战略各3600帧+120预热、三ZIP、严格解压及受控普通Main Guide忙／闲场景均有实际记录。[包阶段记录](benchmarks/v0.16.2/package-stage.json)、[三包checksums](../../outpost-exodus-0.16.2-dev-checksums.json)与[Guide原生复核](../../native-guide-v0162-root-review-v01.json)只属于该精确包，既有tag、ZIP和证据均未随源码修复改变。
 
-普通Canyon1x两代自动存档已实际通过原44／44／180秒门槛：首代下界44.940392976秒、第二代间隔下界44.975124021秒、第二代从开始点击的上界90.1105907秒。暂停后退出前封存两槽，backup保留primary1；native／observer均实际0。root重算原始单调时钟、48文件SHA并查看00:45运行／01:30暂停原图，见[普通auto复核](../../native-auto-cycle-v0162-root-review-v02.json)。benchmark最终两槽也已在原native退出后原字节封存，不宣称frame300或固定45秒保留窗口。
+第二次独立长测使用同Main完成七场C/D/R/C/D/R/C、6次公开重启；游戏真实墙钟4016.244577秒、launcher观察native生命周期4018.0584507070016秒，三个实际wait均0。七场／全局帧账、严格路线经济、真实费用／库存／交付／到场，以及215项四槽source读回通过。见[接受记录](../../outpost-exodus-0.16.2-dev-release-evidence.json)与[实际收集过程](../../outpost-exodus-0.16.2-dev-collection-process.json)。两个独立时钟各≥3600秒，不是运行两小时，也不证明人类体验、Windows或目标硬件性能。
 
-本版四槽独立no-tick诊断已实际完成：root93591终局87fea1引擎／工具0，纯Python分类12e7d0实际0。完整结构、数组entries顺序与RNG字符串一致；308／308／154／154项float→int均为可精确表示的安全整数，32／27／0／0项Vector2坐标表示变化均保留同一float32位模式。原始十进制到Godot首次解析的尾差另列，不宣称raw token或解析前IEEE位保真；相对实际Godot解析后的非Vector2数值差异为0。[本版诊断](../../source-auto-json-diag-v0162-v01/index.json)及[root语义复核](../../source-auto-json-diag-v0162-v01/root-semantic-review.json)保留全量导出、原槽与类型树。此项不是完整postterminal source probe、Main UI验证或原生长测接受；那些入口仍须完整成功终局。
+普通Canyon1x两代auto保留原44／44／180秒门槛，暂停后退出前封存主备原字节，backup保持primary1，见[普通auto复核](../../native-auto-cycle-v0162-root-review-v02.json)。四槽[JSON边界诊断](../../source-auto-json-diag-v0162-v01/index.json)及[root语义复核](../../source-auto-json-diag-v0162-v01/root-semantic-review.json)保留完整结构／entries顺序／RNG与Vector2 float32核对范围，不宣称raw十进制或解析前IEEE位保真。
 
-当前新包prepare实际完成0（root30641终局627907），范围只到启动／短循环／真实磁盘续接。随后原七场长测root93484／f07504实际以627acf终局1：launcher1、native -11，原生进程实际504.33434769598534秒，第一场Canyon尚未胜利。末次进度是出口施工道路窗口，sim1479.1，原营3次／中营4次真实交付。没有完整native report或小时接受。
+首次长测仍是失败：root93484→627acf实际1，launcher1、native -11，native实际504.33434769598534秒，C1尚未胜利。X98断连／SIGSEGV合并日志、原server缺wait及工具Unknown均保留；没有足以确定根因的core／函数栈或显示退出信号发送者证据。[71份原失败](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)没有被后次成功覆盖。[系统窄审](../../native-v0162-x11-failure-audit-v01/index.json)、[标题断屏A/B](../../native-v0162-display-loss-ab-v01/index.json)与[真实晚期120秒A/B](../../native-v0162-late-state-ab-v01/index.json)只补诊断：两版显式owned display loss均native1，未复现原-11，原SIGSEGV仍未定因。
 
-原合并日志记录X98连接断开、SIGSEGV与退出清理错误；Xvfb3103833及监督器3103827也已消失，未产生server-wait记录，原server工具15220返回Unknown。缓冲合并日志不足以证明线程先后；目前没有可用core／函数栈，也没有显示服务退出信号或发送者的确定证据，不能归因于Guide或工具宿主。[71份原失败快照](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)逐字保留，原失败不改为通过。后续先诊断显示／原生退出路径与监督生命周期；任何重新验证都使用新隔离目录，保留七关／双墙钟、真实费用／库存／三交付与原超时门槛。
+[六张原生图库](../../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)来自同一AAAE包前三场已闭合关卡，未编辑；[root图库复核](../../native-v0162-gallery-root-review-v01.json)记录逐图查看、解码及SHA。它们不是概念图、真人试玩或owner美术／权利／商店审批。
 
-后续[标题界面短A/B](../../native-v0162-display-loss-ab-v01/index.json)与[真实晚期存档A/B](../../native-v0162-late-state-ab-v01/index.json)已实际完成。晚期两例普通加载同一封存sim1455.5存档，经公开UI付12建材下达6格道路，各完成至少120外部秒；正常观察期均未崩溃，末次F5均playing、道路完工且出口建成供能。之后只对各自owned显示服务显式SIGTERM，两版native均退出1、server0，未复现原-11。A例多约42.8秒暖跑，两例不是同tick或性能配对；设置误点、只读准备错误和裁切截图被拒绝的原件保留。这些对照没有证明原X98为何退出。
+## 剩余发布工作
 
-新的私有显示与strict launcher改为同一owner监督，增加真实wait／信号／周期身份与内存观察；24非main验证函数及原main控制流保持，新增仅旁路I/O。新prepare原86431终局4118fe实际0，native／launcher／server三wait均0且全部回收。随后root85687／fb1671启动全新 `native-soak-v0162-full-attempt02`，使用同一aaae包与原7场、游戏与进程各≥3600秒门槛，私有99、五秒心跳；完整成功终局及postterminal接受如下。[阶段证据](benchmarks/v0.16.2/package-stage.json)分别绑定新尝试与原失败，两者不互相覆盖。
+0.16.3须先冻结新源，再以新目录完成标准export→smoke→双视角render→package／严格unpack／prepare及新包必要UI检查，随后保持同Main七场、6次公开重启、双独立≥3600秒、原路线超时／经济／到场／磁盘与257桶逐场及全局帧守恒门槛。[验证计划](validation-plan.md)和[发布门槛](release-gates.md)列明范围；source阶段通过不能代替新payload的实际接受。
 
-该次运行已结束的前五场另经纯Python只读增量复核：[C1／C2](../../native-v0162-attempt02-completed-cycles-review-v01/index.json)及[C3／C4／C5](../../native-v0162-attempt02-completed-cycles-review-v02/index.json)均实际工具退出0。保留原严格路线／经济函数、五资源差额容差和2.5到达距离，35个真实卸货事务、付费供能出口、主车与至少4人实际撤离均通过；逐场257帧bins、phase／endpoint／磁盘保存跨度算术及已结束关卡之间的tick连续也通过。这是已闭合关卡的证据，不是全七场、全局帧守恒、双墙钟或终态接受。
+默认私有GLX链路已[实际清除软件强制变量后探测](../../linux-private-glx-context-v01/index.json)，仍为llvmpipe；`GLX_IS_DIRECT=1`也不是硬件证明，不能称稳定60FPS或最低配置通过。陌生人类的前期微操→后期多营调度、主车保护、听感／可读性／无障碍、原生Windows、真实目标硬件、权利与Steam安装／更新／审核仍待完成。[Windows可行性](../../windows-native-environment-feasibility-v01/facts.json)和[VM准备](../../windows-native-vm-preparation-v01/profile.json)没有实际Windows执行结论；[试玩材料](../../playtest-kit-v0162/first-playtest.txt)、[内容调查草稿](../../steam-content-survey-v0162-draft-v01/index.json)与[五文件SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)没有预填owner或Valve结果，AppID／Depot／entity／account仍UNBOUND、未登录或上传。
 
-新postterminal v02的[独立静态审查](../../postterminal-v0162-independent-static-review-v01/review.json)核实10份材料与34个已绑定输入、原24个strict函数、七场逐帧核验及生产JSON codec未降门槛。原root85687／fb1671实际终局c10e11为0后，才将三个真实wait、root终态与身份／事件／802条心跳绑定到新config；原未绑定config逐字保留。source原18792／70abd4→d05d54为0，引擎实际0、215／0；collector原59104／72a586→3c89f0实际0，独立复核全部七场及全局active／phase守恒。原native／launcher／supervisor／server与source引擎PID均消失，X99 socket／lock正常回收。两个时钟各自超过3600秒，未声称运行两小时。不可变prepared文本保留创建阶段的待执行描述，以新实际终态和收集记录为准。
+## 历史范围
 
-本版[六张未编辑实机图](../../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)来自同一aaae／PCK的前三场已结束关卡，覆盖三图、道路供能、撤收运输和出口工程。root逐张查看、完整解码source／copy并复算SHA，见[root图库复核](../../native-v0162-gallery-root-review-v01.json)。保留正常HUD，不是概念图或真人试玩；较大的HUD、小单位与稀疏地表仍需真实玩家评价，不能据此宣布美术／可玩性／商店验收。
-
-Windows环境的[实际可行性检查](../../windows-native-environment-feasibility-v01/facts.json)及[最小VM配置](../../windows-native-vm-preparation-v01/profile.json)已准备：本机KVM可用、QEMU／OVMF存在，声明4vCPU／8GiB／80GiB薄盘、vTPM及私有本地显示。尚无实际ISO／swtpm／所选Enterprise Eval适用许可正文或账户激活方案，未下载媒体、创建磁盘、安装或启动Windows。微软页面的90天与账户说明不能代替具体媒体许可；也不据未知正文推断个人测试被禁或必需另购许可。已有Windows机器运行精确包仍是直接验证路径。VM功能验证即使完成，也不能代替物理最低配置测量。
-
-## 已接受的0.16.1精确包
-
-冻结source/tag `cf678b720daad2ceb1c3a40ce4949a5343c39d82` / `v0.16.1-dev`，tree `8f05ea33bbe71d44b74979d1a2a479d1005c10b9`。同Main七场C/D/R/C/D/R/C真实胜利，游戏报告3979.349975秒、launcher观察native3981.0773600769753秒。root68652终局031dd7实际0，native/launcher/supervisor均0，原进程已退出。
-
-独立严格路线／经济／七场与全局帧守恒、47个卸货事务及四份封存存档读回通过。source probe215／0、collector/root11394终局016715实际0。按生产JSON codec规则检查完整编码状态和RNG；[独立边界诊断](../../source-auto-json-diag-v0161-v01/index.json)说明数字解析与Vector2类型恢复，原literal208／4失败保留，不作raw十进制或解析前IEEE位保真承诺。
-
-[接受记录](../../outpost-exodus-0.16.1-dev-release-evidence.json)，SHA `44ef0f2af687317fce03e4741e1945c35834b4b989b62cc1e28fa758410eda94`；[实际收集过程](../../outpost-exodus-0.16.1-dev-collection-process.json)，[五张原始实机图](../../outpost-exodus-0.16.1-dev-steam-gallery/index.json)。普通两代自动存档保留原44／44／180秒门槛并验证SHA换代与退出前封存。软件Mesa渲染数据仅代表受控环境，不评最低硬件或稳定60FPS。
-
-## 规模与下一步
-
-[代码统计](benchmarks/v0.16.2/code-size.json)：18个玩法等脚本8,875物理行；81个自有文件26,560物理行、24,227非空行。排除引擎、第三方、素材、场景、UID、缓存及外部探针。
-
-当前Linux包技术验收完成后，继续核实际玩家的微操／多营调度、主车保护与界面。六张图和源码已确认出口focus会露出较多图外区域，独立 `feat/camera-viewport-bounds` 分支正在准备镜头视野约束；保留精确受测包，尚未合并或发布该修复。原SIGSEGV仍未定因，不能用新尝试覆盖原失败。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0162/first-playtest.txt)与[0.16.2来源补充](../../steam-content-survey-v0162-draft-v01/index.json)绑定真实新包，没有预填人类或Valve结果。Windows bound脚本仅PS7/Linux ParseFile实际通过，不是Windows执行。[本地SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)只含每平台EXE+PCK+三通知；AppID/Depot/entity/account仍UNBOUND，没有登录、SteamCMD执行或上传。
-
-## 历史
-
-0.16原包第四关超时失败及[111份原件](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保留。0.15冻结6bf原包的七场／小时接受仍只属于原包。既有历史快照、素材台账、旧pins与所有原始日志不改写。
+- [0.16.1冻结cf接受](../../outpost-exodus-0.16.1-dev-release-evidence.json)及[实际收集](../../outpost-exodus-0.16.1-dev-collection-process.json)：七场三图，游戏3979.349975秒／native3981.0773600769753秒，source215／0；[codec诊断](../../source-auto-json-diag-v0161-v01/index.json)保留原literal208／4失败，不能移作新包结果。
+- [0.16原第四关超时及111份原件](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保持失败；卸货见证修复没有重写原运行。
+- [0.15冻结6bf接受](../../outpost-exodus-0.15.0-dev-release-evidence.json)及[实际收集](../../outpost-exodus-0.15.0-dev-collection-process.json)只归原包；[旧源码文档快照](history/v0.15-source-snapshots/index.json)、历史台账pins和原日志不改。
+- 先前[主车运输可用性Guide修复](benchmarks/v0.16.2/guide-transport-availability.json)的584项headless／67项source GUI、旧cf204／43反例和原生受控fixture范围保留，不合并为本轮全量重测。

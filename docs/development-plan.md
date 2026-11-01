@@ -1,27 +1,27 @@
 # 开发计划与估算
 
-工作名《逐营突围》/ Outpost Exodus，正式名称与分发条款待确认。**0.16.2-dev精确导出冻结于aaae0064，当前Linux包七场／双墙钟和215项四槽source核验已实际接受**，见[接受记录](../../outpost-exodus-0.16.2-dev-release-evidence.json)。原首次崩溃及全部原件保留，原因尚未确定；第二次独立运行通过不改写原失败。当前文档更新不改22runtime脚本。0.16.1冻结cf与旧0.15冻结6bf的接受仍只归各自原包。目标仍是高度可玩并达到Steam发布标准；`steam_ready=false`、`performance_acceptance=not_assessed`。
+工作名《逐营突围》／Outpost Exodus，正式名称与分发条款待确认。当前为 **0.16.3-dev源码已验证、未导出**；功能源基线 `4306c2431faf225f742f142836959fe4992a7900`。镜头／读档选择修复的[源码阶段记录](benchmarks/v0.16.3/source-stage.json)不构成新包整关、小时或性能接受。最新已接受的精确Linux包仍是0.16.2冻结AAAE，见[接受记录](../../outpost-exodus-0.16.2-dev-release-evidence.json)。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 ## 当前玩法与本轮改进
 
-保持单人、斜俯视2D卡通、三场独立战役。前期小队清路，后期通过道路、本地库存/能源、队列、车队与战术暂停协调多个营地，向前建设、向后撤守。
+保持单人、斜俯视2D卡通、三场独立战役。前期小队清路，后期通过道路、本地库存／能源、生产队列、运输与战术暂停协调多个营地，向前建设、向后撤守。仍为23个主要可重绑按键，不新增模拟规则、运输规则或保存字段。
 
-主车生命/状态与明确“选择”入口已保留，点击该入口选择并定位真实主车，保持运输任务。本轮另外修正上一段主车仍忙时误导开始下一段撤营的引导：说明真实起讫、等待原因并定位实际车辆；空闲后恢复原操作。没有新音效、存档字段、模拟规则或快捷键，仍为23个主要可重绑按键。
+本轮镜头按logical viewport／zoom约束普通移动，显式定位在减少图外区域的同时避开HUD；旧存档视角保留至新操作或真实resize。另将点击／框选／同类选择、Tab、编组与初始选择统一为整数UI ID，修复读档后float ID与WorldView整数membership失配。单位模型和命令不变；旧0.16.2 ZIP仍含该已知选择显示缺口，没有被原地修包。
 
-本轮相关headless584／0、source GUI67／0均实际退出0，见[本轮记录](benchmarks/v0.16.2/guide-transport-availability.json)。原cf同一用例204／43失败保留；GUI使用私有软件显示和引擎事件输入，不评物理性能、听感或真人体验。旧主车入口113／0、GUI64／0及相关16／0、88／0仍保持[原归档](../../source-ui-v016-command-evidence-v01/index.json)范围。旧卸货修复及0.16.1精确包接受见[检查点](current-checkpoint.md)。
+实际headless479／0、既有实绘GUI552／0、新镜头GUI248／0已完成，见[root源码复核](../../source-camera-selection-root-review-v01.json)。这些是隔离source Main/HUD与引擎事件检查，非导出包、OS XTest、陌生真人、听感或物理性能证据。首轮GUI失败及资源残留、verbose A/B未复现均保留，后续测试补足scene retirement真实120ms等待，未减少断言。先前[Guide修复584／67](benchmarks/v0.16.2/guide-transport-availability.json)仍保持其独立阶段范围。
 
-此前0.15受控后期AI观察建成接收营，但未保住指挥车。它提示经济管理与关键单位保护之间可能争夺注意力，尚不是确认bug或人类节奏结论。当前主车入口改善可发现性，不替玩家下运输或撤退命令。
+此前0.15受控后期AI观察建成接收营，但未保住指挥车。它支持继续观察经济管理与关键单位保护的注意力竞争，尚不是确认bug或人类节奏结论。主车入口与镜头改善可发现性，不替玩家下运输或撤退命令。已弃营卡片占用空间、单位密集时的辨认仍列为操作观察，不凭截图直接立项。
 
 ## 规模与下一步
 
-[候选代码清单](benchmarks/v0.16.2/code-size.json)：18个玩法脚本8,875物理行；含诊断/测试/工具共81个自有文件26,560物理行、24,227非空行。沿用既有分组，更新Guide及既有receiver回归；含注释空行，排除引擎/第三方、素材、场景、UID、缓存和文档probe。代码量不表示完成度。
+[当前代码清单](benchmarks/v0.16.3/code-size.json)：18份玩法脚本8,981物理行；含诊断／测试／工具共83份自有代码27,190物理行、24,815非空行。沿用0.16.2的81文件分组，仅新增两个repo测试；含注释空行，排除引擎／第三方、素材、场景、UID、缓存及work/probes。代码量不表示完成度。
 
-1. 精确0.16.2的原root85687已终局c10e11为0，七场三图、游戏4016.244577秒／native4018.0584507070016秒、三个真实wait0；postterminal source215／0与collector实际0。严格路线经济和全局／逐场帧账已接受，原费用／交付／库存／超时门槛保持。[当前包阶段记录](benchmarks/v0.16.2/package-stage.json)。接下来在独立分支验证出口镜头边界与HUD遮挡，原aaae包保持；后期已弃营卡片对注意力的影响列入试玩，不凭截图宣布体验通过。
-2. 安排陌生人类独立上手，观察前期微操到后期多营地调度、指挥车保护、困惑和停止原因；补听感、可读性与无障碍。
-3. 在明确目标硬件上验证真实路线性能、Windows及干净机器；Runtime和离线检查材料不能代替原生平台、最低配置或稳定帧率证据。
-4. 审阅素材/音频/名称/权利与商店内容，保留旧台账pins；真实Steam项目、Depot、安装/更新/overlay、上传及审核仍待实际完成。
+1. 冻结0.16.3源，完成新payload全标准export、smoke、普通／战略各3600帧+120预热、三ZIP／严格unpack及prepare。新包再执行七场C/D/R/C/D/R/C、6次公开重启、同Main及两个独立真实墙钟各≥3600秒；原timeout、真实费用／库存／交付／到场／磁盘及257桶逐场和全局帧守恒门槛不变。不能借AAAE接受、source GUI或prepare宣布新包整关通过。
+2. 安排陌生人类独立上手，观察前期微操到后期多营调度、指挥车保护、困惑和停止原因；补听感、可读性与无障碍。受控AI观察及root看图不代替真人反馈。
+3. 在明确目标硬件上核新包真实路线帧间隔、原生Windows及干净机器。默认私有GLX[实际探针](../../linux-private-glx-context-v01/index.json)仍是llvmpipe；软件显示、Runtime启动或VM功能验证不能代表硬件60FPS、最低配置或原生Windows通过。
+4. 审阅素材／音频／名称／权利与商店内容，保留旧台账pins；真实Steam项目、Depot、安装／更新／overlay、上传及审核仍待实际完成。既有[内容草稿](../../steam-content-survey-v0162-draft-v01/index.json)、[试玩kit](../../playtest-kit-v0162/first-playtest.txt)和[离线staging](../../steampipe-v0162-staging-v01/index.json)没有owner、Windows或Steam审批结论。
 
-旧0.15接受记录绑定源码`6bf0fe78e9d627fb88a4d3216c66a759feba0fb1`和原三ZIP，同Main七场三图，游戏墙钟3906.965935秒；launcher进程3909.00728546601秒。原33项自动存档与严格collector实际0、Runtime4有限启动/截图和图库均保留原包范围。0.16实际包与失败原件已保留；0.16.1冻结cf包已有七场／小时接受。当前0.16.2已产出实际包并完成受控Guide验证，完整战役与小时验收仍待当前包结果。本版空白试玩kit、Windows bound离线材料、内容事实补充及本地五文件SteamPipe staging已准备，没有真人／原生Windows／正式问卷／Steam上传结论。
+0.16.2原AAAE第二次独立长测已实际接受：同Main七场三图，游戏4016.244577秒／native4018.0584507070016秒，215项四槽source与collector实际0。首轮native -11及[71份原件](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)仍失败、根因未定；后次成功与显式断屏对照不改写它。[0.16.1冻结cf](../../outpost-exodus-0.16.1-dev-release-evidence.json)、[0.15冻结6bf](../../outpost-exodus-0.15.0-dev-release-evidence.json)的接受仅归各自原包，0.16第四关失败亦保留。详见[当前检查点](current-checkpoint.md)。
 
 ## 从零规划参考
 
@@ -33,4 +33,4 @@
 | 完整单关Demo | 12,000–30,000行 | 3–6个月 |
 | 3–5关打磨首发 | 40,000–90,000行 | 12–24个月 |
 
-地图增加设计、美术、平衡和验证工作，代码量不随关数线性增加。代码/配置/场景/测试入Git；缓存、构建、玩家存档不入库，大美术源可用LFS。当前没有已推送的GitHub远程。旧0.15历史快照、统计和所有原始接受证据保持不动；本轮修复有实际headless验证；随后的版本/文档准备没有再次运行引擎。
+地图增加设计、美术、平衡和验证工作，代码量不随关数线性增加。代码／配置／场景／测试入Git；缓存、构建、玩家存档不入库，大美术源可用LFS。历史统计、原始接受与失败记录不随新版本文档更新改写。
