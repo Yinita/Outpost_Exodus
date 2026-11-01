@@ -2,9 +2,9 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前开发源码为 **0.16.3-dev**。镜头按实际视野限制平移与缩放；定位边缘目标时保留HUD外的点击余量，读档视角在新镜头操作或实际窗口变化前保持原值。另修复读档后单位ID类型不一致导致选中圈失配的问题。479项相关headless、552项既有渲染界面回归及248项真实窗口镜头／输入检查均通过，见[阶段记录](docs/benchmarks/v0.16.3/source-stage.json)。**冻结561313a的新包已完成Linux smoke、普通／战略各3600帧+120预热、三ZIP打包与严格解压回读**，见[本版checksums](../outpost-exodus-0.16.3-dev-checksums.json)和[root解压复核](../native-v0163-unpack-root-review-v01.json)。渲染测量使用软件llvmpipe，不是物理性能结果。新包coupled prepare已通过，native／launcher／server三wait均0；七场双墙钟长测已实际启动、尚未记录终局。普通auto、打包后GUI与source collector仍待执行；尚无0.16.3tag或完整接受。
+当前开发源码为 **0.16.3-dev**。镜头按实际视野限制平移与缩放；定位边缘目标时保留HUD外的点击余量，读档视角在新镜头操作或实际窗口变化前保持原值。另修复读档后单位ID类型不一致导致选中圈失配的问题。479项相关headless、552项既有渲染界面回归及248项真实窗口镜头／输入检查均通过，见[阶段记录](docs/benchmarks/v0.16.3/source-stage.json)。**冻结561313a的新包已完成Linux smoke、普通／战略各3600帧+120预热、三ZIP打包与严格解压回读**，见[本版checksums](../outpost-exodus-0.16.3-dev-checksums.json)和[root解压复核](../native-v0163-unpack-root-review-v01.json)。渲染测量使用软件llvmpipe，不是物理性能结果。本精确Linux包现已通过同Main七场三图、6次公开重启与双独立真实墙钟长测：游戏3987.523349秒／native3989.0963843020145秒，native／launcher／server均正常退出0。普通两代auto、逐关及全局257桶帧账、215项四槽source读回和最终collector均实际通过，见[本版Linux私有软件技术接受](../outpost-exodus-0.16.3-dev-release-evidence.json)。此接受不包含完整UI、物理性能、Windows、真人或Steam；尚无0.16.3tag。
 
-最近通过技术验收的Linux包仍为 **0.16.2-dev**，本地tag/source `aaae0064…`：同Main七场三图，游戏4016.244577秒／native4018.0584507070016秒，48次真实卸货、逐场与全局帧账及215项四槽读回通过，游戏／启动器／私有显示均正常退出0。[包接受记录](../outpost-exodus-0.16.2-dev-release-evidence.json)及[收集过程](../outpost-exodus-0.16.2-dev-collection-process.json)只属于该原包。上述ID反馈缺口也存在于该版本；原ZIP未修改，0.16.3修复不能反向算入旧包。首次SIGSEGV与显示丢失原因仍未定，失败原件保留。`steam_ready=false`，Windows原生、目标硬件及真人体验仍待验证。
+此前通过技术验收的Linux包 **0.16.2-dev**，本地tag/source `aaae0064…`：同Main七场三图，游戏4016.244577秒／native4018.0584507070016秒，48次真实卸货、逐场与全局帧账及215项四槽读回通过，游戏／启动器／私有显示均正常退出0。[包接受记录](../outpost-exodus-0.16.2-dev-release-evidence.json)及[收集过程](../outpost-exodus-0.16.2-dev-collection-process.json)只属于该原包。上述ID反馈缺口也存在于该版本；原ZIP未修改，0.16.3修复不能反向算入旧包。首次SIGSEGV与显示丢失原因仍未定，失败原件保留。`steam_ready=false`，Windows原生、目标硬件及真人体验仍待验证。
 
 已接受的0.16.1精确Linux包冻结于 `cf678b72…`，同Main七场三图完成，游戏墙钟3979.349975秒，启动器独立观测native3981.0773600769753秒；实际退出均0，七场帧账及四份存档读回复核通过。验收仅属于该原包，见[接受记录](../outpost-exodus-0.16.1-dev-release-evidence.json)和[收集过程](../outpost-exodus-0.16.1-dev-collection-process.json)。`steam_ready=false`、`performance_acceptance=not_assessed`；[当前检查点](docs/current-checkpoint.md)记录剩余范围。
 
@@ -60,6 +60,8 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 ## 当前源码与已接受包
 
 当前0.16.3运行时代码只改Main，另外21个runtime脚本与已接受aaae源码逐字相同。相机操作、精确旧视角读回、编组／Tab／单位选择已分别验证完整Sim/RNG保持；四个明确的公开移动命令则与独立Sim执行同一命令的完整状态比较。17逻辑像素的内部净空保护原有16像素实际canvas判定，没有用容差隐藏边界失败。root已查看[四张受控源码GUI原图](../source-camera-viewport-gui-v02/results-index.json)，这些历史存档场景不作当前导出包或普通整关证明。
+
+本版[打包后控件复核](../native-controls-v0163-run-v02/root-control-review.json)中，native／工具／server正常退出0，28张原PNG完整解码、10项具体UI比较通过；F9完整payload的严格Decimal比较仍有4个单位数值差异，原失败保留，不能称完整UI已接受。展开Guide时F5被modal阻止，freshness检查正确失败；定位返回后保存通过。[出口单点净空](../native-controls-v0163-run-v02-exit-clearance-review-v01/index.json)仅支持该目标≥16逻辑像素，不泛化到其他窗口。
 
 以下Guide与打包记录属于各自原版本；本次Main改动的当前范围以[0.16.3源码复核](../source-camera-selection-root-review-v01.json)为准。
 

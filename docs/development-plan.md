@@ -1,6 +1,6 @@
 # 开发计划与估算
 
-工作名《逐营突围》／Outpost Exodus，正式名称与分发条款待确认。当前为 **0.16.3-dev源码已验证，实际导出／Linux smoke／双zoom标准软件渲染／三ZIP及严格解压完成，整关验收待完成**；功能源基线 `4306c2431faf225f742f142836959fe4992a7900`。镜头／读档选择修复的[源码阶段记录](benchmarks/v0.16.3/source-stage.json)不构成新包整关、小时或性能接受。最新已接受的精确Linux包仍是0.16.2冻结AAAE，见[接受记录](../../outpost-exodus-0.16.2-dev-release-evidence.json)。`steam_ready=false`，`performance_acceptance=not_assessed`。
+工作名《逐营突围》／Outpost Exodus，正式名称与分发条款待确认。当前为 **0.16.3-dev精确Linux包已完成私有软件环境七关／双墙钟／source与collector技术接受**；功能源基线 `4306c2431faf225f742f142836959fe4992a7900`。镜头／读档选择修复的[源码阶段记录](benchmarks/v0.16.3/source-stage.json)不构成新包整关、小时或性能接受。当前包冻结561313a／tree0ec913a，见[本版技术接受](../../outpost-exodus-0.16.3-dev-release-evidence.json)；0.16.2冻结AAAE的[历史接受](../../outpost-exodus-0.16.2-dev-release-evidence.json)及原包保持不变。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 ## 当前玩法与本轮改进
 
@@ -16,9 +16,9 @@
 
 [当前代码清单](benchmarks/v0.16.3/code-size.json)：18份玩法脚本8,981物理行；含诊断／测试／工具共83份自有代码27,190物理行、24,815非空行。沿用0.16.2的81文件分组，仅新增两个repo测试；含注释空行，排除引擎／第三方、素材、场景、UID、缓存及work/probes。代码量不表示完成度。
 
-1. 0.16.3冻结于561313a／tree0ec913a，已完成实际export、Linux smoke、普通／战略各3600帧+120预热、三ZIP与严格解压，见[checksums](../../outpost-exodus-0.16.3-dev-checksums.json)及[root解压复核](../../native-v0163-unpack-root-review-v01.json)。尚无0.16.3tag；新包[coupled prepare已实际通过](../../native-v0163-coupled-run-v01/root-prepare-execution-process.json)，native／launcher／server三wait均0并回收。七场C/D/R/C/D/R/C长测已启动、尚未记录终局或接受；仍须实际完成6次公开重启、同Main及两个独立真实墙钟各≥3600秒；原timeout、真实费用／库存／交付／到场／磁盘及257桶逐场和全局帧守恒门槛不变。普通两代auto、打包后GUI及source collector仍未执行。不能借AAAE接受、source GUI或prepare宣布新包整关通过；本次llvmpipe软件测量不作物理硬件性能接受。
+1. 0.16.3冻结于561313a／tree0ec913a，已完成实际export、Linux smoke、普通／战略各3600帧+120预热、三ZIP与严格解压，见[checksums](../../outpost-exodus-0.16.3-dev-checksums.json)及[root解压复核](../../native-v0163-unpack-root-review-v01.json)。尚无0.16.3tag；新包[coupled prepare已实际通过](../../native-v0163-coupled-run-v01/root-prepare-execution-process.json)，native／launcher／server三wait均0并回收。本版七场C/D/R/C/D/R/C、6次公开重启、同Main及两个独立真实墙钟均已完成：游戏3987.523349秒／native3989.0963843020145秒，三个实际wait均0；原timeout、真实费用／库存／交付／到场／磁盘及257桶逐场和全局帧守恒门槛均经独立复核。普通两代auto、215项四槽source及最终collector均实际通过，source与collector工具均0。[实际包UI复核](../../native-controls-v0163-run-v02/root-control-review.json)仅10项比较通过、28图完整解码；严格F9全payload有4个单位数值差异，Guide modal内F5 freshness失败及定位返回后保存通过均保留，不能称完整UI接受。本次llvmpipe软件测量不作物理硬件性能接受。
 2. 安排陌生人类独立上手，观察前期微操到后期多营调度、指挥车保护、困惑和停止原因；补听感、可读性与无障碍。受控AI观察及root看图不代替真人反馈。
-3. 在明确目标硬件上核新包真实路线帧间隔、原生Windows及干净机器。默认私有GLX[实际探针](../../linux-private-glx-context-v01/index.json)仍是llvmpipe；软件显示、Runtime启动或VM功能验证不能代表硬件60FPS、最低配置或原生Windows通过。
+3. 在明确目标硬件上核新包真实路线帧间隔、原生Windows及干净机器。默认私有GLX[实际探针](../../linux-private-glx-context-v01/index.json)仍是llvmpipe；[owned NVIDIA菜单诊断v03](../../native-gpu-v0163-menu-v03/index.json)虽已实际0并在provider预建atom条件下正常WMclose，仍不是整关硬件或FPS结果；软件显示、Runtime启动或VM功能验证亦不能代表硬件60FPS、最低配置或原生Windows通过。
 4. 审阅素材／音频／名称／权利与商店内容，保留旧台账pins；真实Steam项目、Depot、安装／更新／overlay、上传及审核仍待实际完成。既有[内容草稿](../../steam-content-survey-v0162-draft-v01/index.json)、[试玩kit](../../playtest-kit-v0162/first-playtest.txt)和[离线staging](../../steampipe-v0162-staging-v01/index.json)没有owner、Windows或Steam审批结论。
 
 0.16.2原AAAE第二次独立长测已实际接受：同Main七场三图，游戏4016.244577秒／native4018.0584507070016秒，215项四槽source与collector实际0。首轮native -11及[71份原件](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)仍失败、根因未定；后次成功与显式断屏对照不改写它。[0.16.1冻结cf](../../outpost-exodus-0.16.1-dev-release-evidence.json)、[0.15冻结6bf](../../outpost-exodus-0.15.0-dev-release-evidence.json)的接受仅归各自原包，0.16第四关失败亦保留。详见[当前检查点](current-checkpoint.md)。
