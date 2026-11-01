@@ -1,0 +1,107 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-11-01T00:59:31.596666+00:00",
+  "version": "0.16.1-dev",
+  "stage": "SOURCE_FIX_PROVEN_NOT_EXPORTED",
+  "runtime_commit": "aa8f47b95ed2d98e90d285e3b18d0df297f33114",
+  "failed_prior_package": {
+    "version": "0.16.0-dev",
+    "commit": "0ebf09c1d4937bd7e4d7301f711b7127ec0d48f4",
+    "native_actual_exit": 1,
+    "completed_cycles": 3,
+    "failed_cycle": 4,
+    "original_run_stays_failed": true,
+    "snapshot_copied_files": 111
+  },
+  "old_observer_reproduction": {
+    "checks": 99,
+    "failures": 0,
+    "actual_exit": 0,
+    "exact_actual_deposits": 5,
+    "sampling_variants": 78,
+    "variants_missing_deliveries": 53,
+    "example": {
+      "batch_ticks": 12,
+      "offset": 3,
+      "legacy_count": 2
+    },
+    "full_state_and_RNG_equal_every_tick": true,
+    "scope": "Controlled headless continuation, not original missed-frame reconstruction"
+  },
+  "fix": "Optional detached synchronous witness at both actual evacuation deposits after cargo clear, before haul transition. Runner validates actual truck, physical arrival, positive cargo and five-resource stock deltas. No Main/Route/frame-checker or balance changes.",
+  "checks": {
+    "diagnostic_interface_and_lifecycle": {
+      "checks": 122,
+      "failures": 0,
+      "actual_exit": 0,
+      "expected_rejection_messages": 14
+    },
+    "old_base_and_actual_C4": {
+      "checks": 68,
+      "failures": 0,
+      "actual_exit": 0,
+      "fixed_steps": 3808,
+      "step_seconds": 0.05,
+      "full_save_and_RNG_equal_each_step": true,
+      "C4_actual_unloads": 5
+    },
+    "self_contained": {
+      "checks": 47,
+      "failures": 0,
+      "actual_exit": 0,
+      "fixed_steps": 1222
+    },
+    "root_fresh_tracked_only": {
+      "import_actual_exit": 0,
+      "self_contained_checks": 47,
+      "failures": 0,
+      "actual_exit": 0,
+      "no_ignored_fixtures": true,
+      "import_tool_terminal": "4283/e4d6ff",
+      "test_tool_terminal": "12512/e3e7d9"
+    }
+  },
+  "review": {
+    "two_runtime_sources_independently_reviewed": true,
+    "blocking_findings": [],
+    "ignored_fixture_dependency_in_routine_test": "Resolved by separating exact external probe and actual self-contained test; root fresh-copy run passed"
+  },
+  "source_check_metadata": "Functional checks ran before 0.16.1 version/document preparation. Runtime/test hashes unchanged during that preparation. No 0.16.1 binary was run.",
+  "gate_values_unchanged": {
+    "required_deliveries": 3,
+    "distance_limit": 2.5,
+    "inventory_and_timeouts": true,
+    "soak_cycles": 7,
+    "real_wall_seconds_minimum": 3600
+  },
+  "new_package_acceptance": false,
+  "steam_ready": false,
+  "performance_acceptance": "not_assessed",
+  "evidence": [
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json",
+      "bytes": 44287,
+      "sha256": "8d3b7c10361ac21d116736d39aefb00840af2d3cb413de85e80254729faa8ce0"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-delivery-witness/work/delivery-repro/index.json",
+      "bytes": 9058,
+      "sha256": "0102d8f79a8b66e4b744060394719617b35fc79afca6c1f784ed8fea0acd8256"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-delivery-witness/work/delivery-witness-checks/final-summary.json",
+      "bytes": 5288,
+      "sha256": "732f446322508eed841638fcfea679894133c1d3ead6872d28ba01d71ff4c0c6"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/delivery-witness-fresh-check-v01/process.json",
+      "bytes": 1363,
+      "sha256": "0c48eef6f09948c7076a8a92b468e7d28abff914740ced19c08c50b2b4aae8e0"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/delivery-witness-fresh-check-v01/self-contained-process.json",
+      "bytes": 793,
+      "sha256": "1584f17cfe1709a9067257ef94523e4cc3b94767ae370e4aef23572d5bb97592"
+    }
+  ]
+}

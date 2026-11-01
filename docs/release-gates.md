@@ -1,28 +1,20 @@
 # 发布门槛
 
-目标仍是高度可玩的完整游戏并达到Steam发布标准。**当前0.16.0-dev仅为源码候选**：新增主车状态/选择功能有source113/0和GUI64/0，既有16/0与88/0回归通过。**尚无0.16精确包、整关、三图或一小时验收**；`steam_ready=false`、`performance_acceptance=not_assessed`。
+当前 **0.16.1-dev 为源码候选**，已修复并验证卸货观察漏计；尚未导出新包。0.16精确包实际长测在第四关失败，原结果保留。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
-| 要求 | 当前证据与边界 |
+| 要求 | 当前证据与下一步 |
 | --- | --- |
-| 主车状态与选择定位 | 0.16候选纯当前值读取，真实主车身份/健康/失效、选择不改运输订单与Sim/RNG；source113/0、私有source GUI64/0，实际退出0。无新声音、存档字段或按键。 |
-| 既有暂停与工地UI | 本轮仅重跑相关headless16/0及88/0；不声称全部旧测试重跑。 |
-| 0.16精确包与原生整关 | 尚未导出或验收。提交审查后重新绑定精确包和实际运行，不继承0.15。 |
-| 0.15旧包三图与一小时技术长测 | 冻结6bf原包同Main七场，游戏墙钟3906.965935秒，native/launcher/supervisor/auto33/collector实际0；只属于该旧包。 |
-| 帧时、最低配置、稳定60FPS | 性能接受未评定。私有软件显示及旧包帧记录不能单独关闭此门槛。 |
-| Linux分发兼容 | 0.15旧包有官方Runtime4有限启动/截图实际0；不是0.16、SDK编译、Steam客户端、Deck或干净机器验收。 |
-| 原生Windows与干净机器 | 待验。0.15导出/PE/脚本或Linux解析不等于Windows执行，不能作为0.16运行证据。 |
-| 陌生玩家与早微操/晚宏观节奏 | 待真人试玩。0.15受控后期AI建成接收营但主车失守，不是撤退通过；当前源码GUI同样不是人类观察。 |
-| 人工听感、辨识度与无障碍 | 待人工验收；本轮静音检查无听感结论。 |
-| 美术、字体、音频、名称与分发权利 | 来源/通知已记录；历史source pins与台账不改写，最终权利和分发条款待确认。 |
-| 商店展示与真实游戏截图 | 旧0.15五张实机图保留原包来源，无0.16实际包图库；未作美术/商店/权利批准或提交。 |
-| Steam项目、上传、审核与发行 | 仅有离线准备；AppID/Depot、真实客户端安装/更新/overlay与审核待完成。 |
+| 真实撤营交付观察 | 源码接口122/0、自包含47/0；旧源码/原失败存档68/0，3808步完整状态/RNG一致，5次实际交付全部计数。新副本导入及47/0实际退出0。 |
+| 主车状态与选择 | 既有源码113/0、私有GUI64/0及相关16/0、88/0保持原范围。 |
+| 0.16精确包 | 已导出并有smoke、渲染、普通UI及解压检查；前三关完成，第四关交付观察超时退出1，七关及一小时要求未通过。 |
+| 0.16.1精确包与完整路线 | 待导出、重新绑定源码/EXE/PCK/ZIP和实际原生运行。源码结果不代替包检查。 |
+| 0.15历史技术长测 | 冻结6bf原包七关三图，游戏墙钟3906.965935秒，实际退出均0；只属于原包。 |
+| 帧率、目标硬件、干净机器 | 性能接受未评定；软件显示环境不能关闭此门槛。 |
+| Linux分发兼容 | 0.16 Runtime4有限启动/截图已实际0；不是Steam客户端、Deck、SDK编译或干净机器验收。 |
+| 原生Windows | 尚待实际执行；导出和Linux脚本解析不是Windows运行。 |
+| 玩家体验 | 待陌生人独立试玩前期微操、后期调度、撤退决策、失败原因；AI观察不替代人类反馈。 |
+| 声音、可读性、无障碍 | 待人工听感与操作检查。 |
+| 素材、名称、权利 | 已有来源/通知台账，最终分发条款和名称待确认。 |
+| Steam商店与发行流程 | 真实AppID/Depot、上传、客户端安装更新、overlay及审核待完成。 |
 
-## 对象与记录边界
-
-本轮源码UI原图/日志见[root归档](../../source-ui-v016-command-evidence-v01/index.json)：v01前置条件错误、v02退出清理警告和v03最终64/0分别保留，不改写旧结果。当前候选仍保留23个主要可重绑按键，不新增模拟、声音或存档规则。
-
-[0.15完整接受记录](../../outpost-exodus-0.15.0-dev-release-evidence.json)与[实际收集退出](../../outpost-exodus-0.15.0-dev-collection-process.json)绑定冻结`6bf0fe78e9d627fb88a4d3216c66a759feba0fb1`及原精确ZIP。游戏墙钟3906.965935秒、launcher进程3909.00728546601秒分别记录；原接受包、统计、历史与素材pins不变。
-
-当前候选代码与旧包不同。未来精确0.16包需重新绑定提交、模板、EXE/PCK/ZIP和fresh隔离原生检查；本轮不提前宣布接受。真人、听感、Windows、最低配置和真实Steam流程各自保留实际环境与结果。
-
-[当前检查点](current-checkpoint.md)集中说明源码与旧包范围；既有[内容调查草稿](../../steam-content-survey-v015-draft-v01/index.json)和[0.15通知绑定](../../steam-content-survey-v015-package-binding-v01.json)仍待owner审阅。官方参考：[Steam审核](https://partner.steamgames.com/doc/store/review_process)、[商店图](https://partner.steamgames.com/doc/store/assets/standard)、[内容调查](https://partner.steamgames.com/doc/gettingstarted/contentsurvey)。
+[当前检查点](current-checkpoint.md)及[修复索引](benchmarks/v0.16.1/delivery-witness.json)列明实际过程。[0.16失败原件](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)、[0.15原接受记录](../../outpost-exodus-0.15.0-dev-release-evidence.json)、旧素材台账和历史pins均不改写。官方流程参考：[审核](https://partner.steamgames.com/doc/store/review_process)、[商店图](https://partner.steamgames.com/doc/store/assets/standard)、[内容调查](https://partner.steamgames.com/doc/gettingstarted/contentsurvey)。

@@ -1,6 +1,10 @@
 # 验证计划与已完成范围
 
-**0.15.0-dev精确Linux包技术验收已接受**。冻结source `6bf0fe78e9d627fb88a4d3216c66a759feba0fb1` / tree `3b881ee726da2b9d6ccee7236deae31d42a8d488`，本地tag `v0.15.0-dev`指向该源；本次文档更新没有运行引擎、改版本或重建包。
+当前源码为0.16.1-dev候选，卸货观察修复已完成接口122/0、自包含47/0和旧源码/原C4对照68/0；root不含本机fixture的新副本导入与47/0亦实际退出0。[修复索引](benchmarks/v0.16.1/delivery-witness.json)记录实际源字节与过程。本候选尚未导出。上一0.16包长测完成前三关、第四关超时退出1，[原失败记录](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保留。
+
+以下0.15记录属于历史精确包，不继承给当前候选。
+
+**0.15.0-dev精确Linux包技术验收已接受**。冻结source `6bf0fe78e9d627fb88a4d3216c66a759feba0fb1` / tree `3b881ee726da2b9d6ccee7236deae31d42a8d488`，本地tag `v0.15.0-dev`指向该源；该历史接受后的文档更新没有重建原包。
 
 ## 本版实际包证据
 
