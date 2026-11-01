@@ -67,6 +67,10 @@ func _check(ok: bool, label: String) -> void:
 func _snapshot(sim: Variant) -> String:
 	return JSON.stringify(sim.save_state())
 
+func _camera_targets(app: Variant, position: Vector2) -> bool:
+	var projected: Vector2 = app.get_canvas_transform() * (position * 48.0)
+	return app.get_viewport_rect().has_point(projected) and not app.hud.blocks_world_point(projected)
+
 
 func _fixture() -> Variant:
 	var sim: Variant = CountingSim.new()
@@ -240,7 +244,7 @@ func _focus_preserves_orders(app: Variant, via_hotspot: bool, label: String) -> 
 	else:
 		app.ui_action("select_command_truck")
 	_check(app.selected_ids == [int(command.id)], label + " selects only the recorded command vehicle")
-	_check(app.camera.position == Vector2(command.pos) * 48.0 and app.camera.zoom == zoom, label + " focuses actual vehicle position without changing zoom")
+	_check(_camera_targets(app, Vector2(command.pos)) and app.camera.zoom == zoom, label + " exposes the actual vehicle without changing zoom")
 	_check(app.selected_camp == camp and app.sim.paused == paused and app.speed == speed and app.current_tab == tab, label + " preserves selected camp, pause, speed and tab")
 	_check(app.build_kind.is_empty() and app.pending_task.is_empty() and not app.attack_move and not app.dragging and not app.selection_double_click and not app.pan_active and app.selected_project_id == 0 and app.construction_readout.is_empty(), label + " clears incompatible pointer and project modes")
 	_check(_snapshot(app.sim) == before and app.sim._rng.state == rng_before, label + " preserves complete simulation including order, cargo, path and economics")
@@ -310,13 +314,13 @@ func _test_load_and_new_run() -> void:
 	row = Readout.status(sim)
 	_check(int(row.get("unit_id", 0)) == saved_id and row.get("code", "") == "damaged" and float(row.get("hp", 0.0)) == 200.5, "load immediately observes saved identity and HP rather than stale replacement")
 	app.ui_action("select_command_truck")
-	_check(app.selected_ids == [saved_id] and app.camera.position == saved_position * 48.0, "post-load action focuses the actually restored command vehicle")
+	_check(app.selected_ids == [saved_id] and _camera_targets(app, saved_position), "post-load action exposes the actually restored command vehicle")
 	app.start_campaign("delta")
 	row = Readout.status(sim)
 	var new_id: int = int(sim.main_truck_id)
 	_check(new_id != saved_id and int(row.get("unit_id", 0)) == new_id and row.get("code", "") == "healthy", "ordinary new mission replaces stale loaded identity and damage")
 	var before: String = _snapshot(sim)
 	app.ui_action("select_command_truck")
-	_check(app.selected_ids == [new_id] and app.camera.position == Vector2(sim.get_unit(new_id).pos) * 48.0, "new mission action focuses its actual command vehicle")
+	_check(app.selected_ids == [new_id] and _camera_targets(app, Vector2(sim.get_unit(new_id).pos)), "new mission action exposes its actual command vehicle")
 	_check(_snapshot(sim) == before, "new mission focus remains read-only")
 	app.free()

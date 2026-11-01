@@ -71,6 +71,9 @@ var dragging: bool = false
 var selection_double_click: bool = false
 var drag_start: Vector2 = Vector2.ZERO
 var pan_active: bool = false
+# View-only state: a focus is a fixed point, never an order or unit follow mode.
+var _camera_focus_target: Vector2 = Vector2(-1, -1)
+var _camera_viewport_size: Vector2 = Vector2.ZERO
 var group_bindings: Dictionary = {}
 var waiting_binding: String = ""
 var accumulator: float = 0.0
@@ -188,6 +191,7 @@ func _setup_inputs() -> void:
 		InputMap.action_add_event(action, key)
 
 func _process(delta: float) -> void:
+	_update_camera_viewport()
 	# Some window managers minimize without a preceding focus-exit signal.
 	if DisplayServer.get_name() != "headless" and get_window().mode == Window.MODE_MINIMIZED and not _window_suspended:
 		_on_window_focus_exited()
@@ -260,8 +264,91 @@ func _move_camera(delta: float) -> void:
 		if mouse.x > screen.x - 8: direction.x += 1.0
 		if mouse.y < 8: direction.y -= 1.0
 		if mouse.y > screen.y - 8: direction.y += 1.0
-	camera.position += direction.limit_length() * delta * 780.0 / camera.zoom.x
-	camera.position = camera.position.clamp(Vector2.ZERO, Vector2(sim.map_size) * TILE)
+	if direction != Vector2.ZERO and delta > 0.0:
+		_pan_camera(camera.position + direction.limit_length() * delta * 780.0 / camera.zoom.x)
+
+func _bounded_camera_position(point: Vector2, screen: Vector2) -> Vector2:
+	var extent: Vector2 = Vector2(sim.map_size) * TILE
+	var half_view: Vector2 = screen * 0.5 / camera.zoom
+	# A smaller map has one valid centre, rather than inverted clamp endpoints.
+	var lower: Vector2 = half_view.min(extent * 0.5)
+	return point.clamp(lower, extent - lower)
+
+func _pan_camera(point: Vector2) -> void:
+	_camera_focus_target = Vector2(-1, -1)
+	_camera_viewport_size = get_viewport_rect().size
+	camera.position = _bounded_camera_position(point, _camera_viewport_size)
+	camera.force_update_scroll()
+
+func _camera_focus_point_clear(point: Vector2) -> bool:
+	# Leave a small logical-pixel click margin around the focused world point.
+	for offset: Vector2 in [Vector2.ZERO, Vector2(-16, -16), Vector2(16, -16), Vector2(-16, 16), Vector2(16, 16)]:
+		if hud.blocks_world_point(point + offset): return false
+	# These two visible panels intentionally do not consume world clicks.
+	var screen: Vector2 = get_viewport_rect().size
+	if feedback_left > 0.0 and Rect2(340, 82, maxf(300, screen.x - 670), 42).grow(16).has_point(point): return false
+	if hud._pause_banner_visible() and hud.font != null:
+		var width: float = maxf(220, hud.font.get_string_size(hud._pause_banner_text(), HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
+		if Rect2((screen.x - width) * 0.5, 138, width, 40).grow(16).has_point(point): return false
+	return true
+
+func _focus_camera(point: Vector2, refresh_layout: bool = true) -> void:
+	_camera_focus_target = point
+	var screen: Vector2 = get_viewport_rect().size
+	_camera_viewport_size = screen
+	camera.position = _bounded_camera_position(point, screen)
+	if menu.is_empty():
+		var projected: Vector2 = (point - camera.position) * camera.zoom + screen * 0.5
+		if not _camera_focus_point_clear(projected):
+			# A few anchors in the world corridor suffice for the normal side HUD.
+			# Query the real HUD, including compact guide/project overlays; no input
+			# handler is invoked. Work is bounded and only runs on focus or resize.
+			var left: float = minf(334.0, screen.x * 0.5)
+			var right: float = maxf(left, screen.x - 285.0)
+			var bottom: float = maxf(80.0, screen.y - 207.0)
+			var best: Vector2 = camera.position
+			var distance: float = INF
+			var overscan: float = INF
+			for x: float in [clampf(projected.x, 16.0, screen.x - 17.0), clampf(projected.x, left, right), left, right]:
+				for y: float in [clampf(projected.y, 80.0, bottom), 80.0, minf(238.0, bottom), bottom]:
+					var candidate: Vector2 = Vector2(x, y)
+					if not _camera_focus_point_clear(candidate): continue
+					# Refine every clear ray before ranking it: a farther anchor may
+					# escape a nearby HUD edge with less movement and no overscan.
+					var blocked: Vector2 = projected
+					for step: int in range(8):
+						var midpoint: Vector2 = (candidate + blocked) * 0.5
+						if _camera_focus_point_clear(midpoint): candidate = midpoint
+						else: blocked = midpoint
+					var position: Vector2 = camera.position + (projected - candidate) / camera.zoom
+					var extra: float = ((position - _bounded_camera_position(position, screen)) * camera.zoom).length_squared()
+					var squared: float = candidate.distance_squared_to(projected)
+					if extra < overscan or (extra == overscan and squared < distance):
+						best = position
+						distance = squared
+						overscan = extra
+			if is_finite(distance): camera.position = best
+	else:
+		# A modal blocks every world point. Recheck its normal HUD after closing.
+		_camera_viewport_size = Vector2.ZERO
+	camera.force_update_scroll()
+	# Hotspots are drawn data: a resize or just-closed guide can still expose the
+	# previous layout here. At most one callback checks the freshly drawn HUD.
+	if refresh_layout and menu.is_empty() and not RenderingServer.frame_post_draw.is_connected(_refresh_camera_focus_layout):
+		RenderingServer.frame_post_draw.connect(_refresh_camera_focus_layout, CONNECT_ONE_SHOT)
+
+func _refresh_camera_focus_layout() -> void:
+	if is_instance_valid(camera) and _camera_focus_target.x >= 0.0:
+		_focus_camera(_camera_focus_target, false)
+
+func _update_camera_viewport() -> void:
+	if not is_instance_valid(camera) or sim == null: return
+	var screen: Vector2 = get_viewport_rect().size
+	if screen == _camera_viewport_size: return
+	if _camera_focus_target.x >= 0.0:
+		_focus_camera(_camera_focus_target)
+	else:
+		_pan_camera(camera.position)
 
 func _refresh_camp_readouts(delta: float = 0.0, force: bool = false) -> void:
 	# All camps remain observable while another panel is open. These derived
@@ -405,7 +492,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("speed_down"): speed = maxf(1.0, speed - 1.0)
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE and not event.pressed: pan_active = false
+		var minimap_focus: bool = menu.is_empty() and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and hud.map_rect.has_point(event.position)
 		if hud.handle_mouse(event):
+			if minimap_focus: _focus_camera(camera.position)
 			if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed: dragging = false
 			return
 		if not started or not menu.is_empty(): return
@@ -443,7 +532,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				_issue_context(get_global_mouse_position() / TILE)
 	if event is InputEventMouseMotion and pan_active:
-		camera.position -= event.relative / camera.zoom
+		_pan_camera(camera.position - event.relative / camera.zoom)
 
 func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 	selected_project_id = 0
@@ -526,7 +615,7 @@ func _zoom(factor: float) -> void:
 	camera.zoom = Vector2.ONE * value
 	camera.force_update_scroll()
 	var after: Vector2 = get_global_mouse_position()
-	camera.position += before - after
+	_pan_camera(camera.position + before - after)
 
 func _next_squad() -> void:
 	var groups: Array = []
@@ -559,7 +648,7 @@ func _focus_selection() -> void:
 	if selected_ids.is_empty(): return
 	var center: Vector2 = Vector2.ZERO
 	for id: int in selected_ids: center += Vector2(sim.get_unit(id).get("pos", Vector2.ZERO))
-	camera.position = center / selected_ids.size() * TILE
+	_focus_camera(center / selected_ids.size() * TILE)
 
 func focus_main_truck() -> bool:
 	# Revalidate the live identity even if a previous frame drew an enabled button.
@@ -570,15 +659,15 @@ func focus_main_truck() -> bool:
 	_cancel_pointer_modes()
 	pan_active = false
 	selected_ids = [int(unit.id)]
-	camera.position = Vector2(unit.pos) * TILE
+	_focus_camera(Vector2(unit.pos) * TILE)
 	return true
 
 func focus_camp(id: int) -> void:
 	var camp: Dictionary = sim.get_camp(id)
 	if camp.is_empty(): return
 	selected_camp = id
-	camera.position = Vector2(camp.pos) * TILE
 	_sync_camp_page(true)
+	_focus_camera(Vector2(camp.pos) * TILE)
 
 func camp_page_size() -> int:
 	var height: float = get_viewport_rect().size.y
@@ -694,8 +783,8 @@ func ui_action(action: String) -> void:
 		_save_settings()
 	elif action == "guide_focus":
 		var point: Vector2 = guide.get_hint().get("target", Vector2(-1, -1))
-		if point.x >= 0: camera.position = point * TILE
 		if menu == "guide": menu = ""
+		if point.x >= 0: _focus_camera(point * TILE)
 	elif action == "load_auto": load_campaign("auto")
 	elif action == "load_backup": load_campaign("backup")
 	elif action == "fullscreen":
@@ -826,6 +915,7 @@ func start_campaign(mission_id: String = "") -> void:
 		if unit.get("team") == "friendly" and unit.get("kind") in ["rifle", "engineer"]: selected_ids.append(unit.id)
 	camera.position = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
 	camera.zoom = Vector2.ONE * 1.05
+	_pan_camera(camera.position)
 	_notify("%s · 前方清场扩张，后方尸潮将在整备期后抵达。%s 查看操作。" % [String(sim.mission_name), binding_label("help_menu")])
 	_refresh_camp_readouts(0.0, true)
 
@@ -951,6 +1041,11 @@ func load_campaign(slot: String = "manual") -> bool:
 	var home_camera: Vector2 = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
 	camera.position = Vector2(float(ui.get("camera_x", home_camera.x)), float(ui.get("camera_y", home_camera.y)))
 	camera.zoom = Vector2.ONE * clampf(float(ui.get("zoom", 1.05)), MIN_CAMERA_ZOOM, MAX_CAMERA_ZOOM)
+	# Preserve an old save's exact view at this size, including former overscan.
+	# A real viewport change or the next camera action adopts the new bounds.
+	_camera_focus_target = Vector2(-1, -1)
+	_camera_viewport_size = get_viewport_rect().size
+	camera.force_update_scroll()
 	selected_camp = int(ui.get("selected_camp", 0))
 	if sim.get_camp(selected_camp).is_empty(): selected_camp = int(sim.camps[0].id)
 	guide.update(sim, selected_ids, selected_camp)
