@@ -1,10 +1,10 @@
 {
-  "recorded_utc": "2026-11-01T04:11:39.876936+00:00",
+  "recorded_utc": "2026-11-01T04:30:41.921130+00:00",
   "version": "0.16.2-dev",
-  "status": "EXACT_PACKAGE_PREFLIGHT_AND_TARGETED_NATIVE_GUIDE_PASSED_FULLCAMPAIGN_PENDING",
+  "status": "PREFLIGHT_TARGETED_CHECKS_PASSED_ORIGINAL_FULL_SOAK_FAILED_NOT_ACCEPTED",
   "frozen_source_commit": "aaae0064413528b6c135f76d308118465e34831d",
   "frozen_source_tree": "32c02312c7cec6268bd590112a8a1ad25b785388",
-  "scope": "Exact new official export/smoke/full standard software render/3ZIP/strict unpack and two declared controlled ordinary native UI cases. Documentation after this source freeze changes no22runtime script bytes. Not fullcampaign/hour/minimumhardware/human/Windows/Steam acceptance.",
+  "scope": "Exact new official export/smoke/full standard software render/3ZIP/strict unpack and two declared controlled ordinary native UI cases. Documentation after this source freeze changes no22runtime script bytes. Not fullcampaign/hour/minimumhardware/human/Windows/Steam acceptance. Original new full-soak later actually failed; earlier component passes do not override that failure.",
   "actual_export_tool_terminal": "9e412f",
   "actual_pipeline_tool_terminal": "4572d8",
   "pipeline_stage_codes": {
@@ -28,7 +28,7 @@
   "native_Guide_checks": "same paused native F5 fullSim/RNG/explicit selection/group/speed/overlay fields preserved; actual main/A camera focus; separate idle publicAtoB admitted. Declared flat/high-stock fixtures, not default campaign proof.",
   "current_runtime22_byte_identical_to_frozen_package_source": true,
   "ordinary_two_generation_auto": "ACTUAL_TIMING_BYTE_RETENTION_AND_ORDINARY_EXIT_PASSED_SCHEMA_DECODE_PENDING",
-  "fullcampaign_and_hour": "RUNNING_ORIGINAL_ROOT_SESSION93484_NOT_ACCEPTED",
+  "fullcampaign_and_hour": "FAILED_ORIGINAL_NATIVE_MINUS11_WITH_PRIVATE_X98_DISCONNECT_ROOT93484_TERMINAL627acf",
   "Windows_native_verified": false,
   "human_results": null,
   "owner_and_Steam_actual_project": "PENDING_OWNER_VALUES_AND_REAL_EXECUTION",
@@ -114,6 +114,16 @@
       "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-private-launcher-v01/soak-start.json",
       "bytes": 3925,
       "sha256": "f2917fa1d90c8a11bcce63ac91132db7dc0bb7af221002a0523174b1f586381e"
+    },
+    "failed_original_snapshot": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json",
+      "bytes": 51067,
+      "sha256": "370f021f0604c1686baaefd90d41a0e257e36d1c134035ac50041ff41496670c"
+    },
+    "actual_failed_soak_root_terminal": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-private-launcher-v01/soak-root-terminal.json",
+      "bytes": 849,
+      "sha256": "51c38ad9972ee516e988b18ac2ea1b2b8f03ee4ec2eacc29d881b812f72524ea"
     }
   },
   "actual_prepare_tool": {
@@ -125,6 +135,19 @@
   "actual_soak_tool": {
     "session": 93484,
     "initial": "f07504",
-    "terminal": null
+    "terminal": "627acf",
+    "exit": 1
+  },
+  "native_long_run_failure": {
+    "native_returncode": -11,
+    "launcher_returncode": 1,
+    "native_process_wall_seconds": 504.33434769598534,
+    "cycle_index": 1,
+    "cycles_completed": 0,
+    "last_phase": "exit_construction_road minimum construction window",
+    "private_Xvfb_and_supervisor_also_absent": true,
+    "server_actual_wait_returncode": null,
+    "server_tool15220": "Unknown process id; no actual terminal available",
+    "cause": "UNDETERMINED: merged buffered logX98 broken + SIGSEGV, no usable core/nativebacktrace; no attribution toGuide or toolhost"
   }
 }

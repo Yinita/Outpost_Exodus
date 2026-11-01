@@ -4,6 +4,8 @@
 
 实际解压包另用两份明确平地／高库存fixture，经普通菜单load、OS输入、F5与正常退出检查Guide忙／闲状态，两个native及工具均0。相同暂停实例Guide前后完整Sim/RNG与指定UI字段不变，真实主车／A营镜头精确匹配；另成阶段的公开A→B命令实际接受，不宣称该有意命令前后Sim不变。[root原生复核](../../native-guide-v0162-root-review-v01.json)核20张原始PNG并查看关键像素。外部fixture helper首轮缩进解析失败保留，修后37／0只属于fixture生成；此项不充当默认开局、整关、小时、真人或性能验收。[当前包阶段记录](benchmarks/v0.16.2/package-stage.json)列明当前包完整路线／七关／双墙钟及四槽source读回仍待结果。
 
+本版首次完整长测已经实际失败：root93484终局627acf为1，launcher1/native -11，原生504.33434769598534秒，C1尚未完成。合并日志记录X98断连及SIGSEGV退出清理，私有显示及监督器也已消失但没有wait回执，具体原因未定；[71份失败原件](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)不改写为通过。四槽独立诊断与后续新隔离验证不代替本次实际失败，source／collector接受继续等待完整七场与双实际小时成功终局。
+
 0.16.1冻结cf精确Linux包七关三图完成：游戏3979.349975秒／native3981.0773600769753秒；native/launcher/supervisor/root均实际0。严格路线经济、全部帧守恒、47卸货事务和215项四槽schema/JSON codec/RNG复核通过。[接受记录](../../outpost-exodus-0.16.1-dev-release-evidence.json)及[真实收集](../../outpost-exodus-0.16.1-dev-collection-process.json)保留范围；原208／4字面对比失败与独立codec边界诊断均保留，不将raw十进制或解析前IEEE位作为已证明不变。
 
 以下0.15记录属于历史精确包，不继承给当前候选。

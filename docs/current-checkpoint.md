@@ -18,7 +18,9 @@ Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯�
 
 普通Canyon1x两代自动存档已实际通过原44／44／180秒门槛：首代下界44.940392976秒、第二代间隔下界44.975124021秒、第二代从开始点击的上界90.1105907秒。暂停后退出前封存两槽，backup保留primary1；native／observer均实际0。root重算原始单调时钟、48文件SHA并查看00:45运行／01:30暂停原图，见[普通auto复核](../../native-auto-cycle-v0162-root-review-v02.json)。benchmark最终两槽也已在原native退出后原字节封存，不宣称frame300或固定45秒保留窗口；四槽source schema／完整状态／RNG读回仍待完成。
 
-当前新包prepare实际完成0（root30641终局627907），范围只到启动／短循环／真实磁盘续接；随后root原session93484启动同一解压包的七场长测，初始tool f07504，仍待实际终局及独立复核。保留七关／双墙钟、真实费用／库存／三交付与原超时门槛，不继承0.16.1结果。
+当前新包prepare实际完成0（root30641终局627907），范围只到启动／短循环／真实磁盘续接。随后原七场长测root93484／f07504实际以627acf终局1：launcher1、native -11，原生进程实际504.33434769598534秒，第一场Canyon尚未胜利。末次进度是出口施工道路窗口，sim1479.1，原营3次／中营4次真实交付。没有完整native report或小时接受。
+
+原合并日志记录X98连接断开、SIGSEGV与退出清理错误；Xvfb3103833及监督器3103827也已消失，未产生server-wait记录，原server工具15220返回Unknown。缓冲合并日志不足以证明线程先后；目前没有可用core／函数栈，也没有显示服务退出信号或发送者的确定证据，不能归因于Guide或工具宿主。[71份原失败快照](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)逐字保留，原失败不改为通过。后续先诊断显示／原生退出路径与监督生命周期；任何重新验证都使用新隔离目录，保留七关／双墙钟、真实费用／库存／三交付与原超时门槛。
 
 ## 已接受的0.16.1精确包
 
@@ -32,7 +34,7 @@ Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯�
 
 [代码统计](benchmarks/v0.16.2/code-size.json)：18个玩法等脚本8,875物理行；81个自有文件26,560物理行、24,227非空行。排除引擎、第三方、素材、场景、UID、缓存及外部探针。
 
-下一步等待当前原生长测实际终局，再完成四槽source读回与完整路线／帧账独立复核。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0162/first-playtest.txt)与[0.16.2来源补充](../../steam-content-survey-v0162-draft-v01/index.json)绑定真实新包，没有预填人类或Valve结果。Windows bound脚本仅PS7/Linux ParseFile实际通过，不是Windows执行。[本地SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)只含每平台EXE+PCK+三通知；AppID/Depot/entity/account仍UNBOUND，没有登录、SteamCMD执行或上传。
+下一步定位首次长测SIGSEGV与私有显示丢失，完成四槽独立诊断；source／collector接受必须等待实际完整成功终局，不能用单项通过覆盖失败。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0162/first-playtest.txt)与[0.16.2来源补充](../../steam-content-survey-v0162-draft-v01/index.json)绑定真实新包，没有预填人类或Valve结果。Windows bound脚本仅PS7/Linux ParseFile实际通过，不是Windows执行。[本地SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)只含每平台EXE+PCK+三通知；AppID/Depot/entity/account仍UNBOUND，没有登录、SteamCMD执行或上传。
 
 ## 历史
 
