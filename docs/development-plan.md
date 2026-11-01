@@ -16,7 +16,7 @@
 
 [当前代码清单](benchmarks/v0.16.3/code-size.json)：18份玩法脚本8,981物理行；含诊断／测试／工具共83份自有代码27,190物理行、24,815非空行。沿用0.16.2的81文件分组，仅新增两个repo测试；含注释空行，排除引擎／第三方、素材、场景、UID、缓存及work/probes。代码量不表示完成度。
 
-1. 0.16.3冻结于561313a／tree0ec913a，已完成实际export、Linux smoke、普通／战略各3600帧+120预热、三ZIP与严格解压，见[checksums](../../outpost-exodus-0.16.3-dev-checksums.json)及[root解压复核](../../native-v0163-unpack-root-review-v01.json)。尚无0.16.3tag；下一步执行新包prepare、普通两代auto和打包后GUI，再执行七场C/D/R/C/D/R/C、6次公开重启、同Main及两个独立真实墙钟各≥3600秒；原timeout、真实费用／库存／交付／到场／磁盘及257桶逐场和全局帧守恒门槛不变。source collector也尚未执行。不能借AAAE接受、source GUI或prepare宣布新包整关通过；本次llvmpipe软件测量不作物理硬件性能接受。
+1. 0.16.3冻结于561313a／tree0ec913a，已完成实际export、Linux smoke、普通／战略各3600帧+120预热、三ZIP与严格解压，见[checksums](../../outpost-exodus-0.16.3-dev-checksums.json)及[root解压复核](../../native-v0163-unpack-root-review-v01.json)。尚无0.16.3tag；新包[coupled prepare已实际通过](../../native-v0163-coupled-run-v01/root-prepare-execution-process.json)，native／launcher／server三wait均0并回收。七场C/D/R/C/D/R/C长测已启动、尚未记录终局或接受；仍须实际完成6次公开重启、同Main及两个独立真实墙钟各≥3600秒；原timeout、真实费用／库存／交付／到场／磁盘及257桶逐场和全局帧守恒门槛不变。普通两代auto、打包后GUI及source collector仍未执行。不能借AAAE接受、source GUI或prepare宣布新包整关通过；本次llvmpipe软件测量不作物理硬件性能接受。
 2. 安排陌生人类独立上手，观察前期微操到后期多营调度、指挥车保护、困惑和停止原因；补听感、可读性与无障碍。受控AI观察及root看图不代替真人反馈。
 3. 在明确目标硬件上核新包真实路线帧间隔、原生Windows及干净机器。默认私有GLX[实际探针](../../linux-private-glx-context-v01/index.json)仍是llvmpipe；软件显示、Runtime启动或VM功能验证不能代表硬件60FPS、最低配置或原生Windows通过。
 4. 审阅素材／音频／名称／权利与商店内容，保留旧台账pins；真实Steam项目、Depot、安装／更新／overlay、上传及审核仍待实际完成。既有[内容草稿](../../steam-content-survey-v0162-draft-v01/index.json)、[试玩kit](../../playtest-kit-v0162/first-playtest.txt)和[离线staging](../../steampipe-v0162-staging-v01/index.json)没有owner、Windows或Steam审批结论。

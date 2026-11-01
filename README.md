@@ -2,7 +2,7 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前开发源码为 **0.16.3-dev**。镜头按实际视野限制平移与缩放；定位边缘目标时保留HUD外的点击余量，读档视角在新镜头操作或实际窗口变化前保持原值。另修复读档后单位ID类型不一致导致选中圈失配的问题。479项相关headless、552项既有渲染界面回归及248项真实窗口镜头／输入检查均通过，见[阶段记录](docs/benchmarks/v0.16.3/source-stage.json)。**冻结561313a的新包已完成Linux smoke、普通／战略各3600帧+120预热、三ZIP打包与严格解压回读**，见[本版checksums](../outpost-exodus-0.16.3-dev-checksums.json)和[root解压复核](../native-v0163-unpack-root-review-v01.json)。渲染测量使用软件llvmpipe，不是物理性能结果。新包prepare、七场双墙钟长测、普通auto、打包后GUI与source collector尚未执行；尚无0.16.3tag或完整接受。
+当前开发源码为 **0.16.3-dev**。镜头按实际视野限制平移与缩放；定位边缘目标时保留HUD外的点击余量，读档视角在新镜头操作或实际窗口变化前保持原值。另修复读档后单位ID类型不一致导致选中圈失配的问题。479项相关headless、552项既有渲染界面回归及248项真实窗口镜头／输入检查均通过，见[阶段记录](docs/benchmarks/v0.16.3/source-stage.json)。**冻结561313a的新包已完成Linux smoke、普通／战略各3600帧+120预热、三ZIP打包与严格解压回读**，见[本版checksums](../outpost-exodus-0.16.3-dev-checksums.json)和[root解压复核](../native-v0163-unpack-root-review-v01.json)。渲染测量使用软件llvmpipe，不是物理性能结果。新包coupled prepare已通过，native／launcher／server三wait均0；七场双墙钟长测已实际启动、尚未记录终局。普通auto、打包后GUI与source collector仍待执行；尚无0.16.3tag或完整接受。
 
 最近通过技术验收的Linux包仍为 **0.16.2-dev**，本地tag/source `aaae0064…`：同Main七场三图，游戏4016.244577秒／native4018.0584507070016秒，48次真实卸货、逐场与全局帧账及215项四槽读回通过，游戏／启动器／私有显示均正常退出0。[包接受记录](../outpost-exodus-0.16.2-dev-release-evidence.json)及[收集过程](../outpost-exodus-0.16.2-dev-collection-process.json)只属于该原包。上述ID反馈缺口也存在于该版本；原ZIP未修改，0.16.3修复不能反向算入旧包。首次SIGSEGV与显示丢失原因仍未定，失败原件保留。`steam_ready=false`，Windows原生、目标硬件及真人体验仍待验证。
 

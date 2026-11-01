@@ -1,11 +1,11 @@
 {
   "version": "0.16.3-dev",
-  "recorded_utc": "2026-11-01T08:38:44.468033+00:00",
-  "status": "SOURCE_VALIDATED_EXPORT_SMOKE_SOFTWARE_RENDER_PACKAGE_STRICT_UNPACK_COMPLETED_NATIVE_ACCEPTANCE_PENDING",
+  "recorded_utc": "2026-11-01T08:44:57.071830+00:00",
+  "status": "SOURCE_VALIDATED_PACKAGE_UNPACK_PREPARE_COMPLETE_SEVEN_CYCLE_RUN_STARTED_ACCEPTANCE_PENDING",
   "runtime_code_basis_commit": "4306c2431faf225f742f142836959fe4992a7900",
   "runtime_Main_sha256": "9920bed445f6d5cb8c5a09aaa7eb2b7501c04ebf36a0d4a8d394e3bc7021a962",
   "runtime21_byte_identical_to_accepted_AAAE": true,
-  "source_scope": "Source UI-only viewport/focus and loaded-selection identity fixes; current exact561 exports, smoke, software render, threeZIP packaging and strict archive/readback completed. No complete technical acceptance inherited from0.16.2.",
+  "source_scope": "Source UI-only viewport/focus and loaded-selection identity fixes; current exact561 exports, smoke, software render, threeZIP packaging, strict archive/readback and coupled prepare completed. Seven-cycle soak started without terminal/acceptance recorded. No complete technical acceptance inherited from0.16.2.",
   "actual_headless": {
     "loaded_selection": 61,
     "camera": 305,
@@ -284,9 +284,70 @@
     "linux_archive_execute_bit": true,
     "scope": "Actual three-archive/source/metadata/notices/CRC/permissions verification and fresh Linux readback only; no engine, benchmark, Windows, full campaign or Steam was run by this script."
   },
-  "actual_new_package_prepare": null,
+  "actual_new_package_prepare": {
+    "result": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0163-coupled-run-v01/runs/prepare/result.json",
+      "bytes": 15120,
+      "sha256": "e3cc1f5bac3da205345f4c06a0dae56f986d797e0d0dfedfead880e3b68aac5a"
+    },
+    "strict_verification": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0163/work/native-v0163-prepare-coupled-attempt01/verification.json",
+      "bytes": 114370,
+      "sha256": "382b6eb180c54960cb1df267b5736b45a19982d1a7cbffd5561155e7666fdf0f"
+    },
+    "root_process": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0163-coupled-run-v01/root-prepare-execution-process.json",
+      "bytes": 986,
+      "sha256": "298c2bcbda6f6624b1a4e3a566ce88aaa2b315f22f249df4c92306b8a093fd22"
+    },
+    "root_tool": {
+      "session": 17010,
+      "initial": "b632d1",
+      "terminal": "9cf327",
+      "actual_tool_exit": 0
+    },
+    "success": true,
+    "actual_native_launcher_server_waits": [
+      0,
+      0,
+      0
+    ],
+    "all_owned_pids_socket_lock_gone": true,
+    "scope": "Prepare only; no full campaign, dual hour, autosave/GUI/source collector/hardware/Windows/Steam acceptance."
+  },
   "actual_new_package_ordinary_auto": null,
   "actual_new_package_camera_loaded_selection_GUI": null,
   "actual_new_package_source_collector": null,
-  "local_version_tag": null
+  "local_version_tag": null,
+  "actual_native_full_seven_cycle_run": {
+    "status": "STARTED_NO_TERMINAL_OR_ACCEPTANCE_RECORDED",
+    "start": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0163-coupled-run-v01/runs/soak/start.json",
+      "bytes": 12310,
+      "sha256": "f2684fa4384fa08be59715767f5661a9a966cf510a85f013bd40dbaf5f104e9e"
+    },
+    "root_tool": {
+      "session": 69077,
+      "initial": "df44b2",
+      "terminal": null,
+      "actual_tool_exit": null
+    },
+    "started_utc": "2026-11-01T08:43:30.416070+00:00",
+    "supervisor": {
+      "pid": 3992901,
+      "start_ticks": 17287616
+    },
+    "server": {
+      "pid": 3992908,
+      "start_ticks": 17287625
+    },
+    "launcher": {
+      "pid": 3992917,
+      "start_ticks": 17287636
+    },
+    "actual_wait_outcomes": null,
+    "one_hour_acceptance": null,
+    "complete_campaign_acceptance": null,
+    "scope": "Startup metadata only, read from existing start.json; no live proc query, polling or terminal inferred. Original seven-cycle/dual-clock/frame/economics gates unchanged."
+  }
 }

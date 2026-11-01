@@ -4,7 +4,7 @@
 
 当前功能源基线为 `4306c2431faf225f742f142836959fe4992a7900`，Main SHA为 `9920bed445f6d5cb8c5a09aaa7eb2b7501c04ebf36a0d4a8d394e3bc7021a962`。本轮只改变Main的镜头与UI选择行为，其余21个runtime脚本与AAAE逐字一致；83份自有代码清单所列字节与受测工作树匹配，实际执行范围见下文。见[源码阶段记录](benchmarks/v0.16.3/source-stage.json)及[root逐项复核](../../source-camera-selection-root-review-v01.json)。**0.16.3已完成实际Linux／Windows导出、Linux smoke、双zoom标准软件渲染、三ZIP打包与严格解压回读，尚无新包整关／小时或性能验收**，不能继承0.16.2包的接受结果。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
-冻结payload源为 `561313a910d7b4f2954260a79b34cd4030c0857a`，tree `0ec913a95502b8345d2493a026eadbc4c0b7ee1c`；尚无0.16.3tag。pipeline三个阶段实际wait均0，私有显示正常退出0且回收；普通／战略各3600帧+120预热及实际save/read有效。三ZIP的879份源码、Linux8／Windows7成员、notice、CRC、metadata及Linux执行位／逐字回读已核对，见[checksums](../../outpost-exodus-0.16.3-dev-checksums.json)与[root解压复核](../../native-v0163-unpack-root-review-v01.json)。这些是llvmpipe软件功能测量，不是物理GPU或稳定60FPS证明。新包prepare、普通两代auto、打包后相机／loaded-selection GUI、七场双墙钟及source collector均尚未执行。
+冻结payload源为 `561313a910d7b4f2954260a79b34cd4030c0857a`，tree `0ec913a95502b8345d2493a026eadbc4c0b7ee1c`；尚无0.16.3tag。pipeline三个阶段实际wait均0，私有显示正常退出0且回收；普通／战略各3600帧+120预热及实际save/read有效。三ZIP的879份源码、Linux8／Windows7成员、notice、CRC、metadata及Linux执行位／逐字回读已核对，见[checksums](../../outpost-exodus-0.16.3-dev-checksums.json)与[root解压复核](../../native-v0163-unpack-root-review-v01.json)。这些是llvmpipe软件功能测量，不是物理GPU或稳定60FPS证明。新包[coupled prepare](../../native-v0163-coupled-run-v01/root-prepare-execution-process.json)已通过：root17010／9cf327实际0，native／launcher／server三wait均0，全部PID及99socket／lock回收。七场双墙钟长测已实际启动（root69077／df44b2），目前仅有[start记录](../../native-v0163-coupled-run-v01/runs/soak/start.json)，没有终局或小时接受。普通两代auto、打包后相机／loaded-selection GUI及source collector仍待执行。
 
 普通平移、拖拽和缩放现在按真实logical viewport／zoom限位，小地图轴居中；显式定位优先减少图外区域，必要时用有界偏移避开HUD。17px内部guard保持原16px实际canvas净空要求，postdraw复核新布局；手动移动结束定位。旧存档镜头／zoom精确保留，直到新镜头操作或真实视口变化。
 
@@ -28,7 +28,7 @@
 
 ## 剩余发布工作
 
-0.16.3已完成export→smoke→双视角render→package／严格unpack；接着须执行新包prepare、普通两代auto及打包后GUI检查，再执行同Main七场、6次公开重启、双独立≥3600秒、原路线超时／经济／到场／磁盘与257桶逐场及全局帧守恒门槛。[验证计划](validation-plan.md)和[发布门槛](release-gates.md)列明范围；source阶段通过不能代替新payload的实际接受。
+0.16.3已完成export→smoke→双视角render→package／严格unpack及coupled prepare；同Main七场长测已启动、尚未终局。仍须实际达成七场／6次公开重启、双独立≥3600秒、原路线超时／经济／到场／磁盘与257桶逐场及全局帧守恒门槛，并补齐普通两代auto、打包后GUI及source collector。[验证计划](validation-plan.md)和[发布门槛](release-gates.md)列明范围；source阶段通过不能代替新payload的实际接受。
 
 默认私有GLX链路已[实际清除软件强制变量后探测](../../linux-private-glx-context-v01/index.json)，仍为llvmpipe；`GLX_IS_DIRECT=1`也不是硬件证明，不能称稳定60FPS或最低配置通过。陌生人类的前期微操→后期多营调度、主车保护、听感／可读性／无障碍、原生Windows、真实目标硬件、权利与Steam安装／更新／审核仍待完成。[Windows可行性](../../windows-native-environment-feasibility-v01/facts.json)和[VM准备](../../windows-native-vm-preparation-v01/profile.json)没有实际Windows执行结论；[试玩材料](../../playtest-kit-v0162/first-playtest.txt)、[内容调查草稿](../../steam-content-survey-v0162-draft-v01/index.json)与[五文件SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)没有预填owner或Valve结果，AppID／Depot／entity／account仍UNBOUND、未登录或上传。
 
