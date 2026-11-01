@@ -1,11 +1,11 @@
 {
   "version": "0.16.3-dev",
-  "recorded_utc": "2026-11-01T07:55:59.153341+00:00",
-  "status": "SOURCE_VALIDATED_ACTUAL_EXPORTS_COMPLETED_PACKAGE_NATIVE_PENDING",
+  "recorded_utc": "2026-11-01T08:38:44.468033+00:00",
+  "status": "SOURCE_VALIDATED_EXPORT_SMOKE_SOFTWARE_RENDER_PACKAGE_STRICT_UNPACK_COMPLETED_NATIVE_ACCEPTANCE_PENDING",
   "runtime_code_basis_commit": "4306c2431faf225f742f142836959fe4992a7900",
   "runtime_Main_sha256": "9920bed445f6d5cb8c5a09aaa7eb2b7501c04ebf36a0d4a8d394e3bc7021a962",
   "runtime21_byte_identical_to_accepted_AAAE": true,
-  "source_scope": "Source UI-only viewport/focus and loaded-selection identity fixes. No new exported package or technical acceptance inherited from0.16.2.",
+  "source_scope": "Source UI-only viewport/focus and loaded-selection identity fixes; current exact561 exports, smoke, software render, threeZIP packaging and strict archive/readback completed. No complete technical acceptance inherited from0.16.2.",
   "actual_headless": {
     "loaded_selection": 61,
     "camera": 305,
@@ -134,13 +134,159 @@
     "bytes": 5181,
     "sha256": "f5605e67b1e7ba4490d5d3d5e8735dc1f49e5e139521820f8bc6ddef607a030c"
   },
-  "actual_native_package_smoke": null,
-  "actual_standard_render_measurement": null,
+  "actual_native_package_smoke": {
+    "result": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0163/work/native-smoke/result.json",
+      "bytes": 5106,
+      "sha256": "133880d0eb4cdc05bf98f905060a41c7abd47d803812a8de2bc57780cdf32052"
+    },
+    "success": true,
+    "actual_stage_wait_returncode": 0,
+    "wall_seconds": 3.9184395789925475
+  },
+  "actual_standard_render_measurement": {
+    "report": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0163/work/benchmarks/native-v0163-software-full/output/rendered-benchmark.json",
+      "bytes": 1147331,
+      "sha256": "b7d093f5e1f2c3b264682516a834f98856ba9528985abe8e6897e9ee3f7f0dba"
+    },
+    "scope": "Software functional rendering measurement only; no physicalGPU/minimumhardware/stable60FPS/fullcampaign/human/Windows/Steam acceptance",
+    "renderer": "llvmpipe (LLVM 15.0.7, 256 bits)",
+    "rendering_method": "gl_compatibility",
+    "actual_stage_wait_returncode": 0,
+    "wall_seconds": 569.598942312994,
+    "max_seconds_unchanged": 600,
+    "zooms": [
+      {
+        "name": "normal",
+        "measured_frames": 3600,
+        "warmup_frames": 120,
+        "valid_workload": true,
+        "actual_fixed_step_hz": 20.0,
+        "actor_counts_end": {
+          "enemy": 100,
+          "friendly": 32
+        },
+        "all_actual_save_read_valid": true
+      },
+      {
+        "name": "strategic",
+        "measured_frames": 3600,
+        "warmup_frames": 120,
+        "valid_workload": true,
+        "actual_fixed_step_hz": 20.0,
+        "actor_counts_end": {
+          "enemy": 100,
+          "friendly": 32
+        },
+        "all_actual_save_read_valid": true
+      }
+    ],
+    "physical_GPU_or_stable60_acceptance": false
+  },
   "actual_native_full_seven_cycle_dual_wall_acceptance": null,
   "required_native_gates_unchanged": "Fresh normal-Main original seven cycles/six restarts; independent game/native each>=3600 seconds; real costs/local stock/power/persons/maintruck arrival/disk continuation; original timeouts and all257-bin frame/phase conservation. No inherited native acceptance.",
   "Windows_native_verified": false,
   "human_results": null,
   "performance_acceptance": "not_assessed",
   "steam_ready": false,
-  "actual_source_freeze_tree": "0ec913a95502b8345d2493a026eadbc4c0b7ee1c"
+  "actual_source_freeze_tree": "0ec913a95502b8345d2493a026eadbc4c0b7ee1c",
+  "actual_pipeline": {
+    "receipt": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0163/work/v0163-native-pipeline-process.json",
+      "bytes": 8276,
+      "sha256": "0cc13ce41841e5ccdb892d61cdb4b6aa63bc7df064e7e605f988aa2bc4f614c4"
+    },
+    "root_tool": {
+      "session": 90065,
+      "initial": "f300d5",
+      "terminal": "147926",
+      "actual_tool_exit": 0
+    },
+    "success": true,
+    "stages": [
+      {
+        "name": "smoke",
+        "actual_child_returncode": 0,
+        "wall_seconds": 3.9184395789925475,
+        "timed_out": false,
+        "error_or_leak_output": false
+      },
+      {
+        "name": "benchmark",
+        "actual_child_returncode": 0,
+        "wall_seconds": 569.598942312994,
+        "timed_out": false,
+        "error_or_leak_output": false
+      },
+      {
+        "name": "package",
+        "actual_child_returncode": 0,
+        "wall_seconds": 6.768583365017548,
+        "timed_out": false,
+        "error_or_leak_output": false
+      }
+    ],
+    "actual_server_wait_returncode": 0,
+    "owned_display_pid_socket_lock_gone": true,
+    "payload_unchanged": true
+  },
+  "actual_packaging": {
+    "checksums": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.3-dev-checksums.json",
+      "bytes": 597,
+      "sha256": "529d8553d0629d4fb7ba2293732573bfe1bde8d1d4b8b114b6a03ad0b2914309"
+    },
+    "artifacts": {
+      "outpost-exodus-source-0.16.3-dev.zip": {
+        "sha256": "12d31cf0caf5c4f7077d1d7e00d98987c3aabd81fc1e4be44f27dc0a975c8ecc",
+        "bytes": 23599318
+      },
+      "outpost-exodus-linux-0.16.3-dev.zip": {
+        "sha256": "95db4c522b7c7fe829181c04dc39c71d332705da0ab72d80f4dc3721c88c205b",
+        "bytes": 47043954
+      },
+      "outpost-exodus-windows-0.16.3-dev.zip": {
+        "sha256": "30376c5e38578c37370ed2a395a53e4cc3991cd8ad6390d1ee4638cdbc172bac",
+        "bytes": 56532033
+      }
+    },
+    "actual_stage_wait_returncode": 0
+  },
+  "actual_strict_unpack": {
+    "receipt": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0163/work/v0163-unpack-verification.json",
+      "bytes": 171210,
+      "sha256": "2359c1d80609fc18be7c1bf2125ffbfcae94afafd7f06d43dac223bbee8ca30e"
+    },
+    "root_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0163-unpack-root-review-v01.json",
+      "bytes": 1883,
+      "sha256": "c349fdf5c20c7e4c0006fe9c3a77c727b0a87b002dcf2bffd3bada21b495bf3a"
+    },
+    "root_tool": {
+      "session": 67709,
+      "initial": "56f7ad",
+      "terminal": "6d5540",
+      "actual_tool_exit": 0
+    },
+    "success": true,
+    "source_files": 879,
+    "platform_members": {
+      "linux": 8,
+      "windows": 7
+    },
+    "notices": 9,
+    "actual_build_metadata_valid": true,
+    "all_source_files_byte_identical_to_HEAD_and_clean_worktree": true,
+    "all_native_archive_members_byte_identical_to_current_exports": true,
+    "all_linux_unpacked_files_byte_identical": true,
+    "linux_archive_execute_bit": true,
+    "scope": "Actual three-archive/source/metadata/notices/CRC/permissions verification and fresh Linux readback only; no engine, benchmark, Windows, full campaign or Steam was run by this script."
+  },
+  "actual_new_package_prepare": null,
+  "actual_new_package_ordinary_auto": null,
+  "actual_new_package_camera_loaded_selection_GUI": null,
+  "actual_new_package_source_collector": null,
+  "local_version_tag": null
 }
