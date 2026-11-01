@@ -1,6 +1,6 @@
 # 开发计划与估算
 
-工作名《逐营突围》/ Outpost Exodus，正式名称与分发条款待确认。**0.16.2-dev精确导出冻结于aaae0064，导出／smoke／标准渲染／打包／解压和两个受控普通原生Guide场景已通过，完整战役／七场双墙钟尚待完成**。当前文档更新不改22runtime脚本。0.16.1冻结cf与旧0.15冻结6bf的接受仍只归各自原包，不继承给新包。目标仍是高度可玩并达到Steam发布标准；`steam_ready=false`、`performance_acceptance=not_assessed`。
+工作名《逐营突围》/ Outpost Exodus，正式名称与分发条款待确认。**0.16.2-dev精确导出冻结于aaae0064，当前Linux包七场／双墙钟和215项四槽source核验已实际接受**，见[接受记录](../../outpost-exodus-0.16.2-dev-release-evidence.json)。原首次崩溃及全部原件保留，原因尚未确定；第二次独立运行通过不改写原失败。当前文档更新不改22runtime脚本。0.16.1冻结cf与旧0.15冻结6bf的接受仍只归各自原包。目标仍是高度可玩并达到Steam发布标准；`steam_ready=false`、`performance_acceptance=not_assessed`。
 
 ## 当前玩法与本轮改进
 
@@ -16,7 +16,7 @@
 
 [候选代码清单](benchmarks/v0.16.2/code-size.json)：18个玩法脚本8,875物理行；含诊断/测试/工具共81个自有文件26,560物理行、24,227非空行。沿用既有分组，更新Guide及既有receiver回归；含注释空行，排除引擎/第三方、素材、场景、UID、缓存和文档probe。代码量不表示完成度。
 
-1. 基于已导出／严格解压的精确0.16.2，普通auto和prepare已完成；首次长测root93484→627acf实际失败1/native -11，原因未定、71原件保留。本版四槽独立语义诊断通过；旧／新包各120秒晚期续玩健康窗口未崩溃，主动断屏均native1而未复现-11。新coupled监督prepare三wait0后，root85687正在独立attempt02重跑同一包、原三次交付／库存／超时／七场及双墙钟要求。source／collector接受仍须完整成功实际终局，不能覆盖原失败。[当前包阶段记录](benchmarks/v0.16.2/package-stage.json)。
+1. 精确0.16.2的原root85687已终局c10e11为0，七场三图、游戏4016.244577秒／native4018.0584507070016秒、三个真实wait0；postterminal source215／0与collector实际0。严格路线经济和全局／逐场帧账已接受，原费用／交付／库存／超时门槛保持。[当前包阶段记录](benchmarks/v0.16.2/package-stage.json)。接下来在独立分支验证出口镜头边界与HUD遮挡，原aaae包保持；后期已弃营卡片对注意力的影响列入试玩，不凭截图宣布体验通过。
 2. 安排陌生人类独立上手，观察前期微操到后期多营地调度、指挥车保护、困惑和停止原因；补听感、可读性与无障碍。
 3. 在明确目标硬件上验证真实路线性能、Windows及干净机器；Runtime和离线检查材料不能代替原生平台、最低配置或稳定帧率证据。
 4. 审阅素材/音频/名称/权利与商店内容，保留旧台账pins；真实Steam项目、Depot、安装/更新/overlay、上传及审核仍待实际完成。

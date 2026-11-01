@@ -1,6 +1,6 @@
 # 当前开发检查点
 
-当前开发版 **0.16.2-dev** 的精确导出冻结于 `aaae0064413528b6c135f76d308118465e34831d` / tree `32c02312c7cec6268bd590112a8a1ad25b785388`。新包导出、原生smoke、标准双缩放渲染、三ZIP、严格解压和两个受控普通原生Guide场景已通过。当前文档更新不改变22runtime脚本；完整战役／七场与双墙钟长测尚待当前包实际完成。单人、2D卡通、三场独立战役；`steam_ready=false`，`performance_acceptance=not_assessed`。
+当前开发版 **0.16.2-dev** 的精确导出冻结于 `aaae0064413528b6c135f76d308118465e34831d` / tree `32c02312c7cec6268bd590112a8a1ad25b785388`。新包导出、原生smoke、标准双缩放渲染、三ZIP、严格解压和两个受控普通原生Guide场景已通过；第二次独立长测七场三图完成，游戏4016.244577秒、native4018.0584507070016秒，三个实际wait均0，七场／全局帧账与215项四槽source读回通过。当前文档更新不改变22runtime脚本。[本版接受记录](../../outpost-exodus-0.16.2-dev-release-evidence.json)与[实际收集过程](../../outpost-exodus-0.16.2-dev-collection-process.json)只属于该精确Linux包。单人、2D卡通、三场独立战役；`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 ## 当前引导修复
 
@@ -26,11 +26,11 @@ Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯�
 
 后续[标题界面短A/B](../../native-v0162-display-loss-ab-v01/index.json)与[真实晚期存档A/B](../../native-v0162-late-state-ab-v01/index.json)已实际完成。晚期两例普通加载同一封存sim1455.5存档，经公开UI付12建材下达6格道路，各完成至少120外部秒；正常观察期均未崩溃，末次F5均playing、道路完工且出口建成供能。之后只对各自owned显示服务显式SIGTERM，两版native均退出1、server0，未复现原-11。A例多约42.8秒暖跑，两例不是同tick或性能配对；设置误点、只读准备错误和裁切截图被拒绝的原件保留。这些对照没有证明原X98为何退出。
 
-新的私有显示与strict launcher改为同一owner监督，增加真实wait／信号／周期身份与内存观察；24非main验证函数及原main控制流保持，新增仅旁路I/O。新prepare原86431终局4118fe实际0，native／launcher／server三wait均0且全部回收。随后root85687／fb1671已启动全新 `native-soak-v0162-full-attempt02`，使用同一aaae包与原7场、游戏与进程各≥3600秒门槛，私有99、五秒心跳；尚待实际终局与独立复核。[阶段证据](benchmarks/v0.16.2/package-stage.json)绑定新启动及原失败，两者不互相覆盖。
+新的私有显示与strict launcher改为同一owner监督，增加真实wait／信号／周期身份与内存观察；24非main验证函数及原main控制流保持，新增仅旁路I/O。新prepare原86431终局4118fe实际0，native／launcher／server三wait均0且全部回收。随后root85687／fb1671启动全新 `native-soak-v0162-full-attempt02`，使用同一aaae包与原7场、游戏与进程各≥3600秒门槛，私有99、五秒心跳；完整成功终局及postterminal接受如下。[阶段证据](benchmarks/v0.16.2/package-stage.json)分别绑定新尝试与原失败，两者不互相覆盖。
 
 该次运行已结束的前五场另经纯Python只读增量复核：[C1／C2](../../native-v0162-attempt02-completed-cycles-review-v01/index.json)及[C3／C4／C5](../../native-v0162-attempt02-completed-cycles-review-v02/index.json)均实际工具退出0。保留原严格路线／经济函数、五资源差额容差和2.5到达距离，35个真实卸货事务、付费供能出口、主车与至少4人实际撤离均通过；逐场257帧bins、phase／endpoint／磁盘保存跨度算术及已结束关卡之间的tick连续也通过。这是已闭合关卡的证据，不是全七场、全局帧守恒、双墙钟或终态接受。
 
-新postterminal v02的[独立静态审查](../../postterminal-v0162-independent-static-review-v01/review.json)核实10份材料与34个已绑定输入、原24个strict函数、七场逐帧核验及生产JSON codec未降门槛。新监督的三个真实wait、原root工具终态、身份／事件／心跳必须等真实终局后绑定；当前未运行完整source／collector。
+新postterminal v02的[独立静态审查](../../postterminal-v0162-independent-static-review-v01/review.json)核实10份材料与34个已绑定输入、原24个strict函数、七场逐帧核验及生产JSON codec未降门槛。原root85687／fb1671实际终局c10e11为0后，才将三个真实wait、root终态与身份／事件／802条心跳绑定到新config；原未绑定config逐字保留。source原18792／70abd4→d05d54为0，引擎实际0、215／0；collector原59104／72a586→3c89f0实际0，独立复核全部七场及全局active／phase守恒。原native／launcher／supervisor／server与source引擎PID均消失，X99 socket／lock正常回收。两个时钟各自超过3600秒，未声称运行两小时。不可变prepared文本保留创建阶段的待执行描述，以新实际终态和收集记录为准。
 
 本版[六张未编辑实机图](../../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)来自同一aaae／PCK的前三场已结束关卡，覆盖三图、道路供能、撤收运输和出口工程。root逐张查看、完整解码source／copy并复算SHA，见[root图库复核](../../native-v0162-gallery-root-review-v01.json)。保留正常HUD，不是概念图或真人试玩；较大的HUD、小单位与稀疏地表仍需真实玩家评价，不能据此宣布美术／可玩性／商店验收。
 
@@ -48,7 +48,7 @@ Windows环境的[实际可行性检查](../../windows-native-environment-feasibi
 
 [代码统计](benchmarks/v0.16.2/code-size.json)：18个玩法等脚本8,875物理行；81个自有文件26,560物理行、24,227非空行。排除引擎、第三方、素材、场景、UID、缓存及外部探针。
 
-下一步跟踪原coupled新长测85687的实际进程与终局，再审新元数据来源下的严格帧账／路线／完整source／collector。原SIGSEGV仍未定因，不能用单项或新尝试覆盖原失败。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0162/first-playtest.txt)与[0.16.2来源补充](../../steam-content-survey-v0162-draft-v01/index.json)绑定真实新包，没有预填人类或Valve结果。Windows bound脚本仅PS7/Linux ParseFile实际通过，不是Windows执行。[本地SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)只含每平台EXE+PCK+三通知；AppID/Depot/entity/account仍UNBOUND，没有登录、SteamCMD执行或上传。
+当前Linux包技术验收完成后，继续核实际玩家的微操／多营调度、主车保护与界面。六张图和源码已确认出口focus会露出较多图外区域，独立 `feat/camera-viewport-bounds` 分支正在准备镜头视野约束；保留精确受测包，尚未合并或发布该修复。原SIGSEGV仍未定因，不能用新尝试覆盖原失败。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0162/first-playtest.txt)与[0.16.2来源补充](../../steam-content-survey-v0162-draft-v01/index.json)绑定真实新包，没有预填人类或Valve结果。Windows bound脚本仅PS7/Linux ParseFile实际通过，不是Windows执行。[本地SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)只含每平台EXE+PCK+三通知；AppID/Depot/entity/account仍UNBOUND，没有登录、SteamCMD执行或上传。
 
 ## 历史
 

@@ -2,7 +2,7 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前开发版为 **0.16.2-dev**，精确导出冻结于 `aaae0064…`。当指挥车仍在上一段撤收时，引导说明真实运输和等待原因，定位车辆；主车空闲后才提示下一段撤营。源码相关检查584/0、受控source GUI67/0，以及实际解压包中的两个受控普通界面场景均通过。新包已完成导出、原生smoke、标准双缩放渲染测量、打包及解压核对；**首次完整长测以SIGSEGV失败并伴随私有显示丢失，原因仍未定；原失败保留，新的完整尝试正在独立隔离中运行，尚未通过验收**。[本版包记录](docs/benchmarks/v0.16.2/package-stage.json)列明四槽诊断、旧／新包晚期对照及新的监督方式；之后的文档更新不改变22个runtime脚本。
+当前开发版为 **0.16.2-dev**，精确导出冻结于 `aaae0064…`。当指挥车仍在上一段撤收时，引导说明真实运输和等待原因，定位车辆；主车空闲后才提示下一段撤营。源码相关检查584/0、受控source GUI67/0，以及实际解压包中的两个受控普通界面场景均通过。新包完成导出、原生smoke、标准双缩放渲染测量、打包及解压核对后，**第二次独立长测七场全部胜利：游戏4016.244577秒、native4018.0584507070016秒，游戏／启动器／私有显示均正常退出0；严格路线经济、七场与全局帧账及215项四槽存档读回复核通过**。[本版接受记录](../outpost-exodus-0.16.2-dev-release-evidence.json)和[实际收集过程](../outpost-exodus-0.16.2-dev-collection-process.json)只证明该Linux包的技术范围。首次长测的SIGSEGV与显示丢失原因仍未定，失败原件保持；[本版包记录](docs/benchmarks/v0.16.2/package-stage.json)列明对照与新监督方式。之后的文档更新不改变22个runtime脚本，`steam_ready=false`、物理性能尚未验收。
 
 已接受的0.16.1精确Linux包冻结于 `cf678b72…`，同Main七场三图完成，游戏墙钟3979.349975秒，启动器独立观测native3981.0773600769753秒；实际退出均0，七场帧账及四份存档读回复核通过。验收仅属于该原包，见[接受记录](../outpost-exodus-0.16.1-dev-release-evidence.json)和[收集过程](../outpost-exodus-0.16.1-dev-collection-process.json)。`steam_ready=false`、`performance_acceptance=not_assessed`；[当前检查点](docs/current-checkpoint.md)记录剩余范围。
 
@@ -65,7 +65,7 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 
 0.16.1的[实机图库](../outpost-exodus-0.16.1-dev-steam-gallery/index.json)、[普通自动存档观察](../native-auto-cycle-v0161-root-review-v02.json)及[215项四槽读回](../postterminal-v0161-candidate-v02/source-auto-result.json)均绑定原精确包。存档按既有Godot JSON codec规范化比较，独立诊断保留类型／Vector2位模式与原始十进制边界；原208／4字面对比失败不改写，不宣称原数字token或解析前IEEE位保真。[诊断](../source-auto-json-diag-v0161-v01/index.json)。
 
-0.16.2另有[六张原始实机图](../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)，来自新attempt02前三场已结束关卡；root已逐张查看、完整解码并核对source／copy哈希。[图库复核](../native-v0162-gallery-root-review-v01.json)只证明当前包图像的来源与内容，不替代完整长测、美术审阅或真人体验。该次运行前五场的严格路线／费用／供能／35次卸货和逐关帧账增量复核已通过，整轮终态仍待原会话实际完成。
+0.16.2另有[六张原始实机图](../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)，来自新attempt02前三场已结束关卡；root已逐张查看、完整解码并核对source／copy哈希。[图库复核](../native-v0162-gallery-root-review-v01.json)只证明当前包图像的来源与内容，不替代美术审阅或真人体验。此前前五场的35次卸货及逐关帧账增量复核保留，完整七场接受另以上述实际终态及收集记录为准。
 
 0.16旧包第四关运输观察超时退出1的[原失败记录](../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保持失败。0.15冻结6bf的历史接受记录、所有原包及素材台账pins也保持不变，不继承给当前0.16.2。
 

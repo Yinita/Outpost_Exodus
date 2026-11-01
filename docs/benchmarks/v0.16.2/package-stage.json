@@ -1,7 +1,7 @@
 {
-  "recorded_utc": "2026-11-01T06:19:32.518753+00:00",
+  "recorded_utc": "2026-11-01T06:38:41.267228+00:00",
   "version": "0.16.2-dev",
-  "status": "ORIGINAL_FULL_SOAK_FAILED_FRESH_COUPLED_ATTEMPT02_RUNNING_NOT_ACCEPTED",
+  "status": "EXACT_LINUX_NATIVE_TECHNICAL_ACCEPTED_ATTEMPT02_ORIGINAL_FAILURE_RETAINED_NOT_STEAM_READY",
   "frozen_source_commit": "aaae0064413528b6c135f76d308118465e34831d",
   "frozen_source_tree": "32c02312c7cec6268bd590112a8a1ad25b785388",
   "scope": "Exact new official export/smoke/full standard software render/3ZIP/strict unpack and two declared controlled ordinary native UI cases. Documentation after this source freeze changes no22runtime script bytes. Not fullcampaign/hour/minimumhardware/human/Windows/Steam acceptance. Original new full-soak later actually failed; earlier component passes do not override that failure.",
@@ -27,8 +27,8 @@
   "native_Guide_raw_PNGs": 20,
   "native_Guide_checks": "same paused native F5 fullSim/RNG/explicit selection/group/speed/overlay fields preserved; actual main/A camera focus; separate idle publicAtoB admitted. Declared flat/high-stock fixtures, not default campaign proof.",
   "current_runtime22_byte_identical_to_frozen_package_source": true,
-  "ordinary_two_generation_auto": "ACTUAL_TIMING_BYTE_RETENTION_AND_ORDINARY_EXIT_PASSED_SCHEMA_DECODE_PENDING",
-  "fullcampaign_and_hour": "FAILED_ORIGINAL_NATIVE_MINUS11_WITH_PRIVATE_X98_DISCONNECT_ROOT93484_TERMINAL627acf",
+  "ordinary_two_generation_auto": "ACTUAL_44_44_180_TIMING_BYTE_RETENTION_AND_FOUR_SLOT_SOURCE215_0_PASSED",
+  "fullcampaign_and_hour": "PASSED_SAME_MAIN_SEVEN_ROUTES_GAME4016_244577_NATIVE4018_0584507070016_ACTUAL_ROOT85687_TERMINALc10e11",
   "Windows_native_verified": false,
   "human_results": null,
   "owner_and_Steam_actual_project": "PENDING_OWNER_VALUES_AND_REAL_EXECUTION",
@@ -204,6 +204,51 @@
       "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/windows-native-vm-preparation-v01/profile.json",
       "bytes": 13558,
       "sha256": "c049a8ea19aabc202c255db543db0de2a3be7c1bf11f80e31188147bfe0a4e70"
+    },
+    "coupled_attempt02_actual_result": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-coupled-display-prep-v01/runs/soak/result.json",
+      "bytes": 13240,
+      "sha256": "e4e121b7b2ab1bc89a10cb618f81baa3a979c86e399b4f14084c87c03003b664"
+    },
+    "coupled_attempt02_actual_root_terminal": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-coupled-display-prep-v01/soak-root-terminal.json",
+      "bytes": 1162,
+      "sha256": "5d33cecf9abb5703f76a8d0b6d37f1a7a2e646c6f40df1df158dbf21e75a82d9"
+    },
+    "actual_postterminal_config": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/postterminal-v0162-candidate-v02/config.json",
+      "bytes": 17739,
+      "sha256": "5b7b9ea5813777dcc869ee81259dd504d9cde1bdb051f4af67814fd5ba449aa2"
+    },
+    "actual_binding_root_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/postterminal-v0162-candidate-v02/binding-root-review-v01.json",
+      "bytes": 1865,
+      "sha256": "29885ab42c0539ae962f7aba1d437f7c9d2183c6eb275c84973d42f355d523cc"
+    },
+    "actual_source_result": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/postterminal-v0162-candidate-v02/source-auto-result.json",
+      "bytes": 10707,
+      "sha256": "b93a8318eb757446dad44eed8a7a4ec33aaca3b1dfac77b8e6e2c459ee2a80dd"
+    },
+    "actual_source_process": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/postterminal-v0162-candidate-v02/source-auto-process.json",
+      "bytes": 4483,
+      "sha256": "ea81d633480d51a7f846f5ee4dfbcfd6fdc0767abb8f1f39c26ba7d9a6c42f51"
+    },
+    "current_exact_native_acceptance": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.2-dev-release-evidence.json",
+      "bytes": 167603,
+      "sha256": "f656372660752fdd4ee1f8dbc98841efbea6d1792f04a0a6a77eabb152239626"
+    },
+    "current_actual_collection_process": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.2-dev-collection-process.json",
+      "bytes": 3052,
+      "sha256": "27c91b0946dfe58a1c23792497031c1ea58a92352f6839a7f4453e6de7e050aa"
+    },
+    "final_independent_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-final-independent-review-v01/index.json",
+      "bytes": 62232,
+      "sha256": "66e4789675ff8397e16717248a0600b9b433aab3376cfa8bc65925595a5d30a8"
     }
   },
   "actual_prepare_tool": {
@@ -257,7 +302,7 @@
       0
     ],
     "rawdecimal_or_preparseIEEE_lossless_claimed": false,
-    "postterminal_fullsource_or_collector_executed": false
+    "postterminal_fullsource_or_collector_executed": true
   },
   "controlled_display_loss_diagnostics": {
     "title_AB_native_exit_codes": [
@@ -291,11 +336,11 @@
     "scope": "startup/shortdiskcontinuation/newownedlifecycle only, not originalrootcause/fullroute"
   },
   "fresh_full_attempt02": {
-    "status": "ACTUAL_RUNNING_NOT_ACCEPTED",
+    "status": "ACTUAL_TERMINAL0_AND_INDEPENDENT_SOURCE_COLLECT_ACCEPTED",
     "session": 85687,
     "initial": "fb1671",
     "latest_live_poll": "73c3e9",
-    "terminal": null,
+    "terminal": "c10e11",
     "isolation": "work/native-soak-v0162-full-attempt02",
     "private_display": ":99",
     "supervisor_pid": 3431765,
@@ -310,9 +355,18 @@
     "original_simulation_routes_economy_seven_cycles_dualhour_unchanged": true,
     "launcher_main_only_sidechannel_IO_added": true,
     "game_payload_rebuilt_or_changed": false,
-    "last_observed_cycles_completed": 1,
-    "last_observed_mission": "delta",
-    "observed_cycle_completion_not_full_external_acceptance": true
+    "last_observed_cycles_completed": 7,
+    "last_observed_mission": "canyon",
+    "observed_cycle_completion_not_full_external_acceptance": false,
+    "actual_tool_exit": 0,
+    "game_wall_seconds": 4016.244577,
+    "native_process_wall_seconds": 4018.0584507070016,
+    "actual_native_launcher_server_waits": [
+      0,
+      0,
+      0
+    ],
+    "original_PIDs_and_owned_socket_lock_absent": true
   },
   "closed_cycle_incremental_review": {
     "cycles": [
@@ -357,5 +411,30 @@
     "account_activation_plan_bound": false,
     "actual_Windows_native_test": false,
     "scope": "Declarative4vCPU/8GiB/80GiB-thin/q35-KVM/SecureBoot/vTPM2/private-local-display only. Existing Windows machine or actual media/terms/account inputs required for next execution; no physical minimum-spec acceptance."
+  },
+  "actual_postterminal_source": {
+    "session": 18792,
+    "initial": "70abd4",
+    "terminal": "d05d54",
+    "actual_tool_exit": 0,
+    "actual_engine_exit": 0,
+    "checks": 215,
+    "errors": [],
+    "four_current_sealed_files": 4,
+    "complete_Sim_RNG_existing_production_JSON_codec_checked": true
+  },
+  "actual_postterminal_collector": {
+    "session": 59104,
+    "initial": "72a586",
+    "terminal": "3c89f0",
+    "actual_tool_exit": 0,
+    "all_seven_frames_and_global_active_phase_conservation": true,
+    "positive_unload_transactions": 48,
+    "original_economic_and_route_thresholds_unchanged": true
+  },
+  "local_accepted_tag": {
+    "name": "v0.16.2-dev",
+    "source_commit": "aaae0064413528b6c135f76d308118465e34831d",
+    "remote_created_or_pushed": false
   }
 }
