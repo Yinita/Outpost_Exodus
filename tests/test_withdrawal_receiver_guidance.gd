@@ -42,7 +42,11 @@ func _run() -> void:
 		_test_actual_receiver(boundary)
 		_test_new_build_is_not_a_new_transfer(boundary)
 	var farther: Dictionary = _public_overlap(6)
-	if not farther.is_empty(): _test_greater_than_five(farther)
+	if not farther.is_empty():
+		_test_greater_than_five(farther)
+		_test_real_disk_continuation(farther)
+		_test_busy_last_trip_and_idle(farther)
+		_test_unconfirmed_busy_transport(farther)
 	print("Withdrawal receiver guidance checks: %d; failures: %d" % [checks, failures.size()])
 	for failure: String in failures: printerr(" - " + failure)
 	quit(0 if failures.is_empty() else 1)
@@ -171,7 +175,8 @@ func _test_real_disk_continuation(context: Dictionary) -> void:
 	_query(context, int(context.newest), "before disk write", guide)
 	var state: Dictionary = sim.save_state()
 	state["ui"] = {"guide": guide.save_state()}
-	var path: String = disk_directory + "/campaign-save.json"
+	var origin_state: String = String(sim.get_camp(int(context.origin)).state)
+	var path: String = disk_directory + "/campaign-save-dx%d-%s.json" % [int(context.dx), origin_state]
 	var store: RefCounted = SaveStore.new()
 	if not _check(store.write(path, state, Callable(self, "_valid_saved")) == OK, "real transactional disk write validates full save"): return
 	var read: Dictionary = store.read(path)
@@ -183,7 +188,7 @@ func _test_real_disk_continuation(context: Dictionary) -> void:
 	var continued: Dictionary = context.duplicate()
 	continued.sim = resumed
 	var truck: Dictionary = resumed.get_unit(int(resumed.main_truck_id))
-	_check(resumed.get_camp(int(context.origin)).state == "packing" and int(truck.evac_destination_id) == int(context.receiver) and int(resumed.get_camp(int(context.origin)).evac_target_id) == int(context.receiver), "disk continuation retains the original public A destination")
+	_check(String(resumed.get_camp(int(context.origin)).state) == origin_state and int(truck.evac_destination_id) == int(context.receiver) and int(resumed.get_camp(int(context.origin)).evac_target_id) == int(context.receiver), "disk continuation retains its actual origin state and the original public A destination")
 	var digest: String = FileAccess.get_sha256(path)
 	var hint: Dictionary = _query(continued, int(context.newest), "disk continuation", loaded_guide)
 	_check(String(hint.text).contains("接收营「实际接收营A」") and not String(hint.text).contains("接收营「%s」" % String(context.newest_name)), "loaded guidance still names A")
@@ -223,10 +228,71 @@ func _test_unavailable_records(context: Dictionary) -> void:
 
 func _test_greater_than_five(context: Dictionary) -> void:
 	var sim: Variant = context.sim
-	var hint: Dictionary = _query(context, int(context.newest), "dx greater than five negative branch")
-	_check(String(hint.title) == "先撤收旧营，给新营运入资金" and String(hint.text).contains("先选中「实际接收营A」"), "dx>5 keeps the original active-rear A branch instead of pretending its source is Home")
-	_check(Vector2(hint.target) == Vector2(sim.get_camp(int(context.receiver)).pos), "unchanged active-rear hint focuses A")
-	# Busy-truck guidance for this different active-rear branch is existing
-	# behavior and outside this packing-receiver patch's scope.
+	var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+	for selected: int in [int(context.origin), int(context.receiver), int(context.newest)]:
+		var hint: Dictionary = _query(context, selected, "dx greater than five busy shared vehicle")
+		_check(String(hint.title) == "等待指挥车完成当前运输" and String(hint.text).contains("「撤收原营」→ 接收营「实际接收营A」"), "dx>5 explains the real Home-to-A transport before suggesting A-to-B")
+		_check(not String(hint.text).contains("点击“撤收驻点”") and not String(hint.text).contains("接收营「%s」" % String(context.newest_name)), "busy guidance neither requests the known rejection nor fabricates newest B as receiver")
+		_check(Vector2(hint.target) == Vector2(truck.pos), "busy guidance locates the actual moving main truck without changing selected camp")
 	_check(not sim.evacuate_camp(int(context.receiver)) and String(sim.messages.back()).contains("指挥运输车尚未空闲"), "dx>5 remains subject to the actual busy truck; Guide cannot secretly change that rule")
 	_check(int(sim.get_unit(int(sim.main_truck_id)).evac_destination_id) == int(context.receiver), "negative branch cannot retarget the active Home convoy")
+
+
+func _test_busy_last_trip_and_idle(context: Dictionary) -> void:
+	var sim: Variant = Simulation.new()
+	if not _check(sim.load_state(context.sim.save_state().duplicate(true)), "last-trip case loads the real public overlap"): return
+	var continued: Dictionary = context.duplicate()
+	continued.sim = sim
+	if not _check(sim.evacuate_camp(int(context.origin)), "second public evacuation click genuinely performs emergency abandon"): return
+	var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+	_check(sim.get_camp(int(context.origin)).state == "abandoned" and truck.order == "evacuate_transport" and truck.haul_stage == "outbound", "abandoned origin still has a real final transport order")
+	var hint: Dictionary = _query(continued, int(context.newest), "abandoned final trip")
+	_check(String(hint.title) == "等待指挥车完成当前运输" and String(hint.text).contains("末班运输") and String(hint.text).contains("接收营「实际接收营A」"), "last trip still explains real receiver A instead of prematurely requesting the next withdrawal")
+	_check(Vector2(hint.target) == Vector2(truck.pos), "last-trip target remains the real main truck")
+	_test_real_disk_continuation(continued)
+	for tick: int in range(3000):
+		sim.tick(STEP)
+		if String(truck.get("order", "")) != "evacuate_transport" or sim.outcome != "playing": break
+	if not _check(sim.outcome == "playing" and truck.order == "idle", "ordinary ticks complete final delivery and actually free the main truck"): return
+	# A separate vehicle's transport-like order must not block the real free main
+	# truck. This is an explicit observation fixture, not a public recruitment claim.
+	var other: Dictionary = sim._add_unit("truck", "friendly", Vector2(sim.get_camp(int(context.receiver)).pos) + Vector2(0, 3), int(context.receiver), 0)
+	other.order = "evacuate_transport"
+	other.evac_origin_id = int(context.origin)
+	other.evac_destination_id = int(context.receiver)
+	other.haul_stage = "outbound"
+	hint = _query(continued, int(context.newest), "main idle while another vehicle is busy")
+	_check(String(hint.title) == "先撤收旧营，给新营运入资金" and String(hint.text).contains("先选中「实际接收营A」"), "real main idleness restores the original active-A instruction; another truck cannot block it")
+	_check(Vector2(hint.target) == Vector2(sim.get_camp(int(context.receiver)).pos), "available next withdrawal again locates A")
+	_check(sim.evacuate_camp(int(context.receiver)) and int(truck.evac_destination_id) == int(context.newest), "restored instruction can genuinely start public A-to-B without changing transport rules")
+
+
+func _test_unconfirmed_busy_transport(context: Dictionary) -> void:
+	var checkpoint: Dictionary = context.sim.save_state()
+	for fault: String in ["missing_origin", "missing_receiver", "wrong_origin_state", "wrong_vehicle_binding", "mismatched_receiver", "dead_vehicle", "wrong_kind", "wrong_team", "unknown_stage", "nonactive_receiver"]:
+		var sim: Variant = Simulation.new()
+		if not _check(sim.load_state(checkpoint.duplicate(true)), fault + ": busy overlap loads"): continue
+		var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+		var home: Dictionary = sim.get_camp(int(context.origin))
+		match fault:
+			"missing_origin": truck.evac_origin_id = 999999
+			"missing_receiver": truck.evac_destination_id = 999999
+			"wrong_origin_state": home.state = "active"
+			"wrong_vehicle_binding": home.evac_truck_id = 0
+			"mismatched_receiver": home.evac_target_id = int(context.newest)
+			"dead_vehicle": truck.hp = 0.0
+			"wrong_kind": truck.kind = "rifle"
+			"wrong_team": truck.team = "enemy"
+			"unknown_stage": truck.haul_stage = "unknown"
+			"nonactive_receiver":
+				truck.evac_destination_id = int(context.origin)
+				home.evac_target_id = int(context.origin)
+		var faulty: Dictionary = context.duplicate()
+		faulty.sim = sim
+		var hint: Dictionary = _query(faulty, int(context.newest), fault + ": busy transport unavailable")
+		_check(String(hint.title) == "检查指挥车运输记录", fault + ": record failure is explicit instead of requesting a rejected new evacuation")
+		_check(not String(hint.text).contains("撤收原营") and not String(hint.text).contains("实际接收营A") and not String(hint.text).contains(String(context.newest_name)), fault + ": unconfirmed endpoints are never fabricated")
+		if fault in ["dead_vehicle", "wrong_kind", "wrong_team"]:
+			_check(Vector2(hint.target) == Vector2(-1, -1), fault + ": no ghost vehicle location")
+		else:
+			_check(Vector2(hint.target) == Vector2(truck.pos), fault + ": an identifiable live vehicle can still be located")

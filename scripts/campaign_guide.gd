@@ -240,6 +240,8 @@ func _transfer_hint(sim: Variant, origin: Dictionary, destination: Dictionary, s
 	var transfer: Dictionary = {}
 	var target: Vector2 = destination.get("pos", UNKNOWN_TARGET)
 	if not origin.is_empty() and String(origin.get("state", "")) == "active":
+		if _busy_transport_hint(sim, step_number):
+			return
 		target = origin.get("pos", target)
 		var origin_name: String = String(origin.get("name", "后方营地"))
 		var selection_note: String = "先选中「%s」。" % origin_name if selected_camp != int(origin["id"]) else "当前已选中「%s」。" % origin_name
@@ -281,6 +283,31 @@ func _transfer_hint(sim: Variant, origin: Dictionary, destination: Dictionary, s
 		var gate_name: String = String(sim.chokes[choke_index].get("name", "后方关口"))
 		safety = "仍有友军在%s后方，暂时别封关；可用{pause}查看撤离队伍。" % gate_name
 	_set_hint(step_number, "等待运输车装运和卸货", stock_text + "不要手动改运输车命令。" + safety, target)
+
+
+func _busy_transport_hint(sim: Variant, step_number: int) -> bool:
+	var truck: Dictionary = sim.get_unit(int(sim.main_truck_id))
+	if truck.is_empty() or String(truck.get("order", "")) != "evacuate_transport":
+		return false
+	# Only the real main vehicle can block the next public evacuation. Never
+	# infer its route from the newer geographical front or issue a new order.
+	var position: Variant = truck.get("pos")
+	var vehicle_valid: bool = int(truck.get("id", 0)) == int(sim.main_truck_id) and String(truck.get("team", "")) == "friendly" and String(truck.get("kind", "")) == "truck" and float(truck.get("hp", 0.0)) > 0.0 and position is Vector2 and Vector2(position).is_finite()
+	var target: Vector2 = Vector2(position) if vehicle_valid else UNKNOWN_TARGET
+	var origin: Dictionary = sim.get_camp(int(truck.get("evac_origin_id", 0)))
+	var destination: Dictionary = sim.get_camp(int(truck.get("evac_destination_id", 0)))
+	var state: String = String(origin.get("state", ""))
+	var stage: String = String(truck.get("haul_stage", ""))
+	var bound: bool = int(origin.get("evac_truck_id", 0)) == int(sim.main_truck_id) and ((state == "packing" and int(origin.get("evac_target_id", 0)) == int(truck.get("evac_destination_id", 0)) and stage in ["returning", "outbound"]) or (state == "abandoned" and stage == "outbound"))
+	if not vehicle_valid or origin.is_empty() or destination.is_empty() or String(destination.get("state", "")) != "active" or not bound:
+		_set_hint(step_number, "检查指挥车运输记录", "指挥车仍标记为撤收运输，但车辆、原营、接收营或阶段记录无法确认。请检查车队；暂不能开始下一营撤收。", target)
+		return true
+	var activity: String = "正在运输"
+	if state == "abandoned": activity = "正在完成末班运输"
+	elif String(truck.get("state", "")) == "packing": activity = "正在原营装车"
+	elif stage == "returning": activity = "正在返回原营装车"
+	_set_hint(step_number, "等待指挥车完成当前运输", "当前运输：「%s」→ 接收营「%s」。指挥车%s，尚未空闲，暂不能开始下一营撤收。注意保护运输路线；不要为启动下一段而改写运输车命令。" % [String(origin.get("name", "原营")), String(destination.get("name", "接收营")), activity], target)
+	return true
 
 
 func _funding_hint(sim: Variant, camp: Dictionary, step_number: int) -> void:
