@@ -33,11 +33,6 @@ var _raw_ticks: int = 0
 var _sim_seconds: float = 0.0
 var _invalid_steps: int = 0
 var _terminal_noop_ticks: int = 0
-var _previous_truck_stage: String = ""
-var _previous_origin: int = 0
-var _previous_destination: int = 0
-var _previous_cargo: float = 0.0
-var _previous_transport: bool = false
 var _deliveries: Dictionary = {}
 var _auto_hash: String = ""
 var _auto_changes: int = 0
@@ -125,6 +120,7 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	_attach_delivery_observer(null)
 	_frame_sampler.stop()
 
 
@@ -224,6 +220,7 @@ func soak_display_snapshot(captured_image_size: Vector2i = Vector2i.ZERO) -> Dic
 
 func _reset_cycle_observer() -> void:
 	_observing = false
+	_attach_delivery_observer(null)
 	frame_phase = "other"
 	_frame_sampler.begin_cycle()
 	report = {}
@@ -236,11 +233,6 @@ func _reset_cycle_observer() -> void:
 	_sim_seconds = 0.0
 	_invalid_steps = 0
 	_terminal_noop_ticks = 0
-	_previous_truck_stage = ""
-	_previous_origin = 0
-	_previous_destination = 0
-	_previous_cargo = 0.0
-	_previous_transport = false
 	_deliveries.clear()
 	_auto_changes = 0
 
@@ -269,7 +261,7 @@ func _begin_campaign_observation() -> bool:
 	app.ui_action("speed")
 	app.ui_action("speed")
 	if not check(is_equal_approx(app.speed, 3.0), "normal speed controls select3x"): return false
-	_simulation = app.sim
+	_attach_delivery_observer(app.sim)
 	_last_time = float(app.sim.time)
 	_last_tick = int(app.tick_count)
 	_cycle_start_tick = _last_tick
@@ -401,7 +393,6 @@ func _observe_main_clock() -> void:
 	if terminal: _terminal_noop_ticks += maxi(0, delta_ticks - effective)
 	_last_time = float(app.sim.time)
 	_last_tick = int(app.tick_count)
-	_observe_deliveries()
 
 
 func healthy() -> bool:
@@ -458,24 +449,46 @@ func deliveries_from(origin: int) -> int:
 	return int(_deliveries.get(origin, 0))
 
 
-func _observe_deliveries() -> void:
+func _attach_delivery_observer(simulation: RefCounted) -> void:
+	if _simulation != null and _simulation.evacuation_delivery.is_connected(_observe_delivery):
+		_simulation.evacuation_delivery.disconnect(_observe_delivery)
+	_simulation = simulation
+	if _simulation != null: _simulation.evacuation_delivery.connect(_observe_delivery)
+
+
+func _observe_delivery(witness: Dictionary) -> void:
+	if not _observing or app.sim != _simulation: return
+	# Only the designated physical command truck contributes to route evidence.
+	if int(witness.get("truck_id", 0)) != int(app.sim.main_truck_id): return
 	var truck: Dictionary = app.sim.get_unit(int(app.sim.main_truck_id))
-	if truck.is_empty(): return
-	var stage: String = str(truck.get("haul_stage", ""))
-	var cargo: float = 0.0
-	for amount: Variant in Dictionary(truck.get("cargo", {})).values(): cargo += float(amount)
-	if _previous_transport and _previous_cargo > 0.0 and _previous_truck_stage == "outbound" and stage != "outbound" and cargo <= 0.0:
-		# During partial evacuation deliveries camp_id still names the origin.
-		# Only the actual parcel destination can confirm this arrival.
-		var camp: Dictionary = app.sim.get_camp(_previous_destination)
-		if not camp.is_empty() and Vector2(truck.pos).distance_to(Vector2(camp.pos)) <= 2.5:
-			_deliveries[_previous_origin] = deliveries_from(_previous_origin) + 1
-			event("actual_delivery", {"origin": _previous_origin, "destination": int(camp.id), "count": deliveries_from(_previous_origin)})
-	_previous_truck_stage = stage
-	_previous_origin = int(truck.get("evac_origin_id", 0))
-	_previous_destination = int(truck.get("evac_destination_id", 0))
-	_previous_cargo = cargo
-	_previous_transport = truck.get("order", "") == "evacuate_transport"
+	var origin: int = int(witness.get("origin_id", 0))
+	var destination: Dictionary = app.sim.get_camp(int(witness.get("destination_id", 0)))
+	var valid: bool = not truck.is_empty() and not destination.is_empty() and not app.sim.get_camp(origin).is_empty()
+	valid = valid and truck.get("kind", "") == "truck" and truck.get("team", "") == "friendly" and truck.get("order", "") == "evacuate_transport" and truck.get("haul_stage", "") == "outbound"
+	valid = valid and int(truck.get("evac_origin_id", 0)) == origin and int(truck.get("evac_destination_id", 0)) == int(destination.get("id", 0)) and Dictionary(truck.get("cargo", {})).is_empty()
+	valid = valid and witness.get("position") is Vector2 and witness.get("destination_position") is Vector2
+	if valid:
+		valid = Vector2(witness.position).is_finite() and Vector2(witness.destination_position).is_finite() and Vector2(truck.pos) == Vector2(witness.position) and Vector2(destination.pos) == Vector2(witness.destination_position) and Vector2(witness.position).distance_to(Vector2(witness.destination_position)) <= 2.5
+	var parcel: Dictionary = witness.get("parcel", {})
+	var before: Dictionary = witness.get("stock_before", {})
+	var after: Dictionary = witness.get("stock_after", {})
+	var total: float = 0.0
+	for key: Variant in parcel:
+		var amount: float = float(parcel[key])
+		valid = valid and Simulation.RESOURCE_KEYS.has(key) and is_finite(amount) and amount >= 0.0
+		total += amount
+	for key: String in Simulation.RESOURCE_KEYS:
+		valid = valid and before.has(key) and after.has(key) and is_finite(float(before.get(key, NAN))) and is_finite(float(after.get(key, NAN)))
+		valid = valid and absf(float(after.get(key, NAN)) - float(before.get(key, NAN)) - float(parcel.get(key, 0.0))) <= 0.000001 and float(after.get(key, NAN)) == float(destination.get(key, NAN))
+	if not check(valid and total > 0.0, "actual evacuation unload has physical arrival, cleared positive cargo and exact stock delta"): return
+	_deliveries[origin] = deliveries_from(origin) + 1
+	var recorded_witness: Dictionary = witness.duplicate(true)
+	recorded_witness.position = [witness.position.x, witness.position.y]
+	recorded_witness.destination_position = [witness.destination_position.x, witness.destination_position.y]
+	# Main increments tick_count only after Sim.tick returns. Keep its actual
+	# completed count; this transaction is observed inside the in-progress tick.
+	event("actual_delivery", {"origin": origin, "destination": int(destination.id), "count": deliveries_from(origin), "witness": recorded_witness,
+		"observation_point": "inside_simulation_tick_after_unload_before_haul_transition", "main_tick_count_semantics": "completed_before_current_tick_returns"})
 
 
 func save_and_reload(label: String) -> bool:
@@ -597,6 +610,7 @@ func _seal_cycle() -> void:
 	if _cycle_sealed or report.is_empty(): return
 	_observe_main_clock()
 	_observing = false
+	_attach_delivery_observer(null)
 	_observe_auto()
 	var exit_position: Vector2 = Vector2.ZERO
 	var exit_powered: bool = false
@@ -663,6 +677,7 @@ func _finish() -> void:
 	finished = true
 	_seal_cycle()
 	_observing = false
+	_attach_delivery_observer(null)
 	_frame_sampler.stop()
 	app.set_process(false)
 	app.set_process_unhandled_input(false)

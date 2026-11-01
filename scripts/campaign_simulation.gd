@@ -2,6 +2,8 @@ extends RefCounted
 ## Pure-state, deterministic first-campaign simulation. Coordinates are tile units.
 ## All orders, construction, logistics and evacuation happen in simulation time.
 
+signal evacuation_delivery(witness: Dictionary)
+
 const SAVE_VERSION: int = 1
 const CampaignCatalog = preload("res://scripts/campaign_catalog.gd")
 const ConstructionRules = preload("res://scripts/construction_rules.gd")
@@ -1789,8 +1791,7 @@ func _update_evacuations(delta: float) -> void:
 			if _camp_stock(camp) < 0.5:
 				_abandon_camp(camp, destination)
 		elif stage == "outbound" and Vector2(truck["pos"]).distance_to(Vector2(destination["pos"])) <= 2.0:
-			_deposit(destination, Dictionary(truck.get("cargo", {})))
-			truck["cargo"] = {}
+			_unload_evacuation_cargo(camp, destination, truck)
 			if str(camp["state"]) == "packing":
 				truck["haul_stage"] = "returning"
 				_set_target(truck, Vector2(camp["pos"]))
@@ -1803,13 +1804,31 @@ func _update_evacuations(delta: float) -> void:
 		if origin.is_empty() or destination.is_empty() or str(origin["state"]) != "abandoned":
 			continue
 		if Vector2(truck["pos"]).distance_to(Vector2(destination["pos"])) <= 2.0:
-			_deposit(destination, Dictionary(truck.get("cargo", {})))
-			truck["cargo"] = {}
+			_unload_evacuation_cargo(origin, destination, truck)
 			truck["camp_id"] = int(destination["id"])
 			truck["order"] = "idle"
 			truck["state"] = "idle"
 			truck["haul_stage"] = ""
 			_message("最后一批撤营物资已送达 %s。" % str(destination["name"]))
+
+
+func _unload_evacuation_cargo(origin: Dictionary, destination: Dictionary, truck: Dictionary) -> void:
+	# Optional diagnostic witness at the actual transaction, before a returning
+	# truck can move again in the same Main frame. No observer data is saved.
+	var witness: Dictionary = {}
+	if evacuation_delivery.has_connections() and _cargo_weight(Dictionary(truck.get("cargo", {}))) > 0.0:
+		var stock_before: Dictionary = {}
+		for key: String in RESOURCE_KEYS: stock_before[key] = float(destination.get(key, 0.0))
+		witness = {"truck_id": int(truck["id"]), "origin_id": int(origin["id"]), "destination_id": int(destination["id"]),
+			"position": Vector2(truck["pos"]), "destination_position": Vector2(destination["pos"]),
+			"parcel": Dictionary(truck.get("cargo", {})).duplicate(true), "stock_before": stock_before}
+	_deposit(destination, Dictionary(truck.get("cargo", {})))
+	truck["cargo"] = {}
+	if not witness.is_empty():
+		var stock_after: Dictionary = {}
+		for key: String in RESOURCE_KEYS: stock_after[key] = float(destination.get(key, 0.0))
+		witness["stock_after"] = stock_after
+		evacuation_delivery.emit(witness)
 
 
 func _ensure_evacuation_staging(camp: Dictionary) -> void:
