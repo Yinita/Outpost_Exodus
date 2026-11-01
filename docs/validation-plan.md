@@ -2,7 +2,7 @@
 
 ## 当前0.16.4 UI源码候选
 
-已合入HUD营地卡52／91px、鲜读弃营状态与实际可见输入保留区，Main／Sim／存档schema不变，尚未导出或验证本版payload。最终f7／test5e63实际headless47／0；此前75df实际46／0、readout189／0、HUD286／0、camera305／0及source GUI26／0绑定旧字节，最终仅追加两行tooltip，未重跑较广回归或最终大库存hover像素。见[本轮source-stage](benchmarks/v0.16.4/source-stage.json)和[84文件清单](benchmarks/v0.16.4/code-size.json)。先补最终显示／操作范围，再按下列原标准独立验证新包，不能继承0.16.3原包结果。
+已合入HUD营地卡52／91px、鲜读弃营状态与实际可见输入保留区，Main／Sim／存档schema不变，已从94043e81实际导出本版候选，Linux包验证已启动、尚未完整接受。最终f7／test5e63实际headless47／0；此前75df实际46／0、readout189／0、HUD286／0、camera305／0及source GUI26／0绑定旧字节，最终仅追加两行tooltip，未重跑较广回归或最终大库存hover像素。见[本轮source-stage](benchmarks/v0.16.4/source-stage.json)和[84文件清单](benchmarks/v0.16.4/code-size.json)。先补最终显示／操作范围，再按下列原标准独立验证新包，不能继承0.16.3原包结果。
 
 ## 0.16.3源码阶段与精确原包
 

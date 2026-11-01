@@ -1,10 +1,10 @@
 # 当前开发检查点
 
-## 当前0.16.4-dev：营地卡UI源码候选，尚未导出
+## 当前0.16.4-dev：已导出候选，Linux包验证进行中
 
 功能已合入 `6c0ca0ce02e9e1a8eec6c8e38fd3a63f5d9045e1`，只改HUD和新增repo测试／UID；Main、Sim、CampReadout、命令、营地顺序与页容量及存档schema不变。未选中且无实际末班运输的弃营使用52px卡，其他卡91px；输入保留区跟随实际卡片／间隙，弃营实时只读状态保留末班运输和遗留库存。见[本轮源码阶段](benchmarks/v0.16.4/source-stage.json)。
 
-最终HUD `f7a8f58c…`／test `5e63d350…`只有受影响headless **47／0**。此前HUD `75df0b6…`实际通过46／0、readout189／0、HUDcache286／0、camera305／0及source GUI26／0；最终差别仅两行tooltip，这些较广检查没有在f7上重跑，没有最终大库存hover像素证据。[代码清单](benchmarks/v0.16.4/code-size.json)为18份玩法脚本9,030物理行；84份自有代码27,464物理行／25,085非空行。**0.16.4没有新导出、包验证、整关／小时或collector结果，不能继承0.16.3接受。**
+最终HUD `f7a8f58c…`／test `5e63d350…`只有受影响headless **47／0**。此前HUD `75df0b6…`实际通过46／0、readout189／0、HUDcache286／0、camera305／0及source GUI26／0；最终差别仅两行tooltip，这些较广检查没有在f7上重跑，没有最终大库存hover像素证据。[代码清单](benchmarks/v0.16.4/code-size.json)为18份玩法脚本9,030物理行；84份自有代码27,464物理行／25,085非空行。**0.16.4已从94043e81／tree455d442实际导出候选，Linux包验证已启动；尚无整关／小时或collector接受，不能继承0.16.3结果。** [实际导出](../../outpost-exodus-0.16.4-dev-export-stage.json)仅证明Linux／Windows文件生成及PE资源回读，未执行Windows原生。源码阶段JSON保留冻结前的历史状态。
 
 ## 最近独立接受精确包：0.16.3-dev／561
 

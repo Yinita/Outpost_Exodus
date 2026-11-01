@@ -2,7 +2,7 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前开发源码为 **0.16.4-dev UI源码候选**，已合入营地卡优先级整理：没有末班运输的未选中弃营压为52px，选中、运作、撤收和仍有运输的营地保持91px；只占用实际可见卡片和间隙，弃营状态鲜读，遗留库存可在tooltip查看。Main、Sim、命令与存档schema不变。[源码阶段记录](docs/benchmarks/v0.16.4/source-stage.json)区分最终f7的47／0与此前75df的readout189／HUD286／camera305及26项source GUI；后者没有在最终两行tooltip字节上重跑，也没有最终大库存hover像素证据。**0.16.4尚未导出或做新包验证，不能继承旧包接受。**
+当前开发源码为 **0.16.4-dev UI源码候选**，已合入营地卡优先级整理：没有末班运输的未选中弃营压为52px，选中、运作、撤收和仍有运输的营地保持91px；只占用实际可见卡片和间隙，弃营状态鲜读，遗留库存可在tooltip查看。Main、Sim、命令与存档schema不变。[源码阶段记录](docs/benchmarks/v0.16.4/source-stage.json)区分最终f7的47／0与此前75df的readout189／HUD286／camera305及26项source GUI；后者没有在最终两行tooltip字节上重跑，也没有最终大库存hover像素证据。**0.16.4已从94043e81冻结源实际导出Linux／Windows候选，Linux smoke／渲染／打包验证已启动，完整新包接受仍待完成。** 见[实际导出记录](../outpost-exodus-0.16.4-dev-export-stage.json)。
 
 最近独立技术接受的精确Linux包为 **0.16.3-dev／冻结561313a**：同Main七场三图、6次公开重启，游戏3987.523349秒／native3989.0963843020145秒，native／launcher／server均正常退出0；普通两代auto、逐关及全局257桶帧账、215项四槽source和collector实际通过。见[正式接受记录](../outpost-exodus-0.16.3-dev-release-evidence.json)与[实际收集过程](../outpost-exodus-0.16.3-dev-collection-process.json)。范围仅该原包的Linux私有软件normalMain技术检查，`steam_ready=false`、`performance_acceptance=not_assessed`；不包含整关硬件、Windows、真人或真实Steam验收。
 

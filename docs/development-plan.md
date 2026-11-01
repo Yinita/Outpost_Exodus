@@ -1,6 +1,6 @@
 # 开发计划与估算
 
-工作名《逐营突围》／Outpost Exodus，正式名称与分发条款待确认。当前为 **0.16.4-dev营地卡UI源码候选，已合入、尚未导出或验证新包**，功能commit `6c0ca0ce…`。见[本轮阶段记录](benchmarks/v0.16.4/source-stage.json)；最终f7仅47／0，此前75df的readout189／HUD286／camera305与GUI26保留原字节范围，不作最终全量通过。最新独立技术接受是0.16.3冻结561的[精确Linux原包](../../outpost-exodus-0.16.3-dev-release-evidence.json)及[收集过程](../../outpost-exodus-0.16.3-dev-collection-process.json)，不继承给本候选。`steam_ready=false`，`performance_acceptance=not_assessed`。
+工作名《逐营突围》／Outpost Exodus，正式名称与分发条款待确认。当前为 **0.16.4-dev营地卡候选已实际导出，Linux新包验证已启动、尚未完整接受**，功能commit `6c0ca0ce…`。见[本轮阶段记录](benchmarks/v0.16.4/source-stage.json)；最终f7仅47／0，此前75df的readout189／HUD286／camera305与GUI26保留原字节范围，不作最终全量通过。最新独立技术接受是0.16.3冻结561的[精确Linux原包](../../outpost-exodus-0.16.3-dev-release-evidence.json)及[收集过程](../../outpost-exodus-0.16.3-dev-collection-process.json)，不继承给本候选。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 ## 当前玩法与本轮改进
 

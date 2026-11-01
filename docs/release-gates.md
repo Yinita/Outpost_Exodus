@@ -1,17 +1,17 @@
 # 发布门槛
 
-当前 **0.16.4-dev UI源码候选已合入，尚未导出或做新包验证**，功能commit `6c0ca0ce…`，HUD `f7a8f58c…`。见[本轮源码阶段](benchmarks/v0.16.4/source-stage.json)；最终只47／0，此前75df的189／286／305及GUI26不写成最终字节已跑。最新独立Linux技术接受是0.16.3冻结561原包，不能继承给0.16.4。`steam_ready=false`，`performance_acceptance=not_assessed`。
+当前 **0.16.4-dev营地卡候选已实际导出，Linux新包验证已启动，尚未完整接受**，功能commit `6c0ca0ce…`，HUD `f7a8f58c…`。见[本轮源码阶段](benchmarks/v0.16.4/source-stage.json)；最终只47／0，此前75df的189／286／305及GUI26不写成最终字节已跑。最新独立Linux技术接受是0.16.3冻结561原包，不能继承给0.16.4。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 | 要求 | 当前证据与下一步 |
 | --- | --- |
 | 0.16.4营地卡候选 | 最终f7／test5e63 headless47／0；此前75df的46+189+286+305及source GUI26保留原字节范围，最终两行tooltip未做大库存hover像素复核。Main／Sim／规则不变。 |
-| 0.16.4标准包流水线 | 尚未冻结导出；新payload须独立完成export、smoke、双zoom各3600+120、原max600、package／unpack／prepare及实际UI，不能借561原包结果。 |
+| 0.16.4标准包流水线 | 已冻结94043e81并实际导出，[export记录](../../outpost-exodus-0.16.4-dev-export-stage.json)；Linux smoke／双zoom各3600+120（原max600）／package已启动，unpack／prepare及实际UI仍待完成，不能借561原包结果。 |
 | 0.16.4完整路线与小时 | 尚未运行。同Main七场三图、6次公开重启、双独立墙钟各≥3600秒；原时钟／路线／经济／磁盘／帧账及退出门槛保持。 |
 | 最新精确Linux技术接受 | [0.16.3冻结561](../../outpost-exodus-0.16.3-dev-release-evidence.json)／[收集过程](../../outpost-exodus-0.16.3-dev-collection-process.json)：七场胜利，游戏3987.523349秒／native3989.0963843020145秒，三wait0、source215／0、collector0，仅原包私有软件normalMain技术范围。 |
 | 原失败与原因 | 首次0.16.2实际失败1／native -11及[71份原件](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)保持；[窄审](../../native-v0162-x11-failure-audit-v01/index.json)和[晚期A/B](../../native-v0162-late-state-ab-v01/index.json)未确定原SIGSEGV根因。后次成功不改写原失败。 |
 | 存档与实际UI | 561原包auto／215source及compact120%／1152×648一例7比较通过。4个nav_wait严格raw差异已定位首次JSONparse1ULP、非模型额外变化；[root诊断](../../source-f9-codec-diag-v0163-v01/root-review.json)不改原failed predicate或宣称raw IEEE无损。本候选仍需新包验证。 |
 | Linux及真实目标硬件 | 私有llvmpipe不是硬件性能；[NVIDIA菜单v03](../../native-gpu-v0163-menu-v03/index.json)在provider条件下实际呈现／正常WMclose，不代表整关FPS／最低配置／物理scanout。目标整关硬件待验。 |
-| 原生Windows | 0.16.3有实际导出包但未原生执行；脚本与PS7/Linux ParseFile不是Windows／PowerShell5.1通过。0.16.4尚未导出。 |
+| 原生Windows | 0.16.3有实际导出包但未原生执行；脚本与PS7/Linux ParseFile不是Windows／PowerShell5.1通过。0.16.4已导出并验证PE资源，仍未原生执行。 |
 | 人类体验与可达性 | 前期微操→后期多营调度、主车保护、继续／停玩原因、听感／可读性／无障碍待真实检查；source GUI、知情AI和看图不代替陌生人类反馈。 |
 | 权利与真实Steam流程 | [0.16.3本地staging](../../steampipe-v0163-run-v01/run-index.json)仅stage／verify0／0、owner-required如期拒绝2；AppID／Depot／entity／account仍UNBOUND，无SteamCMD登录／上传／安装验证，owner权利及审核待完成。 |
 
