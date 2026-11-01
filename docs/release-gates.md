@@ -1,19 +1,19 @@
 # 发布门槛
 
-当前 **0.16.3-dev源码已验证并完成实际Linux／Windows导出，完整包验收待完成**。功能源基线 `4306c2431faf225f742f142836959fe4992a7900`，Main `9920bed4…`；[源码阶段](benchmarks/v0.16.3/source-stage.json)及[root复核](../../source-camera-selection-root-review-v01.json)绑定实际测试字节，不授予新payload整关／小时／性能接受。最新精确Linux技术接受仍属于0.16.2冻结AAAE，旧tag／ZIP／evidence不变。`steam_ready=false`，`performance_acceptance=not_assessed`。
+当前 **0.16.4-dev UI源码候选已合入，尚未导出或做新包验证**，功能commit `6c0ca0ce…`，HUD `f7a8f58c…`。见[本轮源码阶段](benchmarks/v0.16.4/source-stage.json)；最终只47／0，此前75df的189／286／305及GUI26不写成最终字节已跑。最新独立Linux技术接受是0.16.3冻结561原包，不能继承给0.16.4。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 | 要求 | 当前证据与下一步 |
 | --- | --- |
-| 0.16.3镜头与读档选择 | headless479／0、既有GUI552／0、新镜头GUI248／0，actual waits均0；16px实际canvas净空、严格整数ID与只读操作的完整Sim／RNG／原运输保持。原GUI失败与资源残留保留。这里只证明source，不代表新导出包。 |
-| 0.16.3标准包流水线 | 已冻结561313a、实际export退出0；smoke、普通／战略各3600帧+120预热（原max600）、package／严格unpack／prepare及必要实际包UI检查仍待完成；不能借AAAE结果。 |
-| 0.16.3完整路线与小时 | 待同一精确新包、同Main七场三图及6次公开重启；游戏／launcher两个独立真实墙钟各≥3600秒。原时钟／路线／经济／磁盘／帧账与真实退出门槛保持，详见下文。 |
-| 最新AAAE精确包 | [0.16.2接受](../../outpost-exodus-0.16.2-dev-release-evidence.json)：游戏4016.244577秒／native4018.0584507070016秒，同Main七场胜利、三个wait0；source215／0及collector实际0。已知loaded-selection float/int UI缺口仍在旧ZIP，当前source修复未原地重包。 |
+| 0.16.4营地卡候选 | 最终f7／test5e63 headless47／0；此前75df的46+189+286+305及source GUI26保留原字节范围，最终两行tooltip未做大库存hover像素复核。Main／Sim／规则不变。 |
+| 0.16.4标准包流水线 | 尚未冻结导出；新payload须独立完成export、smoke、双zoom各3600+120、原max600、package／unpack／prepare及实际UI，不能借561原包结果。 |
+| 0.16.4完整路线与小时 | 尚未运行。同Main七场三图、6次公开重启、双独立墙钟各≥3600秒；原时钟／路线／经济／磁盘／帧账及退出门槛保持。 |
+| 最新精确Linux技术接受 | [0.16.3冻结561](../../outpost-exodus-0.16.3-dev-release-evidence.json)／[收集过程](../../outpost-exodus-0.16.3-dev-collection-process.json)：七场胜利，游戏3987.523349秒／native3989.0963843020145秒，三wait0、source215／0、collector0，仅原包私有软件normalMain技术范围。 |
 | 原失败与原因 | 首次0.16.2实际失败1／native -11及[71份原件](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)保持；[窄审](../../native-v0162-x11-failure-audit-v01/index.json)和[晚期A/B](../../native-v0162-late-state-ab-v01/index.json)未确定原SIGSEGV根因。后次成功不改写原失败。 |
-| 存档／素材／图库 | AAAE的普通auto44／44／180、四槽source215与[三图六张未编辑原生图](../../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)保持原包范围；新包仍需对应实际绑定。owner美术／权利／商店确认未完成。 |
-| Linux及真实目标硬件 | 既有Runtime4有限启动／截图范围保留；默认私有GLX[实际context／清屏探针](../../linux-private-glx-context-v01/index.json)仍llvmpipe，不能称硬件60FPS或最低配置通过。新包目标硬件／干净机器待实际验证。 |
-| 原生Windows | 0.16.2 Windows包及离线bound脚本仍仅属原包准备，PS7/Linux解析不是Windows／PowerShell5.1执行。当前版原生Windows待实际验证。 |
+| 存档与实际UI | 561原包auto／215source及compact120%／1152×648一例7比较通过。4个nav_wait严格raw差异已定位首次JSONparse1ULP、非模型额外变化；[root诊断](../../source-f9-codec-diag-v0163-v01/root-review.json)不改原failed predicate或宣称raw IEEE无损。本候选仍需新包验证。 |
+| Linux及真实目标硬件 | 私有llvmpipe不是硬件性能；[NVIDIA菜单v03](../../native-gpu-v0163-menu-v03/index.json)在provider条件下实际呈现／正常WMclose，不代表整关FPS／最低配置／物理scanout。目标整关硬件待验。 |
+| 原生Windows | 0.16.3有实际导出包但未原生执行；脚本与PS7/Linux ParseFile不是Windows／PowerShell5.1通过。0.16.4尚未导出。 |
 | 人类体验与可达性 | 前期微操→后期多营调度、主车保护、继续／停玩原因、听感／可读性／无障碍待真实检查；source GUI、知情AI和看图不代替陌生人类反馈。 |
-| 权利与真实Steam流程 | [内容草稿](../../steam-content-survey-v0162-draft-v01/index.json)、[试玩kit](../../playtest-kit-v0162/first-playtest.txt)及[离线五文件staging](../../steampipe-v0162-staging-v01/index.json)不构成审批。AppID／Depot／entity／account仍UNBOUND；没有SteamCMD登录／上传，owner声明、实际调查、商店／构建审核、安装更新待完成。 |
+| 权利与真实Steam流程 | [0.16.3本地staging](../../steampipe-v0163-run-v01/run-index.json)仅stage／verify0／0、owner-required如期拒绝2；AppID／Depot／entity／account仍UNBOUND，无SteamCMD登录／上传／安装验证，owner权利及审核待完成。 |
 
 ## 新包完整技术门槛保持
 

@@ -1,0 +1,275 @@
+{
+  "version": "0.16.4-dev",
+  "recorded_utc": "2026-11-01T11:47:29.749233+00:00",
+  "status": "UI_SOURCE_CANDIDATE_MERGED_NOT_EXPORTED",
+  "source_feature_commit": "6c0ca0ce02e9e1a8eec6c8e38fd3a63f5d9045e1",
+  "feature_base_commit": "c797ed79f817205586c379055b422b1a0b9af87b",
+  "source_commit": null,
+  "runtime_change_scope": "Only HUD camp-card presentation/hit geometry and one new repository test/UID relative to c797. Main, Simulation, CampReadout, save schema, commands, camp ordering/page capacity unchanged. Unselected abandoned cards without real last transport use52px; others91px. Actual visible cards/gaps determine blocked space; abandoned observations freshly queried.",
+  "current_sources": {
+    "HUD": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/hud.gd",
+      "bytes": 63280,
+      "sha256": "f7a8f58cac52aaa9dd7e14384675ba6c49d3482e96bade66e2d20334e0f8aa59"
+    },
+    "Main": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/main.gd",
+      "bytes": 57628,
+      "sha256": "9920bed445f6d5cb8c5a09aaa7eb2b7501c04ebf36a0d4a8d394e3bc7021a962"
+    },
+    "Simulation": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/campaign_simulation.gd",
+      "bytes": 125531,
+      "sha256": "f639823655dff9f4b25729dfa7d9d07ee12b8b3319bf2cb8916f5ddd477a5f2d"
+    },
+    "CampReadout": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/scripts/camp_readout.gd",
+      "bytes": 10733,
+      "sha256": "15cc9dd524238f93b50abee0f1b2eb2c2ccc774eaf7b9ddbd8ce50af625d82f3"
+    },
+    "test": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/tests/test_camp_card_priority.gd",
+      "bytes": 12890,
+      "sha256": "5e63d3506acfaee3d435c122cd33c27d7ecec5ed8d81eafda2e73c7f19cfd526"
+    },
+    "test_UID": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/tests/test_camp_card_priority.gd.uid",
+      "bytes": 20,
+      "sha256": "a1066b59aacf268b92e0e04a138f7479725c80eb421579837d417950bedea94b"
+    }
+  },
+  "code_size": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus/docs/benchmarks/v0.16.4/code-size.json",
+    "bytes": 19236,
+    "sha256": "64ad9ea30a37c3de244b971a5ae9100ee78a774c96c5db0ab01206abd829e17a"
+  },
+  "final_exact_HUD_validation": {
+    "HUD_sha256": "f7a8f58cac52aaa9dd7e14384675ba6c49d3482e96bade66e2d20334e0f8aa59",
+    "test_sha256": "5e63d3506acfaee3d435c122cd33c27d7ecec5ed8d81eafda2e73c7f19cfd526",
+    "checks": 47,
+    "failures": 0,
+    "actual_tool_chunk": "0e478d",
+    "actual_tool_returncode": 0,
+    "actual_engine_wait": 0,
+    "process": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v03/priority/process.json",
+      "bytes": 633,
+      "sha256": "2f8042bf781ff873e619bee784bb494d71ad2b82381d7def883346b02fd616c2"
+    },
+    "log": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v03/priority/raw.log",
+      "bytes": 228,
+      "sha256": "c00546945e3fbdb75f56950d209dc10aaa31a9a74d0cee45e89814a2e1afb4a0"
+    },
+    "bad_lines": [],
+    "source_only": true
+  },
+  "previous_exact_HUD_validation": {
+    "HUD_sha256": "75df0b6d105c3dae7071d9d95fc6cd1c242cca8a3e7f34e66bf663d78069f893",
+    "test_sha256": "4cdf5c69f84287eeaefa81db8a7650d877e796bd0171fd6657f9d0c39b484dd5",
+    "headless_checks": {
+      "priority": 46,
+      "camp_readout": 189,
+      "HUD_cache": 286,
+      "camera": 305
+    },
+    "headless_actual_records": [
+      {
+        "name": "priority",
+        "actual_tool_chunk": "a15a69",
+        "actual_tool_returncode": 0,
+        "process": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/priority/process.json",
+          "bytes": 634,
+          "sha256": "64134307e5db6a4f848068d3f8683fa3298e7c7a3bfa05db56aead51a6048195"
+        },
+        "raw_log": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/priority/raw.log",
+          "bytes": 228,
+          "sha256": "cb5f429707ed50a6ca7663176a225de570b47bdb3b73cbf6a3a1a441eebb36e1"
+        }
+      },
+      {
+        "name": "readout",
+        "actual_tool_chunk": "2c3893",
+        "actual_tool_returncode": 0,
+        "process": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/readout/process.json",
+          "bytes": 627,
+          "sha256": "206c06cf6fc49e0b035c05d56a2401835f8af6d5efac476ab0cd991f5c13e57c"
+        },
+        "raw_log": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/readout/raw.log",
+          "bytes": 467,
+          "sha256": "2f3fb5e726318b6fd782370f3fa1649bc6a63adcf4a1c35bf0d14dfa8c2e951d"
+        }
+      },
+      {
+        "name": "hud",
+        "actual_tool_chunk": "dabc55",
+        "actual_tool_returncode": 0,
+        "process": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/hud/process.json",
+          "bytes": 627,
+          "sha256": "f90f9c4f2e62dc275d4df13832a6c53c8f06bfd364c4ad76e3ba96efd01f8b5b"
+        },
+        "raw_log": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/hud/raw.log",
+          "bytes": 115,
+          "sha256": "2b1a2a40a1863dc268cf03b3ac1595cc2a4d821410b88de56205bcf3a5982ed7"
+        }
+      },
+      {
+        "name": "camera",
+        "actual_tool_chunk": "8e896d",
+        "actual_tool_returncode": 0,
+        "process": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/camera/process.json",
+          "bytes": 636,
+          "sha256": "d35c4bae81924cd33de521fe5af42c5598f9a130df9111e155728182b9783479"
+        },
+        "raw_log": {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-checks-v02/camera/raw.log",
+          "bytes": 323,
+          "sha256": "303b60967557cef92fe945c58d72af3c8271b2ff3e666e4cb30bf8ebf34be135"
+        }
+      }
+    ],
+    "source_GUI": {
+      "scope": "Controlled source Main/window render+Window.push_input; not OS XTest/native exported package/human/performance",
+      "tool_session": 62963,
+      "initial_tool_chunk": "a829e9",
+      "terminal_tool_chunk": "58ab94",
+      "actual_tool_returncode": 0,
+      "actual_engine_wait": 0,
+      "actual_server_wait": 0,
+      "checks": 26,
+      "failures": 0,
+      "result": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/result.json",
+        "bytes": 16115,
+        "sha256": "4e36bf4985d2eb5d9a64042a154673e7c51b5d22d57c05b8bf94bae5d84019db"
+      },
+      "report": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/report.json",
+        "bytes": 2329,
+        "sha256": "f9746c43be04ed1164dcc3430d833818c4856a758cf5dcbf67d8c7f18a55c192"
+      },
+      "engine_log": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/engine.log",
+        "bytes": 592,
+        "sha256": "d3572253e84608dcea2914d982ee57680df32cc2afe92aa598ee99600a6bf160"
+      },
+      "server_log": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/server.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "probe": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/probe.gd",
+        "bytes": 6468,
+        "sha256": "67455de96d4ab99b0d26d9d1ea2797ffb3899c69bc417f52fb38a7295fdc935c"
+      },
+      "supervisor": {
+        "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/run.py",
+        "bytes": 5206,
+        "sha256": "447f6090da0eabf4022a25e3d64a611cf3ab20fbe9434b5fa9f013989713d742"
+      },
+      "screenshots": [
+        {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/normal-compact-rear-cards.png",
+          "bytes": 397014,
+          "sha256": "30898de3c32e3d9de47f84877e853298eddef706f335e7f41fb17af9e4830ba7"
+        },
+        {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/normal-selected-abandoned.png",
+          "bytes": 456335,
+          "sha256": "00af3e66d41d56a8e1bee6fb69e4cac78fde431c2fa2e0b25ed8e4c381b50da1"
+        },
+        {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/compact-compact-rear-cards.png",
+          "bytes": 303653,
+          "sha256": "656448624ed367a273cac2489a3fe9706b569fe3f4b9eac39f81cfb901501b34"
+        },
+        {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/compact-selected-abandoned.png",
+          "bytes": 341711,
+          "sha256": "8d1fa7ca19ee4e96a398951ec759009c58eb3198f6e2d427fccedf08f1e398f6"
+        },
+        {
+          "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-gui-v02/compact-exit-focus.png",
+          "bytes": 294375,
+          "sha256": "c83409e16dc9afd2b23cd14e5d07a331fff09a30513a49b3192b4f29c7041f0b"
+        }
+      ],
+      "cleanup": {
+        "socket_lock_absent": true,
+        "tcp_absent": true,
+        "auth_removed": true,
+        "owned_processes_absent": true
+      }
+    },
+    "scope": "Controlled high-stock flat/loading/arrival unit fixtures and an unmodified historical post-F9 save loaded normally in source Main. Engine-dispatched input, not OS XTest/exported-package/human/physical-performance. Both1440x810/UI100 logical1600x900 and1152x648/UI120 logical1333.333x750 retain ordinary project base.",
+    "not_executed_on_final_f7_bytes": [
+      "existingreadout",
+      "HUDcache",
+      "camera",
+      "sourceGUI"
+    ]
+  },
+  "final_vs_previous_tooltip_only_diff": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-final-tooltip.diff",
+    "bytes": 982,
+    "sha256": "7638a154b5fc40b53ea3bc7536bd35919178362c70275ebc7d4a7a42e3d5a09e"
+  },
+  "final_change": "Two appended lines add unchanged existing integer-formatted leftover stock to abandoned/no-transport tooltips. No final large-inventory hover pixel evidence. Earlier26GUI and existing regressions cannot be reported as finalf7 passes.",
+  "original_handoffs": {
+    "final": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-handoff-final.json",
+      "bytes": 3381,
+      "sha256": "942d8daa6934fee09f3aa285820b3afbcf72e2e7f98389497e151f0e2df6c226"
+    },
+    "previous": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-camp-card-polish/work/camp-card-handoff.json",
+      "bytes": 8610,
+      "sha256": "d33ec1fc4043c5d12392fef545ceca7967db1c5a8f828b28783744817d036148"
+    },
+    "historical_status_note": "Original uncommitted status fields remain verbatim historical metadata. Feature is now merged at6c0ca0ce; those source records are not rewritten."
+  },
+  "latest_accepted_exact_Linux_package": {
+    "version": "0.16.3-dev",
+    "source_commit": "561313a910d7b4f2954260a79b34cd4030c0857a",
+    "source_tree": "0ec913a95502b8345d2493a026eadbc4c0b7ee1c",
+    "release_evidence": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.3-dev-release-evidence.json",
+      "bytes": 168224,
+      "sha256": "72e250da3d6221a8d5fb71acb034b30049ebed72399347702fe4d7789598b0c4"
+    },
+    "collection_process": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.3-dev-collection-process.json",
+      "bytes": 2430,
+      "sha256": "0b90b6c0ebec82227a8e133dada4f7c9ac57eaf49d7f8081b839e7aa45007ce3"
+    },
+    "compact_actual_UI_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-controls-v0163-compact-run-v01/root-review.json",
+      "bytes": 22889,
+      "sha256": "7d07588799096297c4945b47588f5633b1ee5c12d85249400e7501737c86ace7"
+    },
+    "F9_codec_root_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-f9-codec-diag-v0163-v01/root-review.json",
+      "bytes": 2399,
+      "sha256": "5b958de930ee1939ccc22ffa8c0d6257953a5e9b3cf50c67f20a65e5564aac82"
+    },
+    "scope": "Exact16.3 only: Linux seven-route private software normalMain technical acceptance. Compact actual1152x648/UI120 onecase7comparisons/transition/RNG and clean normalnative/server exits; no F9 retest. Original strict raw F9 predicate remains failed but four nav_wait differences localized to first JSONparse, no extra model-phase change; no rawIEEE losslessness or camera/Simload regression inferred. No16.4package acceptance inherited."
+  },
+  "new_0_16_4_export": null,
+  "new_0_16_4_native_package_validation": null,
+  "new_0_16_4_complete_campaign_hour_or_collector": null,
+  "final_large_inventory_hover_pixel_evidence": null,
+  "performance_acceptance": "not_assessed",
+  "steam_ready": false,
+  "current_metadata_task_engine_or_test_execution": false,
+  "old_evidence_or_frozen_packages_rewritten": false,
+  "version_metadata_commit": "9aea46c5dd91de08a75848b5300f3c0e7b79aaf4",
+  "metadata_commit_not_a_test_rerun": true
+}

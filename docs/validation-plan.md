@@ -1,12 +1,16 @@
 # 验证计划与已完成范围
 
-## 0.16.3源码阶段
+## 当前0.16.4 UI源码候选
 
-当前0.16.3-dev功能源基线为 `4306c2431faf225f742f142836959fe4992a7900`，Main `9920bed4…`，其余21个runtime脚本与AAAE逐字一致。[源码阶段记录](benchmarks/v0.16.3/source-stage.json)及[root复核](../../source-camera-selection-root-review-v01.json)绑定本轮实际受测字节，并逐项核对合入后的83份代码清单；不声称本轮重新执行了全部测试文件。
+已合入HUD营地卡52／91px、鲜读弃营状态与实际可见输入保留区，Main／Sim／存档schema不变，尚未导出或验证本版payload。最终f7／test5e63实际headless47／0；此前75df实际46／0、readout189／0、HUD286／0、camera305／0及source GUI26／0绑定旧字节，最终仅追加两行tooltip，未重跑较广回归或最终大库存hover像素。见[本轮source-stage](benchmarks/v0.16.4/source-stage.json)和[84文件清单](benchmarks/v0.16.4/code-size.json)。先补最终显示／操作范围，再按下列原标准独立验证新包，不能继承0.16.3原包结果。
+
+## 0.16.3源码阶段与精确原包
+
+0.16.3-dev功能源基线为 `4306c2431faf225f742f142836959fe4992a7900`，Main `9920bed4…`，其余21个runtime脚本与AAAE逐字一致。[源码阶段记录](benchmarks/v0.16.3/source-stage.json)及[root复核](../../source-camera-selection-root-review-v01.json)绑定本轮实际受测字节，并逐项核对合入后的83份代码清单；不声称本轮重新执行了全部测试文件。
 
 已实际完成headless479／0（loaded-selection61、camera305、运输状态113）、既有四项实绘GUI552／0、新镜头GUI248／0，相关engine／工具／owned server真实退出均0。覆盖logical viewport／zoom四边约束、小图居中、HUD安全定位、真实postdraw／resize、原视角精确load、读档单位整数UI ID及只读操作的原运输／完整Sim／RNG保持。新增GUI的外部16px实际canvas检查和整数ID严格比较未放松，17px只作内部投影guard；root看4张关键图，另23张capture完整解码。
 
-[原GUI首轮6项失败](../../source-camera-viewport-gui-v01/attempt01-results-index.json)、[原退出资源残留与verbose A/B未复现](../../source-camera-ui-leak-ab-v01/index.json)、[旧loaded-ID诊断](../../source-camera-id-diagnostic-v01/index.json)与[原／修反例](../../source-loaded-selection-regression-v02/index.json)保留。后续测试的两处scene retirement等待至少120ms真实墙钟，不屏蔽资源日志。上述检查限于source与引擎派发输入，不是OS XTest、真人、导出包整关或性能接受。**本版已冻结561313a并实际导出新payload，但其余包阶段与整关／小时验收尚待完成。**
+[原GUI首轮6项失败](../../source-camera-viewport-gui-v01/attempt01-results-index.json)、[原退出资源残留与verbose A/B未复现](../../source-camera-ui-leak-ab-v01/index.json)、[旧loaded-ID诊断](../../source-camera-id-diagnostic-v01/index.json)与[原／修反例](../../source-loaded-selection-regression-v02/index.json)保留。后续测试的两处scene retirement等待至少120ms真实墙钟，不屏蔽资源日志。上述检查限于source与引擎派发输入，不是OS XTest、真人、导出包整关或性能接受。**冻结561原包随后已实际完成标准流水线、七场双墙钟、auto、215项source及collector。** [正式接受](../../outpost-exodus-0.16.3-dev-release-evidence.json)与[真实收集过程](../../outpost-exodus-0.16.3-dev-collection-process.json)只归该Linux私有软件normalMain包；旧source-stage保留当时阶段状态，不回写原件。
 
 ## 新payload必须独立完成
 
@@ -24,7 +28,13 @@
 
 postterminal source检查继续按生产JSON codec核完整schema／entries顺序／状态／RNG及UI续接，区分安全整数恢复、Vector2 float32表示与原始十进制首次解析边界；不承诺未经证明的raw token或解析前IEEE位保真。不修写原报告，不补帧，不以新尝试覆盖旧失败。
 
-## 最新已接受的精确包：0.16.2／AAAE
+## 最新独立技术接受精确包：0.16.3／561
+
+同Main七场C/D/R/C/D/R/C、6次公开重启，游戏3987.523349秒／native3989.0963843020145秒，两独立时钟各≥3600秒；原路线经济／磁盘／257桶逐场及全局帧账、普通两代auto、source215／0与collector实际0。native／launcher／server正常退出0，见[正式接受](../../outpost-exodus-0.16.3-dev-release-evidence.json)和[收集过程](../../outpost-exodus-0.16.3-dev-collection-process.json)。
+
+[原包compact复核](../../native-controls-v0163-compact-run-v01/root-review.json)实际通过普通Settings120%与1152×648切换、7项完整暂停Sim／RNG／UI比较及正常native／server退出。标准F9的4个`nav_wait`差异经[root诊断](../../source-f9-codec-diag-v0163-v01/root-review.json)定位首次JSON解析1ULP，模型阶段无额外改变，完整parsed／derived与native-after一致；原raw严格predicate仍失败，不是camera／Sim-load新bug证明，也不声称raw IEEE无损。UI／单点净空只覆盖原具体场景，不作全UI或0.16.4验证。
+
+## 前版接受精确包：0.16.2／AAAE
 
 原source/tag `aaae0064413528b6c135f76d308118465e34831d`／`v0.16.2-dev`、tree `32c02312c7cec6268bd590112a8a1ad25b785388`及其ZIP未随当前source修改。导出、标准smoke／render／package／unpack／prepare和两个普通Main受控Guide场景有[包阶段记录](benchmarks/v0.16.2/package-stage.json)及[原生Guide复核](../../native-guide-v0162-root-review-v01.json)；后者明确平地／高库存fixture、OS输入／F5／正常退出，不充当默认开局整关或真人。
 
@@ -43,6 +53,8 @@ postterminal source检查继续按生产JSON codec核完整schema／entries顺�
 
 ## 尚未关闭的范围
 
-陌生人类可玩性、听感／可读性／无障碍、原生Windows／PowerShell5.1、物理干净机器与目标硬件、最低配置及稳定60FPS、owner权利、真实Steam安装／更新／审核仍需实际验证。默认私有GLX[实际探针](../../linux-private-glx-context-v01/index.json)在移除软件强制环境后仍为llvmpipe，即使direct=true也不是物理GPU通过；headless／dummy或改backend不能替代默认包硬件证据。Windows离线脚本及Linux ParseFile不作为Windows执行通过。
+陌生人类可玩性、听感／可读性／无障碍、原生Windows／PowerShell5.1、物理干净机器与目标硬件、最低配置及稳定60FPS、owner权利、真实Steam安装／更新／审核仍需实际验证。默认私有GLX[实际探针](../../linux-private-glx-context-v01/index.json)在移除软件强制环境后仍为llvmpipe，即使direct=true也不是物理GPU通过；headless／dummy或改backend不能替代默认包硬件证据。Windows离线脚本及Linux ParseFile不作为Windows执行通过。owned NVIDIA菜单v03只证明其provider条件下菜单呈现／正常WMclose，目标GPU整关与帧率仍未评估。
 
 旧[黑盒AI观察](../../blackbox-ai-playtest-v014-v01/index.json)为39次输入、8次截屏、679.594399秒，非human且未完成整关；教程回退说法已被原图否定。当前[内容草稿](../../steam-content-survey-v0162-draft-v01/index.json)与历史台账保留来源，不能代替owner或Valve审核。
+
+0.16.3的[本地SteamPipe记录](../../steampipe-v0163-run-v01/run-index.json)仅stage／verify0／0、owner-required预期拒绝2；真实身份UNBOUND，未登录、上传或做Steam安装验证。
