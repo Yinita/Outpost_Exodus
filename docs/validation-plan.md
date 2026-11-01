@@ -6,7 +6,7 @@
 
 已实际完成headless479／0（loaded-selection61、camera305、运输状态113）、既有四项实绘GUI552／0、新镜头GUI248／0，相关engine／工具／owned server真实退出均0。覆盖logical viewport／zoom四边约束、小图居中、HUD安全定位、真实postdraw／resize、原视角精确load、读档单位整数UI ID及只读操作的原运输／完整Sim／RNG保持。新增GUI的外部16px实际canvas检查和整数ID严格比较未放松，17px只作内部投影guard；root看4张关键图，另23张capture完整解码。
 
-[原GUI首轮6项失败](../../source-camera-viewport-gui-v01/attempt01-results-index.json)、[原退出资源残留与verbose A/B未复现](../../source-camera-ui-leak-ab-v01/index.json)、[旧loaded-ID诊断](../../source-camera-id-diagnostic-v01/index.json)与[原／修反例](../../source-loaded-selection-regression-v02/index.json)保留。后续测试的两处scene retirement等待至少120ms真实墙钟，不屏蔽资源日志。上述检查限于source与引擎派发输入，不是OS XTest、真人、导出包整关或性能接受。**本版尚未导出新payload。**
+[原GUI首轮6项失败](../../source-camera-viewport-gui-v01/attempt01-results-index.json)、[原退出资源残留与verbose A/B未复现](../../source-camera-ui-leak-ab-v01/index.json)、[旧loaded-ID诊断](../../source-camera-id-diagnostic-v01/index.json)与[原／修反例](../../source-loaded-selection-regression-v02/index.json)保留。后续测试的两处scene retirement等待至少120ms真实墙钟，不屏蔽资源日志。上述检查限于source与引擎派发输入，不是OS XTest、真人、导出包整关或性能接受。**本版已冻结561313a并实际导出新payload，但其余包阶段与整关／小时验收尚待完成。**
 
 ## 新payload必须独立完成
 

@@ -1,11 +1,11 @@
 # 发布门槛
 
-当前 **0.16.3-dev源码已验证、未导出**。功能源基线 `4306c2431faf225f742f142836959fe4992a7900`，Main `9920bed4…`；[源码阶段](benchmarks/v0.16.3/source-stage.json)及[root复核](../../source-camera-selection-root-review-v01.json)绑定实际测试字节，不授予新payload整关／小时／性能接受。最新精确Linux技术接受仍属于0.16.2冻结AAAE，旧tag／ZIP／evidence不变。`steam_ready=false`，`performance_acceptance=not_assessed`。
+当前 **0.16.3-dev源码已验证并完成实际Linux／Windows导出，完整包验收待完成**。功能源基线 `4306c2431faf225f742f142836959fe4992a7900`，Main `9920bed4…`；[源码阶段](benchmarks/v0.16.3/source-stage.json)及[root复核](../../source-camera-selection-root-review-v01.json)绑定实际测试字节，不授予新payload整关／小时／性能接受。最新精确Linux技术接受仍属于0.16.2冻结AAAE，旧tag／ZIP／evidence不变。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 | 要求 | 当前证据与下一步 |
 | --- | --- |
 | 0.16.3镜头与读档选择 | headless479／0、既有GUI552／0、新镜头GUI248／0，actual waits均0；16px实际canvas净空、严格整数ID与只读操作的完整Sim／RNG／原运输保持。原GUI失败与资源残留保留。这里只证明source，不代表新导出包。 |
-| 0.16.3标准包流水线 | 待新源冻结后独立export、smoke、普通／战略各3600帧+120预热（原max600）、package／严格unpack／prepare及必要实际包UI检查；不能借AAAE结果。 |
+| 0.16.3标准包流水线 | 已冻结561313a、实际export退出0；smoke、普通／战略各3600帧+120预热（原max600）、package／严格unpack／prepare及必要实际包UI检查仍待完成；不能借AAAE结果。 |
 | 0.16.3完整路线与小时 | 待同一精确新包、同Main七场三图及6次公开重启；游戏／launcher两个独立真实墙钟各≥3600秒。原时钟／路线／经济／磁盘／帧账与真实退出门槛保持，详见下文。 |
 | 最新AAAE精确包 | [0.16.2接受](../../outpost-exodus-0.16.2-dev-release-evidence.json)：游戏4016.244577秒／native4018.0584507070016秒，同Main七场胜利、三个wait0；source215／0及collector实际0。已知loaded-selection float/int UI缺口仍在旧ZIP，当前source修复未原地重包。 |
 | 原失败与原因 | 首次0.16.2实际失败1／native -11及[71份原件](../../rejected/outpost-exodus-0.16.2-dev-native-x11-disconnect-v01/index.json)保持；[窄审](../../native-v0162-x11-failure-audit-v01/index.json)和[晚期A/B](../../native-v0162-late-state-ab-v01/index.json)未确定原SIGSEGV根因。后次成功不改写原失败。 |

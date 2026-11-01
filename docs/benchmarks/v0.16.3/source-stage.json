@@ -1,7 +1,7 @@
 {
   "version": "0.16.3-dev",
-  "recorded_utc": "2026-11-01T07:39:04.660204+00:00",
-  "status": "SOURCE_VALIDATED_NOT_EXPORTED",
+  "recorded_utc": "2026-11-01T07:55:59.153341+00:00",
+  "status": "SOURCE_VALIDATED_ACTUAL_EXPORTS_COMPLETED_PACKAGE_NATIVE_PENDING",
   "runtime_code_basis_commit": "4306c2431faf225f742f142836959fe4992a7900",
   "runtime_Main_sha256": "9920bed445f6d5cb8c5a09aaa7eb2b7501c04ebf36a0d4a8d394e3bc7021a962",
   "runtime21_byte_identical_to_accepted_AAAE": true,
@@ -128,8 +128,12 @@
     "old_package_or_acceptance_rewritten": false
   },
   "original_failed_runs_reclassified": false,
-  "actual_source_freeze_commit": null,
-  "actual_export": null,
+  "actual_source_freeze_commit": "561313a910d7b4f2954260a79b34cd4030c0857a",
+  "actual_export": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.3-dev-export-stage.json",
+    "bytes": 5181,
+    "sha256": "f5605e67b1e7ba4490d5d3d5e8735dc1f49e5e139521820f8bc6ddef607a030c"
+  },
   "actual_native_package_smoke": null,
   "actual_standard_render_measurement": null,
   "actual_native_full_seven_cycle_dual_wall_acceptance": null,
@@ -137,5 +141,6 @@
   "Windows_native_verified": false,
   "human_results": null,
   "performance_acceptance": "not_assessed",
-  "steam_ready": false
+  "steam_ready": false,
+  "actual_source_freeze_tree": "0ec913a95502b8345d2493a026eadbc4c0b7ee1c"
 }
