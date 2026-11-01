@@ -1,6 +1,8 @@
 # 验证计划与已完成范围
 
-当前源码0.16.2-dev候选的Guide相关headless584／0、source GUI67／0，实际退出0；旧cf同用例204／43失败保留。本候选尚未导出。[本轮索引](benchmarks/v0.16.2/guide-transport-availability.json)。
+当前0.16.2-dev精确导出冻结于aaae0064。Guide相关headless584／0、source GUI67／0，旧cf同用例204／43失败保留。[源码修复索引](benchmarks/v0.16.2/guide-transport-availability.json)。新包实际导出、smoke、普通／战略各3600帧+120预热、三ZIP与严格解压已完成；22runtime脚本在文档更新中保持冻结源字节。
+
+实际解压包另用两份明确平地／高库存fixture，经普通菜单load、OS输入、F5与正常退出检查Guide忙／闲状态，两个native及工具均0。相同暂停实例Guide前后完整Sim/RNG与指定UI字段不变，真实主车／A营镜头精确匹配；另成阶段的公开A→B命令实际接受，不宣称该有意命令前后Sim不变。[root原生复核](../../native-guide-v0162-root-review-v01.json)核20张原始PNG并查看关键像素。外部fixture helper首轮缩进解析失败保留，修后37／0只属于fixture生成；此项不充当默认开局、整关、小时、真人或性能验收。[当前包阶段记录](benchmarks/v0.16.2/package-stage.json)列明当前包完整路线／七关／双墙钟及四槽source读回仍待结果。
 
 0.16.1冻结cf精确Linux包七关三图完成：游戏3979.349975秒／native3981.0773600769753秒；native/launcher/supervisor/root均实际0。严格路线经济、全部帧守恒、47卸货事务和215项四槽schema/JSON codec/RNG复核通过。[接受记录](../../outpost-exodus-0.16.1-dev-release-evidence.json)及[真实收集](../../outpost-exodus-0.16.1-dev-collection-process.json)保留范围；原208／4字面对比失败与独立codec边界诊断均保留，不将raw十进制或解析前IEEE位作为已证明不变。
 

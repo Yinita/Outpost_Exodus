@@ -2,7 +2,7 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前源码为 **0.16.2-dev 候选**。当指挥车仍在上一段撤收时，引导现在说明真实运输和等待原因，定位车辆；主车空闲后才提示下一段撤营。源码相关检查584/0、受控GUI67/0均实际退出0。**本候选尚未导出。**
+当前开发版为 **0.16.2-dev**，精确导出冻结于 `aaae0064…`。当指挥车仍在上一段撤收时，引导说明真实运输和等待原因，定位车辆；主车空闲后才提示下一段撤营。源码相关检查584/0、受控source GUI67/0，以及实际解压包中的两个受控普通界面场景均通过。新包已完成导出、原生smoke、标准双缩放渲染测量、打包及解压核对；**当前包的完整战役与七场／双墙钟长测尚待完成**。[本版包记录](docs/benchmarks/v0.16.2/package-stage.json)列出精确范围；之后的文档更新不改变22个runtime脚本。
 
 已接受的0.16.1精确Linux包冻结于 `cf678b72…`，同Main七场三图完成，游戏墙钟3979.349975秒，启动器独立观测native3981.0773600769753秒；实际退出均0，七场帧账及四份存档读回复核通过。验收仅属于该原包，见[接受记录](../outpost-exodus-0.16.1-dev-release-evidence.json)和[收集过程](../outpost-exodus-0.16.1-dev-collection-process.json)。`steam_ready=false`、`performance_acceptance=not_assessed`；[当前检查点](docs/current-checkpoint.md)记录剩余范围。
 
@@ -59,7 +59,9 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 
 当前引导只读取真实主车及撤收记录，区分返程取货、装车和末班运输，避免要求玩家执行必被拒绝的下一段撤营。记录无效时明确提示检查，主车空闲后恢复原操作提示。Sim/Main/HUD/SaveStore/readout字节保持基点一致，没有新增按键或存档字段。
 
-同一最终用例：原cf Guide204项／43失败，修复后204／0；连同camp-action、完整默认Guide路线和三图付费开局共584／0。source GUI67／0覆盖默认1440×810、小窗口1152×648及120%UI、定位／展开、完整Sim/RNG和现有运输订单不变，实际正常退出。[修复索引](docs/benchmarks/v0.16.2/guide-transport-availability.json)列明原件与范围；这些不是新包或真人验收。
+同一最终用例：原cf Guide204项／43失败，修复后204／0；连同camp-action、完整默认Guide路线和三图付费开局共584／0。source GUI67／0覆盖默认1440×810、小窗口1152×648及120%UI、定位／展开、完整Sim/RNG和现有运输订单不变，实际正常退出。[修复索引](docs/benchmarks/v0.16.2/guide-transport-availability.json)保留源码阶段原件。
+
+新包另用普通Main菜单载入两份明确声明的平地／高库存受控存档，通过真实OS输入展开、定位和F5保存。相同暂停原生实例的Guide操作前后，完整Sim/RNG与选营、选人、编组、速度和覆盖层均不变，镜头匹配真实主车／A营；空闲场景另从界面成功下达A到B撤营。两次native与工具均正常退出0，20张原始PNG完整解码，root查看关键图像。[原生检查](../native-guide-v0162-root-review-v01.json)不代表默认开局整关、小时长测或真人体验。
 
 0.16.1的[实机图库](../outpost-exodus-0.16.1-dev-steam-gallery/index.json)、[普通自动存档观察](../native-auto-cycle-v0161-root-review-v02.json)及[215项四槽读回](../postterminal-v0161-candidate-v02/source-auto-result.json)均绑定原精确包。存档按既有Godot JSON codec规范化比较，独立诊断保留类型／Vector2位模式与原始十进制边界；原208／4字面对比失败不改写，不宣称原数字token或解析前IEEE位保真。[诊断](../source-auto-json-diag-v0161-v01/index.json)。
 
@@ -69,7 +71,9 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 
 采用 Godot 4 + 带类型的 GDScript，模拟、显示与命令输入分开。玩法、界面、输入、绘制及音频共18个脚本、**8,875物理行**；含测试、诊断和工具共81个自有代码文件、**26,560物理行、24,227非空行**。排除引擎、第三方库、素材、场景、UID、缓存及外部探针，见[逐文件清单](docs/benchmarks/v0.16.2/code-size.json)。代码量不是完成度或包验收。
 
-建筑图集由图像生成工具制作，角色/地形与部分声音采用程序绘制或生成，Noto 字体附带 OFL 通知。具体来源与待确认事项见[素材台账](docs/asset-inventory.json)；其中旧source pins保留为历史，当前差异见[内容调查草稿](../steam-content-survey-v015-draft-v01/index.json)及[0.15包通知绑定](../steam-content-survey-v015-package-binding-v01.json)。自有代码与美术的最终分发条款仍待确定。
+建筑图集由图像生成工具制作，角色/地形与部分声音采用程序绘制或生成，Noto 字体附带 OFL 通知。具体来源与待确认事项见[素材台账](docs/asset-inventory.json)；旧source pins保留为历史，当前18素材源、22runtime脚本及实际包差异见[0.16.2内容事实草稿](../steam-content-survey-v0162-draft-v01/index.json)。未知生成记录保持未知，权利与正式调查由owner确认；本地准备不等于提交。自有代码与美术的最终分发条款仍待确定。
+
+[本版首次试玩说明](../playtest-kit-v0162/first-playtest.txt)和空白反馈表绑定实际包，尚无真人结果。[本地SteamPipe准备](../steampipe-v0162-staging-v01/index.json)为每平台五个运行／通知文件，真实AppID／Depot等仍未绑定，没有登录或上传。
 
 已建立本地 Git，尚未创建或推送 GitHub 远程仓库。可先用私有仓库开发，代码/场景/关卡/测试纳入 Git，大体积美术源文件使用 Git LFS。`.godot/`、`work/`、构建和本机存档不入库；`docs/.gdignore` 避免把文档截图当游戏资源导入。
 

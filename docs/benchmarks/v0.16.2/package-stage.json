@@ -1,0 +1,130 @@
+{
+  "recorded_utc": "2026-11-01T04:11:39.876936+00:00",
+  "version": "0.16.2-dev",
+  "status": "EXACT_PACKAGE_PREFLIGHT_AND_TARGETED_NATIVE_GUIDE_PASSED_FULLCAMPAIGN_PENDING",
+  "frozen_source_commit": "aaae0064413528b6c135f76d308118465e34831d",
+  "frozen_source_tree": "32c02312c7cec6268bd590112a8a1ad25b785388",
+  "scope": "Exact new official export/smoke/full standard software render/3ZIP/strict unpack and two declared controlled ordinary native UI cases. Documentation after this source freeze changes no22runtime script bytes. Not fullcampaign/hour/minimumhardware/human/Windows/Steam acceptance.",
+  "actual_export_tool_terminal": "9e412f",
+  "actual_pipeline_tool_terminal": "4572d8",
+  "pipeline_stage_codes": {
+    "smoke": 0,
+    "benchmark": 0,
+    "package": 0
+  },
+  "render_frames_each_zoom": 3600,
+  "render_warmup_frames_each_zoom": 120,
+  "render_software_wall_seconds": 567.7557376259938,
+  "actual_unpack_tool_terminal": "2e94bd",
+  "source_archive_files": 872,
+  "native_Guide_actual_cases": 2,
+  "native_Guide_actual_exit_codes": [
+    0,
+    0
+  ],
+  "native_Guide_OS_actions": 20,
+  "native_Guide_non_capture_inputs": 18,
+  "native_Guide_raw_PNGs": 20,
+  "native_Guide_checks": "same paused native F5 fullSim/RNG/explicit selection/group/speed/overlay fields preserved; actual main/A camera focus; separate idle publicAtoB admitted. Declared flat/high-stock fixtures, not default campaign proof.",
+  "current_runtime22_byte_identical_to_frozen_package_source": true,
+  "ordinary_two_generation_auto": "ACTUAL_TIMING_BYTE_RETENTION_AND_ORDINARY_EXIT_PASSED_SCHEMA_DECODE_PENDING",
+  "fullcampaign_and_hour": "RUNNING_ORIGINAL_ROOT_SESSION93484_NOT_ACCEPTED",
+  "Windows_native_verified": false,
+  "human_results": null,
+  "owner_and_Steam_actual_project": "PENDING_OWNER_VALUES_AND_REAL_EXECUTION",
+  "performance_acceptance": "not_assessed",
+  "steam_ready": false,
+  "evidence": {
+    "manifest": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.2-dev-checksums.json",
+      "bytes": 597,
+      "sha256": "707b7b00b1327b8c38f8aa24bbf7bf0a096a5a05647c93df5767c46c8b0682a4"
+    },
+    "export": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0162/work/v0162-export-index.json",
+      "bytes": 2213,
+      "sha256": "494668d4bcedef9e0c139da1454c7c15ce7753bae5564021a03e008f3a9c22ef"
+    },
+    "pipeline": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0162/work/v0162-native-pipeline-index.json",
+      "bytes": 13970,
+      "sha256": "747effa771db28f59aa30210cee81f40fdacfbcc42103e8b6c554ab848b303bd"
+    },
+    "strict_unpack": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-release-v0162/work/v0162-unpack-verification.json",
+      "bytes": 169983,
+      "sha256": "f9fec182d4141e45b24ed6c11585b5b7a4d89d41acf46068377bd4c60400dcf7"
+    },
+    "targeted_native_Guide_root": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-guide-v0162-root-review-v01.json",
+      "bytes": 10926,
+      "sha256": "ba56cc488ef7308cbaf49e5dc71a2fa7868ba043b79824cc3eacc4a87aee00a0"
+    },
+    "Windows_offline_materials": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/windows-native-check-v0162-prep-v01/index.json",
+      "bytes": 13622,
+      "sha256": "06225e061f8ab4d506a47f60873c34844922c8182a8c78b346a939ec07a8206c"
+    },
+    "playtest_kit": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/playtest-kit-v0162/index.json",
+      "bytes": 4846,
+      "sha256": "73ae779d12a42ca60e8664b1589d76f8e7181768c23a97c9de41bedfcc02ea35"
+    },
+    "content_facts": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/steam-content-survey-v0162-draft-v01/index.json",
+      "bytes": 2162,
+      "sha256": "f93bf65a012386bc994f1694bacb7a7f15861eb9c6b35f4acd3a1e3db8d3082f"
+    },
+    "local_SteamPipe_staging": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/steampipe-v0162-staging-v01/index.json",
+      "bytes": 9004,
+      "sha256": "5a54138cb7bb9d09c8f3a165d95dac9bd6060336a51be7b27248cb9bf6931e30"
+    },
+    "delivery_materials_root": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/v0162-delivery-materials-root-review-v01.json",
+      "bytes": 1868,
+      "sha256": "7a0d8f7a8508f3bed42bcdaac22b11c514a2cdaea9ee2ecc02918fb956772598"
+    },
+    "actual_final_benchmark_slots": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-auto-benchmark-v0162-sealed-v01/index.json",
+      "bytes": 2705,
+      "sha256": "dcb6d5d15295344aaa5b201334a57bb8c3fb52d756f0486ceb1901ea8cc8b984"
+    },
+    "native_Guide_final": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-guide-v0162-prep-v01/native-results-index.json",
+      "bytes": 12198,
+      "sha256": "2a8d74214fedc2f4685d1de8a366b8e7e792b91dc4728758521210b7f89ef6ed"
+    },
+    "ordinary_auto": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-auto-cycle-v0162-v01/index.json",
+      "bytes": 9882,
+      "sha256": "e32ca5e7b3993805a86f58b6a2ae4e471d51cb9e3369e2d5e4bd1ca7557e4fde"
+    },
+    "ordinary_auto_root": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-auto-cycle-v0162-root-review-v02.json",
+      "bytes": 4621,
+      "sha256": "68affe32084542da8ea571033fc5920354db6d6e279239b4cd3b4a0e2ec1268b"
+    },
+    "prepare": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-private-launcher-v01/prepare-root-terminal.json",
+      "bytes": 490,
+      "sha256": "921b1dfa20f49223d157edec90482c79e79e219f0bfacc4c74b8157977659f47"
+    },
+    "soak_start": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-private-launcher-v01/soak-start.json",
+      "bytes": 3925,
+      "sha256": "f2917fa1d90c8a11bcce63ac91132db7dc0bb7af221002a0523174b1f586381e"
+    }
+  },
+  "actual_prepare_tool": {
+    "session": 30641,
+    "initial": "55cd37",
+    "terminal": "627907",
+    "exit": 0
+  },
+  "actual_soak_tool": {
+    "session": 93484,
+    "initial": "f07504",
+    "terminal": null
+  }
+}

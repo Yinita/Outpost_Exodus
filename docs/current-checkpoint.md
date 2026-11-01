@@ -1,12 +1,24 @@
 # 当前开发检查点
 
-当前源码 **0.16.2-dev候选，尚未导出**。单人、2D卡通、三场独立战役。`steam_ready=false`，`performance_acceptance=not_assessed`。
+当前开发版 **0.16.2-dev** 的精确导出冻结于 `aaae0064413528b6c135f76d308118465e34831d` / tree `32c02312c7cec6268bd590112a8a1ad25b785388`。新包导出、原生smoke、标准双缩放渲染、三ZIP、严格解压和两个受控普通原生Guide场景已通过。当前文档更新不改变22runtime脚本；完整战役／七场与双墙钟长测尚待当前包实际完成。单人、2D卡通、三场独立战役；`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 ## 当前引导修复
 
 Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯一主车尚忙使实际命令必被拒绝。现在只读真实主车与绑定记录，说明当前起讫点、返程／装车／末班运输及等待原因，定位实际车辆；记录无效时明确检查，空闲后恢复原可执行提示。不改Sim/Main/HUD/SaveStore/readout、订单、资源、RNG、存档字段或按键。
 
 同一最终测试原cf Guide204／43失败，修复后204／0；相关headless合计584／0。受控source GUI67／0，实际native与工具均0，三张PNG由root逐张查看；输入是引擎派发至真实HUD/Main，非OS XTest或真人。完整状态与选择／运输保持、默认及小窗口120%UI、正常Main退出均覆盖。[修复证据](benchmarks/v0.16.2/guide-transport-availability.json)。功能验证后仅更新版本／文档，runtime/test字节未变。
+
+新精确解压包另从普通菜单加载两份明确平地／高库存fixture，使用真实OS鼠标键盘展开／定位、F5保存、空闲后公开A→B下单和正常菜单退出。忙／闲两个native与工具实际0；相同暂停实例Guide操作前后完整Sim/RNG及选营／选人／编组／速度／覆盖层不变，保存镜头匹配真实主车／A营。另成阶段的有意撤营实际接受，不声称其前后Sim不变。20张原始PNG均完整解码，root查看展开／定位／下单关键图，见[原生root复核](../../native-guide-v0162-root-review-v01.json)。外部fixture helper首轮解析失败保留，修后37／0仅属fixture构造；不是默认开局整关或真人证据。
+
+## 0.16.2实际包阶段
+
+导出tool72663终局9e412f实际0；pipeline10163终局4572d8实际0，smoke／benchmark／package三阶段均0。普通／战略各3600帧+120预热、原max600，软件Mesa测量用567.755738秒，两个视角真实保存读回有效；不等同目标硬件或稳定60FPS。
+
+[三包checksums](../../outpost-exodus-0.16.2-dev-checksums.json) SHA `707b7b00b1327b8c38f8aa24bbf7bf0a096a5a05647c93df5767c46c8b0682a4`。root8741终局2e94bd实际0，三ZIP／872源码文件／CRC／通知／元数据／权限逐项核对，并从Linux ZIP创建全新副本。EXE `d9f79ab8…`、双PCK `0eeaf196…`、WindowsEXE `9c1644a5…`。[阶段证据](benchmarks/v0.16.2/package-stage.json)绑定完整SHA与原始记录。
+
+普通Canyon1x两代自动存档已实际通过原44／44／180秒门槛：首代下界44.940392976秒、第二代间隔下界44.975124021秒、第二代从开始点击的上界90.1105907秒。暂停后退出前封存两槽，backup保留primary1；native／observer均实际0。root重算原始单调时钟、48文件SHA并查看00:45运行／01:30暂停原图，见[普通auto复核](../../native-auto-cycle-v0162-root-review-v02.json)。benchmark最终两槽也已在原native退出后原字节封存，不宣称frame300或固定45秒保留窗口；四槽source schema／完整状态／RNG读回仍待完成。
+
+当前新包prepare实际完成0（root30641终局627907），范围只到启动／短循环／真实磁盘续接；随后root原session93484启动同一解压包的七场长测，初始tool f07504，仍待实际终局及独立复核。保留七关／双墙钟、真实费用／库存／三交付与原超时门槛，不继承0.16.1结果。
 
 ## 已接受的0.16.1精确包
 
@@ -20,7 +32,7 @@ Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯�
 
 [代码统计](benchmarks/v0.16.2/code-size.json)：18个玩法等脚本8,875物理行；81个自有文件26,560物理行、24,227非空行。排除引擎、第三方、素材、场景、UID、缓存及外部探针。
 
-下一步导出精确0.16.2并绑定实际包验证。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0161/first-playtest.txt)与[0.16.1来源补充](../../steam-content-survey-v0161-draft-v01/index.json)均为待owner使用／确认的材料，没有预填人类或Valve结果。
+下一步等待当前原生长测实际终局，再完成四槽source读回与完整路线／帧账独立复核。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0162/first-playtest.txt)与[0.16.2来源补充](../../steam-content-survey-v0162-draft-v01/index.json)绑定真实新包，没有预填人类或Valve结果。Windows bound脚本仅PS7/Linux ParseFile实际通过，不是Windows执行。[本地SteamPipe staging](../../steampipe-v0162-staging-v01/index.json)只含每平台EXE+PCK+三通知；AppID/Depot/entity/account仍UNBOUND，没有登录、SteamCMD执行或上传。
 
 ## 历史
 
