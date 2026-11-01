@@ -1,7 +1,7 @@
 extends SceneTree
 ## Controlled native source-project UI checks and captures. These are not a
 ## complete campaign, exported-build acceptance, benchmark or human playtest.
-## DISPLAY=:0 XDG_DATA_HOME="$PWD/work/camp-guidance-ui-data" ./run.sh
+## DISPLAY=:92 XDG_DATA_HOME="$PWD/work/camp-guidance-ui-data" ./run.sh
 ##   --audio-driver Dummy --script res://tests/test_camp_guidance_ui.gd
 
 var app: Variant
@@ -12,6 +12,10 @@ var saved_mouse: Vector2i
 var last_mouse: Vector2 = Vector2.ZERO
 var finishing: bool = false
 var case_completed: bool = false
+
+func _focus_visible(world: Vector2) -> bool:
+	var point: Vector2 = app.get_canvas_transform() * world
+	return app.get_viewport_rect().grow(-16).has_point(point) and not app.hud.blocks_world_point(point)
 
 
 func _initialize() -> void:
@@ -130,7 +134,7 @@ func _test_packing_source_guidance() -> void:
 	var selected_before: Array = app.selected_ids.duplicate()
 	if not await _click_action("guide_focus"):
 		return
-	_check(app.menu.is_empty() and app.camera.position.is_equal_approx(Vector2(origin.pos) * app.TILE), "actual guide-focus button returns to battle and locates the source")
+	_check(app.menu.is_empty() and _focus_visible(Vector2(origin.pos) * app.TILE), "actual guide-focus button returns to battle and exposes the source outside the HUD")
 	_check(not app.camera.position.is_equal_approx(camera_before), "guide focus actually moves the camera from the receiver")
 	_check(app.selected_camp == int(receiver.id) and app.selected_ids == selected_before and before == JSON.stringify(app.sim.save_state()), "guide focus does not change camp selection, unit selection, orders or simulation/RNG")
 	if not await _click_action("camp:%d" % int(origin.id)):

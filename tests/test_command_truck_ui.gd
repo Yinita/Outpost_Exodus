@@ -11,6 +11,10 @@ var evidence: String = ""
 var finishing: bool = false
 var completed: bool = false
 
+func _focus_visible(world: Vector2) -> bool:
+	var point: Vector2 = app.get_canvas_transform() * world
+	return app.get_viewport_rect().grow(-16).has_point(point) and not app.hud.blocks_world_point(point)
+
 func _initialize() -> void:
 	call_deferred("_run")
 
@@ -61,7 +65,7 @@ func _run() -> void:
 		var groups: Dictionary = app.group_bindings.duplicate(true)
 		await _click(card.rect.get_center())
 		_check(app.selected_ids == [main_id] and app.selected_ids != [int(extra.id)], "real HUD click selects the designated main truck only")
-		_check(app.camera.position.is_equal_approx(Vector2(truck.pos) * app.TILE), "real HUD click centers on the actual main truck")
+		_check(_focus_visible(Vector2(truck.pos) * app.TILE), "real HUD click exposes the actual main truck outside the HUD")
 		_check(app.selected_camp == camp and app.group_bindings == groups, "selection leaves camp and saved groups unchanged")
 		_check(app.build_kind.is_empty() and app.pending_task.is_empty() and not app.dragging, "selection cleanly cancels pointer modes")
 		_check(app.sim.paused and _snapshot() == before, "HUD click does not unpause, issue world orders, charge, or change simulation and RNG")

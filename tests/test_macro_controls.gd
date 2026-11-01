@@ -1,6 +1,6 @@
 extends SceneTree
 ## Synthetic native rendering/input regression, not a human playtest or benchmark.
-## DISPLAY=:0 XDG_DATA_HOME="$PWD/work/macro-controls-data" Godot --path .
+## DISPLAY=:92 XDG_DATA_HOME="$PWD/work/macro-controls-data" Godot --path .
 ##   --audio-driver Dummy --script res://tests/test_macro_controls.gd
 
 var app: Variant
@@ -12,6 +12,10 @@ var finishing: bool = false
 var case_completed: bool = false
 var fixture_camp_ids: Array[int] = []
 var screenshot_paths: Array[String] = []
+
+func _focus_visible(world: Vector2) -> bool:
+	var point: Vector2 = app.get_canvas_transform() * world
+	return app.get_viewport_rect().grow(-16).has_point(point) and not app.hud.blocks_world_point(point)
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -57,7 +61,12 @@ func _finish() -> void:
 	for path: String in screenshot_paths: print("Screenshot: ", path)
 	for message: String in failures: printerr(" - ", message)
 	if is_instance_valid(app):
+		app.set_process(false)
+		app.set_process_unhandled_input(false)
 		app._release_audio()
+		var audio_deadline: int = Time.get_ticks_usec() + 120000
+		while Time.get_ticks_usec() < audio_deadline:
+			await process_frame
 		app.queue_free()
 		app = null
 	root.content_scale_factor = 1.0
@@ -199,7 +208,7 @@ func _test_camp_pagination() -> void:
 			app.focus_camp(camp_id)
 			await _frames(1)
 			await _click_action("camp:%d" % camp_id)
-			_check(app.selected_camp == camp_id and app.camera.position.is_equal_approx(Vector2(app.sim.get_camp(camp_id).pos) * 48.0), "real camp card focuses the requested camp")
+			_check(app.selected_camp == camp_id and _focus_visible(Vector2(app.sim.get_camp(camp_id).pos) * 48.0), "real camp card exposes the requested camp outside the HUD")
 	# A stale/out-of-range page must recover on a normal frame after resize.
 	app.camp_page = 99
 	await _size(Vector2i(1600, 900), 1.0)

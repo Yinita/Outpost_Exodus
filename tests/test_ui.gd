@@ -45,13 +45,24 @@ func _run() -> void:
 	await _test_quick_save_load_and_bad_data()
 	await _test_settings_and_rebinding()
 	await _capture("res://work/ui-test.png")
-	app.queue_free()
+	await _retire_scene()
 	await _frames(6)
 	print("Rendered UI checks: %d; failures: %d" % [checks, failures.size()])
 	print("Test user data: ", user_root)
 	for failure: String in failures:
 		printerr(" - " + failure)
 	quit(0 if failures.is_empty() else 1)
+
+func _retire_scene() -> void:
+	# Match Main's mixer retirement before destroying or replacing the scene.
+	app.set_process(false)
+	app.set_process_input(false)
+	app.set_process_unhandled_input(false)
+	app._release_audio()
+	var retirement_deadline: int = Time.get_ticks_usec() + 120000
+	while Time.get_ticks_usec() < retirement_deadline:
+		await process_frame
+	app.queue_free()
 
 func _check(condition: bool, label: String) -> void:
 	checks += 1
@@ -168,7 +179,8 @@ func _test_zoom_and_minimap() -> void:
 	var fraction: Vector2 = Vector2(0.70, 0.40)
 	await _click_point(rect.position + rect.size * fraction, MOUSE_BUTTON_LEFT)
 	var expected_camera: Vector2 = fraction * Vector2(app.sim.map_size) * 48.0
-	_check(Vector2(app.camera.position).distance_to(expected_camera) < 1.0, "left minimap click positions the world camera")
+	var target_screen: Vector2 = app.get_canvas_transform() * expected_camera
+	_check(app.get_viewport_rect().grow(-16).has_point(target_screen) and not app.hud.blocks_world_point(target_screen), "left minimap click exposes the requested map point outside the HUD")
 	await _key(KEY_1)
 	var commanded: Array = app.selected_ids.duplicate()
 	var target_tile: Vector2 = Vector2(26, 20)
@@ -343,7 +355,7 @@ func _test_settings_and_rebinding() -> void:
 	app.current_tab = "orders"
 	await _key(KEY_P)
 	_check(app.current_tab == "orders", "replaced default production key no longer triggers the action")
-	app.queue_free()
+	await _retire_scene()
 	await process_frame
 	await process_frame
 	var packed: PackedScene = load("res://main.tscn") as PackedScene

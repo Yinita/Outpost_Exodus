@@ -14,6 +14,9 @@ const TILE: float = 48.0
 const MIN_CAMERA_ZOOM: float = 0.35
 const MAX_CAMERA_ZOOM: float = 1.6
 const CAMERA_FLOAT_EPSILON: float = 0.000001
+# Internal guard exceeds the external 16px click margin by one logical pixel.
+# Camera2D/canvas float32 projection must not round the target back into HUD.
+const CAMERA_FOCUS_CLEARANCE: float = 17.0
 const SAVE_PATH: String = "user://campaign-save.json"
 const AUTOSAVE_PATH: String = "user://campaign-autosave.json"
 const CONFIG_PATH: String = "user://settings.cfg"
@@ -281,15 +284,16 @@ func _pan_camera(point: Vector2) -> void:
 	camera.force_update_scroll()
 
 func _camera_focus_point_clear(point: Vector2) -> bool:
-	# Leave a small logical-pixel click margin around the focused world point.
-	for offset: Vector2 in [Vector2.ZERO, Vector2(-16, -16), Vector2(16, -16), Vector2(-16, 16), Vector2(16, 16)]:
+	# Keep the public 16px margin after the actual canvas projection rounds.
+	var padding: float = CAMERA_FOCUS_CLEARANCE
+	for offset: Vector2 in [Vector2.ZERO, Vector2(-padding, -padding), Vector2(padding, -padding), Vector2(-padding, padding), Vector2(padding, padding)]:
 		if hud.blocks_world_point(point + offset): return false
 	# These two visible panels intentionally do not consume world clicks.
 	var screen: Vector2 = get_viewport_rect().size
-	if feedback_left > 0.0 and Rect2(340, 82, maxf(300, screen.x - 670), 42).grow(16).has_point(point): return false
+	if feedback_left > 0.0 and Rect2(340, 82, maxf(300, screen.x - 670), 42).grow(CAMERA_FOCUS_CLEARANCE).has_point(point): return false
 	if hud._pause_banner_visible() and hud.font != null:
 		var width: float = maxf(220, hud.font.get_string_size(hud._pause_banner_text(), HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
-		if Rect2((screen.x - width) * 0.5, 138, width, 40).grow(16).has_point(point): return false
+		if Rect2((screen.x - width) * 0.5, 138, width, 40).grow(CAMERA_FOCUS_CLEARANCE).has_point(point): return false
 	return true
 
 func _focus_camera(point: Vector2, refresh_layout: bool = true) -> void:
@@ -303,14 +307,15 @@ func _focus_camera(point: Vector2, refresh_layout: bool = true) -> void:
 			# A few anchors in the world corridor suffice for the normal side HUD.
 			# Query the real HUD, including compact guide/project overlays; no input
 			# handler is invoked. Work is bounded and only runs on focus or resize.
-			var left: float = minf(334.0, screen.x * 0.5)
-			var right: float = maxf(left, screen.x - 285.0)
-			var bottom: float = maxf(80.0, screen.y - 207.0)
+			var left: float = minf(318.0 + CAMERA_FOCUS_CLEARANCE, screen.x * 0.5)
+			var right: float = maxf(left, screen.x - 269.0 - CAMERA_FOCUS_CLEARANCE)
+			var top: float = 64.0 + CAMERA_FOCUS_CLEARANCE
+			var bottom: float = maxf(top, screen.y - 191.0 - CAMERA_FOCUS_CLEARANCE)
 			var best: Vector2 = camera.position
 			var distance: float = INF
 			var overscan: float = INF
-			for x: float in [clampf(projected.x, 16.0, screen.x - 17.0), clampf(projected.x, left, right), left, right]:
-				for y: float in [clampf(projected.y, 80.0, bottom), 80.0, minf(238.0, bottom), bottom]:
+			for x: float in [clampf(projected.x, CAMERA_FOCUS_CLEARANCE, screen.x - CAMERA_FOCUS_CLEARANCE - 1.0), clampf(projected.x, left, right), left, right]:
+				for y: float in [clampf(projected.y, top, bottom), top, minf(238.0, bottom), bottom]:
 					var candidate: Vector2 = Vector2(x, y)
 					if not _camera_focus_point_clear(candidate): continue
 					# Refine every clear ray before ranking it: a farther anchor may
@@ -550,14 +555,18 @@ func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 			var d: float = p.distance_to(point / TILE)
 			if d < distance: closest = unit; distance = d
 		elif rect.has_point(p * TILE):
-			if not selected_ids.has(unit.id): selected_ids.append(unit.id)
+			var unit_id: int = int(unit.id)
+			if not selected_ids.has(unit_id): selected_ids.append(unit_id)
 	if not closest.is_empty():
 		if same_kind:
 			for u: Dictionary in sim.units:
 				var visible_position: Vector2 = get_canvas_transform() * (world.render_unit_position(u) * TILE)
 				if u.get("team") == "friendly" and u.get("kind") == closest.get("kind") and float(u.get("hp",0)) > 0 and get_viewport_rect().has_point(visible_position):
-					if not selected_ids.has(u.id): selected_ids.append(u.id)
-		elif not selected_ids.has(closest.id): selected_ids.append(closest.id)
+					var unit_id: int = int(u.id)
+					if not selected_ids.has(unit_id): selected_ids.append(unit_id)
+		else:
+			var unit_id: int = int(closest.id)
+			if not selected_ids.has(unit_id): selected_ids.append(unit_id)
 		if int(closest.get("camp_id", -1)) >= 0:
 			selected_camp = int(closest.get("camp_id"))
 			camp_picked = true
@@ -627,19 +636,21 @@ func _next_squad() -> void:
 	var next_index: int = (groups.find(current) + 1) % groups.size()
 	selected_ids.clear()
 	for u: Dictionary in sim.units:
-		if u.get("team") == "friendly" and int(u.get("squad", 0)) == int(groups[next_index]): selected_ids.append(u.id)
+		if u.get("team") == "friendly" and int(u.get("squad", 0)) == int(groups[next_index]): selected_ids.append(int(u.id))
 	_focus_selection()
 
 func _group_key(index: int, store_group: bool, append: bool) -> void:
 	if store_group:
-		group_bindings[index] = selected_ids.duplicate()
+		var stored: Array = []
+		for id: int in selected_ids: stored.append(id)
+		group_bindings[index] = stored
 		_notify("已保存编队 %d" % index)
 		return
 	if not append: selected_ids.clear()
 	var group: Array = group_bindings.get(index, [])
 	if group.is_empty():
 		for u: Dictionary in sim.units:
-			if u.get("team") == "friendly" and int(u.get("squad", 0)) == index: group.append(u.id)
+			if u.get("team") == "friendly" and int(u.get("squad", 0)) == index: group.append(int(u.id))
 	for id: int in group:
 		if not selected_ids.has(id) and not sim.get_unit(id).is_empty(): selected_ids.append(id)
 	_focus_selection()
@@ -912,7 +923,7 @@ func start_campaign(mission_id: String = "") -> void:
 	selected_camp = int(sim.camps[0].id)
 	selected_ids.clear()
 	for unit: Dictionary in sim.units:
-		if unit.get("team") == "friendly" and unit.get("kind") in ["rifle", "engineer"]: selected_ids.append(unit.id)
+		if unit.get("team") == "friendly" and unit.get("kind") in ["rifle", "engineer"]: selected_ids.append(int(unit.id))
 	camera.position = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
 	camera.zoom = Vector2.ONE * 1.05
 	_pan_camera(camera.position)

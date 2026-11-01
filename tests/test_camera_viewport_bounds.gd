@@ -113,13 +113,24 @@ func _full_view(app: Variant, label: String) -> void:
 		else:
 			_check(is_equal_approx(app.camera.position[axis], extent[axis] * 0.5), label + " centres the smaller map axis " + str(axis))
 
+func _external_click_margin_clear(app: Variant, point: Vector2) -> bool:
+	# External acceptance remains 16px; production uses an extra 1px guard.
+	for offset: Vector2 in [Vector2.ZERO, Vector2(-16, -16), Vector2(16, -16), Vector2(-16, 16), Vector2(16, 16)]:
+		if app.hud.blocks_world_point(point + offset): return false
+	var screen: Vector2 = app.get_viewport_rect().size
+	if app.feedback_left > 0.0 and Rect2(340, 82, maxf(300, screen.x - 670), 42).grow(16).has_point(point): return false
+	if app.hud._pause_banner_visible() and app.hud.font != null:
+		var width: float = maxf(220, app.hud.font.get_string_size(app.hud._pause_banner_text(), HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
+		if Rect2((screen.x - width) * 0.5, 138, width, 40).grow(16).has_point(point): return false
+	return true
+
 func _visible_focus(app: Variant, target: Vector2, label: String) -> void:
 	var point: Vector2 = app.get_canvas_transform() * target
 	_check(app.get_viewport_rect().has_point(point) and not app.hud.blocks_world_point(point), label + " projects to an interactive world point")
-	_check(app._camera_focus_point_clear(point), label + " leaves a logical click margin")
+	_check(_external_click_margin_clear(app, point), label + " leaves a logical click margin")
 	var base: Vector2 = app._bounded_camera_position(target, app.get_viewport_rect().size)
 	var overscan: Vector2 = ((app.camera.position - base) * app.camera.zoom).abs()
-	_check(overscan.x <= 334.01 and overscan.y <= 238.01, label + " bounds exceptional overscan by the HUD margins")
+	_check(overscan.x <= 335.01 and overscan.y <= 238.01, label + " bounds exceptional overscan by the HUD margins")
 	# The current canvas inverse must agree immediately, before a process frame.
 	_check((app.get_canvas_transform().affine_inverse() * point).distance_to(target) < 0.001, label + " retains the real world coordinate under the target")
 
