@@ -1,7 +1,7 @@
 {
-  "recorded_utc": "2026-11-01T04:30:41.921130+00:00",
+  "recorded_utc": "2026-11-01T05:36:09.661664+00:00",
   "version": "0.16.2-dev",
-  "status": "PREFLIGHT_TARGETED_CHECKS_PASSED_ORIGINAL_FULL_SOAK_FAILED_NOT_ACCEPTED",
+  "status": "ORIGINAL_FULL_SOAK_FAILED_FRESH_COUPLED_ATTEMPT02_RUNNING_NOT_ACCEPTED",
   "frozen_source_commit": "aaae0064413528b6c135f76d308118465e34831d",
   "frozen_source_tree": "32c02312c7cec6268bd590112a8a1ad25b785388",
   "scope": "Exact new official export/smoke/full standard software render/3ZIP/strict unpack and two declared controlled ordinary native UI cases. Documentation after this source freeze changes no22runtime script bytes. Not fullcampaign/hour/minimumhardware/human/Windows/Steam acceptance. Original new full-soak later actually failed; earlier component passes do not override that failure.",
@@ -124,6 +124,51 @@
       "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-private-launcher-v01/soak-root-terminal.json",
       "bytes": 849,
       "sha256": "51c38ad9972ee516e988b18ac2ea1b2b8f03ee4ec2eacc29d881b812f72524ea"
+    },
+    "actual_failure_system_audit": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-x11-failure-audit-v01/index.json",
+      "bytes": 3719,
+      "sha256": "b2f17d406205bea88b9895c73aa16242ed9e604f4068db604c3683fbaabfb527"
+    },
+    "independent_four_slot_diagnosis": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-auto-json-diag-v0162-v01/index.json",
+      "bytes": 22940,
+      "sha256": "2573cdc3974c4a014f8ee7e89b0882228b02d61886949d341722f97ca8c90911"
+    },
+    "independent_four_slot_root_semantics": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/source-auto-json-diag-v0162-v01/root-semantic-review.json",
+      "bytes": 3021,
+      "sha256": "6193d93706c06ff7f39941c78c42d979366128f4a56d9be62eec2994682399d3"
+    },
+    "controlled_title_display_loss_AB": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-display-loss-ab-v01/index.json",
+      "bytes": 6995,
+      "sha256": "eeca20177bae738196bf207bb666219da3354a7effaf1bee7bdefe88f0be1b63"
+    },
+    "controlled_late_state_AB": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-late-state-ab-v01/index.json",
+      "bytes": 44525,
+      "sha256": "7e4f819fd61b3b4d2d60b957d94e41c5eee5a0ffdc5b1226dff71a7f478cc732"
+    },
+    "coupled_prepare_actual": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-coupled-display-prep-v01/prepare-root-terminal.json",
+      "bytes": 733,
+      "sha256": "63716c34c7d4f5356c4e127e047bffddf580e6779a326c1e2bf8a1b865d2ab5a"
+    },
+    "new_coupled_full_authorization": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-coupled-display-prep-v01/root-soak-authorization.json",
+      "bytes": 3215,
+      "sha256": "33c442e251416b797f789f589e552e8c099577cf228e47573b436e0f1bbacd91"
+    },
+    "new_coupled_full_start": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-coupled-display-prep-v01/runs/soak/start.json",
+      "bytes": 10310,
+      "sha256": "6c5da7dc7f272eb9119df479d535ab0c845eb5b98f265a0587f4185bffcc4c1d"
+    },
+    "late_state_root_endpoint_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-late-state-root-review-v01.json",
+      "bytes": 1743,
+      "sha256": "a5ec1cf6e49a4ffe282d3188bc155e36f3ba8405442c07b34b6cd6dd88fb30d1"
     }
   },
   "actual_prepare_tool": {
@@ -149,5 +194,89 @@
     "server_actual_wait_returncode": null,
     "server_tool15220": "Unknown process id; no actual terminal available",
     "cause": "UNDETERMINED: merged buffered logX98 broken + SIGSEGV, no usable core/nativebacktrace; no attribution toGuide or toolhost"
+  },
+  "independent_four_slot_diagnosis": {
+    "engine_actual_exit": 0,
+    "classifier_actual_tool_exit": 0,
+    "four_current_slots_passed": true,
+    "full_structure_and_ordered_entries_preserved": true,
+    "RNG_strings_exact": true,
+    "parsed_nonVector2_numeric_changes": 0,
+    "allVector2_component_float32_bits_equal": true,
+    "safe_integer_type_reconstructions": [
+      308,
+      308,
+      154,
+      154
+    ],
+    "Vector2_decimal_reconstructions": [
+      32,
+      27,
+      0,
+      0
+    ],
+    "raw_to_Godot_parse_nonVector2_tail_changes": [
+      10,
+      7,
+      0,
+      0
+    ],
+    "rawdecimal_or_preparseIEEE_lossless_claimed": false,
+    "postterminal_fullsource_or_collector_executed": false
+  },
+  "controlled_display_loss_diagnostics": {
+    "title_AB_native_exit_codes": [
+      1,
+      1
+    ],
+    "late_AB_each_external_observation_minimum_seconds": 120,
+    "late_AB_native_exit_codes_after_explicit_serverSIGTERM": [
+      1,
+      1
+    ],
+    "late_AB_server_exit_codes": [
+      0,
+      0
+    ],
+    "late_AB_healthy_window_unplanned_native_crash_observed": false,
+    "original_minus11_reproduced": false,
+    "original_X98_exit_cause_proven": false,
+    "same_tick_or_performance_pair_claimed": false
+  },
+  "coupled_prepare": {
+    "session": 86431,
+    "initial": "791282",
+    "terminal": "4118fe",
+    "actual_tool_exit": 0,
+    "actual_native_launcher_server_waits": [
+      0,
+      0,
+      0
+    ],
+    "scope": "startup/shortdiskcontinuation/newownedlifecycle only, not originalrootcause/fullroute"
+  },
+  "fresh_full_attempt02": {
+    "status": "ACTUAL_RUNNING_NOT_ACCEPTED",
+    "session": 85687,
+    "initial": "fb1671",
+    "latest_live_poll": "73c3e9",
+    "terminal": null,
+    "isolation": "work/native-soak-v0162-full-attempt02",
+    "private_display": ":99",
+    "supervisor_pid": 3431765,
+    "supervisor_start_ticks": 16065596,
+    "server_pid": 3431773,
+    "server_start_ticks": 16065605,
+    "launcher_pid": 3431781,
+    "launcher_start_ticks": 16065616,
+    "native_pid": 3431784,
+    "native_start_ticks": 16065625,
+    "original24_validator_functions_unchanged": true,
+    "original_simulation_routes_economy_seven_cycles_dualhour_unchanged": true,
+    "launcher_main_only_sidechannel_IO_added": true,
+    "game_payload_rebuilt_or_changed": false,
+    "last_observed_cycles_completed": 1,
+    "last_observed_mission": "delta",
+    "observed_cycle_completion_not_full_external_acceptance": true
   }
 }
