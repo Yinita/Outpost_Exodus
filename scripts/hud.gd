@@ -4,6 +4,7 @@ const Catalog = preload("res://scripts/campaign_catalog.gd")
 const Cartoon = preload("res://scripts/cartoon_canvas.gd")
 const WorldView = preload("res://scripts/world_view.gd")
 const CommandTruckReadout = preload("res://scripts/command_truck_readout.gd")
+const CampReadout = preload("res://scripts/camp_readout.gd")
 
 const INK: Color = Color("1b292e")
 const PANEL: Color = Color("22363c")
@@ -154,52 +155,97 @@ func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 func _command_truck_rect() -> Rect2:
 	return Rect2(34, 153, 266, 31)
 
-func _draw_camp_cards(screen: Vector2) -> void:
-	var y: float = 82
+func _camp_cards_layout(screen: Vector2) -> Dictionary:
+	var rows: Array[Dictionary] = []
+	var y: float = 82.0
 	var bottom: float = y
 	var page_size: int = main.camp_page_size()
 	var first: int = main.camp_page * page_size
 	for index: int in range(first, mini(first + page_size, main.sim.camps.size())):
 		var camp: Dictionary = main.sim.camps[index]
-		var rect: Rect2 = Rect2(screen.x - 268, y, 250, 91)
-		var chosen: bool = int(camp.get("id", -1)) == main.selected_camp
-		_panel(rect, Color(PANEL, 0.95), TEAL if chosen else Color("456065"))
+		var camp_id: int = int(camp.id)
+		var chosen: bool = camp_id == main.selected_camp
 		var state: String = String(camp.get("state", "active"))
+		# Abandoned camps can still own a real final trip. Query their cheap
+		# early-return readout now, never a pre-abandonment production cache row.
+		var readout: Dictionary = CampReadout.status(main.sim, camp_id) if state == "abandoned" else main.camp_readouts.get(camp_id, {})
+		var compact: bool = state == "abandoned" and not chosen and not readout.has("transport_text")
+		var rect: Rect2 = Rect2(screen.x - 268, y, 250, 52 if compact else 91)
+		var stock: String = "材 %d  供 %d  油 %d" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0))]
+		var tip: String = String(camp.get("name", "驻点")) + "：" + String(readout.get("detail", "正在更新本地工作状态。")) + "\n点击定位并管理；Shift+%s 切换运作驻点。" % main.binding_label("focus_command")
+		if state == "abandoned" and not readout.has("transport_text"):
+			tip += "\n遗留库存：" + stock
+		rows.append({"camp_id":camp_id, "name":String(camp.get("name", "驻点")), "state":state, "chosen":chosen, "compact":compact, "rect":rect, "stock":("遗留 · " if compact else "") + stock, "readout":readout, "tip":tip, "power_used":float(camp.get("power_used", 0)), "power_capacity":float(camp.get("power_capacity", 0))})
+		bottom = rect.end.y
+		y = bottom + 11.0
+	var pager: Dictionary = {}
+	if main.camp_page_count() > 1:
+		var origin: Vector2 = Vector2(screen.x - 268, y)
+		pager = {"origin":origin, "previous":Rect2(origin, Vector2(72, 27)), "next":Rect2(origin + Vector2(178, 0), Vector2(72, 27)), "cycle":Rect2(origin + Vector2(78, 32), Vector2(172, 26))}
+		bottom = origin.y + 58.0
+	# Keep the small gaps between visible cards and disabled pager controls
+	# occupied, but do not reserve an invisible column below the actual stack.
+	return {"rows":rows, "pager":pager, "occupied":Rect2(screen.x - 268, 82, 250, maxf(0, bottom - 82))}
+
+func _camp_card_items(layout: Dictionary) -> Array[Dictionary]:
+	var items: Array[Dictionary] = []
+	for row: Dictionary in layout.rows:
+		items.append({"rect":row.rect, "action":"camp:%d" % row.camp_id, "tip":row.tip})
+	if not layout.pager.is_empty():
+		if main.camp_page > 0: items.append({"rect":layout.pager.previous, "action":"camp_page_prev", "tip":"浏览驻点，不改变当前选中驻点"})
+		if main.camp_page + 1 < main.camp_page_count(): items.append({"rect":layout.pager.next, "action":"camp_page_next", "tip":"浏览驻点，不改变当前选中驻点"})
+		items.append({"rect":layout.pager.cycle, "action":"camp_cycle", "tip":"Shift+%s：跳过已弃营地，定位下一运作或撤收驻点" % main.binding_label("focus_command")})
+	return items
+
+func _is_camp_action(action: String) -> bool:
+	return action.begins_with("camp:") or action in ["camp_page_prev", "camp_page_next", "camp_cycle"]
+
+func _current_hotspots(layout: Dictionary) -> Array[Dictionary]:
+	# Replace the old draw's camp group in place, retaining every other overlay's
+	# draw priority. Selection, transport, load and resize can change it between
+	# draws; old larger rectangles must neither select a different camp nor block.
+	var items: Array[Dictionary] = []
+	var inserted: bool = false
+	for item: Dictionary in hotspots:
+		if _is_camp_action(String(item.action)):
+			if not inserted: items.append_array(_camp_card_items(layout))
+			inserted = true
+		else: items.append(item)
+	# Focus loss clears draw hotspots before the modal's first redraw. Do not
+	# invent clickable underlying cards while a title/pause/menu is consuming it.
+	if not inserted and main.menu.is_empty(): items.append_array(_camp_card_items(layout))
+	return items
+
+func _draw_camp_cards(screen: Vector2) -> void:
+	var layout: Dictionary = _camp_cards_layout(screen)
+	for row: Dictionary in layout.rows:
+		var rect: Rect2 = row.rect
+		_panel(rect, Color(PANEL, 0.95), TEAL if row.chosen else Color("456065"))
 		var states: Dictionary = {"active":"运作", "packing":"撤收中", "abandoned":"已弃守"}
-		_text(rect.position + Vector2(12, 24), String(camp.get("name", "驻点")), 16, PAPER, 150)
-		_text(rect.position + Vector2(172, 24), states.get(state, state), 12, GOLD if state == "packing" else MUTED)
-		_text(rect.position + Vector2(12, 44), "材 %d  供 %d  油 %d" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0))], 13, MUTED)
-		var readout: Dictionary = main.camp_readouts.get(int(camp.get("id", 0)), {})
+		_text(rect.position + Vector2(12, 24), row.name, 16, PAPER, 150)
+		_text(rect.position + Vector2(172, 24), states.get(row.state, row.state), 12, GOLD if row.state == "packing" else MUTED)
+		_text(rect.position + Vector2(12, 44), row.stock, 13, MUTED, 224)
+		var readout: Dictionary = row.readout
 		var severity: String = String(readout.get("severity", "normal"))
 		var status_color: Color = GOLD if severity == "attention" else (MUTED if severity == "muted" else TEAL)
-		if readout.has("transport_text"):
-			# Keep the same card/stock rows and input geometry. Packing uses its two
-			# remaining lines for destination/cargo; exact cargo and power stay in tip.
-			_text(rect.position + Vector2(12, 64), String(readout.transport_text), 13, GOLD if severity == "attention" else TEAL, 224)
-			_text(rect.position + Vector2(12, 84), String(readout.cargo_text), 12, status_color, 224)
-		else:
-			_text(rect.position + Vector2(12, 64), String(readout.get("text", "… 更新状态")), 13, status_color, 224)
-			var capacity: float = float(camp.get("power_capacity", 0.0))
-			_bar(Rect2(rect.position + Vector2(100, 77), Vector2(136, 6)), float(camp.get("power_used", 0.0)) / maxf(capacity, 1), GOLD)
-			_text(rect.position + Vector2(12, 84), "供能 %d/%d" % [int(camp.get("power_used", 0)), int(capacity)], 10, GOLD)
-		var tip: String = String(camp.get("name", "驻点")) + "：" + String(readout.get("detail", "正在更新本地工作状态。")) + "\n点击定位并管理；Shift+%s 切换运作驻点。" % main.binding_label("focus_command")
-		hotspots.append({"rect":rect, "action":"camp:%d" % int(camp.get("id", 0)), "tip":tip})
+		if not row.compact:
+			if readout.has("transport_text"):
+				_text(rect.position + Vector2(12, 64), String(readout.transport_text), 13, GOLD if severity == "attention" else TEAL, 224)
+				_text(rect.position + Vector2(12, 84), String(readout.cargo_text), 12, status_color, 224)
+			else:
+				_text(rect.position + Vector2(12, 64), String(readout.get("text", "… 更新状态")), 13, status_color, 224)
+				_bar(Rect2(rect.position + Vector2(100, 77), Vector2(136, 6)), row.power_used / maxf(row.power_capacity, 1), GOLD)
+				_text(rect.position + Vector2(12, 84), "供能 %d/%d" % [int(row.power_used), int(row.power_capacity)], 10, GOLD)
+		hotspots.append({"rect":rect, "action":"camp:%d" % row.camp_id, "tip":row.tip})
 		if rect.has_point(get_viewport().get_mouse_position()):
-			tooltip = tip
+			tooltip = row.tip
 			_camp_tooltip = true
-		bottom = rect.end.y
-		y += 102
-	if main.camp_page_count() > 1:
-		var pager: Vector2 = Vector2(screen.x - 268, 82 + page_size * 102)
-		_button(Rect2(pager, Vector2(72, 27)), "上一页", "camp_page_prev", "浏览驻点，不改变当前选中驻点", false, false, main.camp_page > 0)
-		_text(pager + Vector2(84, 20), "%d / %d" % [main.camp_page + 1, main.camp_page_count()], 14, PAPER)
-		_button(Rect2(pager + Vector2(178, 0), Vector2(72, 27)), "下一页", "camp_page_next", "浏览驻点，不改变当前选中驻点", false, false, main.camp_page + 1 < main.camp_page_count())
-		_button(Rect2(pager + Vector2(78, 32), Vector2(172, 26)), "切换运作驻点", "camp_cycle", "Shift+%s：跳过已弃营地，定位下一运作或撤收驻点" % main.binding_label("focus_command"))
-		bottom = pager.y + 58
-	if bottom > 82:
-		# Consume clicks throughout the actual visible panel, including disabled
-		# pager buttons and page-number gaps; enabled hotspots still win first.
-		overlay_rects.append(Rect2(screen.x - 268, 82, 250, bottom - 82))
+	if not layout.pager.is_empty():
+		var pager: Dictionary = layout.pager
+		_button(pager.previous, "上一页", "camp_page_prev", "浏览驻点，不改变当前选中驻点", false, false, main.camp_page > 0)
+		_text(pager.origin + Vector2(84, 20), "%d / %d" % [main.camp_page + 1, main.camp_page_count()], 14, PAPER)
+		_button(pager.next, "下一页", "camp_page_next", "浏览驻点，不改变当前选中驻点", false, false, main.camp_page + 1 < main.camp_page_count())
+		_button(pager.cycle, "切换运作驻点", "camp_cycle", "Shift+%s：跳过已弃营地，定位下一运作或撤收驻点" % main.binding_label("focus_command"))
 
 func _draw_dock(screen: Vector2) -> void:
 	var top: float = screen.y - 190
@@ -749,9 +795,10 @@ func _draw_help(screen: Vector2) -> void:
 
 func handle_mouse(event: InputEventMouseButton) -> bool:
 	var point: Vector2 = event.position
+	var current: Array[Dictionary] = _current_hotspots(_camp_cards_layout(get_viewport_rect().size))
 	if event.pressed:
-		for i: int in range(hotspots.size() - 1, -1, -1):
-			var item: Dictionary = hotspots[i]
+		for i: int in range(current.size() - 1, -1, -1):
+			var item: Dictionary = current[i]
 			var rect: Rect2 = item.rect
 			if not rect.has_point(point): continue
 			if item.action == "minimap":
@@ -766,15 +813,17 @@ func blocks_world_point(point: Vector2) -> bool:
 	# Pure logical-viewport hit testing, shared by clicks and placement hover.
 	# Include panel gaps and disabled controls, not just enabled action hotspots.
 	if not main.menu.is_empty(): return true
-	for item: Dictionary in hotspots:
+	var camp_layout: Dictionary = _camp_cards_layout(get_viewport_rect().size)
+	for item: Dictionary in _current_hotspots(camp_layout):
 		if Rect2(item.rect).has_point(point): return true
+	if Rect2(camp_layout.occupied).has_point(point): return true
 	for rect: Rect2 in overlay_rects:
 		if rect.has_point(point): return true
 	var screen: Vector2 = get_viewport_rect().size
 	if not Rect2(Vector2.ZERO, screen).has_point(point): return true
 	if not main.build_kind.is_empty() and _construction_preview_rect(screen).has_point(point): return true
 	if not main.construction_readout.is_empty() and main.build_kind.is_empty() and _construction_details_rect(screen).has_point(point): return true
-	return point.y < 64 or point.y >= screen.y - 190 or Rect2(18, 82, 300, 305).has_point(point) or Rect2(screen.x - 268, 82, 250, maxf(0, screen.y - 482)).has_point(point)
+	return point.y < 64 or point.y >= screen.y - 190 or Rect2(18, 82, 300, 305).has_point(point)
 
 func _panel_style(fill: Color, border: Color) -> StyleBoxFlat:
 	var key: Array = [fill, border]
