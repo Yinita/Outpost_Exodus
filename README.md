@@ -2,9 +2,9 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前源码为 **0.16.1-dev 候选**。保留常驻指挥车状态与选择入口，修复低渲染帧率下验证器漏记真实撤营交付的问题。修复已通过源码回归与原失败存档续跑对照；**本候选尚未导出或完成原生整关验证**。
+当前源码为 **0.16.2-dev 候选**。当指挥车仍在上一段撤收时，引导现在说明真实运输和等待原因，定位车辆；主车空闲后才提示下一段撤营。源码相关检查584/0、受控GUI67/0均实际退出0。**本候选尚未导出。**
 
-0.15精确Linux包的既有技术验收仍绑定冻结源码 `6bf0fe78…` 与原ZIP，不继承给0.16。`steam_ready=false`、`performance_acceptance=not_assessed`。源码功能、旧包证据和人工/平台门槛分别见[检查点](docs/current-checkpoint.md)与[发布门槛](docs/release-gates.md)。
+已接受的0.16.1精确Linux包冻结于 `cf678b72…`，同Main七场三图完成，游戏墙钟3979.349975秒，启动器独立观测native3981.0773600769753秒；实际退出均0，七场帧账及四份存档读回复核通过。验收仅属于该原包，见[接受记录](../outpost-exodus-0.16.1-dev-release-evidence.json)和[收集过程](../outpost-exodus-0.16.1-dev-collection-process.json)。`steam_ready=false`、`performance_acceptance=not_assessed`；[当前检查点](docs/current-checkpoint.md)记录剩余范围。
 
 ## 运行
 
@@ -55,23 +55,19 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 
 手动、自动存档相互独立，各有上一份有效备份。坏存档在替换当前战役前验证；保存失败会保留当前局面并提供重试。存档与设置保存在本机 Godot 用户目录，不进入 Git。
 
-## 当前源码与验证
+## 当前源码与已接受包
 
-指挥车状态直接读取真实主车ID和生命值，区分完好、受损、危急（不高于30%）、摧毁或缺失；不把旧伤推断成“遇袭”。仅存活且身份有效的主车可点击，选择时清除未下达的建设/小队指令模式，不改变当前驻点、编队、暂停、速度、货物或运输路线。本次没有新增音效、存档字段或模拟规则。
+当前引导只读取真实主车及撤收记录，区分返程取货、装车和末班运输，避免要求玩家执行必被拒绝的下一段撤营。记录无效时明确提示检查，主车空闲后恢复原操作提示。Sim/Main/HUD/SaveStore/readout字节保持基点一致，没有新增按键或存档字段。
 
-0.16精确包已实际导出并完成smoke、受控渲染、解压核对和普通UI检查；同Main长测前三关完成，第四关因交付观察超时退出1。[原失败记录](../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)完整保留。旧观察器按渲染帧推断卸货，受控原存档重放中5次真实交付在部分合法采样组合下只记到1–2次。
+同一最终用例：原cf Guide204项／43失败，修复后204／0；连同camp-action、完整默认Guide路线和三图付费开局共584／0。source GUI67／0覆盖默认1440×810、小窗口1152×648及120%UI、定位／展开、完整Sim/RNG和现有运输订单不变，实际正常退出。[修复索引](docs/benchmarks/v0.16.2/guide-transport-availability.json)列明原件与范围；这些不是新包或真人验收。
 
-0.16.1改为在真实卸货入库、清货后同步记录正货物及库存增量，保留三次交付、距离、库存和超时要求。接口/生命周期122/0，自包含回归47/0；外部旧源码/原失败存档对照68/0，3808步完整存档状态及RNG一致，实际5次交付全部记录。仅tracked文件的新副本导入和47/0回归亦实际退出0，见[修复记录](docs/benchmarks/v0.16.1/delivery-witness.json)。这些源码结果不替代新包原生验证。
+0.16.1的[实机图库](../outpost-exodus-0.16.1-dev-steam-gallery/index.json)、[普通自动存档观察](../native-auto-cycle-v0161-root-review-v02.json)及[215项四槽读回](../postterminal-v0161-candidate-v02/source-auto-result.json)均绑定原精确包。存档按既有Godot JSON codec规范化比较，独立诊断保留类型／Vector2位模式与原始十进制边界；原208／4字面对比失败不改写，不宣称原数字token或解析前IEEE位保真。[诊断](../source-auto-json-diag-v0161-v01/index.json)。
 
-主车入口的既有源码113/0、私有GUI最终64/0和相关16/0、88/0保持原范围，原件见[root归档](../source-ui-v016-command-evidence-v01/index.json)。软件虚拟显示与静音检查不提供物理性能、真人或听感结论。
-
-0.15旧包的[完整接受记录](../outpost-exodus-0.15.0-dev-release-evidence.json)及[真实收集过程](../outpost-exodus-0.15.0-dev-collection-process.json)仍限定于冻结6bf、原精确ZIP和同一Main的七场三图，游戏报告墙钟3906.965935秒；该结果不会因源码升版自动扩展。其[Runtime4有限检查](../linux-runtime-compat-v015-v01/index.json)、[实际包UI观察](../native-ui-v015-v01/index.json)、[工地UI源码证据](../source-ui-v015-construction-v01/index.json)均保留原范围。
-
-0.15[受控后期AI观察](../macro-ai-v015-private-v01/index.json)做成接收营建设，最终指挥车被摧毁；它提供注意力分配的观察线索，没有证明实现bug、撤退可用性或真人节奏通过。0.14黑盒AI原件及所有旧证据也保持不变。
+0.16旧包第四关运输观察超时退出1的[原失败记录](../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保持失败。0.15冻结6bf的历史接受记录、所有原包及素材台账pins也保持不变，不继承给当前0.16.2。
 
 ## 开发与素材
 
-采用 Godot 4 + 带类型的 GDScript，模拟、显示与命令输入分开。玩法、界面、输入、绘制及音频共18个脚本、**8,848物理行**；含测试、诊断和工具共81个自有代码文件、**26,467物理行、24,140非空行**。沿用既有分组，含注释空行，排除引擎、第三方库、素材、场景、UID、缓存及外部复现探针，见[逐文件清单](docs/benchmarks/v0.16.1/code-size.json)。代码量不是完成度或包验收。
+采用 Godot 4 + 带类型的 GDScript，模拟、显示与命令输入分开。玩法、界面、输入、绘制及音频共18个脚本、**8,875物理行**；含测试、诊断和工具共81个自有代码文件、**26,560物理行、24,227非空行**。排除引擎、第三方库、素材、场景、UID、缓存及外部探针，见[逐文件清单](docs/benchmarks/v0.16.2/code-size.json)。代码量不是完成度或包验收。
 
 建筑图集由图像生成工具制作，角色/地形与部分声音采用程序绘制或生成，Noto 字体附带 OFL 通知。具体来源与待确认事项见[素材台账](docs/asset-inventory.json)；其中旧source pins保留为历史，当前差异见[内容调查草稿](../steam-content-survey-v015-draft-v01/index.json)及[0.15包通知绑定](../steam-content-survey-v015-package-binding-v01.json)。自有代码与美术的最终分发条款仍待确定。
 

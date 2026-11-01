@@ -1,20 +1,17 @@
 # 发布门槛
 
-当前 **0.16.1-dev 为源码候选**，已修复并验证卸货观察漏计；尚未导出新包。0.16精确包实际长测在第四关失败，原结果保留。`steam_ready=false`，`performance_acceptance=not_assessed`。
+当前0.16.2-dev为已完成源码验证的候选，尚未导出。0.16.1冻结cf精确Linux包已有七场／小时技术接受；其结果不自动继承给新包。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
 | 要求 | 当前证据与下一步 |
 | --- | --- |
-| 真实撤营交付观察 | 源码接口122/0、自包含47/0；旧源码/原失败存档68/0，3808步完整状态/RNG一致，5次实际交付全部计数。新副本导入及47/0实际退出0。 |
-| 主车状态与选择 | 既有源码113/0、私有GUI64/0及相关16/0、88/0保持原范围。 |
-| 0.16精确包 | 已导出并有smoke、渲染、普通UI及解压检查；前三关完成，第四关交付观察超时退出1，七关及一小时要求未通过。 |
-| 0.16.1精确包与完整路线 | 待导出、重新绑定源码/EXE/PCK/ZIP和实际原生运行。源码结果不代替包检查。 |
-| 0.15历史技术长测 | 冻结6bf原包七关三图，游戏墙钟3906.965935秒，实际退出均0；只属于原包。 |
-| 帧率、目标硬件、干净机器 | 性能接受未评定；软件显示环境不能关闭此门槛。 |
-| Linux分发兼容 | 0.16 Runtime4有限启动/截图已实际0；不是Steam客户端、Deck、SDK编译或干净机器验收。 |
-| 原生Windows | 尚待实际执行；导出和Linux脚本解析不是Windows运行。 |
-| 玩家体验 | 待陌生人独立试玩前期微操、后期调度、撤退决策、失败原因；AI观察不替代人类反馈。 |
-| 声音、可读性、无障碍 | 待人工听感与操作检查。 |
-| 素材、名称、权利 | 已有来源/通知台账，最终分发条款和名称待确认。 |
-| Steam商店与发行流程 | 真实AppID/Depot、上传、客户端安装更新、overlay及审核待完成。 |
+| 主车忙碌时的可执行引导 | 相关headless584／0、source GUI67／0，旧cf同用例204／43失败保留。尚需新包验证。 |
+| 0.16.1精确包路线与长测 | 同Main七关三图，游戏3979.349975秒／native3981.0773600769753秒，实际退出均0；严格经济／时钟／帧账、47卸货及215项四槽检查通过。 |
+| 0.16.2精确包 | 待导出、绑定EXE/PCK/ZIP与实际检查，保持真实费用、库存、三交付、原超时、七关及双墙钟要求。 |
+| 当前包存档／素材／图库 | 0.16.1两代存档、五张原始1920×1080实机图和18素材来源字节已记录；owner美术／权利与商店确认待完成。 |
+| Linux兼容及目标硬件 | 既有Runtime4范围保留；新包与目标硬件／干净机器需实际验证，软件显示不等同硬件性能。 |
+| 原生Windows | 0.16.1导出及bound脚本PS7/Linux解析通过；新包导出和Windows实际运行仍待完成。 |
+| 陌生玩家体验 | 首次自发现与后期调度、主车保护、继续／停玩原因待真实反馈；空白试玩表不是通过证据。 |
+| 听感、可读性、无障碍 | 待人工检查。 |
+| 权利与真实Steam流程 | owner发行主体、AppID/Depot、权利声明／实际调查、商店与构建审核、安装更新待实际完成。 |
 
-[当前检查点](current-checkpoint.md)及[修复索引](benchmarks/v0.16.1/delivery-witness.json)列明实际过程。[0.16失败原件](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)、[0.15原接受记录](../../outpost-exodus-0.15.0-dev-release-evidence.json)、旧素材台账和历史pins均不改写。官方流程参考：[审核](https://partner.steamgames.com/doc/store/review_process)、[商店图](https://partner.steamgames.com/doc/store/assets/standard)、[内容调查](https://partner.steamgames.com/doc/gettingstarted/contentsurvey)。
+[当前检查点](current-checkpoint.md)、[0.16.1实际接受](../../outpost-exodus-0.16.1-dev-release-evidence.json)、[本轮修复](benchmarks/v0.16.2/guide-transport-availability.json)列出精确范围。旧015接受与016失败保持原样。首发范围为单人2D三场战役；Steamworks API本身不是发布必选，[官方说明](https://partner.steamgames.com/doc/sdk/api)。实际发布还需按真实项目完成[审核](https://partner.steamgames.com/doc/store/review_process)与[发布流程](https://partner.steamgames.com/doc/store/releasing)。

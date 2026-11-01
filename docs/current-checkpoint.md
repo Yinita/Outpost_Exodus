@@ -1,32 +1,27 @@
 # 当前开发检查点
 
-当前源码为 **0.16.1-dev 候选**，基于已验证的卸货观察修复；尚未导出本候选。工作名《逐营突围》／Outpost Exodus，保持单人、2D卡通、三场独立战役。`steam_ready=false`，`performance_acceptance=not_assessed`。
+当前源码 **0.16.2-dev候选，尚未导出**。单人、2D卡通、三场独立战役。`steam_ready=false`，`performance_acceptance=not_assessed`。
 
-## 本轮问题与修复
+## 当前引导修复
 
-0.16精确包冻结于 `0ebf09c1d4937bd7e4d7301f711b7127ec0d48f4`。实际导出、smoke、受控渲染、解压、prepare、普通UI、Runtime4有限启动检查均有记录；同Main长测前三关完成，第四关等待交付计数超时，native/launcher/supervisor均退出1。原运行约2181秒，未完成七关或一小时要求。[111份失败原件及逐文件SHA](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保留，未修写报告。
+Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯一主车尚忙使实际命令必被拒绝。现在只读真实主车与绑定记录，说明当前起讫点、返程／装车／末班运输及等待原因，定位实际车辆；记录无效时明确检查，空闲后恢复原可执行提示。不改Sim/Main/HUD/SaveStore/readout、订单、资源、RNG、存档字段或按键。
 
-独立旧源码续跑原C4存档，2578个0.05秒步骤中完整状态和RNG逐步等于未观察的旧模拟。原入库事务实际发生5次，逐tick旧观察器记录5次；78种合法1–12tick采样组合中53种漏记，其中12tick/offset3只记到2次。这复现了按渲染帧推断瞬时卸货的缺陷；原生现场的确切丢失帧没有留存。
+同一最终测试原cf Guide204／43失败，修复后204／0；相关headless合计584／0。受控source GUI67／0，实际native与工具均0，三张PNG由root逐张查看；输入是引擎派发至真实HUD/Main，非OS XTest或真人。完整状态与选择／运输保持、默认及小窗口120%UI、正常Main退出均覆盖。[修复证据](benchmarks/v0.16.2/guide-transport-availability.json)。功能验证后仅更新版本／文档，runtime/test字节未变。
 
-修复在两处真实撤营卸货入库、清货后同步发出脱离模拟状态的可选见证。验证器核对主车、实际位置、正货物、库存增量后计数。普通运输及末批运输均覆盖；空货不计。Main模拟步骤和已完成tick语义保持原样，三次交付、距离、库存和超时要求保持原值。
+## 已接受的0.16.1精确包
 
-## 实际源码验证
+冻结source/tag `cf678b720daad2ceb1c3a40ce4949a5343c39d82` / `v0.16.1-dev`，tree `8f05ea33bbe71d44b74979d1a2a479d1005c10b9`。同Main七场C/D/R/C/D/R/C真实胜利，游戏报告3979.349975秒、launcher观察native3981.0773600769753秒。root68652终局031dd7实际0，native/launcher/supervisor均0，原进程已退出。
 
-- 接口、拒绝样本、连接生命周期：122项／0失败，实际退出0；日志中14条拒绝信息为测试预期。
-- 旧0ebf与无监听、普通监听、修改见证副本的当前模拟：68项／0失败，3808步完整存档与RNG一致；原C4的5次真实交付全部记录。
-- 自包含普通及紧急撤营回归：47项／0失败，1222固定步，实际退出0。
-- root仅复制tracked候选文件的新副本：不含本机复现fixture，导入及47项回归均实际退出0。独立静态审查无阻碍。
+独立严格路线／经济／七场与全局帧守恒、47个卸货事务及四份封存存档读回通过。source probe215／0、collector/root11394终局016715实际0。按生产JSON codec规则检查完整编码状态和RNG；[独立边界诊断](../../source-auto-json-diag-v0161-v01/index.json)说明数字解析与Vector2类型恢复，原literal208／4失败保留，不作raw十进制或解析前IEEE位保真承诺。
 
-[修复与实际过程索引](benchmarks/v0.16.1/delivery-witness.json)保留各自范围。外部原C4探针与旧观察器复现不进入常规源码或导出。上述功能验证后只准备版本和文档，runtime/test字节不变；未运行0.16.1原生包。
-
-主车状态和选择入口的既有源码113/0、私有GUI64/0、暂停16/0及施工88/0仍保持原证据范围。普通0.16包UI与自动存档实际观察也不能自动作为新包验收。
+[接受记录](../../outpost-exodus-0.16.1-dev-release-evidence.json)，SHA `44ef0f2af687317fce03e4741e1945c35834b4b989b62cc1e28fa758410eda94`；[实际收集过程](../../outpost-exodus-0.16.1-dev-collection-process.json)，[五张原始实机图](../../outpost-exodus-0.16.1-dev-steam-gallery/index.json)。普通两代自动存档保留原44／44／180秒门槛并验证SHA换代与退出前封存。软件Mesa渲染数据仅代表受控环境，不评最低硬件或稳定60FPS。
 
 ## 规模与下一步
 
-[当前代码统计](benchmarks/v0.16.1/code-size.json)：18个玩法/界面等脚本8,848物理行；含诊断、测试及工具共81个自有代码文件26,467物理行、24,140非空行。排除引擎、第三方、素材、场景、UID、缓存及外部探针。
+[代码统计](benchmarks/v0.16.2/code-size.json)：18个玩法等脚本8,875物理行；81个自有文件26,560物理行、24,227非空行。排除引擎、第三方、素材、场景、UID、缓存及外部探针。
 
-下一步导出精确0.16.1候选，绑定实际包检查和完整路线。陌生玩家的微操到宏观调度节奏、听感、可读性、Windows、目标硬件、素材权利和真实Steam安装更新审核仍待完成。Git已在本地使用，尚无GitHub远程。
+下一步导出精确0.16.2并绑定实际包验证。Windows原生、陌生玩家体验／听感／可读性／无障碍、目标硬件、权利及真实Steam项目／安装更新审核仍待完成。[本版试玩说明](../../playtest-kit-v0161/first-playtest.txt)与[0.16.1来源补充](../../steam-content-survey-v0161-draft-v01/index.json)均为待owner使用／确认的材料，没有预填人类或Valve结果。
 
-## 历史接受范围
+## 历史
 
-0.15冻结源码 `6bf0fe78e9d627fb88a4d3216c66a759feba0fb1` 对应原精确Linux包，同Main七关三图完成，游戏墙钟3906.965935秒、launcher观察native3909.00728546601秒；native/launcher/supervisor、auto33与collector均实际退出0。[原接受记录](../../outpost-exodus-0.15.0-dev-release-evidence.json)及原包保持不变，不继承给0.16或0.16.1。既有历史快照、素材台账和失败原件均保留。
+0.16原包第四关超时失败及[111份原件](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保留。0.15冻结6bf原包的七场／小时接受仍只属于原包。既有历史快照、素材台账、旧pins与所有原始日志不改写。

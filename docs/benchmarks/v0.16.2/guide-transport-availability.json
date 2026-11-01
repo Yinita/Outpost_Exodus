@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "version": "0.16.2-dev",
+  "stage": "SOURCE_TESTED_NOT_EXPORTED",
+  "runtime_commit": "05536c38224905f2440688d230e2dc3b40e03bd9",
+  "base_commit": "cf678b720daad2ceb1c3a40ce4949a5343c39d82",
+  "problem": "With Home still evacuating to A and a farther B already built, old Guide requested A evacuation although the sole command truck was busy.",
+  "change": "Only active-origin transfer guidance reads exact main truck and real bound transport. Explain actual origin/receiver and loading/returning/final trip; locate actual vehicle. Unconfirmed records use warning; idleness restores original next-order hint. No transport or simulation mutation.",
+  "runtime": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-transport-availability/scripts/campaign_guide.gd",
+    "bytes": 41734,
+    "sha256": "f47db19bacf7bc807fabdbff060847ad6641bf8d6085a653c9d2f1b8056cd146"
+  },
+  "test": {
+    "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-transport-availability/tests/test_withdrawal_receiver_guidance.gd",
+    "bytes": 18606,
+    "sha256": "a01d9cf729d2dec11e6fbbb85ff59c019d0379f5e341b5b1c5032c47023375fa"
+  },
+  "validation": {
+    "same_case_old_cf": {
+      "checks": 204,
+      "failures": 43,
+      "actual_exit": 1,
+      "expected_reproduction": true
+    },
+    "same_case_new": {
+      "checks": 204,
+      "failures": 0,
+      "actual_exit": 0
+    },
+    "all_related_headless": {
+      "checks": 584,
+      "failures": 0,
+      "actual_exit": 0
+    },
+    "source_GUI": {
+      "checks": 67,
+      "failures": 0,
+      "actual_native_exit": 0,
+      "actual_tool_exit": 0,
+      "input_scope": "Engine-dispatched Window.push_input through actual Main/HUD; not OS XTest or human",
+      "PNGs": 3,
+      "root_all3_viewed": true,
+      "normal_Main_quit_cleanly": true
+    }
+  },
+  "evidence": [
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/guide-transport-availability-static-review-v01.json",
+      "bytes": 3286,
+      "sha256": "5fca3a979883bf7e11dc0267dc344aabf0b826f3bf1329fbe5f9dc4f45466121"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/guide-transport-availability-root-review-v01.json",
+      "bytes": 3026,
+      "sha256": "c39d92394b6549945d5ac434eef8604b0e4eb345559686f2f4f761f6ab8fa69d"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-transport-availability/work/guide-availability-v01/headless-attempt01/index.json",
+      "bytes": 15452,
+      "sha256": "fe5947cb750c6f2cb5e424eae8a31edaa150c23f64e5f76dba723a007e6afc9f"
+    },
+    {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-guide-transport-availability/work/guide-availability-v01/gui-attempt01/index.json",
+      "bytes": 6876,
+      "sha256": "bc49aacc94cee3c39b1674413bc92501687fa414f36a83c4ea084656d62f5fa6"
+    }
+  ],
+  "metadata_scope": "Functional tests ran before0.16.2 metadata preparation. Runtime and test bytes unchanged during preparation.",
+  "new_package_exported": false,
+  "Steam_ready": false,
+  "performance_acceptance": "not_assessed"
+}

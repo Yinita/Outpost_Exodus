@@ -1,6 +1,8 @@
 # 验证计划与已完成范围
 
-当前源码为0.16.1-dev候选，卸货观察修复已完成接口122/0、自包含47/0和旧源码/原C4对照68/0；root不含本机fixture的新副本导入与47/0亦实际退出0。[修复索引](benchmarks/v0.16.1/delivery-witness.json)记录实际源字节与过程。本候选尚未导出。上一0.16包长测完成前三关、第四关超时退出1，[原失败记录](../../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保留。
+当前源码0.16.2-dev候选的Guide相关headless584／0、source GUI67／0，实际退出0；旧cf同用例204／43失败保留。本候选尚未导出。[本轮索引](benchmarks/v0.16.2/guide-transport-availability.json)。
+
+0.16.1冻结cf精确Linux包七关三图完成：游戏3979.349975秒／native3981.0773600769753秒；native/launcher/supervisor/root均实际0。严格路线经济、全部帧守恒、47卸货事务和215项四槽schema/JSON codec/RNG复核通过。[接受记录](../../outpost-exodus-0.16.1-dev-release-evidence.json)及[真实收集](../../outpost-exodus-0.16.1-dev-collection-process.json)保留范围；原208／4字面对比失败与独立codec边界诊断均保留，不将raw十进制或解析前IEEE位作为已证明不变。
 
 以下0.15记录属于历史精确包，不继承给当前候选。
 
