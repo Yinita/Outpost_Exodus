@@ -28,6 +28,14 @@ Home仍在向A撤收、而更前方B已建好时，旧引导要求撤收A，唯�
 
 新的私有显示与strict launcher改为同一owner监督，增加真实wait／信号／周期身份与内存观察；24非main验证函数及原main控制流保持，新增仅旁路I/O。新prepare原86431终局4118fe实际0，native／launcher／server三wait均0且全部回收。随后root85687／fb1671已启动全新 `native-soak-v0162-full-attempt02`，使用同一aaae包与原7场、游戏与进程各≥3600秒门槛，私有99、五秒心跳；尚待实际终局与独立复核。[阶段证据](benchmarks/v0.16.2/package-stage.json)绑定新启动及原失败，两者不互相覆盖。
 
+该次运行已结束的前五场另经纯Python只读增量复核：[C1／C2](../../native-v0162-attempt02-completed-cycles-review-v01/index.json)及[C3／C4／C5](../../native-v0162-attempt02-completed-cycles-review-v02/index.json)均实际工具退出0。保留原严格路线／经济函数、五资源差额容差和2.5到达距离，35个真实卸货事务、付费供能出口、主车与至少4人实际撤离均通过；逐场257帧bins、phase／endpoint／磁盘保存跨度算术及已结束关卡之间的tick连续也通过。这是已闭合关卡的证据，不是全七场、全局帧守恒、双墙钟或终态接受。
+
+新postterminal v02的[独立静态审查](../../postterminal-v0162-independent-static-review-v01/review.json)核实10份材料与34个已绑定输入、原24个strict函数、七场逐帧核验及生产JSON codec未降门槛。新监督的三个真实wait、原root工具终态、身份／事件／心跳必须等真实终局后绑定；当前未运行完整source／collector。
+
+本版[六张未编辑实机图](../../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)来自同一aaae／PCK的前三场已结束关卡，覆盖三图、道路供能、撤收运输和出口工程。root逐张查看、完整解码source／copy并复算SHA，见[root图库复核](../../native-v0162-gallery-root-review-v01.json)。保留正常HUD，不是概念图或真人试玩；较大的HUD、小单位与稀疏地表仍需真实玩家评价，不能据此宣布美术／可玩性／商店验收。
+
+Windows环境的[实际可行性检查](../../windows-native-environment-feasibility-v01/facts.json)及[最小VM配置](../../windows-native-vm-preparation-v01/profile.json)已准备：本机KVM可用、QEMU／OVMF存在，声明4vCPU／8GiB／80GiB薄盘、vTPM及私有本地显示。尚无实际ISO／swtpm／所选Enterprise Eval适用许可正文或账户激活方案，未下载媒体、创建磁盘、安装或启动Windows。微软页面的90天与账户说明不能代替具体媒体许可；也不据未知正文推断个人测试被禁或必需另购许可。已有Windows机器运行精确包仍是直接验证路径。VM功能验证即使完成，也不能代替物理最低配置测量。
+
 ## 已接受的0.16.1精确包
 
 冻结source/tag `cf678b720daad2ceb1c3a40ce4949a5343c39d82` / `v0.16.1-dev`，tree `8f05ea33bbe71d44b74979d1a2a479d1005c10b9`。同Main七场C/D/R/C/D/R/C真实胜利，游戏报告3979.349975秒、launcher观察native3981.0773600769753秒。root68652终局031dd7实际0，native/launcher/supervisor均0，原进程已退出。

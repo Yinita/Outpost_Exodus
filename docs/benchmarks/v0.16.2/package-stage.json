@@ -1,5 +1,5 @@
 {
-  "recorded_utc": "2026-11-01T05:36:09.661664+00:00",
+  "recorded_utc": "2026-11-01T06:19:32.518753+00:00",
   "version": "0.16.2-dev",
   "status": "ORIGINAL_FULL_SOAK_FAILED_FRESH_COUPLED_ATTEMPT02_RUNNING_NOT_ACCEPTED",
   "frozen_source_commit": "aaae0064413528b6c135f76d308118465e34831d",
@@ -169,6 +169,41 @@
       "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-late-state-root-review-v01.json",
       "bytes": 1743,
       "sha256": "a5ec1cf6e49a4ffe282d3188bc155e36f3ba8405442c07b34b6cd6dd88fb30d1"
+    },
+    "closed_C1_C2_incremental": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-attempt02-completed-cycles-review-v01/index.json",
+      "bytes": 9417,
+      "sha256": "5e6d463eef49c46fbc8889abde236dda97b3bbbb5e630ac1f398a3565c62ff18"
+    },
+    "closed_C3_C4_C5_incremental": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-attempt02-completed-cycles-review-v02/index.json",
+      "bytes": 14040,
+      "sha256": "3a30004d88dceb4dfeb0d8953ce61cc401a83c705cbc2340e2dbc74b972630b7"
+    },
+    "current_six_image_gallery": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json",
+      "bytes": 19447,
+      "sha256": "945e135db18b8ea6b221779427152944233c5bc6cacd88da5f601b3100178393"
+    },
+    "current_gallery_root_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/native-v0162-gallery-root-review-v01.json",
+      "bytes": 7088,
+      "sha256": "2f9680764614a2150fd8e05b00c7275a5515e84a4348088237927c09932b6d27"
+    },
+    "postterminal_v02_static_review": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/postterminal-v0162-independent-static-review-v01/review.json",
+      "bytes": 9659,
+      "sha256": "bd0c7956b7be72fe28ea94ebb4f962bb6769c23b11a58f1b1b14e3d891c5e319"
+    },
+    "Windows_environment_feasibility": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/windows-native-environment-feasibility-v01/facts.json",
+      "bytes": 12811,
+      "sha256": "59d400f1e5c07cff8dc26283c6179516d5293ba14ccd5fe7bd1663fbe63360ad"
+    },
+    "Windows_declarative_VM_preparation": {
+      "path": "/home/sti/Documents/Codex/2026-10-29/x20-s/outputs/windows-native-vm-preparation-v01/profile.json",
+      "bytes": 13558,
+      "sha256": "c049a8ea19aabc202c255db543db0de2a3be7c1bf11f80e31188147bfe0a4e70"
     }
   },
   "actual_prepare_tool": {
@@ -278,5 +313,49 @@
     "last_observed_cycles_completed": 1,
     "last_observed_mission": "delta",
     "observed_cycle_completion_not_full_external_acceptance": true
+  },
+  "closed_cycle_incremental_review": {
+    "cycles": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "actual_tools_exit": [
+      0,
+      0
+    ],
+    "strict_route_economy_each": true,
+    "positive_real_unload_witnesses": 35,
+    "original_five_resource_tolerance_and_distance_threshold_unchanged": true,
+    "per_cycle_histograms_phases_endpoints_disk_span_checked": true,
+    "whole_seven_cycle_global_hour_or_terminal_acceptance": false
+  },
+  "current_native_gallery": {
+    "images": 6,
+    "pixels_each": [
+      1920,
+      1080
+    ],
+    "maps": [
+      "canyon",
+      "delta",
+      "ridge"
+    ],
+    "source_and_copy_byte_identical": true,
+    "root_viewed_and_full_decoded_each": true,
+    "human_or_art_or_store_approval": false
+  },
+  "Windows_environment_preparation": {
+    "host_KVM_actual_usable": true,
+    "QEMU_and_OVMF_available": true,
+    "guest_booted_or_installed": false,
+    "ISO_downloaded": false,
+    "swtpm_available": false,
+    "applicable_Enterprise_Eval_terms_bound": false,
+    "account_activation_plan_bound": false,
+    "actual_Windows_native_test": false,
+    "scope": "Declarative4vCPU/8GiB/80GiB-thin/q35-KVM/SecureBoot/vTPM2/private-local-display only. Existing Windows machine or actual media/terms/account inputs required for next execution; no physical minimum-spec acceptance."
   }
 }

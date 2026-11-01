@@ -65,6 +65,8 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 
 0.16.1的[实机图库](../outpost-exodus-0.16.1-dev-steam-gallery/index.json)、[普通自动存档观察](../native-auto-cycle-v0161-root-review-v02.json)及[215项四槽读回](../postterminal-v0161-candidate-v02/source-auto-result.json)均绑定原精确包。存档按既有Godot JSON codec规范化比较，独立诊断保留类型／Vector2位模式与原始十进制边界；原208／4字面对比失败不改写，不宣称原数字token或解析前IEEE位保真。[诊断](../source-auto-json-diag-v0161-v01/index.json)。
 
+0.16.2另有[六张原始实机图](../outpost-exodus-0.16.2-dev-steam-gallery-v01/index.json)，来自新attempt02前三场已结束关卡；root已逐张查看、完整解码并核对source／copy哈希。[图库复核](../native-v0162-gallery-root-review-v01.json)只证明当前包图像的来源与内容，不替代完整长测、美术审阅或真人体验。该次运行前五场的严格路线／费用／供能／35次卸货和逐关帧账增量复核已通过，整轮终态仍待原会话实际完成。
+
 0.16旧包第四关运输观察超时退出1的[原失败记录](../rejected/outpost-exodus-0.16.0-dev-delivery-observation-v01/index.json)保持失败。0.15冻结6bf的历史接受记录、所有原包及素材台账pins也保持不变，不继承给当前0.16.2。
 
 ## 开发与素材
