@@ -207,7 +207,7 @@ func _positive_checks() -> void:
 		await _frames()
 		_check(_different(loaded_truck, _image()), "zoom %.2f truck cargo remains live" % zoom)
 		_check(painter._actor_viewport.get_instance_id() == atlas_id and hash(painter._actor_viewport.get_texture().get_image().get_data()) == atlas_hash, "zoom %.2f visual changes never regenerate or replace actor atlas" % zoom)
-		_check(painter._actor_viewport.size == Vector2i(768, 1536) and painter.get_child_count() == 1, "overlay cache uses existing atlas size and one existing viewport")
+		_check(painter._actor_viewport.size == Atlas.ATLAS_SIZE and painter.get_child_count() == 1, "overlay cache uses existing atlas size and one existing viewport")
 		await _remove()
 
 func _performance(zoom: float) -> void:

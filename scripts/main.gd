@@ -10,6 +10,7 @@ const GameAudio = preload("res://scripts/game_audio.gd")
 const CampReadout = preload("res://scripts/camp_readout.gd")
 const ConstructionRules = preload("res://scripts/construction_rules.gd")
 const CommandTruckReadout = preload("res://scripts/command_truck_readout.gd")
+const UiFonts = preload("res://scripts/ui_fonts.gd")
 const TILE: float = 48.0
 const MIN_CAMERA_ZOOM: float = 0.35
 const MAX_CAMERA_ZOOM: float = 1.6
@@ -90,6 +91,20 @@ var menu_notice: String = ""
 var _window_suspended: bool = false
 var feedback: String = ""
 var feedback_left: float = 0.0
+# Stacked notifications, newest last. feedback/feedback_left still mirror the
+# newest entry; clearing feedback_left hides the whole stack.
+const TOAST_LIMIT: int = 3
+const TOAST_SECONDS: Dictionary = {"info": 4.5, "success": 4.5, "warning": 7.0, "danger": 10.0}
+var toasts: Array[Dictionary] = []
+var _seen_sim_messages: Array = []
+var minimap_dragging: bool = false
+var _road_paint_tile: Vector2i = Vector2i(-1, -1)
+# Off-screen damage alert: view-only, never enters saves or the simulation.
+var alert_ping: Vector2 = Vector2(-1, -1)
+var alert_ping_left: float = 0.0
+var _alert_cooldown: float = 0.0
+var _alert_clock: float = 0.0
+var _friendly_hp: Dictionary = {}
 var sound_player: AudioStreamPlayer
 var music_player: AudioStreamPlayer
 var game_audio: Node
@@ -100,6 +115,7 @@ var command_names: Dictionary = {
 	"help_menu": "操作手册", "logistics_toggle": "补给线显示", "ranges_toggle": "覆盖范围", "speed_up": "加快速度", "speed_down": "减慢速度",
 	"group_1": "编队1（Ctrl保存）", "group_2": "编队2（Ctrl保存）", "group_3": "编队3（Ctrl保存）", "group_4": "编队4（Ctrl保存）"
 }
+const TASK_NAMES: Dictionary = {"clear": "清理搜刮", "escort": "护送补给", "guard": "驻守关口", "repair": "维修工程"}
 
 func _ready() -> void:
 	var diagnostics: Script
@@ -134,7 +150,7 @@ func _ready() -> void:
 	world = WorldView.new()
 	world.sim = sim
 	world.motion.reset(sim)
-	world.world_font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
+	world.world_font = UiFonts.body()
 	add_child(world)
 	camera = Camera2D.new()
 	camera.position = (Vector2(sim.camps[0].pos) + Vector2(7, 0)) * TILE
@@ -200,6 +216,7 @@ func _process(delta: float) -> void:
 		_on_window_focus_exited()
 	if menu == "settings": settings_page = clampi(settings_page, 0, (command_names.size() - 1) / settings_binding_page_size())
 	feedback_left = maxf(0.0, feedback_left - delta)
+	_age_toasts(delta)
 	if is_instance_valid(game_audio):
 		game_audio.set_gameplay_active(started and menu.is_empty() and not _window_suspended and not sim.paused and sim.outcome == "playing", sim)
 	var terminal_guide_refresh: bool = false
@@ -219,6 +236,7 @@ func _process(delta: float) -> void:
 		if autosave_time > 45.0 and sim.outcome == "playing":
 			autosave_time = 0.0
 			save_campaign(false)
+		_scan_attacks(delta * speed if not sim.paused else 0.0)
 		if sim.outcome != "playing":
 			menu = sim.outcome
 			terminal_guide_refresh = true
@@ -228,9 +246,11 @@ func _process(delta: float) -> void:
 	if started and (terminal_guide_refresh or guide_clock >= 0.25):
 		guide_clock = 0.0
 		guide.update(sim, selected_ids, selected_camp)
-		if feedback_left <= 0.0 and not sim.messages.is_empty() and String(sim.messages.back()) != last_sim_message:
-			last_sim_message = String(sim.messages.back())
-			_notify(last_sim_message)
+		# Every new report is shown, not only the newest one after a quiet gap:
+		# breaches, starvation and pursuit warnings must not be swallowed.
+		for message: String in _new_sim_messages():
+			last_sim_message = message
+			_notify(message)
 	world.selected_ids = selected_ids
 	world.hover_tile = world.world_to_tile(get_global_mouse_position())
 	world.build_kind = build_kind
@@ -290,10 +310,9 @@ func _camera_focus_point_clear(point: Vector2) -> bool:
 		if hud.blocks_world_point(point + offset): return false
 	# These two visible panels intentionally do not consume world clicks.
 	var screen: Vector2 = get_viewport_rect().size
-	if feedback_left > 0.0 and Rect2(340, 82, maxf(300, screen.x - 670), 42).grow(CAMERA_FOCUS_CLEARANCE).has_point(point): return false
+	if hud.notification_band(screen).grow(CAMERA_FOCUS_CLEARANCE).has_point(point): return false
 	if hud._pause_banner_visible() and hud.font != null:
-		var width: float = maxf(220, hud.font.get_string_size(hud._pause_banner_text(), HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
-		if Rect2((screen.x - width) * 0.5, 138, width, 40).grow(CAMERA_FOCUS_CLEARANCE).has_point(point): return false
+		if hud.pause_banner_rect(screen).grow(CAMERA_FOCUS_CLEARANCE).has_point(point): return false
 	return true
 
 func _focus_camera(point: Vector2, refresh_layout: bool = true) -> void:
@@ -425,13 +444,16 @@ func _cancel_pointer_modes() -> void:
 	dragging = false
 	selection_double_click = false
 	_build_preview_key.clear()
+	_clear_mode_toasts()
 
 func _place_build(tile: Vector2i) -> Dictionary:
 	var result: Dictionary = sim.try_build(build_kind, tile)
-	_notify(String(result.get("message", "无法安排施工。")))
 	var ok: bool = bool(result.get("ok", false))
+	if build_kind != "road" and ok:
+		build_kind = ""
+		_clear_mode_toasts()
+	_notify(String(result.get("message", "无法安排施工。")), "success" if ok else "warning")
 	_play_tone(460.0 if ok else 140.0, 0.08)
-	if build_kind != "road" and ok: build_kind = ""
 	_ui_revision += 1
 	_build_preview_key.clear()
 	return result
@@ -486,7 +508,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				_play_sfx("reject")
 			else:
 				attack_move = true
-				_notify("攻击移动：左键选择目标区域，右键取消。")
+				_notify("攻击移动：左键选择目标区域，右键取消。", "info", "mode")
 		elif event.is_action_pressed("next_squad"): _next_squad()
 		elif _group_action_index(event) > 0:
 			_group_key(_group_action_index(event), event.ctrl_pressed, event.shift_pressed)
@@ -497,9 +519,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.is_action_pressed("speed_down"): speed = maxf(1.0, speed - 1.0)
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE and not event.pressed: pan_active = false
+		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed: minimap_dragging = false
 		var minimap_focus: bool = menu.is_empty() and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and hud.map_rect.has_point(event.position)
 		if hud.handle_mouse(event):
-			if minimap_focus: _focus_camera(camera.position)
+			if minimap_focus:
+				_focus_camera(camera.position)
+				minimap_dragging = started
 			if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed: dragging = false
 			return
 		if not started or not menu.is_empty(): return
@@ -509,17 +534,25 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				if not build_kind.is_empty():
-					_place_build(world.world_to_tile(get_global_mouse_position()))
+					var placed_tile: Vector2i = world.world_to_tile(get_global_mouse_position())
+					_road_paint_tile = placed_tile if build_kind == "road" else Vector2i(-1, -1)
+					_place_build(placed_tile)
 				elif attack_move:
 					var target: Vector2 = get_global_mouse_position() / TILE
 					sim.command_move(selected_ids, target, true)
 					guide.observe("move", {"target": target})
 					attack_move = false
+					_clear_mode_toasts()
+					_notify("攻击移动：%d 个单位前往目标区域，沿途交战。" % selected_ids.size())
+					_play_tone(540.0, 0.035, 0.15)
 				elif not pending_task.is_empty():
 					var target: Vector2 = get_global_mouse_position() / TILE
 					guide.observe(pending_task, {"target": target})
 					sim.command_task(selected_ids, pending_task, target)
+					_notify("已派出%s小队（%d 个单位）。" % [String(TASK_NAMES.get(pending_task, "任务")), selected_ids.size()])
 					pending_task = ""
+					_clear_mode_toasts()
+					_play_tone(540.0, 0.035, 0.15)
 				else:
 					dragging = true
 					selection_double_click = event.double_click
@@ -534,10 +567,69 @@ func _unhandled_input(event: InputEvent) -> void:
 				build_kind = ""
 				attack_move = false
 				pending_task = ""
+				_clear_mode_toasts()
 			else:
 				_issue_context(get_global_mouse_position() / TILE)
 	if event is InputEventMouseMotion and pan_active:
 		_pan_camera(camera.position - event.relative / camera.zoom)
+	if event is InputEventMouseMotion and _road_paint_tile.x >= 0:
+		if build_kind != "road" or not menu.is_empty() or (event.button_mask & MOUSE_BUTTON_MASK_LEFT) == 0:
+			_road_paint_tile = Vector2i(-1, -1)
+		elif not hud.blocks_world_point(event.position):
+			_paint_road_to(world.world_to_tile(get_global_mouse_position()))
+	if event is InputEventMouseMotion and minimap_dragging:
+		# Hold left on the minimap to sweep the view; release anywhere ends it.
+		if not menu.is_empty() or not started or (event.button_mask & MOUSE_BUTTON_MASK_LEFT) == 0:
+			minimap_dragging = false
+		else:
+			var fraction: Vector2 = ((event.position - hud.map_rect.position) / hud.map_rect.size).clamp(Vector2.ZERO, Vector2.ONE)
+			_pan_camera(fraction * Vector2(sim.map_size) * TILE)
+
+func _scan_attacks(delta: float) -> void:
+	alert_ping_left = maxf(0.0, alert_ping_left - delta)
+	_alert_cooldown = maxf(0.0, _alert_cooldown - delta)
+	_alert_clock += delta
+	if _alert_clock < 0.5: return
+	_alert_clock = 0.0
+	var current: Dictionary = {}
+	var hit: Vector2 = Vector2(-1, -1)
+	for unit: Dictionary in sim.units:
+		if String(unit.get("team", "")) != "friendly": continue
+		current[int(unit.id)] = float(unit.get("hp", 0.0))
+		if hit.x < 0.0 and float(unit.get("hp", 0.0)) < float(_friendly_hp.get(int(unit.id), 0.0)) - 0.01: hit = Vector2(unit.pos)
+	for building: Dictionary in sim.buildings:
+		if bool(building.get("abandoned", false)): continue
+		var key: int = -int(building.id)
+		current[key] = float(building.get("hp", 0.0))
+		if hit.x < 0.0 and float(building.get("hp", 0.0)) < float(_friendly_hp.get(key, 0.0)) - 0.01: hit = Vector2(building.pos)
+	_friendly_hp = current
+	if hit.x < 0.0 or _alert_cooldown > 0.0: return
+	var view: Rect2 = Rect2(camera.position - get_viewport_rect().size * 0.5 / camera.zoom, get_viewport_rect().size / camera.zoom)
+	if view.has_point(hit * TILE): return
+	alert_ping = hit
+	alert_ping_left = 4.0
+	_alert_cooldown = 15.0
+	var near: Dictionary = sim._nearest_camp(hit, false)
+	_notify("遭到攻击：%s 附近（小地图红圈）。" % String(near.get("name", "前线")) if not near.is_empty() else "前线单位遭到攻击（小地图红圈）。", "warning")
+	_play_sfx("reject", 0.7)
+
+func _paint_road_to(tile: Vector2i) -> void:
+	# Fill a 4-connected run from the last painted tile so fast drags leave no gaps.
+	var failure: String = ""
+	var placed: int = 0
+	while _road_paint_tile != tile:
+		var step: Vector2i = Vector2i(signi(tile.x - _road_paint_tile.x), 0) if _road_paint_tile.x != tile.x else Vector2i(0, signi(tile.y - _road_paint_tile.y))
+		_road_paint_tile += step
+		if sim.roads.has(_road_paint_tile): continue
+		var result: Dictionary = sim.try_build("road", _road_paint_tile)
+		if bool(result.get("ok", false)): placed += 1
+		elif failure.is_empty(): failure = String(result.get("message", "无法铺设道路。"))
+	_ui_revision += 1
+	_build_preview_key.clear()
+	if placed > 0: _play_sfx("build", 0.5)
+	if not failure.is_empty() and (failure != feedback or feedback_left <= 0.0):
+		_notify(failure, "warning")
+		_play_sfx("reject", 0.6)
 
 func _select(point: Vector2, append: bool, same_kind: bool) -> void:
 	selected_project_id = 0
@@ -604,8 +696,9 @@ func _issue_context(target: Vector2) -> void:
 	if not pending_task.is_empty():
 		guide.observe(pending_task, {"target": target})
 		sim.command_task(selected_ids, pending_task, target)
+		_notify("已派出%s小队（%d 个单位）。" % [String(TASK_NAMES.get(pending_task, "任务")), selected_ids.size()])
 		pending_task = ""
-		_notify("已向目标区域派出任务小队。")
+		_clear_mode_toasts()
 		return
 	var repair: bool = false
 	for site: Dictionary in sim.sites:
@@ -615,7 +708,7 @@ func _issue_context(target: Vector2) -> void:
 	else:
 		sim.command_move(selected_ids, target, true)
 		guide.observe("move", {"target": target})
-	_notify("已下达小队指令。")
+	_notify("%d 个单位前往维修撤离站。" % selected_ids.size() if repair else "%d 个单位前往目标，沿途自动交战。" % selected_ids.size())
 	_play_tone(540.0, 0.035, 0.15)
 
 func _zoom(factor: float) -> void:
@@ -849,7 +942,7 @@ func ui_action(action: String) -> void:
 	elif action.begins_with("build:"):
 		_cancel_pointer_modes()
 		build_kind = action.trim_prefix("build:")
-		_notify("在地图点击放置，右键取消；道路可以连续铺设。")
+		_notify("道路：左键单击或按住拖动连续铺设，右键结束。" if build_kind == "road" else "在地图左键放置，右键或 Esc 取消。", "info", "mode")
 	elif action.begins_with("camp:"): focus_camp(int(action.trim_prefix("camp:")))
 	elif action == "camp_page_prev": camp_page = maxi(0, camp_page - 1)
 	elif action == "camp_page_next": camp_page = mini(camp_page_count() - 1, camp_page + 1)
@@ -885,7 +978,7 @@ func ui_action(action: String) -> void:
 			_play_sfx("reject")
 		else:
 			pending_task = action.trim_prefix("task:")
-			_notify("在地图左键选择任务区域；也可在小地图右键指定。")
+			_notify("%s：在地图左键选择区域；也可在小地图右键指定。" % String(TASK_NAMES.get(pending_task, "任务")), "info", "mode")
 			_play_sfx("confirm")
 
 func start_campaign(mission_id: String = "") -> void:
@@ -919,6 +1012,13 @@ func start_campaign(mission_id: String = "") -> void:
 	accumulator = 0.0
 	autosave_time = 0.0
 	last_sim_message = ""
+	_seen_sim_messages = sim.messages.duplicate()
+	toasts.clear()
+	minimap_dragging = false
+	_road_paint_tile = Vector2i(-1, -1)
+	_friendly_hp.clear()
+	alert_ping_left = 0.0
+	_alert_cooldown = 0.0
 	group_bindings.clear()
 	selected_camp = int(sim.camps[0].id)
 	selected_ids.clear()
@@ -1040,6 +1140,13 @@ func load_campaign(slot: String = "manual") -> bool:
 	accumulator = 0.0
 	autosave_time = 0.0
 	last_sim_message = ""
+	_seen_sim_messages = sim.messages.duplicate()
+	toasts.clear()
+	minimap_dragging = false
+	_road_paint_tile = Vector2i(-1, -1)
+	_friendly_hp.clear()
+	alert_ping_left = 0.0
+	_alert_cooldown = 0.0
 	# JSON numbers decode as floats; IDs must retain integer semantics for
 	# selection membership, groups and the guide's observed milestones.
 	selected_ids.clear()
@@ -1072,9 +1179,58 @@ func binding_label(action: String) -> String:
 	if events.is_empty() or not events[0] is InputEventKey: return "—"
 	return OS.get_keycode_string(events[0].physical_keycode)
 
-func _notify(text: String) -> void:
+func _notify(text: String, tone: String = "", key: String = "") -> void:
+	for toast: Dictionary in toasts:
+		if tone.is_empty() and String(toast.text) == text: tone = String(toast.tone)
+	if tone.is_empty(): tone = _message_tone(text)
+	var seconds: float = float(TOAST_SECONDS.get(tone, 4.5))
 	feedback = text
-	feedback_left = 5.0
+	if feedback_left <= 0.0: toasts.clear()
+	feedback_left = maxf(feedback_left, seconds)
+	# The same text (e.g. a player action echoed by the simulation) refreshes
+	# its entry instead of stacking a duplicate.
+	for index: int in range(toasts.size() - 1, -1, -1):
+		if String(toasts[index].text) == text: toasts.remove_at(index)
+	toasts.append({"text": text, "tone": tone, "key": key, "left": seconds, "age": 0.0})
+	while toasts.size() > TOAST_LIMIT: toasts.pop_front()
+
+func _message_tone(text: String) -> String:
+	for word: String in ["战役失败", "攻破", "被突破", "耗尽", "摧毁", "失去生命", "失败"]:
+		if text.contains(word): return "danger"
+	for word: String in ["尸潮", "无法", "不能", "缺少", "不足", "先选择", "先左键", "尚未", "暂不"]:
+		if text.contains(word): return "warning"
+	for word: String in ["完成", "建立", "已保存", "已恢复", "恢复", "成功", "送达", "已清理", "已封锁"]:
+		if text.contains(word): return "success"
+	return "info"
+
+func _age_toasts(delta: float) -> void:
+	if feedback_left <= 0.0:
+		toasts.clear()
+		return
+	if toasts.is_empty(): return
+	for toast: Dictionary in toasts:
+		toast.left = float(toast.left) - delta
+		toast.age = float(toast.age) + delta
+	toasts = toasts.filter(func(toast: Dictionary) -> bool: return float(toast.left) > 0.0)
+	if toasts.is_empty(): feedback_left = 0.0
+
+func _clear_mode_toasts() -> void:
+	var before: int = toasts.size()
+	toasts = toasts.filter(func(toast: Dictionary) -> bool: return String(toast.key) != "mode")
+	if before > 0 and toasts.is_empty(): feedback_left = 0.0
+
+func _new_sim_messages() -> Array:
+	# sim.messages is a sliding window; return only entries after the overlap
+	# with the last observed window.
+	var current: Array = sim.messages
+	var overlap: int = 0
+	for size_value: int in range(mini(_seen_sim_messages.size(), current.size()), 0, -1):
+		if _seen_sim_messages.slice(_seen_sim_messages.size() - size_value) == current.slice(0, size_value):
+			overlap = size_value
+			break
+	var fresh: Array = current.slice(overlap)
+	_seen_sim_messages = current.duplicate()
+	return fresh
 
 func _group_action_index(event: InputEventKey) -> int:
 	for index: int in range(1, 5):

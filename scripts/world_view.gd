@@ -25,6 +25,9 @@ const BUILDING_WIDTHS: Dictionary = {
 	"barricade": 140.0, "fuel": 125.0, "quarry": 108.0, "exit": 142.0
 }
 const LABEL_CELL_SIZE: float = 64.0
+# Bodies are drawn slightly larger than their atlas cell so they read clearly
+# next to the painted buildings; positions and hit tests are unchanged.
+const ACTOR_SCALE: float = 1.12
 const LABEL_GAP: float = 4.0
 const LABEL_OFFSETS: Array[Vector2] = [Vector2.ZERO, Vector2.UP, Vector2.DOWN, Vector2.RIGHT, Vector2.LEFT,
 	Vector2(1, -1), Vector2(-1, -1), Vector2(1, 1), Vector2(-1, 1), Vector2(0, -2), Vector2(0, 2)]
@@ -48,6 +51,8 @@ var _decoration_viewport: SubViewport
 var _decoration_surface: Node2D
 var _decoration_signature: int = -1
 var _actor_viewport: SubViewport
+var _actor_mipmapped: Texture2D = null
+var _actor_capture_attempts: int = 0
 var _terrain_viewport: SubViewport
 var _terrain_surface: Node2D
 var _terrain_signature: int = -1
@@ -66,7 +71,7 @@ func render_time() -> float:
 func _ready() -> void:
 	# Keep a complete procedural fallback when the optional atlas is absent.
 	if ResourceLoader.exists(BUILDING_ATLAS_PATH):
-		building_atlas = load(BUILDING_ATLAS_PATH) as Texture2D
+		building_atlas = mipmapped(load(BUILDING_ATLAS_PATH) as Texture2D)
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	_refresh_terrain_cache()
 	_refresh_decoration_cache()
@@ -97,6 +102,43 @@ func _refresh_decoration_cache() -> void:
 	_decoration_signature = signature
 
 
+static func mipmapped(texture: Texture2D) -> Texture2D:
+	# Large painted sources are drawn at a fraction of their size; trilinear
+	# sampling keeps their edges clean instead of shimmering when minified.
+	if texture == null: return null
+	var image: Image = texture.get_image()
+	if image == null or image.is_empty(): return texture
+	if image.is_compressed() and image.decompress() != OK: return texture
+	image.fix_alpha_edges()
+	image.generate_mipmaps()
+	var wrapped: CanvasTexture = CanvasTexture.new()
+	wrapped.diffuse_texture = ImageTexture.create_from_image(image)
+	wrapped.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	return wrapped
+
+
+func _actor_texture() -> Texture2D:
+	return _actor_mipmapped if _actor_mipmapped != null else _actor_viewport.get_texture()
+
+
+func _capture_actor_atlas() -> void:
+	# Copy the baked atlas once into a mipmapped texture; until then (and in
+	# headless runs) the live viewport texture is used directly.
+	if not is_instance_valid(_actor_viewport): return
+	var image: Image = _actor_viewport.get_texture().get_image()
+	if image == null or image.is_empty() or not image.get_used_rect().has_area():
+		_actor_capture_attempts += 1
+		if _actor_capture_attempts < 8: RenderingServer.frame_post_draw.connect(_capture_actor_atlas, CONNECT_ONE_SHOT)
+		return
+	image.fix_alpha_edges()
+	image.generate_mipmaps()
+	var wrapped: CanvasTexture = CanvasTexture.new()
+	wrapped.diffuse_texture = ImageTexture.create_from_image(image)
+	wrapped.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
+	_actor_mipmapped = wrapped
+	queue_redraw()
+
+
 func _setup_actor_atlas() -> void:
 	if not cache_actors or _actor_viewport != null: return
 	_actor_viewport = SubViewport.new()
@@ -108,6 +150,7 @@ func _setup_actor_atlas() -> void:
 	_actor_viewport.add_child(painter)
 	painter.queue_redraw()
 	_actor_viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+	if DisplayServer.get_name() != "headless": RenderingServer.frame_post_draw.connect(_capture_actor_atlas, CONNECT_ONE_SHOT)
 
 
 func _refresh_terrain_cache() -> void:
@@ -237,10 +280,15 @@ func _draw_roads(bounds: Rect2i) -> void:
 			if roads.has(tile + direction):
 				connected = true
 				var end: Vector2 = center + Vector2(direction) * TILE_SIZE * 0.52
-				draw_line(center, end, Color("a98861"), 29.0)
-				draw_line(center, end, Color("ead1a1"), 23.0)
+				# Packed-dirt track: soft verge, worn surface and two wheel ruts.
+				draw_line(center, end, Color(Color("a98861"), 0.45), 35.0)
+				draw_line(center, end, Color("b39469"), 29.0)
+				draw_line(center, end, Color("e4c99a"), 23.0)
+				var across: Vector2 = Vector2(-direction.y, direction.x)
+				for rut: float in [-6.0, 6.0]:
+					draw_line(center + across * rut, end + across * rut, Color(Color("b8996c"), 0.55), 2.2)
 				if _noise(tile, 11) < 0.57:
-					draw_line(center + Vector2(direction) * 5.0, center + Vector2(direction) * 15.0, Color("c6a577"), 2.0)
+					draw_line(center + Vector2(direction) * 5.0 + across * 2.0, center + Vector2(direction) * 15.0 + across * 2.0, Color(Color("f3dfb6"), 0.7), 1.6)
 		if not connected:
 			_oval(center, Vector2(16.0, 14.0), Color("ead1a1"))
 	_draw_ramp_regions(bounds)
@@ -447,7 +495,7 @@ func _draw_building(building: Dictionary) -> void:
 	var max_hp: float = maxf(1.0, float(building.get("max_hp", 100.0)))
 	var construction_started: bool = bool(building.get("construction_started", true))
 	var visual_size: Vector2 = _building_visual_size(kind)
-	_oval(p + Vector2(3.0, 1.0), Vector2(visual_size.x * 0.36, 12.0), Color(0.21, 0.22, 0.19, 0.23))
+	_soft_shadow(p + Vector2(4.0, 1.0), Vector2(visual_size.x * 0.4, 13.0), 0.3)
 	draw_set_transform(p)
 	var drawn_sprite: bool = _draw_building_sprite(kind, powered, abandoned, progress, p)
 	if not drawn_sprite:
@@ -778,11 +826,11 @@ func _draw_unit(unit: Dictionary) -> void:
 	if team == "enemy" and absf(target.x - draw_position.x) < 0.05:
 		facing = -1.0
 	_draw_actor_overlays(p, kind, selected)
-	draw_set_transform(p + Vector2(0.0, bob), 0.0, Vector2(facing, 1.0))
+	draw_set_transform(p + Vector2(0.0, bob), 0.0, Vector2(facing, 1.0) * ACTOR_SCALE)
 	var carrying: bool = _cargo_amount(unit.get("cargo", unit.get("cargo_amount", 0.0))) > 0.0
 	var region: Rect2 = ActorAtlas.region(kind, moving, carrying, ActorAtlas.frame(kind, moving, actor_time, id_value))
 	if cache_actors and _actor_viewport != null and region.has_area():
-		draw_texture_rect_region(_actor_viewport.get_texture(), ActorAtlas.destination(), region)
+		draw_texture_rect_region(_actor_texture(), ActorAtlas.destination(), region)
 	else:
 		_actor_time = actor_time
 		if kind == "truck":
@@ -796,7 +844,7 @@ func _draw_unit(unit: Dictionary) -> void:
 	var max_hp: float = maxf(1.0, float(unit.get("max_hp", 100.0)))
 	if selected or hp < max_hp - 0.1:
 		var width: float = 35.0 if kind == "truck" else 24.0
-		var bar_y: float = -40.0 if kind == "brute" else -33.0
+		var bar_y: float = -57.0 if kind == "brute" else (-46.0 if kind == "truck" else -49.0)
 		_progress_bar(p + Vector2(-width * 0.5, bar_y), width, hp / max_hp, CYAN if team == "friendly" else RED, 4.0)
 	if selected:
 		var squad: int = int(unit.get("squad", 0))
@@ -808,9 +856,11 @@ func _draw_actor_overlays(p: Vector2, kind: String, selected: bool) -> void:
 	# Ground decorations are independent of the body's facing and walking bob.
 	# A live selection chooses one of four prepainted regions in the body atlas.
 	if cache_actors and _actor_viewport != null:
+		# Thin selection rings would blur away in coarse mip levels; sample them
+		# directly so they stay visible at strategic zoom.
 		draw_texture_rect_region(_actor_viewport.get_texture(), ActorAtlas.overlay_destination(p), ActorAtlas.overlay_region(kind, selected))
 		return
-	_oval(p + Vector2(2.0, 9.0), Vector2(29.0, 11.0) if kind == "truck" else Vector2(13.0, 5.0), Color(0.18, 0.22, 0.20, 0.30))
+	_soft_shadow(p + Vector2(2.0, 9.0), Vector2(29.0, 11.0) if kind == "truck" else Vector2(13.0, 5.0))
 	if selected:
 		_dashed_circle(p + Vector2(0.0, 4.0), 33.0 if kind == "truck" else 17.0, Color(CYAN, 0.95), 2.5, 10)
 		_oval(p + Vector2(0.0, 4.0), Vector2(15.0, 6.0), Color(CYAN, 0.13))
@@ -1014,7 +1064,8 @@ func _draw_world_labels() -> void:
 		var label: Dictionary = placement.label
 		var rectangle: Rect2 = placement.rectangle
 		var accent: Color = label.accent
-		draw_rect(rectangle, Color("334747"))
+		draw_rect(Rect2(rectangle.position + Vector2(1.5, 2.0), rectangle.size), Color(0.08, 0.07, 0.05, 0.35))
+		draw_rect(rectangle, Color(Color("2c3f40"), 0.92))
 		draw_line(rectangle.position, rectangle.position + Vector2(0.0, rectangle.size.y), accent, 3.0)
 		draw_string(font, rectangle.position + Vector2(6.0, float(placement.ascent) + 4.0), str(label.text), HORIZONTAL_ALIGNMENT_LEFT, -1.0, int(label.font_size), accent.lightened(0.15))
 	draw_set_transform(Vector2.ZERO)

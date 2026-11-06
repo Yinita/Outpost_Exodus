@@ -5,6 +5,7 @@ const Cartoon = preload("res://scripts/cartoon_canvas.gd")
 const WorldView = preload("res://scripts/world_view.gd")
 const CommandTruckReadout = preload("res://scripts/command_truck_readout.gd")
 const CampReadout = preload("res://scripts/camp_readout.gd")
+const UiFonts = preload("res://scripts/ui_fonts.gd")
 
 const INK: Color = Color("1b292e")
 const PANEL: Color = Color("22363c")
@@ -23,11 +24,13 @@ var font: Font:
 		font = value
 		_clear_text_layouts()
 		if font != null: font.changed.connect(_clear_text_layouts)
+var heading_font: Font = null
 var hotspots: Array[Dictionary] = []
 var map_rect: Rect2 = Rect2()
 var training_queue_rect: Rect2 = Rect2()
 var tooltip: String = ""
 var _camp_tooltip: bool = false
+var _camp_tooltip_anchor: Rect2 = Rect2()
 var overlay_rects: Array[Rect2] = []
 var _campaign_previews: Dictionary = {}
 var _building_atlas: Texture2D
@@ -40,9 +43,10 @@ var _text_layouts: Dictionary = {}
 var _panel_styles: Dictionary = {}
 
 func _ready() -> void:
-	font = load("res://assets/fonts/NotoSansCJK-Regular.ttc")
+	font = UiFonts.body()
+	heading_font = UiFonts.heading()
 	if ResourceLoader.exists(WorldView.BUILDING_ATLAS_PATH):
-		_building_atlas = load(WorldView.BUILDING_ATLAS_PATH) as Texture2D
+		_building_atlas = WorldView.mipmapped(load(WorldView.BUILDING_ATLAS_PATH) as Texture2D)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _draw() -> void:
@@ -53,24 +57,25 @@ func _draw() -> void:
 	_camp_tooltip = false
 	training_queue_rect = Rect2()
 	var screen: Vector2 = get_viewport_rect().size
-	var summary: Dictionary = main.sim.get_summary()
-	_draw_top(screen, summary)
-	_draw_objectives(screen, summary)
-	if main.started: _draw_guide(screen)
-	_draw_camp_cards(screen)
-	if main.menu.is_empty() and main.build_kind.is_empty() and not main.construction_readout.is_empty(): _draw_construction_details(screen)
-	_draw_dock(screen)
-	_draw_minimap(screen)
-	if main.feedback_left > 0.0:
-		var notification: Rect2 = Rect2(340, 82, maxf(300, screen.x - 670), 42)
-		_panel(notification, Color("253d40"), TEAL)
-		_text(notification.position + Vector2(14, 27), main.feedback, 16, PAPER, notification.size.x - 28)
-	if _pause_banner_visible():
-		var pause_text: String = _pause_banner_text()
-		var pause_width: float = maxf(220, font.get_string_size(pause_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
-		var pause_left: float = (screen.x - pause_width) * 0.5
-		_panel(Rect2(pause_left, 138, pause_width, 40), INK, GOLD)
-		_text(Vector2(pause_left + 16, 165), pause_text, 18, GOLD)
+	# The title and pre-start menus sit over a quiet map, not a live HUD.
+	if main.started:
+		var summary: Dictionary = main.sim.get_summary()
+		draw_texture_rect(_vignette_texture(), Rect2(Vector2.ZERO, screen), false)
+		_draw_top(screen, summary)
+		_draw_objectives(screen, summary)
+		_draw_guide(screen)
+		_draw_camp_cards(screen)
+		if main.menu.is_empty() and main.build_kind.is_empty() and not main.construction_readout.is_empty(): _draw_construction_details(screen)
+		_draw_dock(screen)
+		_draw_minimap(screen)
+		if main.menu.is_empty(): _draw_toasts(screen)
+		if main.sim.paused and main.menu.is_empty():
+			draw_rect(Rect2(Vector2(2, 2), screen - Vector2(4, 4)), Color(GOLD, 0.6), false, 4.0)
+		if _pause_banner_visible():
+			var banner: Rect2 = pause_banner_rect(screen)
+			_panel(banner, INK, GOLD)
+			_text(banner.position + Vector2(16, 27), _pause_banner_text(), 18, GOLD)
+		if main.menu.is_empty() and tooltip.is_empty() and main.capture_path.is_empty(): _world_hover_tooltip()
 	if not main.menu.is_empty(): _draw_menu(screen)
 	elif not tooltip.is_empty() and main.capture_path.is_empty():
 		var mouse: Vector2 = get_viewport().get_mouse_position()
@@ -79,16 +84,45 @@ func _draw() -> void:
 			var maximum_lines: int = maxi(2, floori((screen.y - 106) / 21.0))
 			var count: int = mini(lines.size(), maximum_lines)
 			var height: float = count * 21.0 + 24.0
-			var pos: Vector2 = Vector2(clampf(mouse.x - 360, 16, screen.x - 376), clampf(mouse.y - height - 10, 72, screen.y - height - 10))
+			# Open beside the card column so the tip never hides the other camps.
+			# Narrow viewports keep the pointer-anchored placement, which leaves the
+			# world corridor free for the camp the click just focused.
+			var anchor: Rect2 = _camp_tooltip_anchor
+			var pos: Vector2 = Vector2(clampf(anchor.position.x - 370, 16, screen.x - 376), clampf(anchor.position.y, 72, screen.y - height - 10))
+			if screen.x < 1280: pos = Vector2(clampf(mouse.x - 360, 16, screen.x - 376), clampf(mouse.y - height - 10, 72, screen.y - height - 10))
 			var rect: Rect2 = Rect2(pos, Vector2(360, height))
 			_panel(rect, INK, GOLD)
 			for index: int in range(count):
 				_text(pos + Vector2(12, 25 + index * 21), lines[index] + ("…" if index == count - 1 and lines.size() > count else ""), 15, PAPER)
 			overlay_rects.append(rect)
 			return
-		var pos: Vector2 = Vector2(clampf(mouse.x - 160, 16, screen.x - 376), maxf(80, mouse.y - 90))
-		_panel(Rect2(pos, Vector2(360, 72)), INK, GOLD)
-		_lines(pos + Vector2(12, 24), tooltip, 15, PAPER)
+		var lines: Array[String] = _wrap_text(tooltip, 332, 15, false)
+		var count: int = mini(lines.size(), 4)
+		var height: float = count * 21.0 + 22.0
+		# Dock tips open above the dock, everything else just below the pointer.
+		var top: float = screen.y - 198 - height if mouse.y >= screen.y - 190 else mouse.y + 26
+		var pos: Vector2 = Vector2(clampf(mouse.x - 180, 16, screen.x - 376), clampf(top, 70, screen.y - height - 8))
+		_panel(Rect2(pos, Vector2(360, height)), INK, GOLD)
+		for index: int in range(count):
+			_text(pos + Vector2(12, 26 + index * 21), lines[index] + ("…" if index == count - 1 and lines.size() > count else ""), 15, PAPER)
+
+var _vignette: GradientTexture2D = null
+
+func _vignette_texture() -> Texture2D:
+	# Gentle darkening toward the corners frames the map like a camera lens.
+	if _vignette == null:
+		var gradient: Gradient = Gradient.new()
+		gradient.set_color(0, Color(0.05, 0.04, 0.03, 0.0))
+		gradient.set_color(1, Color(0.05, 0.04, 0.03, 0.34))
+		gradient.add_point(0.62, Color(0.05, 0.04, 0.03, 0.0))
+		_vignette = GradientTexture2D.new()
+		_vignette.gradient = gradient
+		_vignette.fill = GradientTexture2D.FILL_RADIAL
+		_vignette.fill_from = Vector2(0.5, 0.5)
+		_vignette.fill_to = Vector2(1.08, 0.5)
+		_vignette.width = 256
+		_vignette.height = 256
+	return _vignette
 
 func _pause_banner_text() -> String:
 	return "战术暂停 · %s 继续" % main.binding_label("pause_game")
@@ -97,6 +131,77 @@ func _pause_banner_visible() -> bool:
 	# Project details already contain pause state; the central banner would cover
 	# their progress/source rows in compact logical viewports.
 	return main.sim.paused and main.menu.is_empty() and main.build_kind.is_empty() and main.construction_readout.is_empty()
+
+func pause_banner_rect(screen: Vector2) -> Rect2:
+	# Prefer the free middle of the top bar, so pausing never covers the map.
+	var width: float = maxf(220, font.get_string_size(_pause_banner_text(), HORIZONTAL_ALIGNMENT_LEFT, -1, 18).x + 32)
+	var gap_left: float = _resource_bar_end(screen) + 16.0
+	var gap_right: float = screen.x - 372.0
+	if gap_right - gap_left >= width: return Rect2((gap_left + gap_right - width) * 0.5, 12, width, 40)
+	# Narrow bars: the frozen clock gives way to the banner.
+	if screen.x - 272.0 - gap_left >= width: return Rect2(gap_left, 12, width, 40)
+	var band: Rect2 = notification_band(screen)
+	return Rect2((screen.x - width) * 0.5, maxf(82.0, band.end.y + 8.0), width, 40)
+
+func notification_band(screen: Vector2) -> Rect2:
+	# Whole area the toast stack may use; the camera keeps focus targets out of it.
+	var rows: int = mini(main.toasts.size(), _toast_rows(screen)) if main.feedback_left > 0.0 else 0
+	if main.feedback_left > 0.0: rows = maxi(rows, 1)
+	if rows == 0: return Rect2()
+	return Rect2(340, 82, maxf(300, screen.x - 670), rows * TOAST_ROW - 6)
+
+const TOAST_ROW: float = 44.0
+
+func _toast_rows(screen: Vector2) -> int:
+	# Short viewports park the guide button at y=186; keep two rows above it.
+	return 2 if screen.y - 190.0 - 397.0 - 12.0 < 145.0 else 3
+
+func _draw_toasts(screen: Vector2) -> void:
+	if main.feedback_left <= 0.0: return
+	var band: Rect2 = notification_band(screen)
+	var tones: Dictionary = {"info": TEAL, "success": Color("8fd694"), "warning": GOLD, "danger": RED}
+	# Newest first, directly under the top bar.
+	var ordered: Array = main.toasts.duplicate()
+	ordered.reverse()
+	ordered = ordered.slice(0, _toast_rows(screen))
+	for index: int in range(ordered.size()):
+		var toast: Dictionary = ordered[index]
+		var text: String = String(toast.text)
+		var width: float = minf(band.size.x, font.get_string_size(text, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x + 48)
+		var rect: Rect2 = Rect2(band.position.x + (band.size.x - width) * 0.5, band.position.y + index * TOAST_ROW, width, 38)
+		var fade: float = clampf(float(toast.left) / 0.6, 0.0, 1.0) * clampf(float(toast.age) / 0.15, 0.25, 1.0)
+		var accent: Color = tones.get(String(toast.tone), TEAL)
+		_panel(rect, Color(Color("1f3538"), 0.95 * fade), Color(accent, fade))
+		draw_rect(Rect2(rect.position + Vector2(8, 9), Vector2(4, 20)), Color(accent, fade))
+		_text(rect.position + Vector2(22, 25), text, 16, Color(PAPER if index == 0 else Color("d9ccaa"), fade), rect.size.x - 32)
+
+func _world_hover_tooltip() -> void:
+	# Read-only inspection of the unit under the pointer.
+	var mouse: Vector2 = get_viewport().get_mouse_position()
+	if blocks_world_point(mouse) or main.dragging: return
+	var point: Vector2 = main.get_global_mouse_position() / main.TILE
+	var best: Dictionary = {}
+	var distance: float = 0.5
+	for unit: Dictionary in main.sim.units:
+		if float(unit.get("hp", 0.0)) <= 0.0: continue
+		# Sprites stand above their foot position.
+		var gap: float = (main.world.render_unit_position(unit) - Vector2(0, 0.35)).distance_to(point)
+		if gap < distance:
+			best = unit
+			distance = gap
+	if best.is_empty(): return
+	var names: Dictionary = {"rifle": "步枪兵", "engineer": "工程师", "worker": "工人", "truck": "运输车", "zombie": "感染者", "runner": "疾行者", "brute": "巨尸"}
+	var orders: Dictionary = {"idle": "待命", "move": "移动中", "attack_move": "攻击移动", "construct": "施工", "guard": "驻守", "haul": "运输物资", "evac_gather": "撤营集结", "evacuate_transport": "撤营运输", "clear": "清理搜刮", "escort": "护送", "repair": "维修出口"}
+	var label: String = String(names.get(String(best.get("kind", "")), "单位"))
+	if int(best.get("id", 0)) == int(main.sim.main_truck_id): label = "指挥车"
+	var line: String = "%s · 生命 %d/%d" % [label, int(best.get("hp", 0)), int(best.get("max_hp", best.get("hp", 0)))]
+	if String(best.get("team", "")) == "friendly":
+		line += " · " + String(orders.get(String(best.get("order", "idle")), String(best.get("order", ""))))
+		var camp: Dictionary = main.sim.get_camp(int(best.get("camp_id", -1)))
+		if not camp.is_empty(): line += "\n隶属：" + String(camp.get("name", ""))
+	else:
+		line += "\n敌对 · 选中己方单位后右键攻击"
+	tooltip = line
 
 func _compact_tab_tip() -> String:
 	var status: String = "战术已暂停" if main.sim.paused else "地图继续运行"
@@ -108,19 +213,28 @@ func _draw_top(screen: Vector2, summary: Dictionary) -> void:
 	var compact: bool = screen.x < 1280
 	_text(Vector2(22, 43), "逐营突围", 24 if compact else 29, PAPER)
 	if not compact: _text(Vector2(165, 42), "OUTPOST EXODUS", 12, MUTED)
-	var entries: Array = [["材", "materials", TEAL], ["供", "supplies", PAPER], ["油", "fuel", GOLD], ["人", "people", TEAL]]
+	var entries: Array = [["材", "materials", TEAL, "建材：所有运作营地合计。营地库存各自独立，建设与训练只用本地库存。"], ["供", "supplies", PAPER, "补给：所有运作营地合计。驻营人员持续消耗口粮，耗尽会掉血。"], ["油", "fuel", GOLD, "燃料：所有运作营地合计。发电、口粮生产与运输车都需要燃料。"], ["人", "people", TEAL, "幸存者：全部友方人员（不含运输车）。胜利需至少4人随指挥车抵达撤离站。"]]
+	var mouse: Vector2 = get_viewport().get_mouse_position()
 	for i: int in range(entries.size()):
-		var spacing: float = minf(120, (screen.x - 560) / 4.0) if compact else 132.0
+		var spacing: float = _resource_spacing(screen)
 		var x: float = (160 if compact else 340) + i * spacing
 		_panel(Rect2(x, 12, 27 if compact else 31, 36), PANEL, entries[i][2])
 		_text(Vector2(x + 6, 37), entries[i][0], 15 if compact else 17, entries[i][2])
 		_text(Vector2(x + (35 if compact else 42), 39), str(int(summary.get(entries[i][1], 0))), 20 if compact else 23, PAPER)
+		if Rect2(x, 8, spacing - 8, 48).has_point(mouse): tooltip = entries[i][3]
 	var minutes: int = int(main.sim.time) / 60
 	var seconds: int = int(main.sim.time) % 60
-	_text(Vector2(screen.x - 357, 39), "%02d:%02d" % [minutes, seconds], 22, MUTED)
+	if not (_pause_banner_visible() and pause_banner_rect(screen).end.x > screen.x - 372.0):
+		_text(Vector2(screen.x - 357, 39), "%02d:%02d" % [minutes, seconds], 22, MUTED)
 	_button(Rect2(screen.x - 263, 13, 72, 36), "暂停" if not main.sim.paused else "继续", "pause", main.binding_label("pause_game") + "：战术暂停，可继续下达指令")
 	_button(Rect2(screen.x - 181, 13, 68, 36), "×%d" % int(main.speed), "speed", "切换游戏速度；%s / %s" % [main.binding_label("speed_up"), main.binding_label("speed_down")])
 	_button(Rect2(screen.x - 103, 13, 82, 36), "菜单", "menu", "设置、帮助和战役存档")
+
+func _resource_spacing(screen: Vector2) -> float:
+	return minf(120, (screen.x - 560) / 4.0) if screen.x < 1280 else 132.0
+
+func _resource_bar_end(screen: Vector2) -> float:
+	return (160.0 if screen.x < 1280 else 340.0) + 3.0 * _resource_spacing(screen) + 100.0
 
 func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 	_panel(Rect2(18, 82, 300, 222), Color(PANEL, 0.95), Color("52716d"))
@@ -134,13 +248,16 @@ func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 	_text(Vector2(34, 202), "出口工程", 15, MUTED)
 	_bar(Rect2(34, 214, 266, 10), progress, TEAL)
 	_text(Vector2(245, 202), "%d%%" % int(progress * 100), 16, PAPER)
-	_text(Vector2(34, 240), "维修需 140材 / 45油 / 30供 · 6电", 12, MUTED)
+	var exit_costs: Dictionary = main.sim.BUILD_COSTS.get("exit", {})
+	_text(Vector2(34, 240), "撤离站需 %s · 6电" % _cost_short(exit_costs, " / "), 13, MUTED, 266)
 	var eta: float = float(summary.get("pursuit_eta", main.sim.pursuit_eta))
-	_text(Vector2(34, 263), "后方压力", 15, MUTED)
-	_text(Vector2(139, 264), "整备中" if main.sim.phase == "preparation" else ("约 %d 秒" % int(maxf(eta, 0))), 18, GOLD)
-	_text(Vector2(34, 286), "%s 帮助 · %s 保存 / %s 读取" % [main.binding_label("help_menu"), main.binding_label("quick_save"), main.binding_label("quick_load")], 13, MUTED)
+	_text(Vector2(34, 264), "后方追兵", 15, MUTED)
+	var preparing: bool = main.sim.phase == "preparation"
+	var eta_text: String = "整备中" if preparing else "约 %d:%02d 抵达" % [int(maxf(eta, 0)) / 60, int(maxf(eta, 0)) % 60]
+	_text(Vector2(116, 265), eta_text, 18, RED if not preparing and eta < 60.0 else GOLD)
+	_text(Vector2(34, 288), "%s 帮助 · %s 保存 / %s 读取" % [main.binding_label("help_menu"), main.binding_label("quick_save"), main.binding_label("quick_load")], 13, MUTED)
 	var selection_text: String = "未选择单位 · 左键或拖框选择"
-	if not main.selected_ids.is_empty(): selection_text = "已选择 %d 人 / 辆 · 右键下令" % main.selected_ids.size()
+	if not main.selected_ids.is_empty(): selection_text = "已选 %d · %s" % [main.selected_ids.size(), _selection_breakdown()]
 	var targeting: bool = main.attack_move or not main.pending_task.is_empty()
 	if targeting:
 		var modes: Dictionary = {"clear": "清理搜刮", "escort": "护送补给", "guard": "驻守关口", "repair": "维修工程"}
@@ -148,9 +265,27 @@ func _draw_objectives(screen: Vector2, summary: Dictionary) -> void:
 	var short: bool = screen.y < 580
 	var selection_top: float = 306 if short else 318
 	_panel(Rect2(18, selection_top, 300, 40 if short else 64), Color(INK, 0.92), Color("456065"))
-	_text(Vector2(33, selection_top + (17 if short else 28)), selection_text, 13 if short else 15, GOLD if targeting else PAPER)
+	_text(Vector2(33, selection_top + (17 if short else 28)), selection_text, 13 if short else 15, GOLD if targeting else PAPER, 272)
 	var selection_hint: String = "右键 / Esc 取消当前指令" if targeting else "%s 攻击 · %s 切队 · Ctrl+编队键保存" % [main.binding_label("attack_move"), main.binding_label("next_squad")]
-	_text(Vector2(33, selection_top + (34 if short else 51)), selection_hint, 10 if short else 12, MUTED)
+	_text(Vector2(33, selection_top + (34 if short else 51)), selection_hint, 11 if short else 13, MUTED, 272)
+
+func _selection_breakdown() -> String:
+	var names: Dictionary = {"rifle": "步枪兵", "engineer": "工程师", "worker": "工人", "truck": "车辆"}
+	var counts: Dictionary = {}
+	for id: int in main.selected_ids:
+		var kind: String = String(main.sim.get_unit(id).get("kind", ""))
+		counts[kind] = int(counts.get(kind, 0)) + 1
+	var parts: PackedStringArray = []
+	for kind: String in ["rifle", "engineer", "worker", "truck"]:
+		if counts.has(kind): parts.append("%s%d" % [names[kind], counts[kind]])
+	return " ".join(parts) + " · 右键下令"
+
+func _cost_short(costs: Dictionary, separator: String = "/") -> String:
+	var labels: Dictionary = {"materials": "材", "supplies": "供", "fuel": "油"}
+	var parts: PackedStringArray = []
+	for key: String in ["materials", "supplies", "fuel"]:
+		if costs.has(key): parts.append("%d%s" % [int(costs[key]), labels[key]])
+	return separator.join(parts)
 
 func _command_truck_rect() -> Rect2:
 	return Rect2(34, 153, 266, 31)
@@ -223,7 +358,7 @@ func _draw_camp_cards(screen: Vector2) -> void:
 		_panel(rect, Color(PANEL, 0.95), TEAL if row.chosen else Color("456065"))
 		var states: Dictionary = {"active":"运作", "packing":"撤收中", "abandoned":"已弃守"}
 		_text(rect.position + Vector2(12, 24), row.name, 16, PAPER, 150)
-		_text(rect.position + Vector2(172, 24), states.get(row.state, row.state), 12, GOLD if row.state == "packing" else MUTED)
+		_text(rect.position + Vector2(176, 24), states.get(row.state, row.state), 13, GOLD if row.state == "packing" else (TEAL if row.state == "active" else MUTED))
 		_text(rect.position + Vector2(12, 44), row.stock, 13, MUTED, 224)
 		var readout: Dictionary = row.readout
 		var severity: String = String(readout.get("severity", "normal"))
@@ -235,11 +370,12 @@ func _draw_camp_cards(screen: Vector2) -> void:
 			else:
 				_text(rect.position + Vector2(12, 64), String(readout.get("text", "… 更新状态")), 13, status_color, 224)
 				_bar(Rect2(rect.position + Vector2(100, 77), Vector2(136, 6)), row.power_used / maxf(row.power_capacity, 1), GOLD)
-				_text(rect.position + Vector2(12, 84), "供能 %d/%d" % [int(row.power_used), int(row.power_capacity)], 10, GOLD)
+				_text(rect.position + Vector2(12, 84), "供能 %d/%d" % [int(row.power_used), int(row.power_capacity)], 12, GOLD)
 		hotspots.append({"rect":rect, "action":"camp:%d" % row.camp_id, "tip":row.tip})
 		if rect.has_point(get_viewport().get_mouse_position()):
 			tooltip = row.tip
 			_camp_tooltip = true
+			_camp_tooltip_anchor = rect
 	if not layout.pager.is_empty():
 		var pager: Dictionary = layout.pager
 		_button(pager.previous, "上一页", "camp_page_prev", "浏览驻点，不改变当前选中驻点", false, false, main.camp_page > 0)
@@ -260,27 +396,51 @@ func _draw_dock(screen: Vector2) -> void:
 		_button(Rect2(153, top + 12, 125, 33), "指挥 [%s]" % main.binding_label("orders_menu"), "tab:orders", "给所选小队委派任务", main.current_tab == "orders")
 		_button(Rect2(288, top + 12, 125, 33), "生产 [%s]" % main.binding_label("production_menu"), "tab:production", "管理当前驻点生产与供能", main.current_tab == "production")
 		_button(Rect2(423, top + 12, 125, 33), "训练 [%s]" % main.binding_label("train_menu"), "tab:training", "扩充小队、工程与运输能力", main.current_tab == "training")
-		_button(Rect2(570, top + 12, 105, 33), "补给线", "logistics", "显示道路与本地能源连接", main.world.show_logistics)
-		_button(Rect2(685, top + 12, 105, 33), "范围", "ranges", "显示供电与防守覆盖范围", main.world.show_ranges)
-	var width: float = minf(screen.x - 302, 1030)
+		_button(Rect2(570, top + 12, 105, 33), "补给线 [%s]" % main.binding_label("logistics_toggle"), "logistics", "显示道路与本地能源连接", main.world.show_logistics)
+		_button(Rect2(685, top + 12, 105, 33), "范围 [%s]" % main.binding_label("ranges_toggle"), "ranges", "显示供电与防守覆盖范围", main.world.show_ranges)
+		# Which camp the production/training/evacuation controls act on.
+		var camp: Dictionary = main.sim.get_camp(main.selected_camp)
+		if not camp.is_empty() and screen.x >= 1280:
+			_text(Vector2(812, top + 35), "当前驻点：" + String(camp.get("name", "")), 14, MUTED, screen.x - 302 - 812)
+	var width: float = screen.x - 302
 	if main.current_tab == "build":
-		var items: Array = [["road", "道路", "2 材 / 格", "连通工地和仓库，让补给车通行。"], ["camp", "前哨营地", "50 材 / 10 供", "建立新的驻点，接续推进和撤收。"], ["generator", "发电机", "30 材 / 5 油", "为本地生产和自动炮塔供能。"], ["workshop", "工坊", "40 建材", "将当地资源加工成建材或补给。"], ["tower", "岗哨炮塔", "35 材 / 5 供", "自动防守，保护坡道与运输线。"], ["barricade", "临时路障", "20 建材", "延缓尸群；无法永久挡住追兵。"]]
-		items.append(["barracks", "军营", "60 材 / 20 供", "消耗本地电力，训练步枪兵与工程师。"])
-		var card_width: float = (width - 56) / 7.0
+		var items: Array = [["road", "道路", "连通工地和仓库，让补给车通行。按住左键可连续铺设。"], ["camp", "前哨营地", "建立新的驻点，接续推进和撤收。"], ["generator", "发电机", "为本地生产、军营和自动炮塔供能。"], ["workshop", "工坊", "将当地资源加工成建材、补给或燃料。"], ["tower", "岗哨炮塔", "耗电自动防守，保护坡道与运输线。"], ["barricade", "临时路障", "延缓尸群；无法永久挡住追兵。"], ["barracks", "军营", "消耗本地电力，训练步枪兵与工程师。"]]
+		var card_width: float = (width - 6 * 6) / 7.0
+		for i: int in range(items.size()):
+			var kind: String = items[i][0]
+			var rect: Rect2 = Rect2(18 + i * (card_width + 6), top + 57, card_width, 112)
+			var costs: Dictionary = main.sim.BUILD_COSTS.get(kind, {})
+			var affordable: bool = _any_camp_can_pay(costs)
+			var tip: String = String(items[i][2]) + ("" if affordable else "\n没有运作营地的本地库存足够支付。")
+			_button(rect, "", "build:" + kind, tip, main.build_kind == kind)
+			_draw_build_icon(rect, kind, i, main.build_kind == kind)
+			_text(rect.position + Vector2(11, 78), items[i][1], 17, PAPER, rect.size.x - 16)
+			_text(rect.position + Vector2(11, 100), _cost_short(costs, " / ") + (" / 格" if kind == "road" else ""), 13, GOLD if affordable else RED, rect.size.x - 16)
+	elif main.current_tab == "orders":
+		var current_camp: Dictionary = main.sim.get_camp(main.selected_camp)
+		var camp_name: String = String(current_camp.get("name", "未选择驻点"))
+		var has_squad: bool = not main.selected_ids.is_empty()
+		var items: Array = [["task:clear", "清理并搜刮", "派队清理区域、夺取补给点", "需先选择小队" if not has_squad else "左键指定区域"], ["task:escort", "护送补给", "保护驻点与往返的运输队", "需先选择小队" if not has_squad else "左键指定区域"], ["task:guard", "驻守关口", "持续守备指定区域", "需先选择小队" if not has_squad else "左键指定区域"], ["evacuate", "撤收驻点", "打包人员设备运往前营；取消训练返还一半", "对象：" + camp_name]]
+		if current_camp.get("state", "") == "packing":
+			items[3] = ["evacuate", "紧急弃营", "留下未装车物资，人员立即撤离", "对象：" + camp_name]
+		for index: int in range(2):
+			var choke: Dictionary = main.sim.chokes[index] if index < main.sim.chokes.size() else {}
+			var label: String = "封锁后关" if index == 0 else "封锁前关"
+			var description: String = "先让友军通过，再拖延追兵" if index == 0 else "争取出口施工和撤离时间"
+			var status: String = String(choke.get("name", "")) + (" · 已封锁" if bool(choke.get("sealed", false)) else " · 25材")
+			items.append(["seal:%d" % index, label, description, status])
+		var card_width: float = (width - 5 * 6) / 6.0
 		for i: int in range(items.size()):
 			var rect: Rect2 = Rect2(18 + i * (card_width + 6), top + 57, card_width, 112)
-			_button(rect, "", "build:" + items[i][0], items[i][3], main.build_kind == items[i][0])
-			_draw_build_icon(rect, String(items[i][0]), i, main.build_kind == items[i][0])
-			_text(rect.position + Vector2(11, 75), items[i][1], 17, PAPER)
-			_text(rect.position + Vector2(11, 98), items[i][2], 12, MUTED)
-	elif main.current_tab == "orders":
-		var items: Array = [["task:clear","清理并搜刮","向当前驻点区域派队清理"], ["task:escort","护送补给","保护驻点与运输队"], ["task:guard","驻守关口","持续守备指定区域"], ["evacuate","撤收驻点","打包人员和设备，运输至前方；取消未完成训练并返还一半费用"], ["seal:0","封锁后关","先让友军通过，再拖延追兵"], ["seal:1","封锁前关","争取出口施工和撤离时间"]]
-		var current_camp: Dictionary = main.sim.get_camp(main.selected_camp)
-		if current_camp.get("state", "") == "packing":
-			items[3] = ["evacuate", "紧急弃营", "留下未装车物资，人员立即撤离；在途货物继续运输。"]
-		var card_width: float = (width - 50) / 6.0
-		for i: int in range(items.size()):
-			_button(Rect2(18 + i * (card_width + 6), top + 62, card_width, 96), items[i][1], items[i][0], items[i][2], items[i][0] == "task:" + main.pending_task, i >= 3)
+			var action: String = items[i][0]
+			var sealed: bool = action.begins_with("seal:") and String(items[i][3]).ends_with("已封锁")
+			_button(rect, "", action, String(items[i][2]), action == "task:" + main.pending_task, i >= 3, not sealed)
+			_text(rect.position + Vector2(12, 30), items[i][1], 18, (GOLD if action == "task:" + main.pending_task else PAPER) if not sealed else MUTED, rect.size.x - 20)
+			var lines: Array[String] = _wrap_text(String(items[i][2]), rect.size.x - 24, 13)
+			for line_index: int in range(mini(2, lines.size())):
+				_text(rect.position + Vector2(12, 56 + line_index * 19), lines[line_index], 13, MUTED)
+			var warn: bool = String(items[i][3]).begins_with("需先")
+			_text(rect.position + Vector2(12, 101), items[i][3], 13, GOLD if warn else (RED if i >= 3 and not sealed else TEAL), rect.size.x - 20)
 	elif main.current_tab == "production":
 		var camp: Dictionary = main.sim.get_camp(main.selected_camp)
 		var name_text: String = String(camp.get("name", "未选择驻点"))
@@ -289,59 +449,76 @@ func _draw_dock(screen: Vector2) -> void:
 		var priority_width: float = (width - recipe_area - 36) / 3.0
 		_text(Vector2(20, top + 79), name_text + " · 连续生产", 17, PAPER, recipe_area - 12)
 		var recipe: String = String(camp.get("recipe", "idle"))
-		var recipes: Array = [["materials", "加工建材"], ["supplies", "生产补给"], ["fuel", "提炼燃料"], ["idle", "暂停生产"]]
+		var recipes: Array = [["materials", "加工建材", "废料 → 建材"], ["supplies", "生产补给", "燃料 → 补给"], ["fuel", "提炼燃料", "原油 → 燃料"], ["idle", "暂停生产", "节省电力"]]
 		var recipe_width: float = (recipe_area - 24) / 4.0
 		for i: int in range(recipes.size()):
-			_button(Rect2(20 + i * (recipe_width + 6), top + 95, recipe_width, 58), recipes[i][1], "recipe:" + recipes[i][0], "驻点需要实际运入的原料、完工工坊与本地供电；生产补给消耗成品燃料。", recipe == recipes[i][0])
+			var rect: Rect2 = Rect2(20 + i * (recipe_width + 6), top + 92, recipe_width, 62)
+			var chosen: bool = recipe == recipes[i][0]
+			_button(rect, "", "recipe:" + recipes[i][0], "驻点需要实际运入的原料、完工工坊与本地供电；生产补给消耗成品燃料。", chosen)
+			_text(rect.position + Vector2(12, 27), recipes[i][1], 17, GOLD if chosen else PAPER, rect.size.x - 20)
+			_text(rect.position + Vector2(12, 49), recipes[i][2], 13, MUTED, rect.size.x - 20)
 		var priority: String = String(camp.get("priority", "production"))
 		var priorities: Array = [["production","生产优先"], ["defense","防守优先"], ["evacuation","撤离优先"]]
 		for i: int in range(priorities.size()):
-			_button(Rect2(priority_x + i * (priority_width + 6), top + 95, priority_width, 58), priorities[i][1], "priority:" + priorities[i][0], "供电不足时，优先保障选定任务。", priority == priorities[i][0])
-		_text(Vector2(priority_x, top + 79), "供能预设", 16, GOLD)
+			_button(Rect2(priority_x + i * (priority_width + 6), top + 92, priority_width, 62), priorities[i][1], "priority:" + priorities[i][0], "供电不足时，优先保障选定任务。", priority == priorities[i][0])
+		_text(Vector2(priority_x, top + 79), "供电不足时优先", 16, GOLD)
 		var status: Dictionary = main.production_readout
 		var running: bool = status.get("code", "") == "running"
 		var readout: String = "%s · 供能工坊 %d/%d" % [String(status.get("text", "读取生产状态")), int(status.get("working", 0)), int(status.get("total", 0))]
-		if running:
-			readout += " · 废料 %d / 原油 %d / 燃料 %d" % [int(camp.get("salvage", 0)), int(camp.get("crude", 0)), int(camp.get("fuel", 0))]
-		else:
-			readout += " · " + String(status.get("detail", ""))
-		var status_rect: Rect2 = Rect2(20, top + 158, width - 20, 29)
-		_text(Vector2(20, top + 178), readout, 12, TEAL if running else GOLD, width - 20)
+		readout += " · 库存 废料 %d / 原油 %d / 燃料 %d" % [int(camp.get("salvage", 0)), int(camp.get("crude", 0)), int(camp.get("fuel", 0))]
+		if not running: readout += " · " + String(status.get("detail", ""))
+		var status_rect: Rect2 = Rect2(20, top + 160, width - 20, 28)
+		_text(Vector2(20, top + 179), readout, 14, TEAL if running else GOLD, width - 20)
 		if status_rect.has_point(get_viewport().get_mouse_position()): tooltip = String(status.get("detail", ""))
 	elif main.current_tab == "training":
 		var camp: Dictionary = main.sim.get_camp(main.selected_camp)
-		var card_area: float = width * 0.60
+		var card_area: float = width * 0.62
 		var card_width: float = (card_area - 18) / 4.0
 		var queue_x: float = 20 + card_area + 18
 		var queue_width: float = width - card_area - 28
-		_text(Vector2(20, top + 75), String(camp.get("name", "未选择驻点")) + " · 本地训练", 16, PAPER, card_area)
+		var title: String = String(camp.get("name", "未选择驻点")) + " · 本地训练"
+		_text(Vector2(20, top + 75), title, 16, PAPER, card_area)
+		var rifle_plan: Dictionary = main.recruit_plans.get("rifle", {})
+		var stocks: String = "本营 材%d 供%d 油%d · 人口 %d/%d" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0)), int(rifle_plan.get("population", 0)), int(rifle_plan.get("cap", 32))]
+		var title_width: float = font.get_string_size(title, HORIZONTAL_ALIGNMENT_LEFT, -1, 16).x
+		_text(Vector2(20 + title_width + 18, top + 75), stocks, 13, MUTED, maxf(40, card_area - title_width - 18))
 		var recruits: Array[String] = ["rifle", "engineer", "worker", "truck"]
 		var status: Dictionary = main.training_readout
+		var reasons: Dictionary = {"resources": "本营资源不足", "population_full": "人口已满", "queue_full": "队列已满", "camp_packing": "营地撤收中", "camp_inactive": "营地已停用", "no_camp": "未选择驻点", "not_playing": "战役已结束", "missing_facility": "需先建成设施", "unfinished_facility": "设施施工中", "missing_generator": "需本营发电机", "unfinished_generator": "发电机施工中", "fuel_empty": "缺燃料停电", "generator_road": "发电机未连路", "facility_road": "设施未连路", "power_pending": "等待供能", "power_output": "电力不足", "power_range": "超出供电范围"}
 		for i: int in range(recruits.size()):
 			var kind: String = recruits[i]
 			var plan: Dictionary = main.recruit_plans.get(kind, {})
-			var rect: Rect2 = Rect2(20 + i * (card_width + 6), top + 87, card_width, 82)
+			var rect: Rect2 = Rect2(20 + i * (card_width + 6), top + 86, card_width, 90)
 			var tip: String = String(plan.get("message", "选择本营单位"))
 			var active: bool = int(status.get("queue_size", 0)) > 0 and status.get("current_name", "") == plan.get("unit_name", "")
+			var ok: bool = bool(plan.get("ok", false))
 			_button(rect, "", "recruit:" + kind, tip, active)
-			_text(rect.position + Vector2(7, 21), String(plan.get("unit_name", kind)), 14, PAPER, card_width - 14)
-			_text(rect.position + Vector2(7, 41), String(plan.get("facility", "")), 11, MUTED, card_width - 14)
-			var prices: PackedStringArray = []
-			var labels: Dictionary = {"materials":"材", "supplies":"供", "fuel":"油"}
-			for key: String in plan.get("costs", {}): prices.append("%d%s" % [int(plan.costs[key]), String(labels.get(key, key))])
-			_text(rect.position + Vector2(7, 61), "/".join(prices), 11, GOLD if bool(plan.get("ok", false)) else RED, card_width - 14)
-			_text(rect.position + Vector2(7, 76), "%d秒" % int(plan.get("duration", 0)), 10, MUTED, card_width - 14)
+			_text(rect.position + Vector2(9, 23), String(plan.get("unit_name", kind)), 16, PAPER if ok else Color(PAPER, 0.7), card_width - 60)
+			var duration: String = "%d秒" % int(plan.get("duration", 0))
+			_text(rect.position + Vector2(card_width - 9 - font.get_string_size(duration, HORIZONTAL_ALIGNMENT_LEFT, -1, 13).x, 22), duration, 13, MUTED)
+			_text(rect.position + Vector2(9, 44), "设施：" + String(plan.get("facility", "")).replace("（指挥部/营地）", ""), 13, MUTED, card_width - 18)
+			var missing: Dictionary = plan.get("missing", {})
+			_text(rect.position + Vector2(9, 64), _cost_short(plan.get("costs", {})), 13, RED if not missing.is_empty() else GOLD, card_width - 18)
+			var code: String = String(plan.get("code", ""))
+			var reason: String = "可以训练" if ok else String(reasons.get(code, "暂不可训练"))
+			_text(rect.position + Vector2(9, 83), reason, 12, TEAL if ok else RED, card_width - 18)
 		_text(Vector2(queue_x, top + 75), "训练队列 %d / 4" % int(status.get("queue_size", 0)), 16, TEAL, queue_width)
 		_bar(Rect2(queue_x, top + 87, queue_width, 8), float(status.get("progress", 0.0)), TEAL)
-		_text(Vector2(queue_x, top + 116), String(status.get("text", "读取训练状态")), 13, GOLD, queue_width)
+		_text(Vector2(queue_x, top + 117), String(status.get("text", "读取训练状态")), 14, GOLD, queue_width)
 		var detail: String = String(status.get("detail", ""))
-		var lines: Array[String] = _wrap_text(detail, queue_width, 11)
-		for index: int in range(mini(2, lines.size())): _text(Vector2(queue_x, top + 137 + index * 15), lines[index], 11, MUTED, queue_width)
-		training_queue_rect = Rect2(queue_x, top + 61, queue_width, 103)
+		var lines: Array[String] = _wrap_text(detail, queue_width, 13)
+		for index: int in range(mini(3, lines.size())): _text(Vector2(queue_x, top + 140 + index * 18), lines[index], 13, MUTED, queue_width)
+		training_queue_rect = Rect2(queue_x, top + 61, queue_width, 115)
 		if training_queue_rect.has_point(get_viewport().get_mouse_position()): tooltip = detail
-		var plan: Dictionary = main.recruit_plans.get("rifle", {})
-		var stocks: String = "本营：材 %d / 供 %d / 油 %d · 指挥人口 %d/%d（含训练）" % [int(camp.get("materials", 0)), int(camp.get("supplies", 0)), int(camp.get("fuel", 0)), int(plan.get("population", 0)), int(plan.get("cap", 32))]
-		_text(Vector2(20, top + 184), stocks, 11, PAPER, width - 12)
+
+func _any_camp_can_pay(costs: Dictionary) -> bool:
+	for camp: Dictionary in main.sim.camps:
+		if String(camp.get("state", "")) != "active": continue
+		var enough: bool = true
+		for key: String in costs:
+			if float(camp.get(key, 0.0)) + 0.000001 < float(costs[key]): enough = false
+		if enough: return true
+	return false
 
 func _draw_build_icon(rect: Rect2, kind: String, fallback_index: int, active: bool) -> void:
 	# Match the actual world sprite, including the shared command/camp artwork.
@@ -405,12 +582,19 @@ func _draw_minimap(screen: Vector2) -> void:
 		if bool(hint.get("visible", false)) and target.x >= 0.0 and target.y >= 0.0:
 			var point: Vector2 = (map_rect.position + target * scale_value).clamp(map_rect.position + Vector2(8, 8), map_rect.end - Vector2(8, 8))
 			_draw_minimap_target(point)
+	if main.alert_ping_left > 0.0:
+		var ping: Vector2 = (map_rect.position + main.alert_ping * scale_value).clamp(map_rect.position + Vector2(6, 6), map_rect.end - Vector2(6, 6))
+		var pulse: float = fmod(main.alert_ping_left, 1.0)
+		draw_arc(ping, 5.0 + 9.0 * (1.0 - pulse), 0, TAU, 24, Color(RED, pulse), 2.0)
+		draw_circle(ping, 3.0, RED)
 	var view_size: Vector2 = get_viewport_rect().size / main.camera.zoom / 48.0
 	var camera_tile: Vector2 = main.camera.position / 48.0
 	var camera_rect: Rect2 = Rect2(map_rect.position + (camera_tile - view_size * 0.5) * scale_value, view_size * scale_value)
 	draw_rect(camera_rect.intersection(map_rect), PAPER, false, 1.5)
-	_text(map_rect.position + Vector2(7, 18), "战略地图", 12, INK)
-	var tip: String = "左键定位，右键下令。菱形废料／油桶燃料／方箱补给／旗帜出口／准星引导"
+	var chip: Rect2 = Rect2(map_rect.position + Vector2(4, 4), Vector2(62, 20))
+	draw_rect(chip, Color(INK, 0.82))
+	_text(chip.position + Vector2(6, 15), "战略地图", 12, PAPER)
+	var tip: String = "左键定位（按住拖动），右键向所选小队下令。\n菱形废料／油桶燃料／方箱补给／旗帜出口／准星引导"
 	hotspots.append({"rect":map_rect, "action":"minimap", "tip":tip})
 	if map_rect.has_point(get_viewport().get_mouse_position()) and main.capture_path.is_empty(): tooltip = tip
 
@@ -487,13 +671,14 @@ func _draw_menu(screen: Vector2) -> void:
 	if main.menu == "help":
 		_draw_help(screen)
 		return
-	var panel_size: Vector2 = Vector2(minf(650, screen.x - 32), minf(604, screen.y - 32))
+	var button_count: int = 7 + (3 if main.menu == "pause" else 0)
+	var panel_size: Vector2 = Vector2(minf(650, screen.x - 32), minf(273.0 + ceilf(button_count / 2.0) * 51.0 + 48.0, screen.y - 32))
 	var panel: Rect2 = Rect2((screen - panel_size) * 0.5, panel_size)
 	_panel(panel, Color("20383b"), TEAL)
 	_text(panel.position + Vector2(46, 91), "逐营突围", 56, PAPER)
 	_text(panel.position + Vector2(48, 124), "O U T P O S T   E X O D U S", 17, TEAL)
 	var subtitle: String = "向前建设，向后撤守。选择路线，把幸存者带到出口。"
-	if main.menu == "victory": subtitle = "突围成功 · 指挥车与 %d 名幸存者抵达出口。" % main.sim.evacuated
+	if main.menu == "victory": subtitle = "突围成功 · 指挥车与 %d 名幸存者抵达出口 · 用时 %d:%02d" % [main.sim.evacuated, int(main.sim.time) / 60, int(main.sim.time) % 60]
 	elif main.menu == "defeat": subtitle = String(main.sim.messages.back()) if not main.sim.messages.is_empty() else "战役失败，可读取存档或重新开始。"
 	elif main.menu == "pause": subtitle = String(main.menu_notice) if not main.menu_notice.is_empty() else "战役已暂停 · 调整计划后继续推进。"
 	_text(panel.position + Vector2(48, 176), subtitle, 18, GOLD if main.menu == "pause" and not main.menu_notice.is_empty() else MUTED, panel.size.x - 96)
@@ -513,21 +698,31 @@ func _draw_menu(screen: Vector2) -> void:
 	buttons.append(["退出游戏", "quit", true])
 	for index: int in range(buttons.size()):
 		var button_width: float = (panel.size.x - 110) * 0.5
-		var row_gap: float = minf(51, (panel.size.y - 312) / maxf(1, ceilf(buttons.size() / 2.0)))
+		var row_gap: float = minf(51, (panel.size.y - 316) / maxf(1, ceilf(buttons.size() / 2.0)))
 		var rect: Rect2 = Rect2(panel.position + Vector2(48 + (index % 2) * (button_width + 14), 273 + (index / 2) * row_gap), Vector2(button_width, minf(42, row_gap - 6)))
 		_button(rect, buttons[index][0], buttons[index][1], "尚无此类存档" if not buttons[index][2] else "", false, false, buttons[index][2])
 	_text(panel.position + Vector2(48, panel.size.y - 24), "开发中版本 · 三场独立战役 · 2D 卡通生存策略", 13, MUTED)
 
 
 func _draw_campaign_selection(screen: Vector2) -> void:
-	var panel_size: Vector2 = Vector2(minf(1120, screen.x - 32), minf(660, screen.y - 32))
+	var panel_width: float = minf(1120, screen.x - 32)
+	var card_width: float = (panel_width - 72) / 3.0
+	var ids: Array[String] = Catalog.ids()
+	# Size the cards to the longest briefing rather than a fixed tall column.
+	var available: float = minf(660, screen.y - 32) - 150
+	var preview_guess: float = clampf(available * 0.27, 90, 132)
+	var needed: float = 0.0
+	for mission_id: String in ids:
+		var definition: Dictionary = Catalog.mission(mission_id)
+		var height: float = 45 + preview_guess + 23 + _wrap_text(String(definition["objective"]), card_width - 28, 14).size() * 21 + 31
+		for choice: Variant in definition["guide"]["choices"]: height += _wrap_text(String(choice), card_width - 28, 13).size() * 19 + 7
+		needed = maxf(needed, height + 64)
+	var card_height: float = minf(available, needed)
+	var panel_size: Vector2 = Vector2(panel_width, card_height + 150)
 	var panel: Rect2 = Rect2((screen - panel_size) * 0.5, panel_size)
 	_panel(panel, PANEL, TEAL)
 	_text(panel.position + Vector2(24, 43), "选择战役", 29, PAPER)
 	_text(panel.position + Vector2(24, 70), "独立地图与真实路线选择 · 每场都从后方营地出发", 15, MUTED)
-	var card_width: float = (panel.size.x - 72) / 3.0
-	var card_height: float = panel.size.y - 150
-	var ids: Array[String] = Catalog.ids()
 	for index: int in range(ids.size()):
 		var mission_id: String = ids[index]
 		var definition: Dictionary = Catalog.mission(mission_id)
@@ -535,7 +730,7 @@ func _draw_campaign_selection(screen: Vector2) -> void:
 		var chosen: bool = mission_id == String(main.selected_mission_id)
 		_panel(card, Color("1b3035"), GOLD if chosen else Color("456065"))
 		_text(card.position + Vector2(14, 31), "%02d  %s" % [index + 1, String(definition["name"])], 21, GOLD if chosen else PAPER, card_width - 28)
-		var preview_height: float = clampf(card_height * 0.27, 90, 132)
+		var preview_height: float = preview_guess
 		var preview: Rect2 = Rect2(card.position + Vector2(14, 45), Vector2(card_width - 28, preview_height))
 		_draw_campaign_preview(preview, mission_id, definition)
 		var cursor: float = 45 + preview_height + 23
@@ -600,8 +795,8 @@ func _draw_settings(screen: Vector2) -> void:
 	_button(Rect2(panel.position + Vector2(30, 58 if compact else 68), Vector2(365, 34 if compact else 38)), "快捷键", "settings_tab:controls", "所有主要操作均可重绑", main.settings_tab == "controls")
 	_button(Rect2(panel.position + Vector2(415, 58 if compact else 68), Vector2(375, 34 if compact else 38)), "显示与声音", "settings_tab:display", "分辨率、缩放、独立音量和静音", main.settings_tab == "display")
 	if main.settings_tab == "controls":
-		_button(Rect2(panel.position + Vector2(30, 108 if compact else 122), Vector2(350, 42)), "主音量  %d%%" % int(main.volume * 100), "volume", "点击循环切换主音量")
-		_button(Rect2(panel.position + Vector2(400, 108 if compact else 122), Vector2(390, 42)), "边缘滚屏：" + ("开" if main.edge_scroll else "关"), "edge_scroll", "靠近屏幕边缘时移动镜头")
+		_button(Rect2(panel.position + Vector2(30, 108 if compact else 122), Vector2(365, 42)), "主音量  %d%%" % int(main.volume * 100), "volume", "点击循环切换主音量")
+		_button(Rect2(panel.position + Vector2(425, 108 if compact else 122), Vector2(365, 42)), "边缘滚屏：" + ("开" if main.edge_scroll else "关"), "edge_scroll", "靠近屏幕边缘时移动镜头")
 		var actions: Array = main.command_names.keys()
 		var start: int = main.settings_page * per_page
 		for i: int in range(start, mini(actions.size(), start + per_page)):
@@ -639,7 +834,7 @@ func _wrap_text(text: String, width: float, size_value: int, hanging_punctuation
 	var result: Array[String] = []
 	var line: String = ""
 	for character: String in text:
-		if character == "\n" or (font.get_string_size(line+character,HORIZONTAL_ALIGNMENT_LEFT,-1,size_value).x > width and not (hanging_punctuation and "，。；：！？、）】」".contains(character))):
+		if character == "\n" or (font.get_string_size(line+character,HORIZONTAL_ALIGNMENT_LEFT,-1,size_value).x > width and not (hanging_punctuation and "，。；：！？、）】」』”’》".contains(character))):
 			result.append(line)
 			line = "" if character == "\n" else character
 		else: line += character
@@ -746,13 +941,15 @@ func _draw_construction_details(screen: Vector2) -> void:
 	_button(Rect2(rect.position + Vector2(12, rect.size.y - 36), Vector2(296, 26)), "关闭详情", "close_project", "")
 
 func _draw_guide_dialog(screen: Vector2) -> void:
-	var panel_size: Vector2 = Vector2(minf(900, screen.x - 32), minf(620, screen.y - 32))
+	var hint: Dictionary = main.guide.get_hint()
+	var panel_width: float = minf(900, screen.x - 32)
+	var lines: Array[String] = _wrap_text(main.guide_text(String(hint.get("text", ""))), panel_width - 52, 18)
+	# Fit the dialog to its text instead of leaving an empty middle.
+	var panel_size: Vector2 = Vector2(panel_width, clampf(114.0 + lines.size() * 27.0 + 200.0, 400.0, minf(620, screen.y - 32)))
 	var panel: Rect2 = Rect2((screen - panel_size) * 0.5, panel_size)
 	_panel(panel, PANEL, GOLD)
-	var hint: Dictionary = main.guide.get_hint()
 	_text(panel.position + Vector2(26, 42), String(main.sim.mission_name) + " · 战役引导", 27, GOLD, panel.size.x - 52)
-	_text(panel.position + Vector2(26, 76), String(hint.get("title", "当前目标")), 19, PAPER, panel.size.x - 52)
-	var lines: Array[String] = _wrap_text(main.guide_text(String(hint.get("text", ""))), panel.size.x - 52, 18)
+	_text(panel.position + Vector2(26, 76), "%d/%d  %s" % [int(hint.get("step", 1)), int(hint.get("total", 11)), String(hint.get("title", "当前目标"))], 19, PAPER, panel.size.x - 52)
 	var limit: int = maxi(1, int((panel.size.y - 270) / 27))
 	for index: int in range(mini(lines.size(), limit)): _text(panel.position + Vector2(26, 114 + index * 27), lines[index], 18, PAPER)
 	var button_width: float = (panel.size.x - 66) * 0.5
@@ -765,27 +962,31 @@ func _draw_guide_dialog(screen: Vector2) -> void:
 	_button(Rect2(panel.position + Vector2(40 + button_width, panel.size.y - 74), Vector2(button_width, 46)), "返回战役", "resume", "")
 
 func _draw_help(screen: Vector2) -> void:
-	var panel_size: Vector2 = Vector2(minf(930, screen.x - 32), minf(680, screen.y - 32))
-	var panel: Rect2 = Rect2((screen - panel_size) * 0.5, panel_size)
-	_panel(panel, PANEL, TEAL)
-	_text(panel.position + Vector2(28, 45), String(main.sim.mission_name) + " · 指挥手册", 28, PAPER, panel.size.x - 56)
+	var panel_width: float = minf(930, screen.x - 32)
 	var definition: Dictionary = main.sim.mission_data
 	var entries: Array[String] = [
 		"目标：" + String(definition["objective"]),
 		"1. 拖框选择小队，右键移动；%s 后左键执行攻击移动。" % main.binding_label("attack_move"),
-		"2. 清理 %s 与 %s，铺路让工人运回废料和原油。" % [_mission_site_name("quarry"), _mission_site_name("fuel")],
+		"2. 清理%s与%s，铺路让工人运回废料和原油。" % [_mission_site_name("quarry"), _mission_site_name("fuel")],
 		"3. %s 建设前哨和设施；%s 调整生产、当地供能与优先级。" % [main.binding_label("build_menu"), main.binding_label("production_menu")],
 		"4. %s 指挥驻守、护送、搜刮与撤营；%s 训练单位，需要设施和当地供能。" % [main.binding_label("orders_menu"), main.binding_label("train_menu")],
 		"5. 后方追兵持续逼近。先运走人员设备，再封关争取时间。",
-		"6. 工程师修复 %s，指挥车与至少四名幸存者抵达才算胜利。" % _mission_site_name("exit"),
+		"6. 工程师修复%s，指挥车与至少四名幸存者抵达才算胜利。" % _mission_site_name("exit"),
 		String(definition["guide"]["route_text"]),
-		"镜头：%s/%s/%s/%s 或中键拖动，滚轮缩放，小地图定位。" % [main.binding_label("camera_up"), main.binding_label("camera_left"), main.binding_label("camera_down"), main.binding_label("camera_right")],
+		"镜头：%s/%s/%s/%s 或中键拖动，滚轮缩放，小地图点击或按住拖动定位。悬停单位查看状态。" % [main.binding_label("camera_up"), main.binding_label("camera_left"), main.binding_label("camera_down"), main.binding_label("camera_right")],
 		"编队：%s / %s / %s / %s，Ctrl 保存；%s 切队，%s 定位驻点；Shift+%s切换运作驻点。" % [main.binding_label("group_1"), main.binding_label("group_2"), main.binding_label("group_3"), main.binding_label("group_4"), main.binding_label("next_squad"), main.binding_label("focus_command"), main.binding_label("focus_command")],
-		"%s 暂停；%s 保存，%s 读取；%s 补给线，%s 范围。" % [main.binding_label("pause_game"), main.binding_label("quick_save"), main.binding_label("quick_load"), main.binding_label("logistics_toggle"), main.binding_label("ranges_toggle")]
+		"%s 暂停（暂停时仍可下令）；%s 保存，%s 读取；%s 补给线，%s 范围；道路可按住左键拖动连续铺设。" % [main.binding_label("pause_game"), main.binding_label("quick_save"), main.binding_label("quick_load"), main.binding_label("logistics_toggle"), main.binding_label("ranges_toggle")]
 	]
+	var tight: bool = screen.y - 32 < 620
+	var font_size: int = 15 if tight else 17
+	var line_gap: float = 23 if tight else 27
+	var content: float = 82.0
+	for entry: String in entries: content += _wrap_text(entry, panel_width - 56, font_size).size() * line_gap + 5
+	var panel_size: Vector2 = Vector2(panel_width, minf(content + 84.0, screen.y - 32))
+	var panel: Rect2 = Rect2((screen - panel_size) * 0.5, panel_size)
+	_panel(panel, PANEL, TEAL)
+	_text(panel.position + Vector2(28, 45), String(main.sim.mission_name) + " · 指挥手册", 28, PAPER, panel.size.x - 56)
 	var y: float = 82
-	var font_size: int = 15 if panel.size.y < 620 else 17
-	var line_gap: float = 23 if panel.size.y < 620 else 27
 	for entry: String in entries:
 		for line: String in _wrap_text(entry, panel.size.x - 56, font_size):
 			_text(panel.position + Vector2(28, y), line, font_size, PAPER if y == 82 else MUTED)
@@ -853,11 +1054,9 @@ func _button(rect: Rect2, label: String, action: String, tip: String, active: bo
 	if over and not tip.is_empty(): tooltip = tip
 
 func _text(pos: Vector2, text: String, size_value: int = 18, color: Color = PAPER, width: float = -1.0) -> void:
-	draw_string(font, pos, text, HORIZONTAL_ALIGNMENT_LEFT, width, size_value, color)
-
-func _lines(pos: Vector2, text: String, size_value: int, color: Color) -> void:
-	var lines: Array[String] = _wrap_text(text, 332, size_value, false)
-	for i: int in range(mini(lines.size(), 2)): _text(pos + Vector2(0, i * (size_value + 6)), lines[i], size_value, color)
+	# Titles use the heavier cut; body copy keeps the regular weight.
+	var face: Font = heading_font if size_value >= 20 and heading_font != null else font
+	draw_string(face, pos, text, HORIZONTAL_ALIGNMENT_LEFT, width, size_value, color)
 
 func _bar(rect: Rect2, amount: float, color: Color) -> void:
 	draw_rect(rect, Color("10252b"))
