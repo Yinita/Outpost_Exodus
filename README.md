@@ -2,7 +2,7 @@
 
 单人、2D 卡通废土战役式生存策略。向前清理尸群、铺路建营、生产供能；向后搬走人员物资、封关断后，最终完成出口工程并突围。
 
-当前开发源码为 **0.16.4-dev UI源码候选**，已合入营地卡优先级整理：没有末班运输的未选中弃营压为52px，选中、运作、撤收和仍有运输的营地保持91px；只占用实际可见卡片和间隙，弃营状态鲜读，遗留库存可在tooltip查看。Main、Sim、命令与存档schema不变。[源码阶段记录](docs/benchmarks/v0.16.4/source-stage.json)区分最终f7的47／0与此前75df的readout189／HUD286／camera305及26项source GUI；后者没有在最终两行tooltip字节上重跑，也没有最终大库存hover像素证据。**0.16.4已从94043e81冻结源实际导出Linux／Windows候选，Linux smoke／渲染／打包验证已启动，完整新包接受仍待完成。** 见[实际导出记录](../outpost-exodus-0.16.4-dev-export-stage.json)。
+当前开发源码为 **0.16.4-dev UI源码候选**，已合入营地卡优先级整理：没有末班运输的未选中弃营压为52px，选中、运作、撤收和仍有运输的营地保持91px；只占用实际可见卡片和间隙，弃营状态鲜读，遗留库存可在tooltip查看。Main、Sim、命令与存档schema不变。[源码阶段记录](docs/benchmarks/v0.16.4/source-stage.json)区分最终f7的47／0与此前75df的readout189／HUD286／camera305及26项source GUI；后者没有在最终两行tooltip字节上重跑，也没有最终大库存hover像素证据。**0.16.4已从94043e81冻结源实际导出Linux／Windows候选，Linux smoke／渲染／打包验证已通过，完整新包接受仍待完成。** 见[本地实际导出记录](../outpost-exodus-0.16.4-dev-export-stage.json)。仓库外的验证记录保留在开发工作区，未随源码上传。
 
 最近独立技术接受的精确Linux包为 **0.16.3-dev／冻结561313a**：同Main七场三图、6次公开重启，游戏3987.523349秒／native3989.0963843020145秒，native／launcher／server均正常退出0；普通两代auto、逐关及全局257桶帧账、215项四槽source和collector实际通过。见[正式接受记录](../outpost-exodus-0.16.3-dev-release-evidence.json)与[实际收集过程](../outpost-exodus-0.16.3-dev-collection-process.json)。范围仅该原包的Linux私有软件normalMain技术检查，`steam_ready=false`、`performance_acceptance=not_assessed`；不包含整关硬件、Windows、真人或真实Steam验收。
 
@@ -11,6 +11,13 @@
 已接受的0.16.1精确Linux包冻结于 `cf678b72…`，同Main七场三图完成，游戏墙钟3979.349975秒，启动器独立观测native3981.0773600769753秒；实际退出均0，七场帧账及四份存档读回复核通过。验收仅属于该原包，见[接受记录](../outpost-exodus-0.16.1-dev-release-evidence.json)和[收集过程](../outpost-exodus-0.16.1-dev-collection-process.json)。`steam_ready=false`、`performance_acceptance=not_assessed`；[当前检查点](docs/current-checkpoint.md)记录剩余范围。
 
 ## 运行
+
+获取源码：
+
+```bash
+git clone https://github.com/Yinita/Outpost_Exodus.git
+cd Outpost_Exodus
+```
 
 使用 **Godot 4.7.2 stable** 打开 `project.godot`，按 F5 运行。Linux 安装引擎后也可执行：
 
@@ -87,6 +94,6 @@ GODOT_BIN=/absolute/path/to/godot ./run.sh
 
 [既有0.16.2试玩说明](../playtest-kit-v0162/first-playtest.txt)和空白反馈表绑定实际包，尚无真人结果。[0.16.3本地SteamPipe staging](../steampipe-v0163-run-v01/run-index.json)为每平台五个运行／通知文件；stage／verify实际0／0，owner-required模式因真实身份未绑定如期拒绝2。AppID／Depot等仍UNBOUND，没有登录、上传或Steam安装验证。
 
-已建立本地 Git，尚未创建或推送 GitHub 远程仓库。可先用私有仓库开发，代码/场景/关卡/测试纳入 Git，大体积美术源文件使用 Git LFS。`.godot/`、`work/`、构建和本机存档不入库；`docs/.gdignore` 避免把文档截图当游戏资源导入。
+源码仓库：[Yinita/Outpost_Exodus](https://github.com/Yinita/Outpost_Exodus)。代码、场景、关卡、游戏运行素材与测试纳入 Git；后续大体积美术源文件可使用 Git LFS。`.godot/`、`work/`、构建和本机存档不入库；`docs/.gdignore` 避免把文档截图当游戏资源导入。当前仓库包含源码和运行素材，打包产物及仓库外的本地验证记录另行保留。
 
 开发、验证与打包方式见[开发计划](docs/development-plan.md)及[验证计划](docs/validation-plan.md)。冻结6bf的五份源码候选文档逐字保留在[0.15历史快照](docs/history/v0.15-source-snapshots/index.json)，其中的“待验证”描述导出前阶段；0.14快照与所有原始包证据保持原样。
